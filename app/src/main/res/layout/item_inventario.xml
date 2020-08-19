@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/invFoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/invNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/invFoto"
+        android:layout_toEndOf="@+id/invFoto"
+        tools:text= "dadawdawdwd" />
+
+    <TextView
+        android:id="@+id/invDescipcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_below="@+id/invNombre"
+        android:layout_toRightOf="@+id/invFoto"
+        android:layout_toEndOf="@+id/invFoto"
+        android:layout_marginTop="5dp"
+        android:maxEms="6"
+        tools:text = "wdawdadadssaddsadsads"/>
+
+    <TextView
+        android:id="@+id/invPrecioText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="7dp"
+        android:textSize="18sp"
+        tools:text="Precio" />
+
+    <TextView
+        android:id="@+id/invPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/invPrecioText"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:textSize="30sp"
+        android:maxEms="4"
+        android:text="$15.50" />
+
+</RelativeLayout>
