@@ -6,9 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".Inventario">
 
+    <LinearLayout
+        android:id="@+id/rvNuevoArticuloLayout"
+        android:layout_width="150dp"
+        android:layout_height="28dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/rvNuevoArticulo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="8dp"
+            android:gravity="center"
+            android:text="++Añadir nuevo++"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventario"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvNuevoArticuloLayout" />
 
 </RelativeLayout >

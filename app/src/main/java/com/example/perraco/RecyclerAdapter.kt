@@ -53,8 +53,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
                 }
                 context.startActivity(intent)
             })
-            val urls: Urls = Urls()
-            avatar.loadUrl(urls.endPointImagenes)
+            val urls = Urls()
+            avatar.loadUrl(urls.url+urls.endPointImagenes)
         }
 
         fun ImageView.loadUrl(url: String) {
