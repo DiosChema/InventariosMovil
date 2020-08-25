@@ -14,15 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".InventarioDetalle"></activity>
-        <activity android:name=".Inventario" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.Venta"></activity>
+        <activity android:name=".Activities.InventarioDetalle" />
+        <activity android:name=".Activities.Inventario" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.perraco.fileprovider"
@@ -30,9 +32,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths">
-
-            </meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
     </application>
 

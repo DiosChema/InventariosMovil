@@ -1,4 +1,4 @@
-package com.example.perraco
+package com.example.perraco.Objets
 
 import java.io.Serializable
 
@@ -10,15 +10,21 @@ data class Urls(
     var endpointObtenerSubFamilias:String,
     var endpointObtenerSubFamilia:String,
     var endpointDarAltaArticulo:String,
-    var endpointSubirImagen:String)
+    var endpointSubirImagen:String,
+    var endPointArticulo:String,
+    var endPointVenta:String,
+    var endPointObtenerFacturas:String)
 {
     constructor(): this(
         "https://tienditaplus.herokuapp.com/",
         "obtenerInventario",
-        "images/kunikida_hanamaru.jpg",
+        "imagen?image=",
         "consultarFamilias",
         "consultarSubFamilias",
         "consultarSubFamilia",
         "darAltaArticulo",
-        "subirImagen")
+        "subirImagen",
+        "obtenerArticuloInventario",
+        "darAltaFactura",
+        "obtenerFacturas")
 }

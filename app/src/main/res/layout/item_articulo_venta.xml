@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/VentaFoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/VentaNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="25sp"
+        android:maxEms="5"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/VentaFoto"
+        android:layout_toEndOf="@+id/VentaFoto"
+        tools:text= "dadawdawdwd" />
+
+    <TextView
+        android:id="@+id/VentaPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VentaNombre"
+        android:layout_toRightOf="@+id/VentaFoto"
+        android:layout_toEndOf="@+id/VentaFoto"
+        android:layout_marginTop="5dp"
+        android:textSize="30sp"
+        android:maxEms="4"
+        tools:text = "5.50"/>
+
+    <EditText
+        android:id="@+id/VentaCantidad"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:inputType="number"
+        android:maxLength="4"
+        android:minWidth="75dp"
+        android:textSize="30sp"
+        tools:text="0000" />
+
+    <ImageButton
+        android:id="@+id/VentaDisminuirCantidad"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/VentaCantidad"
+        android:layout_alignStart="@+id/VentaCantidad"
+        android:layout_alignLeft="@+id/VentaCantidad"
+        tools:background="@drawable/imagen25336" />
+
+    <ImageButton
+        android:id="@+id/VentaAnadirCantidad"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_below="@+id/VentaCantidad"
+        android:layout_alignEnd="@+id/VentaCantidad"
+        android:layout_alignRight="@+id/VentaCantidad"
+        tools:background="@drawable/imagen36962" />
+
+    <TextView
+        android:id="@+id/VentaIdArticulo"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+</RelativeLayout>

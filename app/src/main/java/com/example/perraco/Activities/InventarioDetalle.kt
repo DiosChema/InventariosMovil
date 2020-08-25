@@ -1,4 +1,4 @@
-package com.example.perraco
+package com.example.perraco.Activities
 
 import android.Manifest
 import android.app.Activity
@@ -19,6 +19,11 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.perraco.Objets.FamiliaObjeto
+import com.example.perraco.Objets.InventarioObjeto
+import com.example.perraco.Objets.SubFamiliaObjeto
+import com.example.perraco.Objets.Urls
+import com.example.perraco.R
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import okhttp3.*
@@ -46,9 +51,6 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invDetalleSubFamiliaSpinner : Spinner
     lateinit var invDetalleDarDeAlta : Button
     private val urls: Urls = Urls()
-
-    val REQUEST_IMAGE_CAPTURE = 1
-    lateinit var currentPhotoPath: String
 
     var listaFamilia:MutableList<String> = ArrayList()
     var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
@@ -83,7 +85,6 @@ class InventarioDetalle : AppCompatActivity() {
                 .penaltyLog()
                 .build()
             StrictMode.setThreadPolicy(policy)
-            //your codes here
         }
 
 
@@ -106,8 +107,7 @@ class InventarioDetalle : AppCompatActivity() {
 
                 invDetalleId.setText(inventarioObjeto.idArticulo.toString())
                 val urls = Urls()
-                invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes)
-                //invDetalleFoto.loadUrl(inventarioObjeto.urlFoto)
+                invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto.idArticulo+".png")
                 invDetalleNombre.setText(inventarioObjeto.nombreArticulo)
                 invDetalleNombreDetalle.setText(inventarioObjeto.descripcionArticulo)
                 invDetalleCantidad.setText(inventarioObjeto.cantidadArticulo.toString())
@@ -157,7 +157,6 @@ class InventarioDetalle : AppCompatActivity() {
 
     }
 
-
     fun darDeAltaFoto(/*file: File?*/){
         var drawable = invDetalleFoto.drawable
 
@@ -166,10 +165,8 @@ class InventarioDetalle : AppCompatActivity() {
 
         var file = bitmapToFile(resized)
 
-
         val MEDIA_TYPE_PNG = MediaType.parse("image/png")
         val req: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
-            //.addFormDataPart("userid", "8457851245")
             .addFormDataPart(
                 "image",
                 invDetalleId.text.toString()+".png",
@@ -250,7 +247,6 @@ class InventarioDetalle : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         //called when image was captured from camera intent
         if (resultCode == Activity.RESULT_OK){
-            //set image captured to image view
             invDetalleFoto.setImageURI(image_uri)
         }
     }
