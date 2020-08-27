@@ -7,6 +7,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -15,6 +16,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -25,6 +27,7 @@ import com.example.perraco.Objets.SubFamiliaObjeto
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.google.gson.GsonBuilder
+import com.google.zxing.integration.android.IntentIntegrator
 import com.squareup.picasso.Picasso
 import okhttp3.*
 import org.json.JSONException
@@ -65,6 +68,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_inventario_detalle)
 
         invDetalleId = findViewById(R.id.invDetalleId)
@@ -86,7 +90,6 @@ class InventarioDetalle : AppCompatActivity() {
                 .build()
             StrictMode.setThreadPolicy(policy)
         }
-
 
         if(intent.getSerializableExtra("articulo") != null)
         {
@@ -143,6 +146,18 @@ class InventarioDetalle : AppCompatActivity() {
                     openCamera()
                 }
             }
+
+            val button3 = findViewById<ImageButton>(R.id.invBottonTomarCodigo)
+            button3?.setOnClickListener()
+            {
+                val intentIntegrator = IntentIntegrator(this)
+                intentIntegrator.setBeepEnabled(false)
+                intentIntegrator.setCameraId(0)
+                intentIntegrator.setPrompt("SCAN")
+                intentIntegrator.setBarcodeImageEnabled(false)
+                intentIntegrator.initiateScan()
+            }
+
         }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -156,6 +171,8 @@ class InventarioDetalle : AppCompatActivity() {
         }
 
     }
+
+
 
     fun darDeAltaFoto(/*file: File?*/){
         var drawable = invDetalleFoto.drawable
@@ -243,13 +260,35 @@ class InventarioDetalle : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            runOnUiThread {
+                invDetalleId.setText(result.contents)
+            }
+
+        } else {
+            if (resultCode == Activity.RESULT_OK){
+                invDetalleFoto.setImageURI(image_uri)
+            }
+        }
+    }
+
+
+
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         //called when image was captured from camera intent
         if (resultCode == Activity.RESULT_OK){
             invDetalleFoto.setImageURI(image_uri)
         }
-    }
+    }*/
 
     fun ImageView.loadUrl(url: String) {
         Picasso.with(context).load(url).into(this)

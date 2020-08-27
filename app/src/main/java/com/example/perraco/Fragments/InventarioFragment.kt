@@ -43,7 +43,7 @@ class InventarioFragment : Fragment() {
         val button = rvNuevoArticulo
         button?.setOnClickListener()
         {
-            val intent = Intent(context, InventarioDetalle::class.java)
+            val intent = Intent(activity, InventarioDetalle::class.java)
             startActivity(intent)
         }
     }

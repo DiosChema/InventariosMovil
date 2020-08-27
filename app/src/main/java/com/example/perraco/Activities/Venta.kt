@@ -125,14 +125,24 @@ class Venta : AppCompatActivity() {
             val textViewId = view.findViewById(R.id.VentaIdArticulo) as TextView
             val textId = textViewId.text.toString()
 
+            val textViewNombre = view.findViewById(R.id.VentaNombre) as TextView
+            val textNombre = textViewNombre.text.toString()
+
+
             var articulo = ArticuloObjeto(
                 textId,
                 parseInt(textCantidad),
-                parseDouble(textPrecio)
+                parseDouble(textPrecio),
+                textNombre
             )
             articulos.add(articulo)
         }
 
+        if(articulos.size == 0)
+        {
+            Toast.makeText(this, "No hay articulos", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currentDate = sdf.format(Date())

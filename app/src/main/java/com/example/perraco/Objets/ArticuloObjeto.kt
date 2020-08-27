@@ -5,5 +5,6 @@ import java.io.Serializable
 data class ArticuloObjeto(
     var idArticulo:String,
     var cantidad:Int,
-    var precio:Double
+    var precio:Double,
+    var nombre:String
 ): Serializable

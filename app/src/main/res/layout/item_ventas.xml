@@ -6,32 +6,54 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="5dp"
+    android:background="@drawable/border">
 
 
     <TextView
-        android:id="@+id/VentasNumeroVenta"
+        android:id="@+id/VentasNumeroVentaText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginTop="6dp"
         android:textStyle="bold"
         android:textSize="25sp"
         android:maxEms="5"
         android:layout_alignParentTop="true"
-        tools:text= "Venta No. 1000" />
+        tools:text= "Venta No." />
+
+    <TextView
+        android:id="@+id/VentasNumeroVenta"
+        android:layout_marginBottom="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VentasNumeroVentaText"
+        android:layout_alignStart="@+id/VentasNumeroVentaText"
+        android:layout_alignLeft="@+id/VentasNumeroVentaText"
+        android:layout_alignEnd="@+id/VentasNumeroVentaText"
+        android:layout_alignRight="@+id/VentasNumeroVentaText"
+        android:maxEms="5"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        tools:text="#####"
+        android:gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/VentasFecha"
+        android:layout_marginRight="6dp"
+        android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:maxEms="7"
-        android:textSize="25sp"
-        android:textStyle="bold"
+        android:textSize="18sp"
         tools:text="Fecha" />
 
     <TextView
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
         android:id="@+id/VentasTotalVenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,5 +64,13 @@
         android:textSize="25sp"
         android:textStyle="bold"
         tools:text="Total: $999999" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvArticulosEnVenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VentasNumeroVenta"
+        android:layout_weight="1"
+        android:layout_margin="5dp"/>
 
 </RelativeLayout>

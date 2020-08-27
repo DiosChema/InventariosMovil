@@ -6,18 +6,19 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="5dp"
+    android:background="@drawable/border">
 
     <ImageView
         android:id="@+id/VentaFoto"
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="120dp"
+        android:layout_margin="5dp"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/VentaNombre"
+        android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
@@ -30,12 +31,12 @@
 
     <TextView
         android:id="@+id/VentaPrecio"
+        android:layout_marginBottom="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/VentaNombre"
         android:layout_toRightOf="@+id/VentaFoto"
         android:layout_toEndOf="@+id/VentaFoto"
-        android:layout_marginTop="5dp"
         android:textSize="30sp"
         android:maxEms="4"
         tools:text = "5.50"/>
@@ -43,7 +44,9 @@
     <EditText
         android:id="@+id/VentaCantidad"
         android:layout_width="75dp"
+        android:layout_marginTop="-8dp"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:inputType="number"
@@ -74,5 +77,16 @@
         android:id="@+id/VentaIdArticulo"
         android:layout_width="0dp"
         android:layout_height="0dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/VentaNombre"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="Cant        " />
 
 </RelativeLayout>

@@ -5,39 +5,50 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@drawable/border">
+    android:layout_margin="2dp">
 
     <ImageView
-        android:id="@+id/invFoto"
+        android:id="@+id/ventaArticulosFoto"
         android:layout_width="100dp"
         android:layout_height="120dp"
         android:layout_margin="5dp"
         android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/invNombre"
+        android:id="@+id/ventaArticulosNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="25sp"
-        android:maxEms="6"
+        android:maxEms="5"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/invFoto"
-        android:layout_toEndOf="@+id/invFoto"
+        android:layout_toRightOf="@+id/ventaArticulosFoto"
+        android:layout_toEndOf="@+id/ventaArticulosFoto"
         tools:text= "dadawdawdwd" />
 
     <TextView
-        android:id="@+id/invDescipcion"
+        android:id="@+id/ventaArticulosDescipcionText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:layout_below="@+id/invNombre"
-        android:layout_toRightOf="@+id/invFoto"
-        android:layout_toEndOf="@+id/invFoto"
+        android:layout_below="@+id/ventaArticulosNombre"
+        android:layout_toRightOf="@+id/ventaArticulosFoto"
+        android:layout_toEndOf="@+id/ventaArticulosFoto"
         android:layout_marginTop="5dp"
         android:maxEms="6"
-        tools:text = "wdawdadadssaddsadsads"/>
+        tools:text = "Cant: "/>
+
+    <TextView
+        android:id="@+id/ventaArticulosDescipcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        android:layout_alignTop="@+id/ventaArticulosDescipcionText"
+        android:layout_toEndOf="@+id/ventaArticulosDescipcionText"
+        android:layout_toRightOf="@+id/ventaArticulosDescipcionText"
+        android:text="TextView" />
 
 
     <LinearLayout
@@ -47,11 +58,10 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:orientation="vertical"
-        android:background="@drawable/border">
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/invPrecioText"
+            android:id="@+id/ventaArticulosPrecioText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -60,7 +70,7 @@
             tools:text="Precio:" />
 
         <TextView
-            android:id="@+id/invPrecio"
+            android:id="@+id/ventaArticulosPrecio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="90dp"
@@ -75,5 +85,7 @@
             android:gravity="center_horizontal" />
 
     </LinearLayout>
+
+
 
 </RelativeLayout>
