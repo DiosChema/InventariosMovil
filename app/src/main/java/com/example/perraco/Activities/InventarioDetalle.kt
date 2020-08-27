@@ -21,10 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.example.perraco.Objets.FamiliaObjeto
-import com.example.perraco.Objets.InventarioObjeto
-import com.example.perraco.Objets.SubFamiliaObjeto
-import com.example.perraco.Objets.Urls
+import com.example.perraco.Objets.*
 import com.example.perraco.R
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
@@ -54,6 +51,8 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invDetalleSubFamiliaSpinner : Spinner
     lateinit var invDetalleDarDeAlta : Button
     private val urls: Urls = Urls()
+    var subFamiliaPendiente = false
+    var subFamiliaPendienteIndex = 0
 
     var listaFamilia:MutableList<String> = ArrayList()
     var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
@@ -95,34 +94,30 @@ class InventarioDetalle : AppCompatActivity() {
         {
             val inventarioObjeto = intent.getSerializableExtra("articulo") as InventarioObjeto
 
-            if(inventarioObjeto != null)
-            {
-                invDetalleId.isEnabled = false
-                invDetalleFoto.isEnabled = false
-                invDetalleNombre.isEnabled = false
-                invDetalleNombreDetalle.isEnabled = false
-                invDetalleCantidad.isEnabled = false
-                invDetallePrecio.isEnabled = false
-                invDetalleCosto.isEnabled = false
-                invDetalleFamiliaSpinner.isEnabled = false;
-                invDetalleSubFamiliaSpinner.isEnabled = false;
-                invDetalleDarDeAlta.isEnabled = false;
+            invDetalleId.isEnabled = false
+            invDetalleFoto.isEnabled = false
+            invDetalleNombre.isEnabled = false
+            invDetalleNombreDetalle.isEnabled = false
+            invDetalleCantidad.isEnabled = false
+            invDetallePrecio.isEnabled = false
+            invDetalleCosto.isEnabled = false
+            invDetalleFamiliaSpinner.isEnabled = false;
+            invDetalleSubFamiliaSpinner.isEnabled = false;
+            invDetalleDarDeAlta.isEnabled = false;
 
-                invDetalleId.setText(inventarioObjeto.idArticulo.toString())
-                val urls = Urls()
-                invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto.idArticulo+".png")
-                invDetalleNombre.setText(inventarioObjeto.nombreArticulo)
-                invDetalleNombreDetalle.setText(inventarioObjeto.descripcionArticulo)
-                invDetalleCantidad.setText(inventarioObjeto.cantidadArticulo.toString())
-                invDetallePrecio.setText(inventarioObjeto.precioArticulo.toString())
-                invDetalleCosto.setText(inventarioObjeto.costoArticulo.toString())
+            invDetalleId.setText(inventarioObjeto.idArticulo)
+            invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto.idArticulo+".png")
+            invDetalleNombre.setText(inventarioObjeto.nombreArticulo)
+            invDetalleNombreDetalle.setText(inventarioObjeto.descripcionArticulo)
+            invDetalleCantidad.setText(inventarioObjeto.cantidadArticulo.toString())
+            invDetallePrecio.setText(inventarioObjeto.precioArticulo)
+            invDetalleCosto.setText(inventarioObjeto.costoArticulo)
 
-                obtenerFamilia(this,parseInt(inventarioObjeto.familiaArticulo));
-            }
+            obtenerFamilia(this,parseInt(inventarioObjeto.familiaArticulo));
         }
         else
         {
-            obtenerFamilias(this, -1, -1);
+            obtenerFamilias(this);
 
             invDetalleFoto.setOnClickListener()
             {
@@ -175,12 +170,12 @@ class InventarioDetalle : AppCompatActivity() {
 
 
     fun darDeAltaFoto(/*file: File?*/){
-        var drawable = invDetalleFoto.drawable
+        val drawable = invDetalleFoto.drawable
 
         val bitmap: Bitmap = (drawable as BitmapDrawable).getBitmap()
         val resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true);
 
-        var file = bitmapToFile(resized)
+        val file = bitmapToFile(resized)
 
         val MEDIA_TYPE_PNG = MediaType.parse("image/png")
         val req: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -279,17 +274,6 @@ class InventarioDetalle : AppCompatActivity() {
         }
     }
 
-
-
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        //called when image was captured from camera intent
-        if (resultCode == Activity.RESULT_OK){
-            invDetalleFoto.setImageURI(image_uri)
-        }
-    }*/
-
     fun ImageView.loadUrl(url: String) {
         Picasso.with(context).load(url).into(this)
     }
@@ -354,11 +338,9 @@ class InventarioDetalle : AppCompatActivity() {
 
     }
 
-    fun obtenerFamilias(context: Context, familia: Int, subFamilia: Int){
+    fun obtenerFamilias(context: Context){
 
         val url = urls.url+urls.endpointObtenerFamilias+"?tienda=00001"
-        var familiaTmp = 0;
-        var index = 0;
 
         val request = Request.Builder()
             .url(url)
@@ -372,31 +354,25 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response)
             {
-                var body = response.body()?.string()
+                val body = response.body()?.string()
                 val gson = GsonBuilder().create()
                 listaFamiliaCompleta = gson.fromJson(body,Array<FamiliaObjeto>::class.java).toMutableList()
 
                 for (familias in listaFamiliaCompleta) {
                     listaFamilia.add(familias.nombreFamilia)
-
-                    if(familia != -1 && familias.familiaId == familia) {
-                        familiaTmp = index
-                    }
-
-                    index++
                 }
 
                 runOnUiThread {
                     val adapter = ArrayAdapter(context,
                         android.R.layout.simple_spinner_item, listaFamilia)
                     invDetalleFamiliaSpinner.adapter = adapter
-                    invDetalleFamiliaSpinner.setSelection(familiaTmp);
+                    invDetalleFamiliaSpinner.setSelection(0);
 
                     invDetalleFamiliaSpinner.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId,subFamilia)
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>) {
@@ -409,10 +385,14 @@ class InventarioDetalle : AppCompatActivity() {
 
     }
 
-    fun obtenerSubFamilias(context: Context, familiaId: Int, subFamilia: Int){
+    fun obtenerSubFamilias(context: Context, familiaId: Int){
         var subFamiliaTmp = 0;
-        var index = 0;
         val url = urls.url+urls.endpointObtenerSubFamilias+"?tienda=00001"+"&familiaId="+familiaId
+
+        if(subFamiliaPendiente) {
+            subFamiliaTmp = subFamiliaPendienteIndex
+            subFamiliaPendiente = false
+        }
 
         val request = Request.Builder()
             .url(url)
@@ -427,7 +407,7 @@ class InventarioDetalle : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response)
             {
                 listaSubFamilia.clear()
-                var body = response.body()?.string()
+                val body = response.body()?.string()
                 val gson = GsonBuilder().create()
 
                 runOnUiThread {
@@ -439,19 +419,14 @@ class InventarioDetalle : AppCompatActivity() {
 
                     for (familias in listaSubFamiliaCompleta) {
                         listaSubFamilia.add(familias.nombreSubFamilia)
-
-                        if(subFamilia != -1 && familias.subFamiliaId == subFamilia) {
-                            subFamiliaTmp = index
-                        }
-
-                        index++
                     }
 
                     adapter = ArrayAdapter(context,
                         android.R.layout.simple_spinner_item, listaSubFamilia)
 
                     invDetalleSubFamiliaSpinner.adapter = adapter
-                    invDetalleSubFamiliaSpinner.setSelection(subFamiliaTmp);
+
+                    invDetalleSubFamiliaSpinner.setSelection(subFamiliaTmp)
 
                     invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
@@ -473,7 +448,6 @@ class InventarioDetalle : AppCompatActivity() {
     fun obtenerFamilia(context: Context,familia: Int){
 
         val url = urls.url+urls.endpointObtenerSubFamilia+"?tienda=00001"+"&subFamiliaId="+familia
-        var index = 0;
 
         val request = Request.Builder()
             .url(url)
@@ -487,10 +461,62 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response)
             {
-                var body = response.body()?.string()
+                val body = response.body()?.string()
                 val gson = GsonBuilder().create()
-                val listaTmp = gson.fromJson(body,Array<SubFamiliaObjeto>::class.java).toMutableList()
-                obtenerFamilias(context,listaTmp[0].FamiliaId,familia)
+                val listaTmp = gson.fromJson(body,Array<FamiliaSubFamiliaObjeto>::class.java).toMutableList()
+                var posicionFamilia = 0
+
+                for (i in 0 until listaTmp.size)
+                {
+                    listaFamiliaCompleta.add(FamiliaObjeto(listaTmp[i].familiaId,listaTmp[i].nombreFamilia))
+
+                    if(listaTmp[i].subfamilias != null)
+                    {
+                        posicionFamilia = i
+                        listaSubFamiliaCompleta = listaTmp[i].subfamilias.toMutableList()
+                    }
+                }
+
+                for (familias in listaFamiliaCompleta) {
+                    listaFamilia.add(familias.nombreFamilia)
+                }
+
+                for (subFamilias in listaSubFamiliaCompleta) {
+                    listaSubFamilia.add(subFamilias.nombreSubFamilia)
+                }
+
+                for (i in 0 until listaSubFamiliaCompleta.size)
+                {
+                    if(listaSubFamiliaCompleta[i].subFamiliaId == familia)
+                        subFamiliaPendienteIndex = i
+                }
+
+                subFamiliaPendiente = true;
+
+                runOnUiThread {
+                    val adapter = ArrayAdapter(
+                        context,
+                        android.R.layout.simple_spinner_item, listaFamilia
+                    )
+                    invDetalleFamiliaSpinner.adapter = adapter
+                    invDetalleFamiliaSpinner.setSelection(posicionFamilia);
+
+
+
+                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,view: View, position: Int, id: Long) {
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // write code to perform some action
+                        }
+                    }
+
+                    //invDetalleSubFamiliaSpinner.setSelection(index);
+                }
+
             }
         })
     }

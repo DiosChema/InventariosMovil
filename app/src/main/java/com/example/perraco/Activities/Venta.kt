@@ -43,7 +43,6 @@ class Venta : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venta)
 
-        context = this;
         mViewVenta = RecyclerViewVenta()
         mRecyclerView = findViewById(R.id.rvVenta) as RecyclerView
         mRecyclerView.setHasFixedSize(true)
@@ -53,21 +52,21 @@ class Venta : AppCompatActivity() {
 
         nombre = findViewById(R.id.VentaCodigoAgregar) as TextView
 
-        val button = findViewById<Button>(R.id.VentaNuevoArticulo)
-        button?.setOnClickListener()
+        val ButtonNuevoArticulo = findViewById<Button>(R.id.VentaNuevoArticulo)
+        ButtonNuevoArticulo?.setOnClickListener()
         {
             getArticuloObjecto(nombre.text.toString())
         }
 
-        val button2 = findViewById<Button>(R.id.VentaTerminarVenta)
-        button2?.setOnClickListener()
+        val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
+        ButtonTerminarVenta?.setOnClickListener()
         {
             subirFactura()
 
         }
 
-        val button3 = findViewById<Button>(R.id.VentaObtenerCodigo)
-        button3?.setOnClickListener()
+        val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
+        ButtonObtenerCodigoBarras?.setOnClickListener()
         {
             val intentIntegrator = IntentIntegrator(this)
             intentIntegrator.setBeepEnabled(false)
@@ -86,15 +85,7 @@ class Venta : AppCompatActivity() {
     ) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
-            if (result.contents == null) {
-                Toast.makeText(this, "cancelled", Toast.LENGTH_SHORT).show()
-            } else {
-                Log.d("MainActivity", "Scanned")
-                Toast.makeText(this, "Scanned -> " + result.contents, Toast.LENGTH_SHORT)
-                    .show()
-
-                //nombre.text = result.contents
-                //getArticuloObjecto(result.contents)
+            if (result.contents != null) {
                 runOnUiThread {
                     getArticuloObjecto(result.contents)
                 }
@@ -107,10 +98,9 @@ class Venta : AppCompatActivity() {
 
     fun subirFactura() {
 
+        actulizarExistencia()
         val url = urls.url+urls.endPointVenta
 
-        val urls: Urls =
-            Urls()
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
         for (i in 0..mViewVenta.itemCount - 1)
@@ -129,13 +119,16 @@ class Venta : AppCompatActivity() {
             val textNombre = textViewNombre.text.toString()
 
 
-            var articulo = ArticuloObjeto(
+            val articulo = ArticuloObjeto(
                 textId,
                 parseInt(textCantidad),
                 parseDouble(textPrecio),
                 textNombre
             )
-            articulos.add(articulo)
+
+            if(articulo.cantidad > 0)
+                articulos.add(articulo)
+
         }
 
         if(articulos.size == 0)
@@ -147,23 +140,18 @@ class Venta : AppCompatActivity() {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currentDate = sdf.format(Date())
 
-        //val currentTime: Date = Calendar.getInstance().time
-
-        val venta: VentaObjeto =
+        val venta =
             VentaObjeto(
                 "00001",
                 currentDate.toString(),
                 articulos
             )
 
-        val gson = Gson()
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-        //val jsonTut: String = gson.toJson(venta)
         val jsonVenta: String = gsonPretty.toJson(venta)
 
         val JSON = MediaType.parse("application/json; charset=utf-8")
         val body = RequestBody.create(JSON, jsonVenta)
-
 
         val request = Request.Builder()
             .url(url)
@@ -188,9 +176,23 @@ class Venta : AppCompatActivity() {
             }
         })
 
+    }
 
+    fun obtenerArticulo(idArticulo: String) : InventarioObjeto?
+    {
+        val articuloTmp : InventarioObjeto? = null
+
+        for(i in 0..listaTmp.size -1)
+        {
+            if(listaTmp[i].idArticulo == idArticulo) {
+                return listaTmp[i]
+            }
+        }
+
+        return articuloTmp
 
     }
+
     fun getArticuloObjecto(idArticulo: String){
 
         val url = urls.url+urls.endPointArticulo+"?tienda=00001&idArticulo="+idArticulo
@@ -201,59 +203,70 @@ class Venta : AppCompatActivity() {
             .build()
 
         val client = OkHttpClient()
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Application is loading, please wait")
-        progressDialog.show()
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                var body = response.body()?.string()
-                if(body != null && body.isNotEmpty())
-                {
-                    val gson = GsonBuilder().create()
+        //val elemento = listaTmp.find{ it.idArticulo == idArticulo};
 
-                    var articulo = gson.fromJson(body,
-                        InventarioObjeto::class.java)
-                    articulo.cantidadArticulo = 1
+        actulizarExistencia()
+        val elemento = obtenerArticulo(idArticulo)
 
-                    listaTmp.add(articulo)
+        if(elemento == null || elemento.cantidadArticulo == 0) {
+            val progressDialog = ProgressDialog(this)
+            progressDialog.setMessage("Application is loading, please wait")
+            progressDialog.show()
 
-                    runOnUiThread {
-                        actulizarExistencia()
-                        mViewVenta.notifyDataSetChanged()
-                        nombre.text = ""
-                    }
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    progressDialog.dismiss()
                 }
 
-                progressDialog.dismiss()
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body()?.string()
+                    if (body != null && body.isNotEmpty()) {
+                        val gson = GsonBuilder().create()
 
+                        val articulo = gson.fromJson(
+                            body,
+                            InventarioObjeto::class.java
+                        )
+                        articulo.cantidadArticulo = 1
+
+                        runOnUiThread {
+                            actulizarExistencia()
+                            listaTmp.add(articulo)
+                            mViewVenta.notifyDataSetChanged()
+                            nombre.text = ""
+                        }
+                    }
+
+                    progressDialog.dismiss()
+
+                }
+            })
+        }
+        else
+        {
+            for(i in 0..listaTmp.size -1)
+            {
+                if(listaTmp[i].idArticulo == idArticulo) {
+                    listaTmp[i].cantidadArticulo + 1
+                    runOnUiThread {
+                        mViewVenta.notifyDataSetChanged()
+                    }
+                }
             }
-        })
+        }
 
     }
 
     fun actulizarExistencia() {
-        if(mViewVenta.itemCount > 1)
+        if(mViewVenta.itemCount > 0)
         {
-            for (i in 0..mViewVenta.itemCount - 2) {
+            for (i in 0..mViewVenta.itemCount - 1) {
                 val view: View = mRecyclerView.getChildAt(i)
                 val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
                 val textCantidad = textViewCantidad.text.toString()
 
-                val textViewId = view.findViewById(R.id.VentaIdArticulo) as TextView
-                val textId = textViewId.text.toString()
-
-                for (i in 0..listaTmp.size - 1)
-                {
-                    if(listaTmp[i].idArticulo == textId){
-                        listaTmp[i].cantidadArticulo = parseInt(textCantidad)
-                        break
-                    }
-                }
+                listaTmp[i].cantidadArticulo = parseInt(textCantidad)
             }
         }
 

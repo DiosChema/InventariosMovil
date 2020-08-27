@@ -1,6 +1,8 @@
 package com.example.perraco.RecyclerView
 
 import android.content.Context
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +15,9 @@ import com.example.perraco.Objets.InventarioObjeto
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
+import java.lang.Double.parseDouble
+import java.lang.Integer.parseInt
+
 
 class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
 
@@ -53,21 +58,54 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         var disminuirCantidad = view.findViewById(R.id.VentaDisminuirCantidad) as ImageButton
         var aumentarCantidad = view.findViewById(R.id.VentaAnadirCantidad) as ImageButton
         var ventaIdArticulo = view.findViewById(R.id.VentaIdArticulo) as TextView
+        var VentaCostoTotal = view.findViewById(R.id.VentaCostoTotal) as TextView
 
         fun bind(articulo: InventarioObjeto, context: Context) {
             nombreArticulo.text = articulo.nombreArticulo
-            precio.text = /*"$" + */articulo.precioArticulo.toString()
+            precio.text = /*"$" + */articulo.precioArticulo
             cantidad.setText(articulo.cantidadArticulo.toString())
             ventaIdArticulo.text = articulo.idArticulo
+            VentaCostoTotal.text = articulo.precioArticulo
+
             disminuirCantidad.setOnClickListener(View.OnClickListener {
-                var cantidadArticulo = Integer.parseInt(cantidad.text.toString()) - 1
-                if(cantidadArticulo >= 0)
+                val tamanoString = cantidad.text.toString()
+
+                if(tamanoString.length > 0)
+                {
+                    val cantidadArticulo = Integer.parseInt(cantidad.text.toString()) - 1
                     cantidad.setText((cantidadArticulo.toString()))
+
+                    if(cantidadArticulo  <= 0) {
+                        cantidad.setText((cantidadArticulo.toString()))
+                        val params: ViewGroup.LayoutParams = itemView.getLayoutParams()
+                        params.height = 0
+                        itemView.setLayoutParams(params)
+                    }
+                }
+
             })
 
             aumentarCantidad.setOnClickListener(View.OnClickListener {
-                var cantidadArticulo = Integer.parseInt(cantidad.text.toString()) + 1
+                var cantidadArticulo = parseInt(cantidad.text.toString()) + 1
                 cantidad.setText((cantidadArticulo.toString()))
+            })
+
+
+            cantidad.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {}
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                    if (s.length != 0)
+                        VentaCostoTotal.text = (parseInt(s.toString()) * parseDouble(articulo.precioArticulo)).toString()
+                }
             })
 
             imagenArticulo.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -37,7 +36,7 @@
         android:layout_below="@+id/VentaNombre"
         android:layout_toRightOf="@+id/VentaFoto"
         android:layout_toEndOf="@+id/VentaFoto"
-        android:textSize="30sp"
+        android:textSize="18sp"
         android:maxEms="4"
         tools:text = "5.50"/>
 
@@ -88,5 +87,16 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:text="Cant        " />
+
+    <TextView
+        android:id="@+id/VentaCostoTotal"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VentaPrecio"
+        android:layout_alignStart="@+id/VentaPrecio"
+        android:layout_alignLeft="@+id/VentaPrecio"
+        android:hint="$$$"
+        android:textSize="22sp"
+        android:layout_marginBottom="5dp"/>
 
 </RelativeLayout>
