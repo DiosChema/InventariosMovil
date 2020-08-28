@@ -6,10 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Objets.InventarioObjeto
 import com.example.perraco.Objets.Urls
@@ -38,7 +35,7 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_articulo_venta,
+                R.layout.item_articulos_de_venta,
                 parent,
                 false
             )
@@ -64,15 +61,15 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
             nombreArticulo.text = articulo.nombreArticulo
             precio.text = /*"$" + */articulo.precioArticulo
             cantidad.setText(articulo.cantidadArticulo.toString())
-            ventaIdArticulo.text = articulo.idArticulo
-            VentaCostoTotal.text = articulo.precioArticulo
+            ventaIdArticulo.setText("Precio: " + articulo.idArticulo)
+            VentaCostoTotal.text = parseDouble(articulo.precioArticulo).toString()
 
             disminuirCantidad.setOnClickListener(View.OnClickListener {
                 val tamanoString = cantidad.text.toString()
 
                 if(tamanoString.length > 0)
                 {
-                    val cantidadArticulo = Integer.parseInt(cantidad.text.toString()) - 1
+                    val cantidadArticulo = parseInt(cantidad.text.toString()) - 1
                     cantidad.setText((cantidadArticulo.toString()))
 
                     if(cantidadArticulo  <= 0) {
@@ -89,7 +86,6 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
                 var cantidadArticulo = parseInt(cantidad.text.toString()) + 1
                 cantidad.setText((cantidadArticulo.toString()))
             })
-
 
             cantidad.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}

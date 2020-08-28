@@ -1,16 +1,13 @@
 package com.example.perraco.RecyclerView
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.perraco.Activities.InventarioDetalle
 import com.example.perraco.Objets.ArticuloObjeto
-import com.example.perraco.Objets.InventarioObjeto
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
@@ -35,7 +32,7 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_articulos_venta,
+                R.layout.item_articulos_en_venta,
                 parent,
                 false
             )

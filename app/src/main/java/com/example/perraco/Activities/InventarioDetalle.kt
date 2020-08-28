@@ -2,6 +2,7 @@ package com.example.perraco.Activities
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.ContentValues
 import android.content.Context
@@ -16,7 +17,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
@@ -50,6 +50,12 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invDetalleFamiliaSpinner : Spinner
     lateinit var invDetalleSubFamiliaSpinner : Spinner
     lateinit var invDetalleDarDeAlta : Button
+    lateinit var invBotonEliminarFamilia : ImageButton
+    lateinit var invBotonAgregarFamilia : ImageButton
+    lateinit var invBotonEliminarSubFamilia : ImageButton
+    lateinit var invBotonAgregarSubFamilia : ImageButton
+    lateinit var invBottonTomarCodigo : ImageButton
+
     private val urls: Urls = Urls()
     var subFamiliaPendiente = false
     var subFamiliaPendienteIndex = 0
@@ -60,10 +66,10 @@ class InventarioDetalle : AppCompatActivity() {
     var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
 
     var image_uri: Uri? = null
-    private val PERMISSION_CODE = 1000;
+    private val PERMISSION_CODE = 1000
     private val IMAGE_CAPTURE_CODE = 1001
 
-    var subFamiliaId = -1;
+    var subFamiliaId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,6 +86,11 @@ class InventarioDetalle : AppCompatActivity() {
         invDetalleFamiliaSpinner = findViewById(R.id.invDetalleFamiliaSpinner)
         invDetalleSubFamiliaSpinner = findViewById(R.id.invDetalleSubFamiliaSpinner)
         invDetalleDarDeAlta = findViewById(R.id.invDetalleDarDeAlta)
+        invBotonEliminarFamilia = findViewById(R.id.invBotonEliminarFamilia)
+        invBotonAgregarFamilia = findViewById(R.id.invBotonAgregarFamilia)
+        invBotonEliminarSubFamilia = findViewById(R.id.invBotonEliminarSubFamilia)
+        invBotonAgregarSubFamilia = findViewById(R.id.invBotonAgregarSubFamilia)
+        invBottonTomarCodigo = findViewById(R.id.invBottonTomarCodigo)
 
         val SDK_INT = Build.VERSION.SDK_INT
         if (SDK_INT > 8) {
@@ -101,9 +112,14 @@ class InventarioDetalle : AppCompatActivity() {
             invDetalleCantidad.isEnabled = false
             invDetallePrecio.isEnabled = false
             invDetalleCosto.isEnabled = false
-            invDetalleFamiliaSpinner.isEnabled = false;
-            invDetalleSubFamiliaSpinner.isEnabled = false;
-            invDetalleDarDeAlta.isEnabled = false;
+            invDetalleFamiliaSpinner.isEnabled = false
+            invDetalleSubFamiliaSpinner.isEnabled = false
+            invDetalleDarDeAlta.isEnabled = false
+            invBotonEliminarFamilia.isEnabled = false
+            invBotonAgregarFamilia.isEnabled = false
+            invBotonEliminarSubFamilia.isEnabled = false
+            invBotonAgregarSubFamilia.isEnabled = false
+            invBottonTomarCodigo.isEnabled = false
 
             invDetalleId.setText(inventarioObjeto.idArticulo)
             invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto.idArticulo+".png")
@@ -113,11 +129,11 @@ class InventarioDetalle : AppCompatActivity() {
             invDetallePrecio.setText(inventarioObjeto.precioArticulo)
             invDetalleCosto.setText(inventarioObjeto.costoArticulo)
 
-            obtenerFamilia(this,parseInt(inventarioObjeto.familiaArticulo));
+            obtenerFamilia(this,parseInt(inventarioObjeto.familiaArticulo))
         }
         else
         {
-            obtenerFamilias(this);
+            obtenerFamilias(this)
 
             invDetalleFoto.setOnClickListener()
             {
@@ -142,8 +158,8 @@ class InventarioDetalle : AppCompatActivity() {
                 }
             }
 
-            val button3 = findViewById<ImageButton>(R.id.invBottonTomarCodigo)
-            button3?.setOnClickListener()
+
+            invBottonTomarCodigo.setOnClickListener()
             {
                 val intentIntegrator = IntentIntegrator(this)
                 intentIntegrator.setBeepEnabled(false)
@@ -153,27 +169,387 @@ class InventarioDetalle : AppCompatActivity() {
                 intentIntegrator.initiateScan()
             }
 
+            invBotonAgregarFamilia.setOnClickListener()
+            {
+                showDialogAgregarFamilia("Añadir Familia")
+            }
+
+            invBotonAgregarSubFamilia.setOnClickListener()
+            {
+                showDialogAgregarSubFamilia("Añadir SubFamilia")
+            }
+
+            invBotonEliminarFamilia.setOnClickListener()
+            {
+                if(listaFamiliaCompleta.size > 0)
+                    eliminarFamilia(this)
+            }
+
+            invBotonEliminarSubFamilia.setOnClickListener()
+            {
+                if(listaSubFamiliaCompleta.size > 0)
+                    eliminarSubFamilia(this)
+            }
+
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         invDetalleDarDeAlta.setOnClickListener()
         {
             if(!datosVacios()) {
                 darDeAltaArticulo()
-                darDeAltaFoto()
             }
         }
 
     }
 
+    private fun showDialogAgregarFamilia(title: String) {
+        val dialog = Dialog(this)
+        dialog.setTitle(title)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_text)
+        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
 
+        dialogTitulo.text = title
 
-    fun darDeAltaFoto(/*file: File?*/){
+        dialogAceptar.setOnClickListener {
+            dialog.dismiss()
+            agregarFamilia(this,dialogText.text.toString())
+        }
+
+        dialogCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+    private fun showDialogAgregarSubFamilia(title: String) {
+        val dialog = Dialog(this)
+        dialog.setTitle(title)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_text)
+        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+
+        dialogTitulo.text = title
+
+        dialogAceptar.setOnClickListener {
+            dialog.dismiss()
+            agregarSubFamilia(this,dialogText.text.toString())
+        }
+
+        dialogCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+    fun agregarFamilia(context: Context, nombreFamilia : String){
+
+        val url = urls.url+urls.endPointAgregarFamilia
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("nombreFamilia", nombreFamilia)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                progressDialog.dismiss()
+
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                val familia = gson.fromJson(body,FamiliaObjeto::class.java)
+
+                listaFamilia.add(familia.nombreFamilia)
+                listaFamiliaCompleta.add(familia)
+
+                runOnUiThread {
+                    val adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaFamilia)
+                    invDetalleFamiliaSpinner.adapter = adapter
+                    invDetalleFamiliaSpinner.setSelection(listaFamilia.size-1)
+
+                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // write code to perform some action
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    fun agregarSubFamilia(context: Context, nombreFamilia : String){
+
+        val url = urls.url+urls.endPointAgregarSubFamilia
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("nombreSubFamilia", nombreFamilia)
+            jsonObject.put("idFamilia", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                progressDialog.dismiss()
+
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                val subFamilia = gson.fromJson(body,SubFamiliaObjeto::class.java)
+
+                listaSubFamilia.add(subFamilia.nombreSubFamilia)
+                listaSubFamiliaCompleta.add(subFamilia)
+
+                runOnUiThread {
+                    val adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaSubFamilia)
+                    invDetalleSubFamiliaSpinner.adapter = adapter
+                    invDetalleSubFamiliaSpinner.setSelection(listaSubFamilia.size-1)
+
+                    invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+                            if(listaSubFamilia.size > 0) {
+                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                            }
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // write code to perform some action
+                        }
+                    }
+                }
+            }
+        })
+
+    }
+
+    fun eliminarFamilia(context: Context){
+
+        val url = urls.url+urls.endPointEliminarFamilia
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("familiaId", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .delete(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                progressDialog.dismiss()
+
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                val respuesta = gson.fromJson(body,RespuestaObjeto::class.java)
+
+                if(respuesta.respuesta == 0)
+                {
+                    listaFamilia.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
+                    listaFamiliaCompleta.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
+
+                    runOnUiThread {
+                        val adapter = ArrayAdapter(context,
+                            android.R.layout.simple_spinner_item, listaFamilia)
+                        invDetalleFamiliaSpinner.adapter = adapter
+
+                        if(listaFamilia.size > 0) {
+                            invDetalleFamiliaSpinner.setSelection(0)
+
+                            invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                                AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>,
+                                    view: View, position: Int, id: Long
+                                ) {
+                                    obtenerSubFamilias(
+                                        context,
+                                        listaFamiliaCompleta[position].familiaId
+                                    )
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // write code to perform some action
+                                }
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    runOnUiThread {
+                        Toast.makeText(context, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+        })
+
+    }
+
+    fun eliminarSubFamilia(context: Context){
+        val url = urls.url+urls.endPointEliminarSubFamilia
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("subFamiliaId", listaSubFamiliaCompleta[invDetalleSubFamiliaSpinner.selectedItemPosition].subFamiliaId)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .delete(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                progressDialog.dismiss()
+
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                val respuesta = gson.fromJson(body,RespuestaObjeto::class.java)
+
+                if(respuesta.respuesta == 0)
+                {
+                    listaSubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
+                    listaSubFamiliaCompleta.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
+
+                    runOnUiThread {
+                        val adapter = ArrayAdapter(context,
+                            android.R.layout.simple_spinner_item, listaSubFamilia)
+                        invDetalleSubFamiliaSpinner.adapter = adapter
+
+                        if(listaSubFamilia.size > 0) {
+                            invDetalleSubFamiliaSpinner.setSelection(0)
+
+                            invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                                AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>,
+                                                            view: View, position: Int, id: Long) {
+                                    if(listaSubFamilia.size > 0) {
+                                        subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                                    }
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // write code to perform some action
+                                }
+                            }
+                        }
+                    }
+
+                }
+                else
+                {
+                    runOnUiThread {
+                        Toast.makeText(context, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+            }
+        })
+    }
+
+    fun darDeAltaFoto(){
         val drawable = invDetalleFoto.drawable
 
         val bitmap: Bitmap = (drawable as BitmapDrawable).getBitmap()
-        val resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true);
+        val resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true)
 
         val file = bitmapToFile(resized)
 
@@ -191,7 +567,7 @@ class InventarioDetalle : AppCompatActivity() {
         val client = OkHttpClient()
 
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -201,6 +577,7 @@ class InventarioDetalle : AppCompatActivity() {
 
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
+                finish()
             }
         })
     }
@@ -289,10 +666,10 @@ class InventarioDetalle : AppCompatActivity() {
             subFamiliaId != -1 &&
             invDetalleNombreDetalle.text.toString() != "")
         {
-            respuesta = false;
+            respuesta = false
         }
 
-        return respuesta;
+        return respuesta
     }
 
     fun darDeAltaArticulo(){
@@ -323,7 +700,7 @@ class InventarioDetalle : AppCompatActivity() {
             .build()
 
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -332,9 +709,9 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
+                darDeAltaFoto()
             }
         })
-
 
     }
 
@@ -366,7 +743,7 @@ class InventarioDetalle : AppCompatActivity() {
                     val adapter = ArrayAdapter(context,
                         android.R.layout.simple_spinner_item, listaFamilia)
                     invDetalleFamiliaSpinner.adapter = adapter
-                    invDetalleFamiliaSpinner.setSelection(0);
+                    invDetalleFamiliaSpinner.setSelection(0)
 
                     invDetalleFamiliaSpinner.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
@@ -386,7 +763,7 @@ class InventarioDetalle : AppCompatActivity() {
     }
 
     fun obtenerSubFamilias(context: Context, familiaId: Int){
-        var subFamiliaTmp = 0;
+        var subFamiliaTmp = 0
         val url = urls.url+urls.endpointObtenerSubFamilias+"?tienda=00001"+"&familiaId="+familiaId
 
         if(subFamiliaPendiente) {
@@ -401,8 +778,13 @@ class InventarioDetalle : AppCompatActivity() {
 
         val client = OkHttpClient()
 
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
             }
             override fun onResponse(call: Call, response: Response)
             {
@@ -426,19 +808,25 @@ class InventarioDetalle : AppCompatActivity() {
 
                     invDetalleSubFamiliaSpinner.adapter = adapter
 
-                    invDetalleSubFamiliaSpinner.setSelection(subFamiliaTmp)
+                    if(listaSubFamilia.size > 0) {
+                        invDetalleSubFamiliaSpinner.setSelection(subFamiliaTmp)
+                    }
 
                     invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
-                            subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                            if(listaSubFamilia.size > 0) {
+                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                            }
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>) {
                             // write code to perform some action
                         }
                     }
+
+                    progressDialog.dismiss()
                 }
             }
         })
@@ -491,7 +879,7 @@ class InventarioDetalle : AppCompatActivity() {
                         subFamiliaPendienteIndex = i
                 }
 
-                subFamiliaPendiente = true;
+                subFamiliaPendiente = true
 
                 runOnUiThread {
                     val adapter = ArrayAdapter(
@@ -499,7 +887,7 @@ class InventarioDetalle : AppCompatActivity() {
                         android.R.layout.simple_spinner_item, listaFamilia
                     )
                     invDetalleFamiliaSpinner.adapter = adapter
-                    invDetalleFamiliaSpinner.setSelection(posicionFamilia);
+                    invDetalleFamiliaSpinner.setSelection(posicionFamilia)
 
 
 
@@ -514,7 +902,6 @@ class InventarioDetalle : AppCompatActivity() {
                         }
                     }
 
-                    //invDetalleSubFamiliaSpinner.setSelection(index);
                 }
 
             }

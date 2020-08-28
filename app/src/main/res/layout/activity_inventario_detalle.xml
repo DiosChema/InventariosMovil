@@ -47,8 +47,29 @@
             android:layout_below="@+id/invDetalleId"
             android:layout_alignStart="@+id/invDetalleId"
             android:layout_alignLeft="@+id/invDetalleId"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginBottom="25dp"/>
+
+        <ImageButton
+            android:id="@+id/invBotonEliminarFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="-20dp"
+            android:layout_alignTop="@+id/invDetalleFamiliaSpinner"
+            android:layout_toStartOf="@+id/invDetalleFamiliaSpinner"
+            android:layout_toLeftOf="@+id/invDetalleFamiliaSpinner"
+            app:srcCompat="@drawable/lessicon" />
+
+        <ImageButton
+            android:id="@+id/invBotonAgregarFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/invDetalleFamiliaSpinner"
+            android:layout_toEndOf="@+id/invDetalleFamiliaSpinner"
+            android:layout_toRightOf="@+id/invDetalleFamiliaSpinner"
+            android:layout_marginLeft="-45dp"
+            app:srcCompat="@drawable/moreicon" />
 
         <TextView
             android:id="@+id/invTextGrupo"
@@ -68,6 +89,24 @@
             android:layout_alignLeft="@+id/invDetalleFamiliaSpinner"
             android:layout_alignEnd="@+id/invDetalleFamiliaSpinner"
             android:layout_alignRight="@+id/invDetalleFamiliaSpinner"/>
+
+        <ImageButton
+            android:id="@+id/invBotonEliminarSubFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/invDetalleSubFamiliaSpinner"
+            android:layout_toStartOf="@+id/invDetalleSubFamiliaSpinner"
+            android:layout_toLeftOf="@+id/invDetalleSubFamiliaSpinner"
+            app:srcCompat="@drawable/lessicon" />
+
+        <ImageButton
+            android:id="@+id/invBotonAgregarSubFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignTop="@+id/invDetalleSubFamiliaSpinner"
+            android:layout_toEndOf="@+id/invDetalleSubFamiliaSpinner"
+            android:layout_toRightOf="@+id/invDetalleSubFamiliaSpinner"
+            app:srcCompat="@drawable/moreicon" />
 
         <TextView
             android:id="@+id/invTextSubGrupo"

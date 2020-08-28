@@ -63,7 +63,7 @@ class VentaFragment : Fragment() {
         val client = OkHttpClient()
 
         val progressDialog = ProgressDialog(activity)
-        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {

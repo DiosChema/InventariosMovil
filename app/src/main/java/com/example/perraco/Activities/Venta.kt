@@ -3,7 +3,6 @@ package com.example.perraco.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -18,7 +17,6 @@ import com.example.perraco.Objets.Urls
 import com.example.perraco.Objets.VentaObjeto
 import com.example.perraco.R
 import com.example.perraco.RecyclerView.RecyclerViewVenta
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
@@ -62,7 +60,6 @@ class Venta : AppCompatActivity() {
         ButtonTerminarVenta?.setOnClickListener()
         {
             subirFactura()
-
         }
 
         val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
@@ -160,17 +157,21 @@ class Venta : AppCompatActivity() {
 
         val client = OkHttpClient()
         val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+
             }
             override fun onResponse(call: Call, response: Response)
             {
                 runOnUiThread {
                     progressDialog.dismiss()
+                    listaTmp.clear()
+                    mViewVenta.notifyDataSetChanged()
+                    Toast.makeText(context, "Venta exitosa", Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -204,14 +205,12 @@ class Venta : AppCompatActivity() {
 
         val client = OkHttpClient()
 
-        //val elemento = listaTmp.find{ it.idArticulo == idArticulo};
-
         actulizarExistencia()
         val elemento = obtenerArticulo(idArticulo)
 
         if(elemento == null || elemento.cantidadArticulo == 0) {
             val progressDialog = ProgressDialog(this)
-            progressDialog.setMessage("Application is loading, please wait")
+            progressDialog.setMessage(getString(R.string.mensaje_espera))
             progressDialog.show()
 
             client.newCall(request).enqueue(object : Callback {
@@ -269,8 +268,6 @@ class Venta : AppCompatActivity() {
                 listaTmp[i].cantidadArticulo = parseInt(textCantidad)
             }
         }
-
-
 
     }
 

@@ -23,14 +23,16 @@ class InventarioFragment : Fragment() {
 
     var listaTmp:MutableList<InventarioObjeto> = ArrayList()
     val context = activity;
+    lateinit var mViewInventario : RecyclerViewInventario
+    lateinit var mRecyclerView : RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_inventario, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var mViewInventario = RecyclerViewInventario()
-        var mRecyclerView : RecyclerView = rvInventario as RecyclerView
+        mViewInventario = RecyclerViewInventario()
+        mRecyclerView = rvInventario as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (context != null) {
@@ -62,7 +64,7 @@ class InventarioFragment : Fragment() {
         val client = OkHttpClient()
 
         val progressDialog = ProgressDialog(activity)
-        progressDialog.setMessage("Application is loading, please wait")
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -87,4 +89,11 @@ class InventarioFragment : Fragment() {
         })
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        getInventarioObjecto(mViewInventario,mRecyclerView)
+    }
+
+
 }
