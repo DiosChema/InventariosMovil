@@ -55,8 +55,8 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         fun bind(articulo: InventarioObjeto, context: Context) {
             nombre.text = articulo.nombreArticulo
             descripcion.text = articulo.descripcionArticulo
-            precio.text = "$" + articulo.precioArticulo.toString()
-            precioText.text = "Precio:";
+            precio.setText("$" + articulo.precioArticulo)
+            precioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
             itemView.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context, InventarioDetalle::class.java).apply {
                     putExtra("articulo", articulo)//tienda

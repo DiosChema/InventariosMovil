@@ -23,8 +23,8 @@ class Inventario : AppCompatActivity() {
             MyViewPagerAdapter(
                 supportFragmentManager
             )
-        adapter.addFragment(InventarioFragment() , "Inventario")
-        adapter.addFragment(VentaFragment() , "Ventas")
+        adapter.addFragment(InventarioFragment() , getString(R.string.fragment_inventario))
+        adapter.addFragment(VentaFragment() , getString(R.string.fragment_ventas))
         pager.adapter = adapter
         tab_layout.setupWithViewPager(pager)
 

@@ -31,7 +31,7 @@
         android:layout_below="@+id/dialogText"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:text="Cancelar" />
+        android:text="@string/dialog_cancelar" />
 
     <Button
         android:id="@+id/dialogAceptar"
@@ -40,7 +40,7 @@
         android:layout_below="@+id/dialogText"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="Aceptar" />
+        android:text="@string/dialog_aceptar" />
 
 
 </RelativeLayout>

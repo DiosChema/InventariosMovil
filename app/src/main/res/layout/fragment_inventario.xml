@@ -11,11 +11,11 @@
         android:id="@+id/rvNuevoArticulo"
         android:layout_width="fill_parent"
         android:layout_height="35dp"
-        android:textSize="8dp"
+        android:textSize="12sp"
         android:gravity="center"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="5dp"
-        android:text="++Añadir nuevo++"
+        android:text="@string/mensaje_anadir_articulo"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"/>
 

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/invDetalleFoto"
             android:layout_toRightOf="@+id/invDetalleFoto"
-            android:hint="Codigo"
+            android:hint="@string/mensaje_codigo_articulo"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="25dp"
@@ -78,7 +78,7 @@
             android:layout_above="@+id/invDetalleFamiliaSpinner"
             android:layout_alignStart="@+id/invDetalleFamiliaSpinner"
             android:layout_alignLeft="@+id/invDetalleFamiliaSpinner"
-            android:text="Grupo" />
+            android:text="@string/mensaje_grupo_articulo" />
 
         <Spinner
             android:id="@+id/invDetalleSubFamiliaSpinner"
@@ -115,7 +115,7 @@
             android:layout_above="@+id/invDetalleSubFamiliaSpinner"
             android:layout_alignStart="@+id/invDetalleSubFamiliaSpinner"
             android:layout_alignLeft="@+id/invDetalleSubFamiliaSpinner"
-            android:text="SubGrupo" />
+            android:text="@string/mensaje_subgrupo_articulo" />
 
         <EditText
             android:id="@+id/invDetalleNombre"
@@ -132,7 +132,7 @@
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:hint="Nombre" />
+            android:hint="@string/mensaje_nombre_articulo" />
 
         <EditText
             android:id="@+id/invDetalleNombreDetalle"
@@ -148,7 +148,7 @@
             android:gravity="center_horizontal"
             android:maxLines="2"
             android:layout_marginBottom="10dp"
-            android:hint="Detalle" />
+            android:hint="@string/mensaje_detalle_articulo" />
 
         <EditText
             android:id="@+id/invDetallePrecio"
@@ -170,7 +170,7 @@
             android:layout_alignTop="@+id/invDetallePrecio"
             android:layout_toEndOf="@+id/invDetallePrecio"
             android:layout_toRightOf="@+id/invDetallePrecio"
-            android:text="Precio" />
+            android:text="@string/mensaje_precio_articulo" />
 
         <EditText
             android:id="@+id/invDetalleCantidad"
@@ -180,7 +180,7 @@
             android:layout_alignEnd="@+id/invDetalleNombreDetalle"
             android:layout_alignRight="@+id/invDetalleNombreDetalle"
             android:maxLength="4"
-            android:hint="Cantidad"
+            android:hint="@string/mensaje_cantidad_articulo"
             android:inputType="number"
             android:textAlignment="center"
             android:gravity="center_horizontal"/>
@@ -193,7 +193,7 @@
             android:layout_alignBottom="@+id/invDetalleCantidad"
             android:layout_toStartOf="@+id/invDetalleCantidad"
             android:layout_toLeftOf="@+id/invDetalleCantidad"
-            android:text="Cantidad" />
+            android:text="@string/mensaje_cantidad_articulo"/>
 
         <EditText
             android:id="@+id/invDetalleCosto"
@@ -216,7 +216,7 @@
             android:layout_alignTop="@+id/invDetalleCosto"
             android:layout_toEndOf="@+id/invDetalleCosto"
             android:layout_toRightOf="@+id/invDetalleCosto"
-            android:text="Costo" />
+            android:text="@string/mensaje_costo_articulo" />
 
         <Button
             android:id="@+id/invDetalleDarDeAlta"
@@ -228,130 +228,16 @@
             android:layout_alignEnd="@+id/invDetalleCantidad"
             android:layout_alignRight="@+id/invDetalleCantidad"
             android:layout_marginTop="85dp"
-            android:text="Agregar" />
+            android:text="@string/mensaje_agregar_articulo" />
 
+        <ImageButton
+            android:id="@+id/invDetalleCancelarEdicion"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_below="@+id/invDetalleDarDeAlta"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@android:drawable/presence_offline" />
 
-        <!--
-                <EditText
-                    android:id="@+id/invDetalleId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleFoto"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginStart="120dp"
-                    android:layout_marginLeft="120dp"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginEnd="120dp"
-                    android:layout_marginRight="120dp"
-                    android:hint="Codigo"
-                    android:inputType="number"/>
-
-                <EditText
-                    android:id="@+id/invDetalleNombre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleId"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="-35dp"
-                    android:layout_marginRight="-35dp"
-                    android:hint="Nombre" />
-
-                <EditText
-                    android:id="@+id/invDetalleNombreDetalle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleNombre"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="-35dp"
-                    android:layout_marginRight="-35dp"
-                    android:hint="Detalle" />
-
-                <EditText
-                    android:id="@+id/invDetalleCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleNombreDetalle"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:hint="Cantidad"
-                    android:inputType="number"/>
-
-                <EditText
-                    android:id="@+id/invDetallePrecio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleCantidad"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:hint="$$$"
-                    android:inputType="numberDecimal"/>
-
-                <Spinner
-                    android:id="@+id/invDetalleFamiliaSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_below="@+id/invDetallePrecio"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"/>
-
-                <Spinner
-                    android:id="@+id/invDetalleSubFamiliaSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_below="@+id/invDetalleFamiliaSpinner"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"/>
-
-                <EditText
-                    android:id="@+id/invDetalleCosto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/invDetalleSubFamiliaSpinner"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:hint="$$$"
-                    android:inputType="numberDecimal"/>
-
-                <Button
-                    android:id="@+id/invDetalleDarDeAlta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Agregar"
-                    android:layout_below="@+id/invDetalleCosto"
-                    android:layout_alignStart="@+id/invDetalleId"
-                    android:layout_alignLeft="@+id/invDetalleId"
-                    android:layout_alignEnd="@+id/invDetalleId"
-                    android:layout_alignRight="@+id/invDetalleId"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="-35dp"
-                    android:layout_marginRight="-35dp"
-                    />
-        -->
     </RelativeLayout>
 </ScrollView>

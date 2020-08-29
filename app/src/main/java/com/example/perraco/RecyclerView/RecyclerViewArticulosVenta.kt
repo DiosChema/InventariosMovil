@@ -47,6 +47,8 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
         val nombre = view.findViewById(R.id.ventaArticulosNombre) as TextView
         val precio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
         val precioText = view.findViewById(R.id.ventaArticulosPrecioText) as TextView
+        val ventaArticulosPrecioTotalText = view.findViewById(R.id.ventaArticulosPrecioTotalText) as TextView
+        val ventaArticulosPrecioTotal = view.findViewById(R.id.ventaArticulosPrecioTotal) as TextView
         val ventaArticulosDescipcion = view.findViewById(R.id.ventaArticulosDescipcion) as TextView
         val ventaArticulosDescipcionText = view.findViewById(R.id.ventaArticulosDescipcionText) as TextView
         val imagen = view.findViewById(R.id.ventaArticulosFoto) as ImageView
@@ -54,9 +56,12 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
         fun bind(articulo: ArticuloObjeto, context: Context) {
             nombre.text = articulo.nombre
             precio.text = "$" + articulo.precio.toString()
-            precioText.text = "Precio:";
+            precioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
             ventaArticulosDescipcion.text = articulo.cantidad.toString()
-            ventaArticulosDescipcionText.text = "Cant: "
+            ventaArticulosDescipcionText.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo)
+            ventaArticulosPrecioTotalText.text = itemView.context.getText(R.string.mensaje_total_venta)
+            ventaArticulosPrecioTotal.text = "$" + (articulo.precio * articulo.cantidad)
+
             val urls = Urls()
             imagen.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
         }

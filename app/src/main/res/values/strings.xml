@@ -2,4 +2,27 @@
     <string name="app_name">Perraco</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
+    <string name="mensaje_editar">Editar</string>
+    <string name="mensaje_actualizar_articulo">Actualizar</string>
+    <string name="mensaje_agregar_articulo">Agregar</string>
+    <string name="mensaje_costo_articulo">Costo</string>
+    <string name="mensaje_cantidad_articulo">Cantidad</string>
+    <string name="mensaje_cantidad_articulo_diminutivo">Cant: </string>
+    <string name="mensaje_precio_articulo">Precio</string>
+    <string name="mensaje_detalle_articulo">Detalle</string>
+    <string name="mensaje_nombre_articulo">Nombre</string>
+    <string name="mensaje_subgrupo_articulo">SubGrupo</string>
+    <string name="mensaje_grupo_articulo">Grupo</string>
+    <string name="mensaje_codigo_articulo">Codigo</string>
+    <string name="dialog_cancelar">Cancelar</string>
+    <string name="dialog_aceptar">Aceptar</string>
+    <string name="dialog_agregar_familia">Añadir Familia</string>
+    <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
+    <string name="mensaje_anadir_articulo">Añadir nuevo</string>
+    <string name="fragment_inventario">Inventario</string>
+    <string name="fragment_ventas">Ventas</string>
+    <string name="mensaje_venta_sin_articulos">No hay articulos</string>
+    <string name="mensaje_venta_exitosa">Venta exitosa</string>
+    <string name="mensaje_total_venta">Total: </string>
+    <string name="mensaje_numero_venta">Venta No.</string>
 </resources>

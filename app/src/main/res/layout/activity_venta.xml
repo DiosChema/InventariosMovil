@@ -35,8 +35,8 @@
             android:layout_height="22dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="++Añadir nuevo++"
-            android:textSize="8dp" />
+            android:text="@string/mensaje_anadir_articulo"
+            android:textSize="12dp" />
 
 
     </LinearLayout>

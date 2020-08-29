@@ -51,20 +51,17 @@ class Venta : AppCompatActivity() {
         nombre = findViewById(R.id.VentaCodigoAgregar) as TextView
 
         val ButtonNuevoArticulo = findViewById<Button>(R.id.VentaNuevoArticulo)
-        ButtonNuevoArticulo?.setOnClickListener()
-        {
+        ButtonNuevoArticulo?.setOnClickListener() {
             getArticuloObjecto(nombre.text.toString())
         }
 
         val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
-        ButtonTerminarVenta?.setOnClickListener()
-        {
+        ButtonTerminarVenta?.setOnClickListener() {
             subirFactura()
         }
 
         val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
-        ButtonObtenerCodigoBarras?.setOnClickListener()
-        {
+        ButtonObtenerCodigoBarras?.setOnClickListener() {
             val intentIntegrator = IntentIntegrator(this)
             intentIntegrator.setBeepEnabled(false)
             intentIntegrator.setCameraId(0)
@@ -100,8 +97,7 @@ class Venta : AppCompatActivity() {
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
-        for (i in 0..mViewVenta.itemCount - 1)
-        {
+        for (i in 0..mViewVenta.itemCount - 1) {
             val view: View = mRecyclerView.getChildAt(i)
             val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
             val textCantidad = textViewCantidad.text.toString()
@@ -128,21 +124,15 @@ class Venta : AppCompatActivity() {
 
         }
 
-        if(articulos.size == 0)
-        {
-            Toast.makeText(this, "No hay articulos", Toast.LENGTH_SHORT).show()
+        if(articulos.size == 0) {
+            Toast.makeText(this, getString(R.string.mensaje_venta_sin_articulos), Toast.LENGTH_SHORT).show()
             return
         }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currentDate = sdf.format(Date())
 
-        val venta =
-            VentaObjeto(
-                "00001",
-                currentDate.toString(),
-                articulos
-            )
+        val venta = VentaObjeto("00001", currentDate.toString(), articulos)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(venta)
@@ -165,13 +155,12 @@ class Venta : AppCompatActivity() {
                 progressDialog.dismiss()
 
             }
-            override fun onResponse(call: Call, response: Response)
-            {
+            override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     progressDialog.dismiss()
                     listaTmp.clear()
                     mViewVenta.notifyDataSetChanged()
-                    Toast.makeText(context, "Venta exitosa", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -183,8 +172,7 @@ class Venta : AppCompatActivity() {
     {
         val articuloTmp : InventarioObjeto? = null
 
-        for(i in 0..listaTmp.size -1)
-        {
+        for(i in 0..listaTmp.size -1) {
             if(listaTmp[i].idArticulo == idArticulo) {
                 return listaTmp[i]
             }
@@ -244,8 +232,7 @@ class Venta : AppCompatActivity() {
         }
         else
         {
-            for(i in 0..listaTmp.size -1)
-            {
+            for(i in 0..listaTmp.size -1) {
                 if(listaTmp[i].idArticulo == idArticulo) {
                     listaTmp[i].cantidadArticulo + 1
                     runOnUiThread {

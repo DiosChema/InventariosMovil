@@ -61,7 +61,7 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
             nombreArticulo.text = articulo.nombreArticulo
             precio.text = /*"$" + */articulo.precioArticulo
             cantidad.setText(articulo.cantidadArticulo.toString())
-            ventaIdArticulo.setText("Precio: " + articulo.idArticulo)
+            ventaIdArticulo.setText(itemView.context.getString(R.string.mensaje_precio_articulo) + " :" + articulo.idArticulo)
             VentaCostoTotal.text = parseDouble(articulo.precioArticulo).toString()
 
             disminuirCantidad.setOnClickListener(View.OnClickListener {

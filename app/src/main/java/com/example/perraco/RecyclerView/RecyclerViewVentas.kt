@@ -85,9 +85,9 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             rvArticulosEnVenta.setVisibility(View.INVISIBLE)
 
             VentasNumeroVenta.text = articulo._id.toString()
-            VentasNumeroVentaText.text = "Venta No."
+            VentasNumeroVentaText.text = itemView.context.getString(R.string.mensaje_numero_venta)
             VentasFecha.text = articulo.fecha
-            VentasTotalVenta.text = "Total: \$"+articulo.totalVenta.toString()
+            VentasTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +articulo.totalVenta.toString()
         }
 
         fun ImageView.loadUrl(url: String) {

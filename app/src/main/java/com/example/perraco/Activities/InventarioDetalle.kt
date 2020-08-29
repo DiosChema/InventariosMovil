@@ -55,11 +55,13 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invBotonEliminarSubFamilia : ImageButton
     lateinit var invBotonAgregarSubFamilia : ImageButton
     lateinit var invBottonTomarCodigo : ImageButton
+    lateinit var invDetalleCancelarEdicion : ImageButton
 
     private val urls: Urls = Urls()
     var subFamiliaPendiente = false
     var subFamiliaPendienteIndex = 0
 
+    lateinit var inventarioObjeto:InventarioObjeto
     var listaFamilia:MutableList<String> = ArrayList()
     var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
     var listaSubFamilia:MutableList<String> = ArrayList()
@@ -76,6 +78,36 @@ class InventarioDetalle : AppCompatActivity() {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_inventario_detalle)
 
+        asignarRecursos()
+
+        val SDK_INT = Build.VERSION.SDK_INT
+        if (SDK_INT > 8) {
+            val policy = StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build()
+            StrictMode.setThreadPolicy(policy)
+        }
+
+        if(intent.getSerializableExtra("articulo") != null)
+        {
+            inventarioObjeto = intent.getSerializableExtra("articulo") as InventarioObjeto
+
+            habilitarEdicion(false)
+            llenarCampos(inventarioObjeto)
+            asignarFuncionBotones(true)
+        }
+        else
+        {
+            obtenerFamilias(this)
+            asignarFuncionBotones(false)
+        }
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+
+    }
+
+    fun asignarRecursos() {
         invDetalleId = findViewById(R.id.invDetalleId)
         invDetalleFoto = findViewById(R.id.invDetalleFoto)
         invDetalleNombre = findViewById(R.id.invDetalleNombre)
@@ -91,120 +123,119 @@ class InventarioDetalle : AppCompatActivity() {
         invBotonEliminarSubFamilia = findViewById(R.id.invBotonEliminarSubFamilia)
         invBotonAgregarSubFamilia = findViewById(R.id.invBotonAgregarSubFamilia)
         invBottonTomarCodigo = findViewById(R.id.invBottonTomarCodigo)
+        invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
 
-        val SDK_INT = Build.VERSION.SDK_INT
-        if (SDK_INT > 8) {
-            val policy = StrictMode.ThreadPolicy.Builder()
-                .detectAll()
-                .penaltyLog()
-                .build()
-            StrictMode.setThreadPolicy(policy)
+        invDetalleCancelarEdicion.visibility = View.INVISIBLE
+    }
+
+    fun habilitarEdicion(activar : Boolean) {
+        invDetalleId.isEnabled = false
+        invDetalleFoto.isEnabled = activar
+        invDetalleNombre.isEnabled = activar
+        invDetalleNombreDetalle.isEnabled = activar
+        invDetalleCantidad.isEnabled = activar
+        invDetallePrecio.isEnabled = activar
+        invDetalleCosto.isEnabled = activar
+        invDetalleFamiliaSpinner.isEnabled = activar
+        invDetalleSubFamiliaSpinner.isEnabled = activar
+        invDetalleDarDeAlta.isEnabled = true
+        invBotonEliminarFamilia.isEnabled = activar
+        invBotonAgregarFamilia.isEnabled = activar
+        invBotonEliminarSubFamilia.isEnabled = activar
+        invBotonAgregarSubFamilia.isEnabled = activar
+        invBottonTomarCodigo.isEnabled = false
+        invDetalleCancelarEdicion.visibility = View.INVISIBLE
+
+        if (activar) {
+            invDetalleDarDeAlta.setText(getString(R.string.mensaje_actualizar_articulo))
+            invDetalleDarDeAlta.setOnClickListener{
+                if (!datosVacios())
+                    actualizarArticulo()
+            }
+            invDetalleCancelarEdicion.visibility = View.VISIBLE
         }
-
-        if(intent.getSerializableExtra("articulo") != null)
-        {
-            val inventarioObjeto = intent.getSerializableExtra("articulo") as InventarioObjeto
-
-            invDetalleId.isEnabled = false
-            invDetalleFoto.isEnabled = false
-            invDetalleNombre.isEnabled = false
-            invDetalleNombreDetalle.isEnabled = false
-            invDetalleCantidad.isEnabled = false
-            invDetallePrecio.isEnabled = false
-            invDetalleCosto.isEnabled = false
-            invDetalleFamiliaSpinner.isEnabled = false
-            invDetalleSubFamiliaSpinner.isEnabled = false
-            invDetalleDarDeAlta.isEnabled = false
-            invBotonEliminarFamilia.isEnabled = false
-            invBotonAgregarFamilia.isEnabled = false
-            invBotonEliminarSubFamilia.isEnabled = false
-            invBotonAgregarSubFamilia.isEnabled = false
-            invBottonTomarCodigo.isEnabled = false
-
-            invDetalleId.setText(inventarioObjeto.idArticulo)
-            invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto.idArticulo+".png")
-            invDetalleNombre.setText(inventarioObjeto.nombreArticulo)
-            invDetalleNombreDetalle.setText(inventarioObjeto.descripcionArticulo)
-            invDetalleCantidad.setText(inventarioObjeto.cantidadArticulo.toString())
-            invDetallePrecio.setText(inventarioObjeto.precioArticulo)
-            invDetalleCosto.setText(inventarioObjeto.costoArticulo)
-
-            obtenerFamilia(this,parseInt(inventarioObjeto.familiaArticulo))
-        }
-        else
-        {
-            obtenerFamilias(this)
-
-            invDetalleFoto.setOnClickListener()
-            {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if (checkSelfPermission(Manifest.permission.CAMERA)
-                        == PackageManager.PERMISSION_DENIED ||
-                        checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_DENIED){
-                        //permission was not enabled
-                        val permission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        //show popup to request permission
-                        requestPermissions(permission, PERMISSION_CODE)
-                    }
-                    else{
-                        //permission already granted
-                        openCamera()
-                    }
-                }
-                else{
-                    //system os is < marshmallow
-                    openCamera()
-                }
-            }
-
-
-            invBottonTomarCodigo.setOnClickListener()
-            {
-                val intentIntegrator = IntentIntegrator(this)
-                intentIntegrator.setBeepEnabled(false)
-                intentIntegrator.setCameraId(0)
-                intentIntegrator.setPrompt("SCAN")
-                intentIntegrator.setBarcodeImageEnabled(false)
-                intentIntegrator.initiateScan()
-            }
-
-            invBotonAgregarFamilia.setOnClickListener()
-            {
-                showDialogAgregarFamilia("Añadir Familia")
-            }
-
-            invBotonAgregarSubFamilia.setOnClickListener()
-            {
-                showDialogAgregarSubFamilia("Añadir SubFamilia")
-            }
-
-            invBotonEliminarFamilia.setOnClickListener()
-            {
-                if(listaFamiliaCompleta.size > 0)
-                    eliminarFamilia(this)
-            }
-
-            invBotonEliminarSubFamilia.setOnClickListener()
-            {
-                if(listaSubFamiliaCompleta.size > 0)
-                    eliminarSubFamilia(this)
-            }
-
-        }
-
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-
-        invDetalleDarDeAlta.setOnClickListener()
-        {
-            if(!datosVacios()) {
-                darDeAltaArticulo()
+        else {
+            invDetalleDarDeAlta.setText(getString(R.string.mensaje_editar))
+            invDetalleDarDeAlta.setOnClickListener{
+                if (!datosVacios())
+                    habilitarEdicion(true)
             }
         }
 
     }
 
-    private fun showDialogAgregarFamilia(title: String) {
+    fun llenarCampos(articulo : InventarioObjeto){
+        invDetalleId.setText(articulo.idArticulo)
+        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
+        invDetalleNombre.setText(articulo.nombreArticulo)
+        invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
+        invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
+        invDetallePrecio.setText(articulo.precioArticulo)
+        invDetalleCosto.setText(articulo.costoArticulo)
+
+        obtenerFamilia(this,parseInt(articulo.familiaArticulo))
+    }
+
+    fun asignarFuncionBotones(esEditar : Boolean){
+
+        invDetalleFoto.setOnClickListener{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_DENIED ||
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_DENIED
+                ) {
+                    //permission was not enabled
+                    val permission = arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    //show popup to request permission
+                    requestPermissions(permission, PERMISSION_CODE)
+                } else {
+                    //permission already granted
+                    openCamera()
+                }
+            } else {
+                //system os is < marshmallow
+                openCamera()
+            }
+        }
+        invBotonAgregarFamilia.setOnClickListener{
+            showDialogAgregarFamilia()
+        }
+        invBotonAgregarSubFamilia.setOnClickListener{
+            showDialogAgregarSubFamilia()
+        }
+        invBotonEliminarFamilia.setOnClickListener{
+            if (listaFamiliaCompleta.size > 0)
+                eliminarFamilia(this)
+        }
+        invBotonEliminarSubFamilia.setOnClickListener {
+            if (listaSubFamiliaCompleta.size > 0)
+                eliminarSubFamilia(this)
+        }
+        invBottonTomarCodigo.setOnClickListener{
+            val intentIntegrator = IntentIntegrator(this)
+            intentIntegrator.setBeepEnabled(false)
+            intentIntegrator.setCameraId(0)
+            intentIntegrator.setPrompt("SCAN")
+            intentIntegrator.setBarcodeImageEnabled(false)
+            intentIntegrator.initiateScan()
+        }
+        invDetalleCancelarEdicion.setOnClickListener{
+            llenarCampos(inventarioObjeto)
+            habilitarEdicion(false)
+        }
+
+        if(!esEditar){
+            invDetalleDarDeAlta.setOnClickListener{
+                darDeAltaArticulo()
+            }
+        }
+    }
+
+    private fun showDialogAgregarFamilia() {
         val dialog = Dialog(this)
         dialog.setTitle(title)
         dialog.setCancelable(false)
@@ -214,7 +245,7 @@ class InventarioDetalle : AppCompatActivity() {
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
         val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
 
-        dialogTitulo.text = title
+        dialogTitulo.text = getString(R.string.dialog_agregar_familia)
 
         dialogAceptar.setOnClickListener {
             dialog.dismiss()
@@ -229,7 +260,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     }
 
-    private fun showDialogAgregarSubFamilia(title: String) {
+    private fun showDialogAgregarSubFamilia() {
         val dialog = Dialog(this)
         dialog.setTitle(title)
         dialog.setCancelable(false)
@@ -239,7 +270,7 @@ class InventarioDetalle : AppCompatActivity() {
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
         val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
 
-        dialogTitulo.text = title
+        dialogTitulo.text = getString(R.string.dialog_agregar_subfamilia)
 
         dialogAceptar.setOnClickListener {
             dialog.dismiss()
@@ -614,7 +645,6 @@ class InventarioDetalle : AppCompatActivity() {
         startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         //called when user presses ALLOW or DENY from Permission Request Popup
         when(requestCode){
@@ -632,11 +662,7 @@ class InventarioDetalle : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
@@ -655,8 +681,7 @@ class InventarioDetalle : AppCompatActivity() {
         Picasso.with(context).load(url).into(this)
     }
 
-    fun datosVacios() : Boolean
-    {
+    fun datosVacios() : Boolean {
         var respuesta = true
         if( invDetalleId.text.toString() != "" &&
             invDetalleNombre.text.toString() != "" &&
@@ -664,7 +689,9 @@ class InventarioDetalle : AppCompatActivity() {
             invDetalleCantidad.text.toString() != "" &&
             invDetallePrecio.text.toString() != "" &&
             subFamiliaId != -1 &&
-            invDetalleNombreDetalle.text.toString() != "")
+            invDetalleNombreDetalle.text.toString() != "" &&
+            listaFamiliaCompleta.size > 0 &&
+            listaSubFamiliaCompleta.size > 0)
         {
             respuesta = false
         }
@@ -712,6 +739,49 @@ class InventarioDetalle : AppCompatActivity() {
                 darDeAltaFoto()
             }
         })
+
+    }
+
+    fun actualizarArticulo(){
+        val url = urls.url+urls.endPointActualizarArticulo
+
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("idArticulo", invDetalleId.text)
+            jsonObject.put("nombreArticulo", invDetalleNombre.text)
+            jsonObject.put("costoArticulo", invDetalleCosto.text)
+            jsonObject.put("cantidadArticulo", invDetalleCantidad.text)
+            jsonObject.put("precioArticulo", invDetallePrecio.text)
+            jsonObject.put("familiaArticulo", subFamiliaId)
+            jsonObject.put("descripcionArticulo", invDetalleNombreDetalle.text)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val client = OkHttpClient()
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .put(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response) {
+                progressDialog.dismiss()
+                darDeAltaFoto()
+            }
+        })
+
 
     }
 
