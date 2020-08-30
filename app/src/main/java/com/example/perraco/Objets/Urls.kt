@@ -18,7 +18,8 @@ data class Urls(
     var endPointAgregarSubFamilia:String,
     var endPointEliminarFamilia:String,
     var endPointEliminarSubFamilia:String,
-    var endPointActualizarArticulo:String)
+    var endPointActualizarArticulo:String,
+    var endPointEliminarArticulo:String)
 {
     constructor(): this(
         "https://tienditaplus.herokuapp.com/",
@@ -36,5 +37,6 @@ data class Urls(
         "agregarSubFamilia",
         "eliminarFamilia",
         "eliminarSubFamilia",
-        "actualizarArticulo")
+        "actualizarArticulo",
+        "eliminarArticulo")
 }

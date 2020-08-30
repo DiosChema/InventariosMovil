@@ -18,6 +18,7 @@
     <string name="dialog_aceptar">Aceptar</string>
     <string name="dialog_agregar_familia">Añadir Familia</string>
     <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
+    <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
     <string name="mensaje_anadir_articulo">Añadir nuevo</string>
     <string name="fragment_inventario">Inventario</string>
     <string name="fragment_ventas">Ventas</string>

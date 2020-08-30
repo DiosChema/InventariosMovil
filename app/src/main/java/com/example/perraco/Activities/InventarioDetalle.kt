@@ -56,6 +56,7 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invBotonAgregarSubFamilia : ImageButton
     lateinit var invBottonTomarCodigo : ImageButton
     lateinit var invDetalleCancelarEdicion : ImageButton
+    lateinit var invDetalleEliminarArticulo : ImageButton
 
     private val urls: Urls = Urls()
     var subFamiliaPendiente = false
@@ -124,8 +125,10 @@ class InventarioDetalle : AppCompatActivity() {
         invBotonAgregarSubFamilia = findViewById(R.id.invBotonAgregarSubFamilia)
         invBottonTomarCodigo = findViewById(R.id.invBottonTomarCodigo)
         invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
+        invDetalleEliminarArticulo = findViewById(R.id.invDetalleEliminarArticulo)
 
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
+        invDetalleEliminarArticulo.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -145,14 +148,23 @@ class InventarioDetalle : AppCompatActivity() {
         invBotonAgregarSubFamilia.isEnabled = activar
         invBottonTomarCodigo.isEnabled = false
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
+        invDetalleEliminarArticulo.visibility = View.INVISIBLE
 
         if (activar) {
+
+            invDetalleCancelarEdicion.visibility = View.VISIBLE
+            invDetalleEliminarArticulo.visibility = View.VISIBLE
+
             invDetalleDarDeAlta.setText(getString(R.string.mensaje_actualizar_articulo))
             invDetalleDarDeAlta.setOnClickListener{
                 if (!datosVacios())
                     actualizarArticulo()
             }
-            invDetalleCancelarEdicion.visibility = View.VISIBLE
+
+            invDetalleEliminarArticulo.setOnClickListener{
+                showDialogEliminarArticulo()
+            }
+
         }
         else {
             invDetalleDarDeAlta.setText(getString(R.string.mensaje_editar))
@@ -173,6 +185,8 @@ class InventarioDetalle : AppCompatActivity() {
         invDetallePrecio.setText(articulo.precioArticulo)
         invDetalleCosto.setText(articulo.costoArticulo)
 
+        listaFamiliaCompleta.clear()
+        listaFamilia.clear()
         obtenerFamilia(this,parseInt(articulo.familiaArticulo))
     }
 
@@ -275,6 +289,32 @@ class InventarioDetalle : AppCompatActivity() {
         dialogAceptar.setOnClickListener {
             dialog.dismiss()
             agregarSubFamilia(this,dialogText.text.toString())
+        }
+
+        dialogCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+
+    }
+
+    private fun showDialogEliminarArticulo() {
+        val dialog = Dialog(this)
+        dialog.setTitle(title)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_text)
+        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+
+        dialogTitulo.text = getString(R.string.dialog_eliminar_articulo)
+        dialogText.visibility = View.INVISIBLE
+
+        dialogAceptar.setOnClickListener {
+            dialog.dismiss()
+            eliminarArticulo()
         }
 
         dialogCancelar.setOnClickListener {
@@ -781,8 +821,41 @@ class InventarioDetalle : AppCompatActivity() {
                 darDeAltaFoto()
             }
         })
+    }
 
+    fun eliminarArticulo(){
+        val url = urls.url+urls.endPointEliminarArticulo
 
+        val jsonObject = JSONObject()
+        try {
+            jsonObject.put("tienda", "00001")
+            jsonObject.put("idArticulo", invDetalleId.text)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+
+        val client = OkHttpClient()
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .delete(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response) {
+                progressDialog.dismiss()
+                finish()
+            }
+        })
     }
 
     fun obtenerFamilias(context: Context){

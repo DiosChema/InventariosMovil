@@ -232,12 +232,22 @@
 
         <ImageButton
             android:id="@+id/invDetalleCancelarEdicion"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_below="@+id/invDetalleDarDeAlta"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
-            app:srcCompat="@android:drawable/presence_offline" />
+            app:srcCompat="@android:drawable/btn_dialog" />
+
+        <ImageButton
+            android:id="@+id/invDetalleEliminarArticulo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/invDetalleDarDeAlta"
+            android:layout_alignEnd="@+id/invDetalleDarDeAlta"
+            android:layout_alignRight="@+id/invDetalleDarDeAlta"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
 
     </RelativeLayout>
 </ScrollView>
