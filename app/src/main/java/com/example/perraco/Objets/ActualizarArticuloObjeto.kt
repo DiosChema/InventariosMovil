@@ -2,7 +2,8 @@ package com.example.perraco.Objets
 
 import java.io.Serializable
 
-data class ArticuloObjeto(
+data class ActualizarArticuloObjeto(
+    var idFactura:Int,
     var idArticulo:Long,
     var cantidad:Int,
     var precio:Double,

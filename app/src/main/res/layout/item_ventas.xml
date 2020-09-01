@@ -42,6 +42,7 @@
     <TextView
         android:id="@+id/VentasFecha"
         android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
         android:layout_marginTop="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,9 +53,10 @@
         tools:text="Fecha" />
 
     <TextView
-        android:layout_marginRight="6dp"
-        android:layout_marginBottom="6dp"
         android:id="@+id/VentasTotalVenta"
+        android:layout_marginRight="6dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="6dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/VentasFecha"
@@ -63,14 +65,24 @@
         android:maxEms="7"
         android:textSize="25sp"
         android:textStyle="bold"
-        tools:text="Total: $999999" />
+        tools:text="Total: $999999"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvArticulosEnVenta"
+        android:id="@+id/VentaDetalleArticulos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/VentasNumeroVenta"
-        android:layout_weight="1"
         android:layout_margin="5dp"/>
+
+    <ImageView
+        android:id="@+id/VentasBotonEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/VentasTotalVenta"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        app:srcCompat="@android:drawable/ic_menu_edit"/>
 
 </RelativeLayout>

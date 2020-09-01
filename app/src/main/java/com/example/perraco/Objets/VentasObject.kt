@@ -5,6 +5,6 @@ import java.io.Serializable
 data class VentasObjeto(
     var _id:Int,
     var fecha:String,
-    var totalVenta:Int,
+    var totalVenta:Double,
     var articulos:List<ArticuloObjeto>
 ): Serializable

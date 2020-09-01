@@ -51,18 +51,21 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val nombreArticulo = view.findViewById(R.id.VentaNombre) as TextView
         val precio = view.findViewById(R.id.VentaPrecio) as TextView
         val cantidad = view.findViewById(R.id.VentaCantidad) as EditText
-        val imagenArticulo = view.findViewById(R.id.VentaFoto) as ImageView
-        var disminuirCantidad = view.findViewById(R.id.VentaDisminuirCantidad) as ImageButton
-        var aumentarCantidad = view.findViewById(R.id.VentaAnadirCantidad) as ImageButton
+        val imagenArticulo = view.findViewById(R.id.EditarArticuloVentaFoto) as ImageView
+        var disminuirCantidad = view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
+        var aumentarCantidad = view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
         var ventaIdArticulo = view.findViewById(R.id.VentaIdArticulo) as TextView
         var VentaCostoTotal = view.findViewById(R.id.VentaCostoTotal) as TextView
+        var VentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView
 
         fun bind(articulo: InventarioObjeto, context: Context) {
             nombreArticulo.text = articulo.nombreArticulo
-            precio.text = /*"$" + */articulo.precioArticulo
+            precio.text = /*"$" + */articulo.precioArticulo.toString()
             cantidad.setText(articulo.cantidadArticulo.toString())
-            ventaIdArticulo.setText(itemView.context.getString(R.string.mensaje_precio_articulo) + " :" + articulo.idArticulo)
-            VentaCostoTotal.text = parseDouble(articulo.precioArticulo).toString()
+            ventaIdArticulo.setText(/*itemView.context.getString(R.string.mensaje_precio_articulo) + " :" + */articulo.idArticulo.toString())
+            VentaCostoTotal.text = parseDouble(articulo.precioArticulo.toString()).toString()
+            VentaCostoArticulo.text = parseDouble(articulo.costoArticulo.toString()).toString()
+
 
             disminuirCantidad.setOnClickListener(View.OnClickListener {
                 val tamanoString = cantidad.text.toString()
@@ -100,7 +103,7 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
                     before: Int, count: Int
                 ) {
                     if (s.length != 0)
-                        VentaCostoTotal.text = (parseInt(s.toString()) * parseDouble(articulo.precioArticulo)).toString()
+                        VentaCostoTotal.text = (parseInt(s.toString()) * parseDouble(articulo.precioArticulo.toString())).toString()
                 }
             })
 

@@ -74,13 +74,15 @@ class InventarioFragment : Fragment() {
             override fun onResponse(call: Call, response: Response)
             {
                 var body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                var Model = gson.fromJson(body,Array<InventarioObjeto>::class.java).toList()
 
-                activity?.runOnUiThread {
-                    mViewInventario.RecyclerAdapter(Model.toMutableList(), activity!!)
-                    mViewInventario.notifyDataSetChanged()
-                    progressDialog.dismiss()
+                if(body != null && body.isNotEmpty()) {
+                    val gson = GsonBuilder().create()
+                    var Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
+
+                    activity?.runOnUiThread {
+                        mViewInventario.RecyclerAdapter(Model.toMutableList(), activity!!)
+                        mViewInventario.notifyDataSetChanged()
+                    }
                 }
 
                 progressDialog.dismiss()

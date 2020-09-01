@@ -3,12 +3,12 @@ package com.example.perraco.Objets
 import java.io.Serializable
 
 data class InventarioObjeto(
-    var idArticulo:String,
+    var idArticulo:Long,
     var nombreArticulo:String,
     var descripcionArticulo:String,
     var cantidadArticulo:Int,
-    var precioArticulo:String,
+    var precioArticulo:Double,
     var familiaArticulo:String,
-    var costoArticulo:String,
+    var costoArticulo:Double,
     var urlFoto:String
 ):Serializable

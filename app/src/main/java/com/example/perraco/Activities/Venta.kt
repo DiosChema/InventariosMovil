@@ -23,6 +23,7 @@ import okhttp3.*
 import java.io.IOException
 import java.lang.Double.parseDouble
 import java.lang.Integer.parseInt
+import java.lang.Long.parseLong
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -52,7 +53,7 @@ class Venta : AppCompatActivity() {
 
         val ButtonNuevoArticulo = findViewById<Button>(R.id.VentaNuevoArticulo)
         ButtonNuevoArticulo?.setOnClickListener() {
-            getArticuloObjecto(nombre.text.toString())
+            getArticuloObjecto(parseLong(nombre.text.toString()))
         }
 
         val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
@@ -81,7 +82,7 @@ class Venta : AppCompatActivity() {
         if (result != null) {
             if (result.contents != null) {
                 runOnUiThread {
-                    getArticuloObjecto(result.contents)
+                    getArticuloObjecto(parseLong(result.contents))
                 }
             }
         } else {
@@ -111,12 +112,16 @@ class Venta : AppCompatActivity() {
             val textViewNombre = view.findViewById(R.id.VentaNombre) as TextView
             val textNombre = textViewNombre.text.toString()
 
+            val textViewVentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView
+            val textVentaCostoArticulo = textViewVentaCostoArticulo.text.toString()
+
 
             val articulo = ArticuloObjeto(
-                textId,
+                parseLong(textId),
                 parseInt(textCantidad),
                 parseDouble(textPrecio),
-                textNombre
+                textNombre,
+                parseDouble(textVentaCostoArticulo)
             )
 
             if(articulo.cantidad > 0)
@@ -168,7 +173,7 @@ class Venta : AppCompatActivity() {
 
     }
 
-    fun obtenerArticulo(idArticulo: String) : InventarioObjeto?
+    fun obtenerArticulo(idArticulo: Long) : InventarioObjeto?
     {
         val articuloTmp : InventarioObjeto? = null
 
@@ -182,7 +187,7 @@ class Venta : AppCompatActivity() {
 
     }
 
-    fun getArticuloObjecto(idArticulo: String){
+    fun getArticuloObjecto(idArticulo: Long){
 
         val url = urls.url+urls.endPointArticulo+"?tienda=00001&idArticulo="+idArticulo
 
@@ -226,7 +231,6 @@ class Venta : AppCompatActivity() {
                     }
 
                     progressDialog.dismiss()
-
                 }
             })
         }

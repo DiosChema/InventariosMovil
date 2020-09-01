@@ -13,6 +13,7 @@ import com.example.perraco.Activities.InventarioDetalle
 import com.example.perraco.Objets.Urls
 import com.example.perraco.Objets.VentasObjeto
 import com.example.perraco.R
+import com.example.perraco.RecyclerView.RecyclerViewInventario
 import com.example.perraco.RecyclerView.RecyclerViewVentas
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_inventario.*
@@ -25,13 +26,16 @@ class VentaFragment : Fragment() {
     var listaTmp:MutableList<VentasObjeto> = ArrayList()
     val context = activity;
 
+    lateinit var mViewVentas : RecyclerViewVentas
+    lateinit var mRecyclerView : RecyclerView
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var mViewVentas = RecyclerViewVentas()
-        var mRecyclerView : RecyclerView = rvVentas as RecyclerView
+        mViewVentas = RecyclerViewVentas()
+        mRecyclerView = rvVentas as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (context != null) {
@@ -73,13 +77,17 @@ class VentaFragment : Fragment() {
             override fun onResponse(call: Call, response: Response)
             {
                 var body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                var Model = gson.fromJson(body,Array<VentasObjeto>::class.java).toList()
 
-                activity?.runOnUiThread {
-                    mViewVentas.RecyclerAdapter(Model.toMutableList(), activity!!)
-                    mViewVentas.notifyDataSetChanged()
-                    progressDialog.dismiss()
+                if(body != null && body.isNotEmpty()) {
+
+                    val gson = GsonBuilder().create()
+                    var Model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
+
+                    activity?.runOnUiThread {
+                        mViewVentas.RecyclerAdapter(Model.toMutableList(), activity!!)
+                        mViewVentas.notifyDataSetChanged()
+                        progressDialog.dismiss()
+                    }
                 }
 
                 progressDialog.dismiss()
@@ -87,5 +95,10 @@ class VentaFragment : Fragment() {
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        getVentasObjecto(mViewVentas,mRecyclerView)
     }
 }

@@ -33,7 +33,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.lang.Double.parseDouble
 import java.lang.Integer.parseInt
+import java.lang.Long.parseLong
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -177,13 +179,13 @@ class InventarioDetalle : AppCompatActivity() {
     }
 
     fun llenarCampos(articulo : InventarioObjeto){
-        invDetalleId.setText(articulo.idArticulo)
+        invDetalleId.setText(articulo.idArticulo.toString())
         invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
         invDetalleNombre.setText(articulo.nombreArticulo)
         invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
-        invDetallePrecio.setText(articulo.precioArticulo)
-        invDetalleCosto.setText(articulo.costoArticulo)
+        invDetallePrecio.setText(articulo.precioArticulo.toString())
+        invDetalleCosto.setText(articulo.costoArticulo.toString())
 
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
@@ -552,6 +554,7 @@ class InventarioDetalle : AppCompatActivity() {
         val JSON = MediaType.parse("application/json; charset=utf-8")
         val body = RequestBody.create(JSON, jsonObject.toString())
 
+
         val request = Request.Builder()
             .url(url)
             .delete(body)
@@ -746,11 +749,11 @@ class InventarioDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("tienda", "00001")
-            jsonObject.put("idArticulo", invDetalleId.text)
+            jsonObject.put("idArticulo", parseInt(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
-            jsonObject.put("costoArticulo", invDetalleCosto.text)
-            jsonObject.put("cantidadArticulo", invDetalleCantidad.text)
-            jsonObject.put("precioArticulo", invDetallePrecio.text)
+            jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
+            jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
+            jsonObject.put("precioArticulo", parseDouble(invDetallePrecio.text.toString()))
             jsonObject.put("familiaArticulo", subFamiliaId)
             jsonObject.put("descripcionArticulo", invDetalleNombreDetalle.text)
         } catch (e: JSONException) {
@@ -829,7 +832,7 @@ class InventarioDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("tienda", "00001")
-            jsonObject.put("idArticulo", invDetalleId.text)
+            jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
         } catch (e: JSONException) {
             e.printStackTrace()
         }

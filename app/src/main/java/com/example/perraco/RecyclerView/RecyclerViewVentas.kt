@@ -1,6 +1,7 @@
 package com.example.perraco.RecyclerView
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.perraco.Activities.VentaDetalle
 import com.example.perraco.Objets.Urls
 import com.example.perraco.Objets.VentasObjeto
 import com.example.perraco.R
@@ -50,15 +52,17 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         val VentasNumeroVentaText = view.findViewById(R.id.VentasNumeroVentaText) as TextView
         val VentasFecha = view.findViewById(R.id.VentasFecha) as TextView
         val VentasTotalVenta = view.findViewById(R.id.VentasTotalVenta) as TextView
-        val rvArticulosEnVenta = view.findViewById(R.id.rvArticulosEnVenta) as RecyclerView
+        val rvArticulosEnVenta = view.findViewById(R.id.VentaDetalleArticulos) as RecyclerView
+        val VentasBotonEditar = view.findViewById(R.id.VentasBotonEditar) as ImageView
 
-        fun bind(articulo: VentasObjeto, context: Context) {
+
+        fun bind(venta: VentasObjeto, context: Context) {
             var mViewVentas = RecyclerViewArticulosVenta()
             var mRecyclerView : RecyclerView = rvArticulosEnVenta as RecyclerView
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager = LinearLayoutManager(context)
             if (context != null) {
-                mViewVentas.RecyclerAdapter(articulo.articulos.toMutableList(), context)
+                mViewVentas.RecyclerAdapter(venta.articulos.toMutableList(), context)
             }
             mRecyclerView.adapter = mViewVentas
 
@@ -84,10 +88,17 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
 
             rvArticulosEnVenta.setVisibility(View.INVISIBLE)
 
-            VentasNumeroVenta.text = articulo._id.toString()
+            VentasNumeroVenta.text = venta._id.toString()
             VentasNumeroVentaText.text = itemView.context.getString(R.string.mensaje_numero_venta)
-            VentasFecha.text = articulo.fecha
-            VentasTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +articulo.totalVenta.toString()
+            VentasFecha.text = venta.fecha
+            VentasTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +venta.totalVenta.toString()
+
+            VentasBotonEditar.setOnClickListener{
+                val intent = Intent(context, VentaDetalle::class.java).apply {
+                    putExtra("venta", venta)//tienda
+                }
+                context.startActivity(intent)
+            }
         }
 
         fun ImageView.loadUrl(url: String) {

@@ -19,11 +19,17 @@
     <string name="dialog_agregar_familia">Añadir Familia</string>
     <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
     <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
+    <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
+    <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
     <string name="mensaje_anadir_articulo">Añadir nuevo</string>
     <string name="fragment_inventario">Inventario</string>
     <string name="fragment_ventas">Ventas</string>
     <string name="mensaje_venta_sin_articulos">No hay articulos</string>
     <string name="mensaje_venta_exitosa">Venta exitosa</string>
+    <string name="mensaje_eliminacion_exitosa">Venta eliminada</string>
+    <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
     <string name="mensaje_total_venta">Total: </string>
     <string name="mensaje_numero_venta">Venta No.</string>
+    <string name="mensaje_precio_venta">Precio Venta</string>
+    <string name="mensaje_precio_costo">Precio Costo</string>
 </resources>
