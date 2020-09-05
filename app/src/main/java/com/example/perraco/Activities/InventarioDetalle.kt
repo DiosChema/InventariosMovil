@@ -60,6 +60,8 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invDetalleCancelarEdicion : ImageButton
     lateinit var invDetalleEliminarArticulo : ImageButton
 
+    lateinit var globalVariable: GlobalClass
+
     private val urls: Urls = Urls()
     var subFamiliaPendiente = false
     var subFamiliaPendienteIndex = 0
@@ -80,6 +82,8 @@ class InventarioDetalle : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_inventario_detalle)
+
+        globalVariable = applicationContext as GlobalClass
 
         asignarRecursos()
 
@@ -171,8 +175,7 @@ class InventarioDetalle : AppCompatActivity() {
         else {
             invDetalleDarDeAlta.setText(getString(R.string.mensaje_editar))
             invDetalleDarDeAlta.setOnClickListener{
-                if (!datosVacios())
-                    habilitarEdicion(true)
+                habilitarEdicion(true)
             }
         }
 
@@ -246,7 +249,8 @@ class InventarioDetalle : AppCompatActivity() {
 
         if(!esEditar){
             invDetalleDarDeAlta.setOnClickListener{
-                darDeAltaArticulo()
+                if (!datosVacios())
+                    darDeAltaArticulo()
             }
         }
     }
@@ -333,7 +337,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("nombreFamilia", nombreFamilia)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -396,7 +400,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("nombreSubFamilia", nombreFamilia)
             jsonObject.put("idFamilia", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
         } catch (e: JSONException) {
@@ -463,7 +467,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("familiaId", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -545,7 +549,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("subFamiliaId", listaSubFamiliaCompleta[invDetalleSubFamiliaSpinner.selectedItemPosition].subFamiliaId)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -623,7 +627,10 @@ class InventarioDetalle : AppCompatActivity() {
         val drawable = invDetalleFoto.drawable
 
         val bitmap: Bitmap = (drawable as BitmapDrawable).getBitmap()
-        val resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true)
+
+        var resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true)
+
+        resized = Bitmap.createBitmap(resized, 25, 50, 150, 250)//cropToSquare(resized)
 
         val file = bitmapToFile(resized)
 
@@ -640,20 +647,26 @@ class InventarioDetalle : AppCompatActivity() {
             .build()
         val client = OkHttpClient()
 
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage(getString(R.string.mensaje_espera))
-        progressDialog.show()
-
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
             }
 
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
                 finish()
             }
         })
+    }
+
+    fun cropToSquare(bitmap: Bitmap): Bitmap? {
+        val width = bitmap.width
+        val height = bitmap.height
+        val newWidth = if (height > width) width else height
+        val newHeight = if (height > width) height - (height - width) else height
+        var cropW = (width - height) / 2
+        cropW = if (cropW < 0) 0 else cropW
+        var cropH = (height - width) / 2
+        cropH = if (cropH < 0) 0 else cropH
+        return Bitmap.createBitmap(bitmap, cropW, cropH, newWidth, newHeight)
     }
 
     private fun bitmapToFile(bitmap:Bitmap): File {
@@ -748,7 +761,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("idArticulo", parseInt(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
@@ -790,7 +803,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("idArticulo", invDetalleId.text)
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", invDetalleCosto.text)
@@ -831,7 +844,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -863,7 +876,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun obtenerFamilias(context: Context){
 
-        val url = urls.url+urls.endpointObtenerFamilias+"?tienda=00001"
+        val url = urls.url+urls.endpointObtenerFamilias+"?token="+globalVariable.token
 
         val request = Request.Builder()
             .url(url)
@@ -910,7 +923,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun obtenerSubFamilias(context: Context, familiaId: Int){
         var subFamiliaTmp = 0
-        val url = urls.url+urls.endpointObtenerSubFamilias+"?tienda=00001"+"&familiaId="+familiaId
+        val url = urls.url+urls.endpointObtenerSubFamilias+"?token="+globalVariable.token+"&familiaId="+familiaId
 
         if(subFamiliaPendiente) {
             subFamiliaTmp = subFamiliaPendienteIndex
@@ -981,7 +994,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun obtenerFamilia(context: Context,familia: Int){
 
-        val url = urls.url+urls.endpointObtenerSubFamilia+"?tienda=00001"+"&subFamiliaId="+familia
+        val url = urls.url+urls.endpointObtenerSubFamilia+"?token="+globalVariable.token+"&subFamiliaId="+familia
 
         val request = Request.Builder()
             .url(url)

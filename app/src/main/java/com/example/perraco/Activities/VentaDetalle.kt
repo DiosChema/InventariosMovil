@@ -36,6 +36,8 @@ class VentaDetalle : AppCompatActivity() {
     lateinit var VentaDetalleEditar : ImageButton
     lateinit var VentaDetalleConfirmar : ImageButton
 
+    lateinit var globalVariable: GlobalClass
+
     var context = this;
 
     val urls: Urls = Urls()
@@ -43,6 +45,8 @@ class VentaDetalle : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venta_detalle)
+
+        globalVariable = applicationContext as GlobalClass
 
         context = this;
         venta = intent.getSerializableExtra("venta") as VentasObjeto
@@ -106,7 +110,7 @@ class VentaDetalle : AppCompatActivity() {
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("tienda", "00001")
+            jsonObject.put("token", globalVariable.token)
             jsonObject.put("idFactura", venta._id)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -172,7 +176,7 @@ class VentaDetalle : AppCompatActivity() {
 
         }
 
-        var ventaActualizada : ActualizarVenta = ActualizarVenta("00001",venta._id,listaArticulos)
+        var ventaActualizada : ActualizarVenta = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulos)
 
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currentDate = sdf.format(Date())

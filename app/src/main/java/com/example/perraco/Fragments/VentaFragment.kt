@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Activities.InventarioDetalle
+import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Urls
 import com.example.perraco.Objets.VentasObjeto
 import com.example.perraco.R
@@ -29,11 +30,15 @@ class VentaFragment : Fragment() {
     lateinit var mViewVentas : RecyclerViewVentas
     lateinit var mRecyclerView : RecyclerView
 
+    lateinit var globalVariable: GlobalClass
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        globalVariable = getActivity()?.applicationContext as GlobalClass
+
         mViewVentas = RecyclerViewVentas()
         mRecyclerView = rvVentas as RecyclerView
         mRecyclerView.setHasFixedSize(true)
@@ -57,7 +62,7 @@ class VentaFragment : Fragment() {
         val urls: Urls =
             Urls()
 
-        val url = urls.url+urls.endPointObtenerFacturas+"?tienda=00001"
+        val url = urls.url+urls.endPointObtenerFacturas+"?token="+globalVariable.token
 
         val request = Request.Builder()
             .url(url)

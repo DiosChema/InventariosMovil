@@ -95,7 +95,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
 
             VentasBotonEditar.setOnClickListener{
                 val intent = Intent(context, VentaDetalle::class.java).apply {
-                    putExtra("venta", venta)//tienda
+                    putExtra("venta", venta)
                 }
                 context.startActivity(intent)
             }

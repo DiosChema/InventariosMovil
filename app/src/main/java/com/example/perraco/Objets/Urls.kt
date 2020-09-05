@@ -1,6 +1,6 @@
 package com.example.perraco.Objets
 
-import java.io.Serializable
+import com.google.gson.reflect.TypeToken
 
 data class Urls(
     var url:String,
@@ -21,10 +21,12 @@ data class Urls(
     var endPointActualizarArticulo:String,
     var endPointEliminarArticulo:String,
     var endPointEliminarVenta:String,
-    var endPointActualizarVenta:String)
+    var endPointActualizarVenta:String,
+    var endPointLoginUsuario:String)
 {
     constructor(): this(
-        "https://tienditaplus.herokuapp.com/",
+        /*"https://tienditaplus.herokuapp.com/"*/
+        "http://pvgestordeinventario-env.eba-p2bc44jy.us-east-1.elasticbeanstalk.com/",
         "obtenerInventario",
         "imagen?image=",
         "consultarFamilias",
@@ -42,5 +44,10 @@ data class Urls(
         "actualizarArticulo",
         "eliminarArticulo",
         "eliminarVenta",
-        "actualizarVenta")
+        "actualizarVenta",
+        "loginUsuario")
+
+    inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
+
+
 }

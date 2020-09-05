@@ -22,6 +22,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
+        <!--
+
         <Button
             android:id="@+id/Venta"
             android:layout_width="wrap_content"
@@ -45,6 +48,42 @@
             android:layout_alignBottom="@+id/Venta"
             android:layout_marginBottom="-180dp"
             android:text="Inventario" />
+     -->
+        <EditText
+            android:id="@+id/loginEmail"
+            android:layout_width="fill_parent"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="125dp"
+            android:hint="@string/mensaje_correo_electronico"
+            android:inputType="textEmailAddress"/>
+
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginEmail"
+            android:layout_alignStart="@+id/loginEmail"
+            android:layout_alignLeft="@+id/loginEmail"
+            android:layout_alignEnd="@+id/loginEmail"
+            android:layout_alignRight="@+id/loginEmail"
+            android:layout_marginTop="50dp"
+            android:hint="@string/mensaje_correo_contrasenia"
+            android:inputType="textPassword"/>
+
+        <Button
+            android:id="@+id/loginBotonIniciarSesion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="@string/boton_iniciar_sesion" />
+
+
     </RelativeLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -11,10 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.perraco.Objets.ArticuloObjeto
-import com.example.perraco.Objets.InventarioObjeto
-import com.example.perraco.Objets.Urls
-import com.example.perraco.Objets.VentaObjeto
+import com.example.perraco.Objets.*
 import com.example.perraco.R
 import com.example.perraco.RecyclerView.RecyclerViewVenta
 import com.google.gson.GsonBuilder
@@ -38,9 +35,13 @@ class Venta : AppCompatActivity() {
     lateinit var mViewVenta : RecyclerViewVenta
     lateinit var mRecyclerView : RecyclerView
 
+    lateinit var globalVariable: GlobalClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venta)
+
+        globalVariable = applicationContext as GlobalClass
 
         mViewVenta = RecyclerViewVenta()
         mRecyclerView = findViewById(R.id.rvVenta) as RecyclerView
@@ -137,7 +138,7 @@ class Venta : AppCompatActivity() {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val currentDate = sdf.format(Date())
 
-        val venta = VentaObjeto("00001", currentDate.toString(), articulos)
+        val venta = VentaObjeto(globalVariable.token.toString(), currentDate.toString(), articulos)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(venta)
@@ -189,7 +190,7 @@ class Venta : AppCompatActivity() {
 
     fun getArticuloObjecto(idArticulo: Long){
 
-        val url = urls.url+urls.endPointArticulo+"?tienda=00001&idArticulo="+idArticulo
+        val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
             .url(url)
