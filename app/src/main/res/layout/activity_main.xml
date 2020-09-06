@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,57 +9,23 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
-        android:layout_marginBottom="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <!--
-
-        <Button
-            android:id="@+id/Venta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="133dp"
-            android:layout_marginEnd="162dp"
-            android:layout_marginRight="162dp"
-            android:text="Venta" />
-
-        <Button
-            android:id="@+id/Inventario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/Venta"
-            android:layout_alignLeft="@+id/Venta"
-            android:layout_alignEnd="@+id/Venta"
-            android:layout_alignRight="@+id/Venta"
-            android:layout_alignBottom="@+id/Venta"
-            android:layout_marginBottom="-180dp"
-            android:text="Inventario" />
-     -->
         <EditText
             android:id="@+id/loginEmail"
             android:layout_width="fill_parent"
-            android:layout_marginLeft="100dp"
-            android:layout_marginStart="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginTop="125dp"
             android:hint="@string/mensaje_correo_electronico"
-            android:inputType="textEmailAddress"/>
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/loginPassword"
@@ -70,9 +36,9 @@
             android:layout_alignLeft="@+id/loginEmail"
             android:layout_alignEnd="@+id/loginEmail"
             android:layout_alignRight="@+id/loginEmail"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:hint="@string/mensaje_correo_contrasenia"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/loginBotonIniciarSesion"
@@ -83,7 +49,26 @@
             android:layout_marginTop="15dp"
             android:text="@string/boton_iniciar_sesion" />
 
+        <TextView
+            android:id="@+id/loginTextPasswordOlvidada"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginBotonIniciarSesion"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:text="@string/boton_olvidaste_contraseña" />
+
+        <TextView
+            android:id="@+id/loginTextNuevaCuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loginTextPasswordOlvidada"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/boton_crear_cuenta" />
+
 
     </RelativeLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 

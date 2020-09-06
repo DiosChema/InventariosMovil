@@ -33,8 +33,13 @@
     <string name="mensaje_precio_venta">Precio Venta</string>
     <string name="mensaje_precio_costo">Precio Costo</string>
     <string name="mensaje_correo_electronico">Correo electronico</string>
+    <string name="mensaje_crear_cuenta">Crear cuenta</string>
     <string name="mensaje_correo_contrasenia">Contraseña</string>
     <string name="boton_iniciar_sesion">Iniciar Sesion</string>
+    <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
+    <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
+    <string name="mensaje_cuenta_creada">Envio de registro exitoso! revisa tu correo para terminar el registro</string>
     <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres</string>
+    <string name="mensaje_contraseña_diferente">La contraseña debe de ser la misma</string>
     <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
 </resources>

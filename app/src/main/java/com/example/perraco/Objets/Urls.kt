@@ -22,7 +22,8 @@ data class Urls(
     var endPointEliminarArticulo:String,
     var endPointEliminarVenta:String,
     var endPointActualizarVenta:String,
-    var endPointLoginUsuario:String)
+    var endPointLoginUsuario:String,
+    var endPointRegistrarNuevaTienda:String)
 {
     constructor(): this(
         /*"https://tienditaplus.herokuapp.com/"*/
@@ -45,9 +46,7 @@ data class Urls(
         "eliminarArticulo",
         "eliminarVenta",
         "actualizarVenta",
-        "loginUsuario")
-
-    inline fun <reified T> genericType() = object: TypeToken<T>() {}.type
-
+        "loginUsuario",
+        "registrarNuevaTienda")
 
 }

@@ -3,13 +3,12 @@ package com.example.perraco.Activities
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Respuesta
 import com.example.perraco.Objets.Urls
@@ -20,47 +19,36 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 
-
-class MainActivity : AppCompatActivity() {
+class CrearCuenta : AppCompatActivity() {
 
     private val urls: Urls = Urls()
     lateinit var context: Context
-    lateinit var loginEmail : EditText
-    lateinit var loginPassword : EditText
-    lateinit var loginBotonIniciarSesion : Button
-    lateinit var loginTextPasswordOlvidada : TextView
-    lateinit var loginTextNuevaCuenta : TextView
+    lateinit var crearCuentaEmail : EditText
+    lateinit var crearCuentaPassword : EditText
+    lateinit var crearCuentaConfirmarPassword : EditText
+    lateinit var crearCuentaBotonCrearCuenta : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_crear_cuenta)
 
         context = this
 
-        loginEmail = findViewById(R.id.loginEmail)
-        loginPassword = findViewById(R.id.loginPassword)
-        loginBotonIniciarSesion = findViewById(R.id.loginBotonIniciarSesion)
-        loginTextPasswordOlvidada = findViewById(R.id.loginTextPasswordOlvidada)
-        loginTextNuevaCuenta = findViewById(R.id.loginTextNuevaCuenta)
+        crearCuentaEmail = findViewById(R.id.crearCuentaEmail)
+        crearCuentaPassword = findViewById(R.id.crearCuentaPassword)
+        crearCuentaConfirmarPassword = findViewById(R.id.crearCuentaConfirmarPassword)
+        crearCuentaBotonCrearCuenta = findViewById(R.id.crearCuentaBotonCrearCuenta)
 
-        loginEmail.setText("taco666@hotmail.com")
-        loginPassword.setText("perraco12")
-
-
-        loginBotonIniciarSesion.setOnClickListener{
-            iniciarSesion()
-        }
-
-        loginTextNuevaCuenta.setOnClickListener{
-            pantallaCrearCuenta()
+        crearCuentaBotonCrearCuenta.setOnClickListener{
+            crearCuenta()
         }
     }
 
+    fun crearCuenta(){
 
-    fun iniciarSesion(){
-
-        var email = loginEmail.text.toString()
-        var password = loginPassword.text.toString()
+        var email = crearCuentaEmail.text.toString()
+        var password = crearCuentaPassword.text.toString()
+        var passwordConfirmar = crearCuentaConfirmarPassword.text.toString()
 
         if(!email.isEmailValid()) {
             Toast.makeText(this, getString(R.string.mensaje_email_invalido), Toast.LENGTH_SHORT).show()
@@ -72,11 +60,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val url = urls.url+urls.endPointLoginUsuario
+        if(password != passwordConfirmar){
+            Toast.makeText(this, getString(R.string.mensaje_contraseña_diferente), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val url = urls.url+urls.endPointRegistrarNuevaTienda
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("user", email)
+            jsonObject.put("email", email)
             jsonObject.put("password", password)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -87,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         val request = Request.Builder()
             .url(url)
-            .put(body)
+            .post(body)
             .build()
 
         val progressDialog = ProgressDialog(this)
@@ -115,25 +108,19 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 else{
-                    val globalVariable = applicationContext as GlobalClass
-                    globalVariable.token = respuesta.respuesta
-                    val intent = Intent(context, Menu::class.java)
-                    startActivity(intent)
+                    runOnUiThread{
+                        Toast.makeText(context, getString(R.string.mensaje_cuenta_creada), Toast.LENGTH_SHORT).show()
+                    }
+                    finish()
                 }
             }
         })
 
-    }
 
-    fun pantallaCrearCuenta(){
-        val intent = Intent(context, CrearCuenta::class.java)
-        startActivity(intent)
+
     }
 
     fun String.isEmailValid(): Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
-
-
-
 }
