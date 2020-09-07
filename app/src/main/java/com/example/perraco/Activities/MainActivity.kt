@@ -5,10 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Respuesta
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginBotonIniciarSesion : Button
     lateinit var loginTextPasswordOlvidada : TextView
     lateinit var loginTextNuevaCuenta : TextView
+    lateinit var loginPasswordButton : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         loginBotonIniciarSesion = findViewById(R.id.loginBotonIniciarSesion)
         loginTextPasswordOlvidada = findViewById(R.id.loginTextPasswordOlvidada)
         loginTextNuevaCuenta = findViewById(R.id.loginTextNuevaCuenta)
+        loginPasswordButton = findViewById(R.id.loginPasswordButton)
 
         loginEmail.setText("taco666@hotmail.com")
         loginPassword.setText("perraco12")
@@ -54,12 +55,21 @@ class MainActivity : AppCompatActivity() {
         loginTextNuevaCuenta.setOnClickListener{
             pantallaCrearCuenta()
         }
+
+        loginPasswordButton.setOnClickListener {
+            if(loginPassword.transformationMethod == PasswordTransformationMethod.getInstance()){
+                loginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+            } else{
+                loginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+            }
+        }
     }
 
 
     fun iniciarSesion(){
 
         var email = loginEmail.text.toString()
+        email = email.toLowerCase()
         var password = loginPassword.text.toString()
 
         if(!email.isEmailValid()) {

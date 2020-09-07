@@ -4,15 +4,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Objets.*
 import com.example.perraco.R
+import com.example.perraco.RecyclerView.AdapterListVenta
 import com.example.perraco.RecyclerView.RecyclerViewVenta
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
@@ -25,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+
 class Venta : AppCompatActivity() {
 
     var context = this
@@ -33,7 +30,10 @@ class Venta : AppCompatActivity() {
         Urls()
     lateinit var nombre : TextView
     lateinit var mViewVenta : RecyclerViewVenta
-    lateinit var mRecyclerView : RecyclerView
+    lateinit var mRecyclerView : ListView
+    lateinit var arrayAdapter: ArrayAdapter<*>
+    var listView: ListView? = null
+    var adapter: AdapterListVenta? = null
 
     lateinit var globalVariable: GlobalClass
 
@@ -43,27 +43,31 @@ class Venta : AppCompatActivity() {
 
         globalVariable = applicationContext as GlobalClass
 
-        mViewVenta = RecyclerViewVenta()
-        mRecyclerView = findViewById(R.id.rvVenta) as RecyclerView
-        mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mViewVenta.RecyclerAdapter(listaTmp, context)
-        mRecyclerView.adapter = mViewVenta
+        //mViewVenta = RecyclerViewVenta()
+        //mRecyclerView = findViewById<ListView>(R.id.rvVenta)
 
-        nombre = findViewById(R.id.VentaCodigoAgregar) as TextView
+        listView = findViewById(R.id.rvVenta) as ListView
+        adapter = AdapterListVenta(this, listaTmp)
+        (listView as ListView).adapter = adapter
+
+        /*mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mViewVenta.RecyclerAdapter(listaTmp, context)
+        mRecyclerView.adapter = mViewVenta*/
+
+        nombre = findViewById(R.id.VentaCodigoAgregar)
 
         val ButtonNuevoArticulo = findViewById<Button>(R.id.VentaNuevoArticulo)
-        ButtonNuevoArticulo?.setOnClickListener() {
+        ButtonNuevoArticulo?.setOnClickListener {
             getArticuloObjecto(parseLong(nombre.text.toString()))
         }
 
         val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
-        ButtonTerminarVenta?.setOnClickListener() {
+        ButtonTerminarVenta?.setOnClickListener {
             subirFactura()
         }
 
         val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
-        ButtonObtenerCodigoBarras?.setOnClickListener() {
+        ButtonObtenerCodigoBarras?.setOnClickListener {
             val intentIntegrator = IntentIntegrator(this)
             intentIntegrator.setBeepEnabled(false)
             intentIntegrator.setCameraId(0)
@@ -91,7 +95,6 @@ class Venta : AppCompatActivity() {
         }
     }
 
-
     fun subirFactura() {
 
         actulizarExistencia()
@@ -99,8 +102,9 @@ class Venta : AppCompatActivity() {
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
-        for (i in 0..mViewVenta.itemCount - 1) {
-            val view: View = mRecyclerView.getChildAt(i)
+        //for (i in 0..mViewVenta.itemCount - 1) {
+        for (i in 0..adapter?.count!! - 1) {
+            /*val view: View = mRecyclerView.getChildAt(i)
             val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
             val textCantidad = textViewCantidad.text.toString()
 
@@ -123,11 +127,20 @@ class Venta : AppCompatActivity() {
                 parseDouble(textPrecio),
                 textNombre,
                 parseDouble(textVentaCostoArticulo)
-            )
+            )*/
 
-            if(articulo.cantidad > 0)
-                articulos.add(articulo)
+            val objeto  = adapter?.obtenerObjeto(i)
+            if (objeto != null) {
+                val articulo = ArticuloObjeto(
+                    objeto.idArticulo,
+                    objeto.cantidadArticulo,
+                    objeto.precioArticulo,
+                    objeto.nombreArticulo,
+                    objeto.costoArticulo)
 
+                if(articulo.cantidad > 0)
+                    articulos.add(articulo)
+            }
         }
 
         if(articulos.size == 0) {
@@ -165,7 +178,7 @@ class Venta : AppCompatActivity() {
                 runOnUiThread {
                     progressDialog.dismiss()
                     listaTmp.clear()
-                    mViewVenta.notifyDataSetChanged()
+                    adapter?.notifyDataSetChanged()
                     Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
                 }
 
@@ -226,7 +239,7 @@ class Venta : AppCompatActivity() {
                         runOnUiThread {
                             actulizarExistencia()
                             listaTmp.add(articulo)
-                            mViewVenta.notifyDataSetChanged()
+                            adapter?.notifyDataSetChanged()
                             nombre.text = ""
                         }
                     }
@@ -241,7 +254,7 @@ class Venta : AppCompatActivity() {
                 if(listaTmp[i].idArticulo == idArticulo) {
                     listaTmp[i].cantidadArticulo + 1
                     runOnUiThread {
-                        mViewVenta.notifyDataSetChanged()
+                        adapter?.notifyDataSetChanged()
                     }
                 }
             }
@@ -250,15 +263,62 @@ class Venta : AppCompatActivity() {
     }
 
     fun actulizarExistencia() {
-        if(mViewVenta.itemCount > 0)
+        if(adapter?.count!! > 0)
         {
-            for (i in 0..mViewVenta.itemCount - 1) {
+            for (i in 0 until adapter?.count!!) {
+
+                val objeto  = adapter?.obtenerObjeto(i)
+                if (objeto != null) {
+                    listaTmp[i].cantidadArticulo = objeto.cantidadArticulo
+                }
+
+                /*mRecyclerView.viewTreeObserver
+                    .addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                        override fun onGlobalLayout() {
+                            val textViewCantidad: EditText = mRecyclerView.getChildAt(i)
+                                .findViewById(R.id.VentaCantidad) as EditText
+                            val textCantidad = textViewCantidad.text.toString()
+                            listaTmp[i].cantidadArticulo = parseInt(textCantidad)
+                        }
+                    })*/
+
+                /*mRecyclerView.post(Runnable {
+                    val viewItem: View? = mRecyclerView.getLayoutManager()!!.findViewByPosition(i)
+                    val textViewCantidad = viewItem?.findViewById<View>(R.id.VentaCantidad) as EditText
+
+                    val textCantidad = textViewCantidad.text.toString()
+
+                    listaTmp[i].cantidadArticulo = parseInt(textCantidad)
+                })*/
+
+                /*val holder = mRecyclerView.findViewHolderForAdapterPosition(i)
+                if (null == holder) {
+                    holder.itemView.findViewById<View>(R.id.VentaCantidad).visibility = View.VISIBLE
+                }*/
+
+                /*val title = (mRecyclerView.findViewHolderForAdapterPosition(i)?.itemView?.findViewById(
+                    R.id.VentaCantidad) as EditText).text
+                        .toString()*/
+                //mRecyclerView.adapter.
+
+                /*val v = mRecyclerView.getLayoutManager()?.findViewByPosition(i)
+                if (v != null) {
+                    v.visibility = View.INVISIBLE
+                }
                 val view: View = mRecyclerView.getChildAt(i)
                 val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
                 val textCantidad = textViewCantidad.text.toString()
+                listaTmp[i].cantidadArticulo = parseInt(textCantidad)*/
 
-                listaTmp[i].cantidadArticulo = parseInt(textCantidad)
+                //listaTmp[i].cantidadArticulo = parseInt(title)
             }
+
+            /*for (i in 0..mViewVenta.itemCount - 1) {
+                val v = mRecyclerView.getLayoutManager()?.findViewByPosition(i)
+                if (v != null) {
+                    v.visibility = View.VISIBLE
+                }
+            }*/
         }
 
     }

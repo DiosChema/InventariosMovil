@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.InventarioObjeto
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
@@ -58,6 +59,8 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         var VentaCostoTotal = view.findViewById(R.id.VentaCostoTotal) as TextView
         var VentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView
 
+        var globalVariable = itemView.context.applicationContext as GlobalClass
+
         fun bind(articulo: InventarioObjeto, context: Context) {
             nombreArticulo.text = articulo.nombreArticulo
             precio.text = /*"$" + */articulo.precioArticulo.toString()
@@ -65,7 +68,6 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
             ventaIdArticulo.setText(/*itemView.context.getString(R.string.mensaje_precio_articulo) + " :" + */articulo.idArticulo.toString())
             VentaCostoTotal.text = parseDouble(articulo.precioArticulo.toString()).toString()
             VentaCostoArticulo.text = parseDouble(articulo.costoArticulo.toString()).toString()
-
 
             disminuirCantidad.setOnClickListener(View.OnClickListener {
                 val tamanoString = cantidad.text.toString()
@@ -91,7 +93,9 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
             })
 
             cantidad.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
+                override fun afterTextChanged(s: Editable) {
+
+                }
                 override fun beforeTextChanged(
                     s: CharSequence, start: Int,
                     count: Int, after: Int
@@ -107,7 +111,7 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
                 }
             })
 
-            imagenArticulo.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
+            imagenArticulo.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }
 
         fun ImageView.loadUrl(url: String) {

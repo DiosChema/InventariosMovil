@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Menu">
+    android:orientation="vertical"
+    tools:context=".Activities.Menu"
+    android:background="@color/background">
 
-    <Button
-        android:id="@+id/Venta"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="133dp"
-        android:layout_marginEnd="162dp"
-        android:layout_marginRight="162dp"
-        android:text="Venta" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/Inventario"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/Venta"
-        android:layout_alignLeft="@+id/Venta"
-        android:layout_alignEnd="@+id/Venta"
-        android:layout_alignRight="@+id/Venta"
-        android:layout_alignBottom="@+id/Venta"
-        android:layout_marginBottom="-180dp"
-        android:text="Inventario" />
+        <ImageView
+            android:id="@+id/Venta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/sale"
+            android:adjustViewBounds="true"
+            android:layout_margin="2dp"
+        />
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/Inventario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/inventario"
+            android:adjustViewBounds="true"
+            android:layout_margin="2dp"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

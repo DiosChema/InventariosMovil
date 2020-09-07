@@ -4,71 +4,122 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.MainActivity">
+    tools:context=".Activities.MainActivity"
+    android:background="@color/background">
 
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/loginEmail"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="125dp"
-            android:hint="@string/mensaje_correo_electronico"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/loginPassword"
+        <TextView
+            android:id="@+id/loginTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loginEmail"
-            android:layout_alignStart="@+id/loginEmail"
-            android:layout_alignLeft="@+id/loginEmail"
-            android:layout_alignEnd="@+id/loginEmail"
-            android:layout_alignRight="@+id/loginEmail"
             android:layout_marginTop="25dp"
-            android:hint="@string/mensaje_correo_contrasenia"
-            android:inputType="textPassword" />
+            android:text="@string/mensaje_titulo_login"
+            android:textSize="35sp"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/loginBotonIniciarSesion"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/loginPassword"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:text="@string/boton_iniciar_sesion" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="40dp"
+            android:background="@drawable/round_layout">
 
-        <TextView
-            android:id="@+id/loginTextPasswordOlvidada"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loginBotonIniciarSesion"
-            android:layout_marginTop="15dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="@string/boton_olvidaste_contraseña" />
+            <EditText
+                android:id="@+id/loginEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:drawableLeft="@drawable/mailicon"
+                android:drawableStart="@drawable/mailicon"
+                android:drawablePadding="5dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:layout_marginTop="25dp"
+                android:textSize="25sp"
+                android:inputType="textEmailAddress"
+                android:hint="@string/mensaje_correo_electronico"/>
 
-        <TextView
-            android:id="@+id/loginTextNuevaCuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loginTextPasswordOlvidada"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="@string/boton_crear_cuenta" />
+            <EditText
+                android:id="@+id/loginPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginEmail"
+                android:layout_alignStart="@+id/loginEmail"
+                android:layout_alignLeft="@+id/loginEmail"
+                android:layout_alignEnd="@+id/loginEmail"
+                android:layout_alignRight="@+id/loginEmail"
+                android:drawableLeft="@drawable/padlockicon"
+                android:drawableStart="@drawable/padlockicon"
+                android:drawablePadding="5dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginEnd="25dp"
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="25sp"
+                android:hint="@string/mensaje_correo_contrasenia"/>
+
+            <ImageButton
+                android:id="@+id/loginPasswordButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignTop="@+id/loginPassword"
+                android:layout_alignBottom="@+id/loginPassword"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                app:srcCompat="@drawable/eyeicon"
+                android:background="@color/white"/>
 
 
-    </RelativeLayout>
+            <Button
+                android:id="@+id/loginBotonIniciarSesion"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginPassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/round_button"
+                android:text="@string/boton_iniciar_sesion" />
+
+            <TextView
+                android:id="@+id/loginTextPasswordOlvidada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginBotonIniciarSesion"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/boton_olvidaste_contraseña" />
+
+            <TextView
+                android:id="@+id/loginTextNuevaCuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/loginTextPasswordOlvidada"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:text="@string/boton_crear_cuenta" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
 </ScrollView>
 

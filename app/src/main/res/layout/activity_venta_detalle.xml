@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,83 +8,85 @@
     android:layout_height="match_parent"
     tools:context=".Activities.VentaDetalle">
 
-    <TextView
-        android:id="@+id/VentaDetalleNumeroText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
-        android:textSize="25sp"
-        android:text="@string/mensaje_numero_venta" />
 
-    <TextView
-        android:id="@+id/VentaDetalleNumero"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/VentaDetalleNumeroText"
-        android:layout_toEndOf="@+id/VentaDetalleNumeroText"
-        android:layout_toRightOf="@+id/VentaDetalleNumeroText"
-        android:textSize="25sp"
-        android:text="9999" />
+        <TextView
+            android:id="@+id/VentaDetalleNumeroText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="25sp"
+            android:text="@string/mensaje_numero_venta" />
 
-    <TextView
-        android:id="@+id/VentaDetalleFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="24dp"
-        android:textSize="20sp"
-        android:text="2020-08-25 17:44:39" />
+        <TextView
+            android:id="@+id/VentaDetalleNumero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/VentaDetalleNumeroText"
+            android:layout_toEndOf="@+id/VentaDetalleNumeroText"
+            android:layout_toRightOf="@+id/VentaDetalleNumeroText"
+            android:textSize="25sp"
+            android:text="9999" />
 
-    <androidx.recyclerview.widget.RecyclerView
+        <TextView
+            android:id="@+id/VentaDetalleFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="24dp"
+            android:textSize="20sp"
+            android:text="2020-08-25 17:44:39" />
+
+    <ListView
         android:id="@+id/VentaDetalleArticulos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/VentaDetalleNumeroText"
-        android:layout_margin="3dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="55dp"/>
 
     <ImageButton
-        android:id="@+id/VentaDetalleEliminarVenta"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/VentaDetalleArticulos"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+            android:id="@+id/VentaDetalleEliminarVenta"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
 
-    <ImageButton
-        android:id="@+id/VentaDetalleCancelar"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/VentaDetalleArticulos"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@android:drawable/btn_dialog" />
+        <ImageButton
+            android:id="@+id/VentaDetalleCancelar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@android:drawable/btn_dialog" />
 
-    <ImageButton
-        android:id="@+id/VentaDetalleEditar"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/VentaDetalleArticulos"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        <ImageButton
+            android:id="@+id/VentaDetalleEditar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
-    <ImageButton
-        android:id="@+id/VentaDetalleConfirmar"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_below="@+id/VentaDetalleArticulos"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        app:srcCompat="@android:drawable/checkbox_on_background" />
-
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/VentaDetalleConfirmar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            app:srcCompat="@android:drawable/checkbox_on_background" />
+    </RelativeLayout>

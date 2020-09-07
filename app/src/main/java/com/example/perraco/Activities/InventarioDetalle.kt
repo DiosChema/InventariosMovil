@@ -75,6 +75,7 @@ class InventarioDetalle : AppCompatActivity() {
     var image_uri: Uri? = null
     private val PERMISSION_CODE = 1000
     private val IMAGE_CAPTURE_CODE = 1001
+    var cambioFoto : Boolean = false
 
     var subFamiliaId = -1
 
@@ -183,7 +184,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun llenarCampos(articulo : InventarioObjeto){
         invDetalleId.setText(articulo.idArticulo.toString())
-        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
+        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
         invDetalleNombre.setText(articulo.nombreArticulo)
         invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
@@ -192,6 +193,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
+        cambioFoto = false
         obtenerFamilia(this,parseInt(articulo.familiaArticulo))
     }
 
@@ -634,12 +636,15 @@ class InventarioDetalle : AppCompatActivity() {
 
         val file = bitmapToFile(resized)
 
-        val MEDIA_TYPE_PNG = MediaType.parse("image/png")
+        val MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg")
         val req: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart(
+                "token",
+                globalVariable.token.toString())
+            .addFormDataPart(
                 "image",
-                invDetalleId.text.toString()+".png",
-                RequestBody.create(MEDIA_TYPE_PNG, file)
+                invDetalleId.text.toString()+".jpeg",
+                RequestBody.create(MEDIA_TYPE_JPEG, file)
             ).build()
         val request = Request.Builder()
             .url(urls.url+urls.endpointSubirImagen)
@@ -675,12 +680,12 @@ class InventarioDetalle : AppCompatActivity() {
 
         // Initialize a new file instance to save bitmap object
         var file = wrapper.getDir("Images",Context.MODE_PRIVATE)
-        file = File(file,"${UUID.randomUUID()}.png")
+        file = File(file,"${UUID.randomUUID()}.jpeg")
 
         try{
             // Compress the bitmap and save in jpg format
             val stream: OutputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+            bitmap.compress(Bitmap.CompressFormat.JPEG,50,stream)
             stream.flush()
             stream.close()
         }catch (e:IOException){
@@ -728,6 +733,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         } else {
             if (resultCode == Activity.RESULT_OK){
+                cambioFoto = true
                 invDetalleFoto.setImageURI(image_uri)
             }
         }
@@ -792,7 +798,8 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
-                darDeAltaFoto()
+                if(cambioFoto)
+                    darDeAltaFoto()
             }
         })
 

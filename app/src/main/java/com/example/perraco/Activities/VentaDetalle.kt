@@ -7,18 +7,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.view.get
 import com.example.perraco.Objets.*
 import com.example.perraco.R
-import com.example.perraco.RecyclerView.RecyclerViewEditarArticulosVenta
+import com.example.perraco.RecyclerView.AdapterListEditarArticulosVenta
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.lang.Double.parseDouble
-import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -26,8 +23,8 @@ import kotlin.collections.ArrayList
 class VentaDetalle : AppCompatActivity() {
 
     lateinit var venta: VentasObjeto
-    lateinit var mViewArticulosVenta : RecyclerViewEditarArticulosVenta
-    lateinit var mRecyclerView : RecyclerView
+    /*lateinit var mViewArticulosVenta : RecyclerViewEditarArticulosVenta
+    lateinit var mRecyclerView : RecyclerView*/
 
     lateinit var VentaDetalleNumero : TextView
     lateinit var VentaDetalleFecha : TextView
@@ -37,6 +34,9 @@ class VentaDetalle : AppCompatActivity() {
     lateinit var VentaDetalleConfirmar : ImageButton
 
     lateinit var globalVariable: GlobalClass
+
+    var listView: ListView? = null
+    var adapter: AdapterListEditarArticulosVenta? = null
 
     var context = this;
 
@@ -57,7 +57,11 @@ class VentaDetalle : AppCompatActivity() {
         VentaDetalleCancelar = findViewById(R.id.VentaDetalleCancelar)
         VentaDetalleEditar = findViewById(R.id.VentaDetalleEditar)
         VentaDetalleConfirmar = findViewById(R.id.VentaDetalleConfirmar)
-        mRecyclerView = findViewById(R.id.VentaDetalleArticulos)
+        //mRecyclerView = findViewById(R.id.VentaDetalleArticulos)
+
+        listView = findViewById(R.id.VentaDetalleArticulos)
+        adapter = AdapterListEditarArticulosVenta(this, venta.articulos.toMutableList())
+        (listView as ListView).adapter = adapter
 
         VentaDetalleNumero.text = venta._id.toString()
         VentaDetalleFecha.text = venta.fecha
@@ -66,12 +70,12 @@ class VentaDetalle : AppCompatActivity() {
         VentaDetalleCancelar.visibility = View.INVISIBLE
         VentaDetalleConfirmar.visibility = View.INVISIBLE
 
-        mViewArticulosVenta = RecyclerViewEditarArticulosVenta()
+        /*mViewArticulosVenta = RecyclerViewEditarArticulosVenta()
 
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(this)
         mViewArticulosVenta.RecyclerAdapter(venta.articulos.toMutableList(), this)
-        mRecyclerView.adapter = mViewArticulosVenta
+        mRecyclerView.adapter = mViewArticulosVenta*/
 
         VentaDetalleEliminarVenta.setOnClickListener{
             showDialogEliminarVenta()
@@ -82,7 +86,7 @@ class VentaDetalle : AppCompatActivity() {
             VentaDetalleCancelar.visibility = View.VISIBLE
             VentaDetalleEditar.visibility = View.INVISIBLE
             VentaDetalleConfirmar.visibility = View.VISIBLE
-            habilidatEdicion(true)
+            habilitarEdicion(true)
         }
 
         VentaDetalleConfirmar.setOnClickListener{
@@ -94,13 +98,14 @@ class VentaDetalle : AppCompatActivity() {
             VentaDetalleCancelar.visibility = View.INVISIBLE
             VentaDetalleEditar.visibility = View.VISIBLE
             VentaDetalleConfirmar.visibility = View.INVISIBLE
-            habilidatEdicion(false)
+            habilitarEdicion(false)
 
-            mViewArticulosVenta.RecyclerAdapter(venta.articulos.toMutableList(), this)
-            mRecyclerView.adapter = mViewArticulosVenta
+            /*mViewArticulosVenta.RecyclerAdapter(venta.articulos.toMutableList(), this)
+            mRecyclerView.adapter = mViewArticulosVenta*/
+            adapter?.notifyDataSetChanged()
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
     }
 
@@ -150,8 +155,9 @@ class VentaDetalle : AppCompatActivity() {
 
         val listaArticulos: MutableList<ActualizarArticuloObjeto> = ArrayList()
 
-        for (i in 0..mViewArticulosVenta.itemCount - 1) {
-            val view: View = mRecyclerView.getChildAt(i)
+        //for (i in 0..mViewArticulosVenta.itemCount - 1) {
+        for (i in 0 until adapter?.count!!) {
+            /*val view: View = mRecyclerView.getChildAt(i)
 
             val EditarArticuloVentaCantidad = view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
             val textCantidad = EditarArticuloVentaCantidad.text.toString()
@@ -174,6 +180,19 @@ class VentaDetalle : AppCompatActivity() {
             if(articulo.cantidad > 0)
                 listaArticulos.add(articulo)
 
+             */
+            val objeto  = adapter?.obtenerObjeto(i)
+
+            if (objeto != null && objeto.cantidad > 0) {
+                listaArticulos.add(ActualizarArticuloObjeto(
+                    venta._id,
+                    objeto.idArticulo,
+                    objeto.cantidad,
+                    objeto.precio,
+                    objeto.nombre,
+                    objeto.costo
+                ))
+            }
         }
 
         var ventaActualizada : ActualizarVenta = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulos)
@@ -263,36 +282,44 @@ class VentaDetalle : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun habilidatEdicion(habilitar : Boolean) {
+    private fun habilitarEdicion(habilitar : Boolean) {
 
-        for (i in 0..mViewArticulosVenta.itemCount - 1) {
-            val view: View = mRecyclerView.getChildAt(i)
+        //for (i in 0..mViewArticulosVenta.itemCount - 1) {
+        for (i in 0 until adapter?.count!!) {
 
-            val EditarArticuloVentaCantidad =
-                view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
-            val EditarArticuloVentaPrecio =
-                view.findViewById(R.id.EditarArticuloVentaPrecio) as EditText
-            val EditarArticuloVentaCosto =
-                view.findViewById(R.id.EditarArticuloVentaCosto) as EditText
-            val EditarArticuloVentaDisminuirCantidad =
-                view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
-            val EditarArticuloVentaAnadirCantidad =
-                view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
-            val EditarArticuloEliminarArticulo =
-                view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
+            var view = listView?.get(i)
+
+            /*val view: View = mRecyclerView.getChildAt(i)*/
+
+            if(view != null){
+                val EditarArticuloVentaCantidad =
+                    view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
+                val EditarArticuloVentaPrecio =
+                    view.findViewById(R.id.EditarArticuloVentaPrecio) as EditText
+                val EditarArticuloVentaCosto =
+                    view.findViewById(R.id.EditarArticuloVentaCosto) as EditText
+                val EditarArticuloVentaDisminuirCantidad =
+                    view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
+                val EditarArticuloVentaAnadirCantidad =
+                    view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
+                val EditarArticuloEliminarArticulo =
+                    view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
 
 
-            EditarArticuloVentaCantidad.isEnabled = habilitar
-            EditarArticuloVentaPrecio.isEnabled = habilitar
-            EditarArticuloVentaCosto.isEnabled = habilitar
-            EditarArticuloEliminarArticulo.isEnabled = habilitar
-            if(habilitar) {
-                EditarArticuloVentaDisminuirCantidad.visibility = View.VISIBLE
-                EditarArticuloVentaAnadirCantidad.visibility = View.VISIBLE
-            }else{
-                EditarArticuloVentaDisminuirCantidad.visibility = View.INVISIBLE
-                EditarArticuloVentaAnadirCantidad.visibility = View.INVISIBLE
+                EditarArticuloVentaCantidad.isEnabled = habilitar
+                EditarArticuloVentaPrecio.isEnabled = habilitar
+                EditarArticuloVentaCosto.isEnabled = habilitar
+                EditarArticuloEliminarArticulo.isEnabled = habilitar
+                adapter!!.setHabilitar(habilitar)
+                if(habilitar) {
+                    EditarArticuloVentaDisminuirCantidad.visibility = View.VISIBLE
+                    EditarArticuloVentaAnadirCantidad.visibility = View.VISIBLE
+                }else{
+                    EditarArticuloVentaDisminuirCantidad.visibility = View.INVISIBLE
+                    EditarArticuloVentaAnadirCantidad.visibility = View.INVISIBLE
+                }
             }
+
         }
 
     }

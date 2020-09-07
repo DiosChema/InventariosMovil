@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Activities.InventarioDetalle
+import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.InventarioObjeto
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
@@ -52,6 +53,8 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val precioText = view.findViewById(R.id.invPrecioText) as TextView
         val imagen = view.findViewById(R.id.invFoto) as ImageView
 
+        var globalVariable = itemView.context.applicationContext as GlobalClass
+
         fun bind(articulo: InventarioObjeto, context: Context) {
             nombre.text = articulo.nombreArticulo
             descripcion.text = articulo.descripcionArticulo
@@ -64,7 +67,7 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
                 context.startActivity(intent)
             })
             val urls = Urls()
-            imagen.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
+            imagen.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }
 
         fun ImageView.loadUrl(url: String) {

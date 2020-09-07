@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Objets.ArticuloObjeto
+import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
@@ -59,10 +60,11 @@ class RecyclerViewEditarArticulosVenta : RecyclerView.Adapter<RecyclerViewEditar
         val EditarArticuloEliminarArticulo = view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
 
         val urls = Urls()
+        var globalVariable = itemView.context.applicationContext as GlobalClass
 
         fun bind(articulo: ArticuloObjeto, context: Context) {
 
-            EditarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".png")
+            EditarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
             EditarArticuloVentaNombre.text = articulo.nombre
             EditarArticuloVentaCantidadText.text = itemView.context.getText(R.string.mensaje_cantidad_articulo)
             EditarArticuloVentaCantidad.setText(articulo.cantidad.toString())

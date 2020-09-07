@@ -47,6 +47,7 @@ class CrearCuenta : AppCompatActivity() {
     fun crearCuenta(){
 
         var email = crearCuentaEmail.text.toString()
+        email = email.toLowerCase()
         var password = crearCuentaPassword.text.toString()
         var passwordConfirmar = crearCuentaConfirmarPassword.text.toString()
 
