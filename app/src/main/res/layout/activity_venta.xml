@@ -4,48 +4,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.Venta">
+    tools:context=".Activities.Venta"
+    android:background="@color/background">
 
-
-    <LinearLayout
-        android:id="@+id/rvNuevoArticuloLayout"
-        android:layout_width="150dp"
-        android:layout_height="85dp"
+    <EditText
+        android:id="@+id/VentaCodigoAgregar"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:background="@drawable/round_button_white"
+        android:hint="@string/mensaje_codigo_articulo"
+        android:inputType="number"
+        android:textSize="15dp" />
 
 
-        <EditText
-            android:id="@+id/VentaCodigoAgregar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:hint="Codigo"
-            android:textSize="15dp"
-            android:inputType="number" />
-
-        <Button
-            android:id="@+id/VentaNuevoArticulo"
-            android:layout_width="fill_parent"
-            android:layout_height="22dp"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:text="@string/mensaje_anadir_articulo"
-            android:textSize="12dp" />
-
-
-    </LinearLayout>
+    <ImageButton
+        android:id="@+id/VentaNuevoArticulo"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignTop="@+id/VentaCodigoAgregar"
+        android:layout_alignBottom="@+id/VentaCodigoAgregar"
+        android:layout_toEndOf="@+id/VentaCodigoAgregar"
+        android:layout_toRightOf="@+id/VentaCodigoAgregar"
+        android:background="@color/background"
+        app:srcCompat="@drawable/moreicon" />
 
     <ListView
         android:id="@+id/rvVenta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rvNuevoArticuloLayout"/>
+        android:layout_below="@+id/VentaCodigoAgregar"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="60dp"/>
 
     <Button
         android:id="@+id/VentaTerminarVenta"
@@ -56,12 +57,27 @@
         android:layout_centerHorizontal="true"
         android:text="Terminar Venta" />
 
+    <ImageButton
+        android:id="@+id/ventaObtenerArticulo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@color/background"
+        app:srcCompat="@android:drawable/ic_menu_search"/>
+
     <Button
         android:id="@+id/VentaObtenerCodigo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:text="Leer articulo" />
+        android:text="Leer articulo"
+        android:layout_margin="4dp"
+        android:background="@drawable/round_button_white"/>
 
 </RelativeLayout >

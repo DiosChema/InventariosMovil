@@ -1,88 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/border">
+    android:orientation="vertical"
+    android:background="@color/white">
 
-
-    <TextView
-        android:id="@+id/VentasNumeroVentaText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginTop="6dp"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:maxEms="5"
-        android:layout_alignParentTop="true"
-        tools:text= "Venta No." />
-
-    <TextView
-        android:id="@+id/VentasNumeroVenta"
-        android:layout_marginBottom="6dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/VentasNumeroVentaText"
-        android:layout_alignStart="@+id/VentasNumeroVentaText"
-        android:layout_alignLeft="@+id/VentasNumeroVentaText"
-        android:layout_alignEnd="@+id/VentasNumeroVentaText"
-        android:layout_alignRight="@+id/VentasNumeroVentaText"
-        android:maxEms="5"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        tools:text="#####"
-        android:gravity="center_horizontal" />
-
-    <TextView
-        android:id="@+id/VentasFecha"
-        android:layout_marginRight="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginTop="6dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:textSize="18sp"
-        tools:text="Fecha" />
-
-    <TextView
-        android:id="@+id/VentasTotalVenta"
-        android:layout_marginRight="6dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/VentasFecha"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:maxEms="7"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        tools:text="Total: $999999"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/VentaDetalleArticulos"
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/VentasNumeroVenta"
-        android:layout_margin="5dp"/>
+        android:background="@drawable/border">
 
-    <ImageView
-        android:id="@+id/VentasBotonEditar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/VentasTotalVenta"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp"
-        app:srcCompat="@android:drawable/ic_menu_edit"/>
+        <TextView
+            android:id="@+id/VentasNumeroVentaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:layout_marginTop="6dp"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:maxEms="5"
+            android:layout_alignParentTop="true"
+            tools:text= "Venta No." />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/VentasNumeroVenta"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/VentasNumeroVentaText"
+            android:layout_alignStart="@+id/VentasNumeroVentaText"
+            android:layout_alignLeft="@+id/VentasNumeroVentaText"
+            android:layout_alignEnd="@+id/VentasNumeroVentaText"
+            android:layout_alignRight="@+id/VentasNumeroVentaText"
+            android:maxEms="5"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            tools:text="#####"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/VentasFecha"
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"
+            tools:text="Fecha" />
+
+        <TextView
+            android:id="@+id/VentasTotalVenta"
+            android:layout_marginRight="6dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/VentasFecha"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:maxEms="7"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:text="Total: $999999"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/VentaDetalleArticulos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/VentasNumeroVenta"
+            android:layout_margin="5dp"/>
+
+        <ImageView
+            android:id="@+id/VentasBotonEditar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/VentasTotalVenta"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            app:srcCompat="@android:drawable/ic_menu_edit"/>
+
+    </RelativeLayout>
+</LinearLayout>

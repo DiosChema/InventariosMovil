@@ -768,7 +768,7 @@ class InventarioDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("token", globalVariable.token)
-            jsonObject.put("idArticulo", parseInt(invDetalleId.text.toString()))
+            jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
             jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
@@ -798,11 +798,10 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
-                if(cambioFoto)
-                    darDeAltaFoto()
+                if(cambioFoto) darDeAltaFoto()
+                else finish()
             }
         })
-
     }
 
     fun actualizarArticulo(){

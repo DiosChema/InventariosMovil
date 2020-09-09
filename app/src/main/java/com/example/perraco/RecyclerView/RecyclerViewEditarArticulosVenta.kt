@@ -47,17 +47,17 @@ class RecyclerViewEditarArticulosVenta : RecyclerView.Adapter<RecyclerViewEditar
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val EditarArticuloVentaFoto = view.findViewById(R.id.EditarArticuloVentaFoto) as ImageView
-        val EditarArticuloVentaNombre = view.findViewById(R.id.EditarArticuloVentaNombre) as TextView
-        val EditarArticuloVentaCantidadText = view.findViewById(R.id.EditarArticuloVentaCantidadText) as TextView
-        val EditarArticuloVentaCantidad = view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
-        val EditarArticuloVentaDisminuirCantidad = view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
-        val EditarArticuloVentaAnadirCantidad = view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
-        val EditarArticuloVentaPrecio = view.findViewById(R.id.EditarArticuloVentaPrecio) as EditText
-        val EditarArticuloVentaPrecioText = view.findViewById(R.id.EditarArticuloVentaPrecioText) as TextView
-        val EditarArticuloVentaCosto = view.findViewById(R.id.EditarArticuloVentaCosto) as EditText
-        val EditarArticuloVentaCostoText = view.findViewById(R.id.EditarArticuloVentaCostoText) as TextView
-        val EditarArticuloEliminarArticulo = view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
+        val EditarArticuloVentaFoto = view.findViewById(R.id.editarArticuloVentaFoto) as ImageView
+        val EditarArticuloVentaNombre = view.findViewById(R.id.editarArticuloVentaNombre) as TextView
+        val EditarArticuloVentaCantidadText = view.findViewById(R.id.editarArticuloVentaCantidadText) as TextView
+        val EditarArticuloVentaCantidad = view.findViewById(R.id.editarArticuloVentaCantidad) as EditText
+        val EditarArticuloVentaDisminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
+        val EditarArticuloVentaAnadirCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
+        val EditarArticuloVentaPrecio = view.findViewById(R.id.editarArticuloVentaPrecio) as EditText
+        val EditarArticuloVentaPrecioText = view.findViewById(R.id.editarArticuloVentaPrecioText) as TextView
+        val EditarArticuloVentaCosto = view.findViewById(R.id.editarArticuloVentaCosto) as EditText
+        val EditarArticuloVentaCostoText = view.findViewById(R.id.editarArticuloVentaCostoText) as TextView
+        val EditarArticuloEliminarArticulo = view.findViewById(R.id.editarArticuloEliminarArticulo) as ImageButton
 
         val urls = Urls()
         var globalVariable = itemView.context.applicationContext as GlobalClass

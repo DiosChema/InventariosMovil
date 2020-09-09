@@ -14,7 +14,7 @@ import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
-import java.lang.Double
+import java.lang.Double.parseDouble
 
 class AdapterListEditarArticulosVenta(private val activity: Activity, articulosList: MutableList<ArticuloObjeto>) : BaseAdapter() {
 
@@ -52,45 +52,45 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
         val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflater.inflate(R.layout.item_venta_editar_articulo, null)
 
-        val EditarArticuloVentaFoto = view.findViewById(R.id.EditarArticuloVentaFoto) as ImageView
-        val EditarArticuloVentaNombre = view.findViewById(R.id.EditarArticuloVentaNombre) as TextView
-        val EditarArticuloVentaCantidadText = view.findViewById(R.id.EditarArticuloVentaCantidadText) as TextView
-        val EditarArticuloVentaCantidad = view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
-        val EditarArticuloVentaDisminuirCantidad = view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
-        val EditarArticuloVentaAnadirCantidad = view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
-        val EditarArticuloVentaPrecio = view.findViewById(R.id.EditarArticuloVentaPrecio) as EditText
-        val EditarArticuloVentaPrecioText = view.findViewById(R.id.EditarArticuloVentaPrecioText) as TextView
-        val EditarArticuloVentaCosto = view.findViewById(R.id.EditarArticuloVentaCosto) as EditText
-        val EditarArticuloVentaCostoText = view.findViewById(R.id.EditarArticuloVentaCostoText) as TextView
-        val EditarArticuloEliminarArticulo = view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
+        val editarArticuloVentaFoto = view.findViewById(R.id.editarArticuloVentaFoto) as ImageView
+        val editarArticuloVentaNombre = view.findViewById(R.id.editarArticuloVentaNombre) as TextView
+        val editarArticuloVentaCantidadText = view.findViewById(R.id.editarArticuloVentaCantidadText) as TextView
+        val editarArticuloVentaCantidad = view.findViewById(R.id.editarArticuloVentaCantidad) as EditText
+        val editarArticuloVentaDisminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
+        val editarArticuloVentaAnadirCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
+        val editarArticuloVentaPrecio = view.findViewById(R.id.editarArticuloVentaPrecio) as EditText
+        val editarArticuloVentaPrecioText = view.findViewById(R.id.editarArticuloVentaPrecioText) as TextView
+        val editarArticuloVentaCosto = view.findViewById(R.id.editarArticuloVentaCosto) as EditText
+        val editarArticuloVentaCostoText = view.findViewById(R.id.editarArticuloVentaCostoText) as TextView
+        val editarArticuloEliminarArticulo = view.findViewById(R.id.editarArticuloEliminarArticulo) as ImageButton
 
         var globalVariable = view.context.applicationContext as GlobalClass
 
-        EditarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articuloVentaObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)
-        EditarArticuloVentaNombre.text = articuloVentaObjeto[i].nombre
-        EditarArticuloVentaCantidadText.text = view.context.getText(R.string.mensaje_cantidad_articulo)
-        EditarArticuloVentaCantidad.setText(articuloVentaObjeto[i].cantidad.toString())
-        EditarArticuloVentaPrecio.setText(articuloVentaObjeto[i].precio.toString())
-        EditarArticuloVentaPrecioText.text = view.context.getText(R.string.mensaje_precio_venta)
-        EditarArticuloVentaCosto.setText(articuloVentaObjeto[i].costo.toString())
-        EditarArticuloVentaCostoText.text = view.context.getText(R.string.mensaje_precio_costo)
+        editarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articuloVentaObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)
+        editarArticuloVentaNombre.text = articuloVentaObjeto[i].nombre
+        editarArticuloVentaCantidadText.text = view.context.getText(R.string.mensaje_cantidad_articulo)
+        editarArticuloVentaCantidad.setText(articuloVentaObjeto[i].cantidad.toString())
+        editarArticuloVentaPrecio.setText(articuloVentaObjeto[i].precio.toString())
+        editarArticuloVentaPrecioText.text = view.context.getText(R.string.mensaje_precio_venta)
+        editarArticuloVentaCosto.setText(articuloVentaObjeto[i].costo.toString())
+        editarArticuloVentaCostoText.text = view.context.getText(R.string.mensaje_precio_costo)
 
         if(!editarHabilitado) {
-            EditarArticuloVentaCantidad.isEnabled = false
-            EditarArticuloVentaPrecio.isEnabled = false
-            EditarArticuloVentaCosto.isEnabled = false
-            EditarArticuloEliminarArticulo.isEnabled = false
-            EditarArticuloVentaDisminuirCantidad.visibility = View.INVISIBLE
-            EditarArticuloVentaAnadirCantidad.visibility = View.INVISIBLE
+            editarArticuloVentaCantidad.isEnabled = false
+            editarArticuloVentaPrecio.isEnabled = false
+            editarArticuloVentaCosto.isEnabled = false
+            editarArticuloEliminarArticulo.isEnabled = false
+            editarArticuloVentaDisminuirCantidad.visibility = View.INVISIBLE
+            editarArticuloVentaAnadirCantidad.visibility = View.INVISIBLE
         }
 
-        EditarArticuloVentaDisminuirCantidad.setOnClickListener(View.OnClickListener {
-            val valor = EditarArticuloVentaCantidad.text.toString()
+        editarArticuloVentaDisminuirCantidad.setOnClickListener(View.OnClickListener {
+            val valor = editarArticuloVentaCantidad.text.toString()
 
             if(valor.isNotEmpty()){
                 val cantidadArticulo = Integer.parseInt(valor) - 1
                 if(cantidadArticulo >= 0 )
-                    EditarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
+                    editarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
                 else{
                     val params: ViewGroup.LayoutParams = view.layoutParams
                     params.height = 0
@@ -99,34 +99,47 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
             }
         })
 
-        EditarArticuloVentaAnadirCantidad.setOnClickListener(View.OnClickListener {
-            var cantidadArticulo = Integer.parseInt(EditarArticuloVentaCantidad.text.toString()) + 1
-            EditarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
-        })
+        editarArticuloVentaAnadirCantidad.setOnClickListener {
+            var cantidadArticulo = Integer.parseInt(editarArticuloVentaCantidad.text.toString()) + 1
+            editarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
+        }
 
-        EditarArticuloEliminarArticulo.setOnClickListener(View.OnClickListener{
-            EditarArticuloVentaCantidad.setText("0")
+        editarArticuloEliminarArticulo.setOnClickListener {
+            editarArticuloVentaCantidad.setText("0")
             val params: ViewGroup.LayoutParams = view.layoutParams
             params.height = 0
             view.layoutParams = params
-        })
+        }
 
-        EditarArticuloVentaCantidad.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
+        editarArticuloVentaCantidad.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
 
-            }
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isNotEmpty()) {
                     articuloVentaObjeto[i].cantidad = (Integer.parseInt(s.toString()))
+                }
+            }
+        })
+
+        editarArticuloVentaPrecio.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isNotEmpty()) {
+                    articuloVentaObjeto[i].precio = parseDouble(s.toString())
+                }
+            }
+        })
+
+        editarArticuloVentaCosto.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isNotEmpty()) {
+                    articuloVentaObjeto[i].costo = parseDouble(s.toString())
                 }
             }
         })

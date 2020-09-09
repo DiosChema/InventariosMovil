@@ -1,21 +1,27 @@
 package com.example.perraco.Activities
 
+import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Objets.*
 import com.example.perraco.R
 import com.example.perraco.RecyclerView.AdapterListVenta
-import com.example.perraco.RecyclerView.RecyclerViewVenta
+import com.example.perraco.RecyclerView.RecyclerItemClickListener
+import com.example.perraco.RecyclerView.RecyclerViewArticulos
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
-import java.lang.Double.parseDouble
-import java.lang.Integer.parseInt
 import java.lang.Long.parseLong
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,11 +35,32 @@ class Venta : AppCompatActivity() {
     val urls: Urls =
         Urls()
     lateinit var nombre : TextView
-    lateinit var mViewVenta : RecyclerViewVenta
-    lateinit var mRecyclerView : ListView
+
+    var listaTmpArticulos:MutableList<InventarioObjeto> = ArrayList()
+
     lateinit var arrayAdapter: ArrayAdapter<*>
     var listView: ListView? = null
     var adapter: AdapterListVenta? = null
+
+    lateinit var mViewArticulos : RecyclerViewArticulos
+    lateinit var mRecyclerViewArticulos : RecyclerView
+
+    var listaFamilia:MutableList<String> = ArrayList()
+    var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
+    var listaSubFamilia:MutableList<String> = ArrayList()
+    var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
+
+
+
+    lateinit var dialog : Dialog
+
+    lateinit var dialogArticulosFamiliaSpinner: Spinner
+    lateinit var dialogArticulosSubFamiliaSpinner: Spinner
+    lateinit var dialogArticulosFamiliaSpinnerButton: ImageButton
+    lateinit var dialogArticulosSubFamiliaSpinnerButton: ImageButton
+    lateinit var dialogArticulosSalir: ImageButton
+    var subFamiliaId = -1
+
 
     lateinit var globalVariable: GlobalClass
 
@@ -42,6 +69,7 @@ class Venta : AppCompatActivity() {
         setContentView(R.layout.activity_venta)
 
         globalVariable = applicationContext as GlobalClass
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         //mViewVenta = RecyclerViewVenta()
         //mRecyclerView = findViewById<ListView>(R.id.rvVenta)
@@ -50,15 +78,54 @@ class Venta : AppCompatActivity() {
         adapter = AdapterListVenta(this, listaTmp)
         (listView as ListView).adapter = adapter
 
+
+
+        dialog = Dialog(this)
+        dialog.setTitle(title)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_articulos)
+
+        dialogArticulosFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosFamiliaSpinner) as Spinner
+        dialogArticulosSubFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosSubFamiliaSpinner) as Spinner
+        dialogArticulosFamiliaSpinnerButton = dialog.findViewById(R.id.dialogArticulosFamiliaSpinnerButton) as ImageButton
+        dialogArticulosSubFamiliaSpinnerButton = dialog.findViewById(R.id.dialogArticulosSubFamiliaSpinnerButton) as ImageButton
+        dialogArticulosSalir = dialog.findViewById(R.id.dialogArticulosSalir) as ImageButton
+        mRecyclerViewArticulos = dialog.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
+
+        dialogArticulosFamiliaSpinnerButton.setOnClickListener{
+            obtenerArticulosFamilia()
+        }
+
+        dialogArticulosSubFamiliaSpinnerButton.setOnClickListener{
+            obtenerArticulosSubFamilia()
+        }
+
+        mViewArticulos = RecyclerViewArticulos()
+
+        //mRecyclerViewArticulos = dialogoArticulosRecyclerView as RecyclerView
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val width = displayMetrics.widthPixels
+
+        mRecyclerViewArticulos.layoutManager = GridLayoutManager(context,width/360)
+
         /*mRecyclerView.layoutManager = LinearLayoutManager(this)
         mViewVenta.RecyclerAdapter(listaTmp, context)
         mRecyclerView.adapter = mViewVenta*/
 
         nombre = findViewById(R.id.VentaCodigoAgregar)
 
-        val ButtonNuevoArticulo = findViewById<Button>(R.id.VentaNuevoArticulo)
+
+        val ButtonNuevoArticulo = findViewById<ImageButton>(R.id.VentaNuevoArticulo)
         ButtonNuevoArticulo?.setOnClickListener {
-            getArticuloObjecto(parseLong(nombre.text.toString()))
+            if(nombre.text.isNotEmpty())
+                getArticuloObjecto(parseLong(nombre.text.toString()))
+        }
+
+        val ventaObtenerArticulo = findViewById<ImageButton>(R.id.ventaObtenerArticulo)
+        ventaObtenerArticulo?.setOnClickListener {
+            showDialogArticulos()
         }
 
         val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
@@ -198,6 +265,206 @@ class Venta : AppCompatActivity() {
         }
 
         return articuloTmp
+
+    }
+
+    private fun showDialogArticulos() {
+        mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
+        mRecyclerViewArticulos.adapter = mViewArticulos
+
+        if(listaFamiliaCompleta.size == 0)
+            obtenerFamilias(context)
+
+        mRecyclerViewArticulos.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerViewArticulos, object :
+            RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                getArticuloObjecto(listaTmpArticulos[position].idArticulo)
+                dialog.dismiss()
+            }
+
+            override fun onLongItemClick(view: View?, position: Int) {
+                // do whatever
+            }
+        }))
+        /*dialogAceptar.setOnClickListener {
+            dialog.dismiss()
+            agregarFamilia(this,dialogText.text.toString())
+        }
+
+        dialogCancelar.setOnClickListener {
+            dialog.dismiss()
+        }*/
+
+        dialog.show()
+
+    }
+
+    fun obtenerArticulosFamilia(){
+        val url = urls.url+urls.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.token
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+
+                var Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
+                runOnUiThread {
+                    listaTmpArticulos = Model.toMutableList()
+                    mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
+                    mViewArticulos.notifyDataSetChanged()
+                }
+            }
+        })
+    }
+
+    fun obtenerArticulosSubFamilia(){
+        val url = urls.url+urls.endPointArticulosPorSubFamilia+"?subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId + "&token="+globalVariable.token
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+
+                var Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
+                runOnUiThread {
+                    listaTmpArticulos = Model.toMutableList()
+                    mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
+                    mViewArticulos.notifyDataSetChanged()
+                }
+            }
+        })
+    }
+
+    fun obtenerFamilias(context: Context){
+
+        val url = urls.url+urls.endpointObtenerFamilias+"?token="+globalVariable.token
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                listaFamiliaCompleta = gson.fromJson(body,Array<FamiliaObjeto>::class.java).toMutableList()
+
+                for (familias in listaFamiliaCompleta) {
+                    listaFamilia.add(familias.nombreFamilia)
+                }
+
+                runOnUiThread {
+                    val adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaFamilia)
+                    dialogArticulosFamiliaSpinner.adapter = adapter
+                    dialogArticulosFamiliaSpinner.setSelection(0)
+
+                    dialogArticulosFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // write code to perform some action
+                        }
+                    }
+                }
+            }
+        })
+
+    }
+
+    fun obtenerSubFamilias(context: Context, familiaId: Int){
+        var subFamiliaTmp = 0
+        val url = urls.url+urls.endpointObtenerSubFamilias+"?token="+globalVariable.token+"&familiaId="+familiaId
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                listaSubFamilia.clear()
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+
+                runOnUiThread {
+                    var adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaSubFamilia)
+                    dialogArticulosSubFamiliaSpinner.adapter = adapter
+
+                    listaSubFamiliaCompleta = gson.fromJson(body,Array<SubFamiliaObjeto>::class.java).toMutableList()
+
+                    for (familias in listaSubFamiliaCompleta) {
+                        listaSubFamilia.add(familias.nombreSubFamilia)
+                    }
+
+                    adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaSubFamilia)
+
+                    dialogArticulosSubFamiliaSpinner.adapter = adapter
+
+                    if(listaSubFamilia.size > 0) {
+                        dialogArticulosSubFamiliaSpinner.setSelection(subFamiliaTmp)
+                    }
+
+                    dialogArticulosSubFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+                            if(listaSubFamilia.size > 0) {
+                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                            }
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // write code to perform some action
+                        }
+                    }
+
+                    progressDialog.dismiss()
+                }
+            }
+        })
 
     }
 

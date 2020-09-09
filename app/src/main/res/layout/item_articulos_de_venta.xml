@@ -1,107 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    android:background="@drawable/border">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/EditarArticuloVentaFoto"
-        android:layout_width="100dp"
-        android:layout_height="120dp"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:id="@+id/VentaNombre"
-        android:layout_marginTop="5dp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        android:maxEms="5"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/EditarArticuloVentaFoto"
-        android:layout_toEndOf="@+id/EditarArticuloVentaFoto"
-        tools:text= "dadawdawdwd" />
-
-    <TextView
-        android:id="@+id/VentaPrecio"
+        android:orientation="vertical"
+        android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/VentaNombre"
-        android:layout_toRightOf="@+id/EditarArticuloVentaFoto"
-        android:layout_toEndOf="@+id/EditarArticuloVentaFoto"
-        android:textSize="18sp"
-        android:maxEms="4"
-        tools:text = "5.50"/>
+        android:layout_marginRight="5dp"
+        android:background="@color/white">
 
-    <EditText
-        android:id="@+id/VentaCantidad"
-        android:layout_width="75dp"
-        android:layout_marginTop="-8dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:inputType="number"
-        android:maxLength="4"
-        android:minWidth="75dp"
-        android:textSize="30sp"
-        tools:text="0000" />
+        <RelativeLayout
 
-    <ImageButton
-        android:id="@+id/EditarArticuloVentaDisminuirCantidad"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_below="@+id/VentaCantidad"
-        android:layout_alignStart="@+id/VentaCantidad"
-        android:layout_alignLeft="@+id/VentaCantidad"
-        app:srcCompat="@drawable/lessicon" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border">
 
-    <ImageButton
-        android:id="@+id/EditarArticuloVentaAnadirCantidad"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_below="@+id/VentaCantidad"
-        android:layout_alignEnd="@+id/VentaCantidad"
-        android:layout_alignRight="@+id/VentaCantidad"
-        app:srcCompat="@drawable/moreicon" />
+            <ImageView
+                android:id="@+id/editarArticuloVentaFoto"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/VentaIdArticulo"
-        android:layout_width="0dp"
-        android:layout_height="0dp" />
+            <TextView
+                android:id="@+id/VentaNombre"
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:maxEms="5"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/editarArticuloVentaFoto"
+                android:layout_toEndOf="@+id/editarArticuloVentaFoto"
+                tools:text= "dadawdawdwd" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/VentaNombre"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:text="Cant        " />
+            <TextView
+                android:id="@+id/VentaPrecio"
+                android:layout_marginBottom="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/VentaNombre"
+                android:layout_toRightOf="@+id/editarArticuloVentaFoto"
+                android:layout_toEndOf="@+id/editarArticuloVentaFoto"
+                android:textSize="18sp"
+                android:maxEms="4"
+                tools:text = "5.50"/>
 
-    <TextView
-        android:id="@+id/VentaCostoTotal"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/VentaPrecio"
-        android:layout_alignStart="@+id/VentaPrecio"
-        android:layout_alignLeft="@+id/VentaPrecio"
-        android:hint="$$$"
-        android:textSize="22sp"
-        android:layout_marginBottom="5dp"/>
+            <EditText
+                android:id="@+id/VentaCantidad"
+                android:layout_width="75dp"
+                android:layout_marginTop="-8dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:minWidth="75dp"
+                android:textSize="30sp"
+                tools:text="0000" />
 
-    <TextView
-        android:id="@+id/VentaCostoArticulo"
-        android:layout_width="0dp"
-        android:layout_height="0dp"/>
+            <ImageButton
+                android:id="@+id/editarArticuloVentaDisminuirCantidad"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_below="@+id/VentaCantidad"
+                android:layout_alignStart="@+id/VentaCantidad"
+                android:layout_alignLeft="@+id/VentaCantidad"
+                app:srcCompat="@drawable/lessicon" />
 
-</RelativeLayout>
+            <ImageButton
+                android:id="@+id/editarArticuloVentaAnadirCantidad"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_below="@+id/VentaCantidad"
+                android:layout_alignEnd="@+id/VentaCantidad"
+                android:layout_alignRight="@+id/VentaCantidad"
+                app:srcCompat="@drawable/moreicon" />
+
+            <TextView
+                android:id="@+id/VentaIdArticulo"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/VentaNombre"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Cant        " />
+
+            <TextView
+                android:id="@+id/VentaCostoTotal"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/VentaPrecio"
+                android:layout_alignStart="@+id/VentaPrecio"
+                android:layout_alignLeft="@+id/VentaPrecio"
+                android:hint="$$$"
+                android:textSize="22sp"
+                android:layout_marginBottom="5dp"/>
+
+            <TextView
+                android:id="@+id/VentaCostoArticulo"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</LinearLayout>

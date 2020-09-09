@@ -52,9 +52,9 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val nombreArticulo = view.findViewById(R.id.VentaNombre) as TextView
         val precio = view.findViewById(R.id.VentaPrecio) as TextView
         val cantidad = view.findViewById(R.id.VentaCantidad) as EditText
-        val imagenArticulo = view.findViewById(R.id.EditarArticuloVentaFoto) as ImageView
-        var disminuirCantidad = view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
-        var aumentarCantidad = view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
+        val imagenArticulo = view.findViewById(R.id.editarArticuloVentaFoto) as ImageView
+        var disminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
+        var aumentarCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
         var ventaIdArticulo = view.findViewById(R.id.VentaIdArticulo) as TextView
         var VentaCostoTotal = view.findViewById(R.id.VentaCostoTotal) as TextView
         var VentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView

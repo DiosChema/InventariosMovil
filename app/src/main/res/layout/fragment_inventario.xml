@@ -17,7 +17,8 @@
         android:layout_marginBottom="5dp"
         android:text="@string/mensaje_anadir_articulo"
         android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp"/>
+        android:layout_marginRight="45dp"
+        android:background="@drawable/round_button_white"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventario"

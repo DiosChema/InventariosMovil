@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.InventarioDetalle"
-    android:layout_margin="10dp">
+    android:background="@color/background">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -28,8 +28,9 @@
             android:layout_marginTop="25dp"
             android:layout_marginLeft="25dp"
             android:layout_marginBottom="25dp"
-            android:maxLength="10"
-            android:inputType="number"/>
+            android:maxLength="13"
+            android:inputType="numberSigned"
+            android:background="@drawable/round_button_white"/>
 
         <ImageButton
             android:id="@+id/invBottonTomarCodigo"
@@ -50,7 +51,8 @@
             android:layout_alignLeft="@+id/invDetalleId"
             android:layout_marginRight="45dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginBottom="25dp"/>
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/round_button_white"/>
 
         <ImageButton
             android:id="@+id/invBotonEliminarFamilia"
@@ -89,7 +91,8 @@
             android:layout_alignStart="@+id/invDetalleFamiliaSpinner"
             android:layout_alignLeft="@+id/invDetalleFamiliaSpinner"
             android:layout_alignEnd="@+id/invDetalleFamiliaSpinner"
-            android:layout_alignRight="@+id/invDetalleFamiliaSpinner"/>
+            android:layout_alignRight="@+id/invDetalleFamiliaSpinner"
+            android:background="@drawable/round_button_white"/>
 
         <ImageButton
             android:id="@+id/invBotonEliminarSubFamilia"
@@ -134,7 +137,8 @@
             android:gravity="center_horizontal"
             android:maxLines="1"
             android:maxLength="15"
-            android:hint="@string/mensaje_nombre_articulo" />
+            android:hint="@string/mensaje_nombre_articulo"
+            android:background="@drawable/round_button_white"/>
 
         <EditText
             android:id="@+id/invDetalleNombreDetalle"
@@ -151,7 +155,8 @@
             android:maxLines="2"
             android:layout_marginBottom="10dp"
             android:maxLength="60"
-            android:hint="@string/mensaje_detalle_articulo" />
+            android:hint="@string/mensaje_detalle_articulo"
+            android:background="@drawable/round_button_white"/>
 
         <EditText
             android:id="@+id/invDetallePrecio"
@@ -164,7 +169,8 @@
             android:maxLength="8"
             android:inputType="numberDecimal"
             android:textAlignment="center"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"/>
 
         <TextView
             android:id="@+id/invDetallePrecioText"
@@ -186,7 +192,8 @@
             android:hint="@string/mensaje_cantidad_articulo"
             android:inputType="number"
             android:textAlignment="center"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"/>
 
 
         <TextView
@@ -210,7 +217,8 @@
             android:layout_alignLeft="@+id/invDetallePrecio"
             android:inputType="numberDecimal"
             android:textAlignment="center"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"/>
 
         <TextView
             android:id="@+id/invDetalleCostoText"
@@ -231,7 +239,8 @@
             android:layout_alignEnd="@+id/invDetalleCantidad"
             android:layout_alignRight="@+id/invDetalleCantidad"
             android:layout_marginTop="85dp"
-            android:text="@string/mensaje_agregar_articulo" />
+            android:text="@string/mensaje_agregar_articulo"
+            android:background="@drawable/round_button_white"/>
 
         <ImageButton
             android:id="@+id/invDetalleCancelarEdicion"

@@ -2,6 +2,7 @@ package com.example.perraco.Activities
 
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -46,6 +47,7 @@ class VentaDetalle : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venta_detalle)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         globalVariable = applicationContext as GlobalClass
 
         context = this;
@@ -195,10 +197,7 @@ class VentaDetalle : AppCompatActivity() {
             }
         }
 
-        var ventaActualizada : ActualizarVenta = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulos)
-
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val currentDate = sdf.format(Date())
+        var ventaActualizada = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulos)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(ventaActualizada)
@@ -225,6 +224,7 @@ class VentaDetalle : AppCompatActivity() {
                 runOnUiThread {
                     progressDialog.dismiss()
                     Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
+                    finish()
                 }
 
             }
@@ -283,45 +283,8 @@ class VentaDetalle : AppCompatActivity() {
     }
 
     private fun habilitarEdicion(habilitar : Boolean) {
-
-        //for (i in 0..mViewArticulosVenta.itemCount - 1) {
-        for (i in 0 until adapter?.count!!) {
-
-            var view = listView?.get(i)
-
-            /*val view: View = mRecyclerView.getChildAt(i)*/
-
-            if(view != null){
-                val EditarArticuloVentaCantidad =
-                    view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
-                val EditarArticuloVentaPrecio =
-                    view.findViewById(R.id.EditarArticuloVentaPrecio) as EditText
-                val EditarArticuloVentaCosto =
-                    view.findViewById(R.id.EditarArticuloVentaCosto) as EditText
-                val EditarArticuloVentaDisminuirCantidad =
-                    view.findViewById(R.id.EditarArticuloVentaDisminuirCantidad) as ImageButton
-                val EditarArticuloVentaAnadirCantidad =
-                    view.findViewById(R.id.EditarArticuloVentaAnadirCantidad) as ImageButton
-                val EditarArticuloEliminarArticulo =
-                    view.findViewById(R.id.EditarArticuloEliminarArticulo) as ImageButton
-
-
-                EditarArticuloVentaCantidad.isEnabled = habilitar
-                EditarArticuloVentaPrecio.isEnabled = habilitar
-                EditarArticuloVentaCosto.isEnabled = habilitar
-                EditarArticuloEliminarArticulo.isEnabled = habilitar
-                adapter!!.setHabilitar(habilitar)
-                if(habilitar) {
-                    EditarArticuloVentaDisminuirCantidad.visibility = View.VISIBLE
-                    EditarArticuloVentaAnadirCantidad.visibility = View.VISIBLE
-                }else{
-                    EditarArticuloVentaDisminuirCantidad.visibility = View.INVISIBLE
-                    EditarArticuloVentaAnadirCantidad.visibility = View.INVISIBLE
-                }
-            }
-
-        }
-
+            adapter!!.setHabilitar(habilitar)
+            adapter!!.notifyDataSetChanged()
     }
 
 

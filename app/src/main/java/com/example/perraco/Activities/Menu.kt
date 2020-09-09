@@ -1,6 +1,7 @@
 package com.example.perraco.Activities
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -13,6 +14,8 @@ class Menu : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         val buttonVenta = findViewById<ImageView>(R.id.Venta)
         buttonVenta?.setOnClickListener()
