@@ -52,12 +52,15 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
         val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         view = inflater.inflate(R.layout.item_venta_editar_articulo, null)
 
+        if(articuloVentaObjeto[i].cantidad == 0)
+            return inflater.inflate(R.layout.item_vacio, null)
+
         val editarArticuloVentaFoto = view.findViewById(R.id.editarArticuloVentaFoto) as ImageView
         val editarArticuloVentaNombre = view.findViewById(R.id.editarArticuloVentaNombre) as TextView
         val editarArticuloVentaCantidadText = view.findViewById(R.id.editarArticuloVentaCantidadText) as TextView
         val editarArticuloVentaCantidad = view.findViewById(R.id.editarArticuloVentaCantidad) as EditText
-        val editarArticuloVentaDisminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
-        val editarArticuloVentaAnadirCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
+        val editarArticuloVentaDisminuirCantidad = view.findViewById(R.id.itemVentaArticulo) as ImageButton
+        val editarArticuloVentaAnadirCantidad = view.findViewById(R.id.itemVentaAnadirCantidad) as ImageButton
         val editarArticuloVentaPrecio = view.findViewById(R.id.editarArticuloVentaPrecio) as EditText
         val editarArticuloVentaPrecioText = view.findViewById(R.id.editarArticuloVentaPrecioText) as TextView
         val editarArticuloVentaCosto = view.findViewById(R.id.editarArticuloVentaCosto) as EditText
@@ -89,12 +92,11 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
 
             if(valor.isNotEmpty()){
                 val cantidadArticulo = Integer.parseInt(valor) - 1
-                if(cantidadArticulo >= 0 )
+                editarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
+
+                if(cantidadArticulo <= 0 ){
                     editarArticuloVentaCantidad.setText((cantidadArticulo.toString()))
-                else{
-                    val params: ViewGroup.LayoutParams = view.layoutParams
-                    params.height = 0
-                    view.layoutParams = params
+                    notifyDataSetChanged()
                 }
             }
         })
@@ -106,9 +108,7 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
 
         editarArticuloEliminarArticulo.setOnClickListener {
             editarArticuloVentaCantidad.setText("0")
-            val params: ViewGroup.LayoutParams = view.layoutParams
-            params.height = 0
-            view.layoutParams = params
+            notifyDataSetChanged()
         }
 
         editarArticuloVentaCantidad.addTextChangedListener(object : TextWatcher {

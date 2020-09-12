@@ -30,5 +30,12 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, Inventario::class.java)
             startActivity(intent)
         }
+
+        val buttonEstadistica = findViewById<ImageView>(R.id.estadistica)
+        buttonEstadistica?.setOnClickListener()
+        {
+            val intent = Intent(this, EstadisticaArticulo::class.java)
+            startActivity(intent)
+        }
     }
 }

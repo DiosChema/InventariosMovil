@@ -1,7 +1,5 @@
 package com.example.perraco.Objets
 
-import com.google.gson.reflect.TypeToken
-
 data class Urls(
     var url:String,
     var endPointInventario:String,
@@ -25,7 +23,9 @@ data class Urls(
     var endPointLoginUsuario:String,
     var endPointRegistrarNuevaTienda:String,
     var endPointArticulosPorFamilia:String,
-    var endPointArticulosPorSubFamilia:String)
+    var endPointArticulosPorSubFamilia:String,
+    var endPointBuscarVentaPorFecha:String,
+    var endPointArticulosMasVendidos:String)
 {
     constructor(): this(
         /*"https://tienditaplus.herokuapp.com/"*/
@@ -51,6 +51,8 @@ data class Urls(
         "loginUsuario",
         "registrarNuevaTienda",
         "buscarArticulosPorFamilia",
-        "buscarArticulosPorSubFamilia")
+        "buscarArticulosPorSubFamilia",
+        "buscarVentaPorFecha",
+        "buscarArticulosMasVendidos")
 
 }

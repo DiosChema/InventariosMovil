@@ -1,13 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragments.VentaFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvVentas"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/fragmentBuscarPorFechaInicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:background="@drawable/round_button_white"
+            android:text="@string/hello_blank_fragment" />
+
+        <TextView
+            android:id="@+id/fragmentBuscarPorFechaFinal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/round_button_white"
+            android:text="@string/hello_blank_fragment" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvVentas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragmentBuscarPorFechaInicio" />
+
+    </RelativeLayout>
 </FrameLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dialogFechaTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:textSize="25sp"
+        android:text="hello_blank_fragment"/>
+
+    <DatePicker
+        android:id="@+id/dialoFechaDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogFechaTitulo"
+        android:layout_centerHorizontal="true"
+        android:calendarViewShown="false"
+        android:datePickerMode="spinner" />
+
+    <Button
+        android:id="@+id/dialogFechaBotonCancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/dialoFechaDatePicker"
+        android:layout_alignLeft="@+id/dialoFechaDatePicker"
+        android:layout_below="@+id/dialoFechaDatePicker"
+        android:text="@string/dialog_cancelar" />
+
+    <Button
+        android:id="@+id/dialogFechaBotonAceptar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialoFechaDatePicker"
+        android:layout_alignEnd="@+id/dialoFechaDatePicker"
+        android:layout_alignRight="@+id/dialoFechaDatePicker"
+        android:text="@string/dialog_aceptar" />
+
+
+</RelativeLayout>

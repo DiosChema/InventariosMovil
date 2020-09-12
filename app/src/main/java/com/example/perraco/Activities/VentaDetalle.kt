@@ -66,7 +66,7 @@ class VentaDetalle : AppCompatActivity() {
         (listView as ListView).adapter = adapter
 
         VentaDetalleNumero.text = venta._id.toString()
-        VentaDetalleFecha.text = venta.fecha
+        VentaDetalleFecha.text = venta.fecha.toString()
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
         VentaDetalleCancelar.visibility = View.INVISIBLE
@@ -286,6 +286,5 @@ class VentaDetalle : AppCompatActivity() {
             adapter!!.setHabilitar(habilitar)
             adapter!!.notifyDataSetChanged()
     }
-
 
 }

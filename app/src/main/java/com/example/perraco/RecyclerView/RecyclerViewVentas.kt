@@ -90,7 +90,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
 
             VentasNumeroVenta.text = venta._id.toString()
             VentasNumeroVentaText.text = itemView.context.getString(R.string.mensaje_numero_venta)
-            VentasFecha.text = venta.fecha
+            VentasFecha.text = venta.fecha.toString()
             VentasTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +venta.totalVenta.toString()
 
             VentasBotonEditar.setOnClickListener{

@@ -51,8 +51,8 @@ class RecyclerViewEditarArticulosVenta : RecyclerView.Adapter<RecyclerViewEditar
         val EditarArticuloVentaNombre = view.findViewById(R.id.editarArticuloVentaNombre) as TextView
         val EditarArticuloVentaCantidadText = view.findViewById(R.id.editarArticuloVentaCantidadText) as TextView
         val EditarArticuloVentaCantidad = view.findViewById(R.id.editarArticuloVentaCantidad) as EditText
-        val EditarArticuloVentaDisminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
-        val EditarArticuloVentaAnadirCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
+        val EditarArticuloVentaDisminuirCantidad = view.findViewById(R.id.itemVentaArticulo) as ImageButton
+        val EditarArticuloVentaAnadirCantidad = view.findViewById(R.id.itemVentaAnadirCantidad) as ImageButton
         val EditarArticuloVentaPrecio = view.findViewById(R.id.editarArticuloVentaPrecio) as EditText
         val EditarArticuloVentaPrecioText = view.findViewById(R.id.editarArticuloVentaPrecioText) as TextView
         val EditarArticuloVentaCosto = view.findViewById(R.id.editarArticuloVentaCosto) as EditText

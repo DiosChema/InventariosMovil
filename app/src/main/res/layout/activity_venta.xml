@@ -27,8 +27,8 @@
 
     <ImageButton
         android:id="@+id/VentaNuevoArticulo"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_alignTop="@+id/VentaCodigoAgregar"
         android:layout_alignBottom="@+id/VentaCodigoAgregar"
         android:layout_toEndOf="@+id/VentaCodigoAgregar"

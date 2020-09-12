@@ -51,15 +51,16 @@ class AdapterListVenta(private val activity: Activity, articulosList: MutableLis
         if(inventarioObjeto[i].cantidadArticulo == 0)
             return inflater.inflate(R.layout.item_vacio, null)
 
-        val nombreArticulo = view.findViewById(R.id.VentaNombre) as TextView
-        val precio = view.findViewById(R.id.VentaPrecio) as TextView
-        val cantidad = view.findViewById(R.id.VentaCantidad) as EditText
-        val imagenArticulo = view.findViewById(R.id.editarArticuloVentaFoto) as ImageView
-        var disminuirCantidad = view.findViewById(R.id.editarArticuloVentaDisminuirCantidad) as ImageButton
-        var aumentarCantidad = view.findViewById(R.id.editarArticuloVentaAnadirCantidad) as ImageButton
-        var ventaIdArticulo = view.findViewById(R.id.VentaIdArticulo) as TextView
-        var VentaCostoTotal = view.findViewById(R.id.VentaCostoTotal) as TextView
-        var VentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView
+        val nombreArticulo = view.findViewById(R.id.itemVentaNombre) as TextView
+        val precio = view.findViewById(R.id.itemVentaPrecio) as TextView
+        val cantidad = view.findViewById(R.id.itemVentaCantidad) as EditText
+        val imagenArticulo = view.findViewById(R.id.itemVentaFoto) as ImageView
+        var disminuirCantidad = view.findViewById(R.id.itemVentaArticulo) as ImageButton
+        var aumentarCantidad = view.findViewById(R.id.itemVentaAnadirCantidad) as ImageButton
+        var ventaIdArticulo = view.findViewById(R.id.itemVentaIdArticulo) as TextView
+        var VentaCostoTotal = view.findViewById(R.id.itemVentaCostoTotal) as TextView
+        var itemVentaCostoTotal = view.findViewById(R.id.itemVentaCostoTotal) as TextView
+        var VentaCostoArticulo = view.findViewById(R.id.itemVentaCostoArticulos) as TextView
 
         var globalVariable = view.context.applicationContext as GlobalClass
 
@@ -70,11 +71,12 @@ class AdapterListVenta(private val activity: Activity, articulosList: MutableLis
         ventaIdArticulo.setText(/*itemView.context.getString(R.string.mensaje_precio_articulo) + " :" + */inventarioObjeto[i].idArticulo.toString())
         VentaCostoTotal.text = (Double.parseDouble(inventarioObjeto[i].precioArticulo.toString()) * inventarioObjeto[i].cantidadArticulo).toString()
         VentaCostoArticulo.text = Double.parseDouble(inventarioObjeto[i].costoArticulo.toString()).toString()
+        itemVentaCostoTotal.text = view.context.getString(R.string.mensaje_cantidad_articulo_diminutivo)
 
         disminuirCantidad.setOnClickListener(View.OnClickListener {
             val tamanoString = cantidad.text.toString()
 
-            if(tamanoString.length > 0)
+            if(tamanoString.isNotEmpty())
             {
                 val cantidadArticulo = Integer.parseInt(cantidad.text.toString()) - 1
                 inventarioObjeto[i].cantidadArticulo = cantidadArticulo
@@ -85,7 +87,6 @@ class AdapterListVenta(private val activity: Activity, articulosList: MutableLis
                     notifyDataSetChanged()
                 }
             }
-
         })
 
         aumentarCantidad.setOnClickListener(View.OnClickListener {

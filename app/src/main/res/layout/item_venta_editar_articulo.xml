@@ -67,7 +67,7 @@
                 android:text="0000" />
 
             <ImageButton
-                android:id="@+id/editarArticuloVentaDisminuirCantidad"
+                android:id="@+id/itemVentaArticulo"
                 app:srcCompat="@drawable/lessicon"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -76,7 +76,7 @@
                 android:layout_alignLeft="@+id/editarArticuloVentaCantidad"/>
 
             <ImageButton
-                android:id="@+id/editarArticuloVentaAnadirCantidad"
+                android:id="@+id/itemVentaAnadirCantidad"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_below="@+id/editarArticuloVentaCantidad"
