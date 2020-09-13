@@ -27,7 +27,7 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = articulosInventario.get(position)
+        val item = articulosInventario[position]
         holder.bind(item, context)
     }
 
@@ -47,27 +47,29 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nombre = view.findViewById(R.id.invNombre) as TextView
-        val descripcion = view.findViewById(R.id.invDescipcion) as TextView
-        val precio = view.findViewById(R.id.invPrecio) as TextView
-        val precioText = view.findViewById(R.id.invPrecioText) as TextView
-        val imagen = view.findViewById(R.id.invFoto) as ImageView
+        val itemArticuloInventarioNombre = view.findViewById(R.id.itemArticuloInventarioNombre) as TextView
+        val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
+        val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
+        val itemArticuloInventarioPrecioText = view.findViewById(R.id.itemArticuloInventarioPrecioText) as TextView
+        val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
+        val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
+        val urls = Urls()
 
         fun bind(articulo: InventarioObjeto, context: Context) {
-            nombre.text = articulo.nombreArticulo
-            descripcion.text = articulo.descripcionArticulo
-            precio.setText("$" + articulo.precioArticulo)
-            precioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
+            itemArticuloInventarioNombre.text = articulo.nombreArticulo
+            itemArticuloInventarioDescipcion.text = articulo.descripcionArticulo
+            itemArticuloInventarioPrecio.setText("$" + articulo.precioArticulo)
+            itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
+            itemArticuloInventarioCantidad.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo) + articulo.cantidadArticulo
             itemView.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context, InventarioDetalle::class.java).apply {
                     putExtra("articulo", articulo)
                 }
                 context.startActivity(intent)
             })
-            val urls = Urls()
-            imagen.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }
 
         fun ImageView.loadUrl(url: String) {

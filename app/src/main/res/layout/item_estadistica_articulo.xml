@@ -8,7 +8,7 @@
     android:background="@drawable/border">
 
     <ImageView
-        android:id="@+id/estadisticaArticuloFoto"
+        android:id="@+id/itemEstadisticaArticuloFoto"
         android:layout_width="80dp"
         android:layout_height="100dp"
         android:layout_margin="5dp"
@@ -25,7 +25,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/estadisticaArticuloTitulo"
+                android:id="@+id/itemEstadisticaArticuloTitulo"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -35,7 +35,7 @@
                 android:text="TextView"/>
 
             <TextView
-                android:id="@+id/estadisticaArticuloPrecio"
+                android:id="@+id/itemEstadisticaArticuloPrecio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
@@ -52,7 +52,7 @@
             android:layout_marginTop="15dp">
 
             <TextView
-                android:id="@+id/estadisticaArticuloDescripcion"
+                android:id="@+id/itemEstadisticaArticuloDescripcion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -69,7 +69,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/estadisticaArticuloCantidad"
+                    android:id="@+id/itemEstadisticaArticuloCantidad"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="17sp"
@@ -79,14 +79,16 @@
                     android:text="TextView" />
 
                 <TextView
-                    android:id="@+id/estadisticaArticuloTotal"
+                    android:id="@+id/itemEstadisticaArticuloTotal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
                     android:layout_marginRight="3dp"
                     android:layout_marginEnd="3dp"
                     android:layout_gravity="right"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textStyle="bold
+"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -36,6 +36,11 @@ class InventarioFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         globalVariable = getActivity()?.applicationContext as GlobalClass
 
+        crearRecyclerView()
+        asignarBotones()
+    }
+
+    fun crearRecyclerView(){
         mViewInventario = RecyclerViewInventario()
         mRecyclerView = rvInventario as RecyclerView
         mRecyclerView.setHasFixedSize(true)
@@ -44,9 +49,9 @@ class InventarioFragment : Fragment() {
             mViewInventario.RecyclerAdapter(listaTmp, context)
         }
         mRecyclerView.adapter = mViewInventario
+    }
 
-        getInventarioObjecto(mViewInventario,mRecyclerView)
-
+    fun asignarBotones(){
         val button = rvNuevoArticulo
         button?.setOnClickListener()
         {

@@ -15,7 +15,7 @@
         android:background="@drawable/border">
 
         <TextView
-            android:id="@+id/VentasNumeroVentaText"
+            android:id="@+id/ventasFragmentNumeroVentaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
@@ -27,15 +27,15 @@
             tools:text= "Venta No." />
 
         <TextView
-            android:id="@+id/VentasNumeroVenta"
+            android:id="@+id/ventasFragmentNumeroVenta"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/VentasNumeroVentaText"
-            android:layout_alignStart="@+id/VentasNumeroVentaText"
-            android:layout_alignLeft="@+id/VentasNumeroVentaText"
-            android:layout_alignEnd="@+id/VentasNumeroVentaText"
-            android:layout_alignRight="@+id/VentasNumeroVentaText"
+            android:layout_below="@+id/ventasFragmentNumeroVentaText"
+            android:layout_alignStart="@+id/ventasFragmentNumeroVentaText"
+            android:layout_alignLeft="@+id/ventasFragmentNumeroVentaText"
+            android:layout_alignEnd="@+id/ventasFragmentNumeroVentaText"
+            android:layout_alignRight="@+id/ventasFragmentNumeroVentaText"
             android:maxEms="5"
             android:textSize="25sp"
             android:textStyle="bold"
@@ -44,7 +44,7 @@
             android:gravity="center_horizontal" />
 
         <TextView
-            android:id="@+id/VentasFecha"
+            android:id="@+id/ventasFragmentFecha"
             android:layout_marginRight="6dp"
             android:layout_marginEnd="6dp"
             android:layout_marginTop="6dp"
@@ -57,13 +57,13 @@
             tools:text="Fecha" />
 
         <TextView
-            android:id="@+id/VentasTotalVenta"
+            android:id="@+id/ventasFragmentTotalVenta"
             android:layout_marginRight="6dp"
             android:layout_marginEnd="6dp"
             android:layout_marginBottom="6dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/VentasFecha"
+            android:layout_below="@+id/ventasFragmentFecha"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:maxEms="7"
@@ -72,17 +72,17 @@
             tools:text="Total: $999999"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/VentaDetalleArticulos"
+            android:id="@+id/ventasFragmentRecyclerViewArticulos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/VentasNumeroVenta"
+            android:layout_below="@+id/ventasFragmentNumeroVenta"
             android:layout_margin="5dp"/>
 
         <ImageView
-            android:id="@+id/VentasBotonEditar"
+            android:id="@+id/ventasFragmentBotonEditar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/VentasTotalVenta"
+            android:layout_below="@+id/ventasFragmentTotalVenta"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"

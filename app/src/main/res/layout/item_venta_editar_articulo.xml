@@ -23,7 +23,7 @@
 
             <ImageView
                 android:id="@+id/editarArticuloVentaFoto"
-                android:layout_width="100dp"
+                android:layout_width="80dp"
                 android:layout_height="120dp"
                 android:scaleType="centerCrop"
                 android:layout_marginLeft="10dp"

@@ -3,7 +3,7 @@ package com.example.perraco.Objets
 import java.io.Serializable
 
 data class ActualizarArticuloObjeto(
-    var idFactura:Int,
+    var idVenta:Int,
     var idArticulo:Long,
     var cantidad:Int,
     var precio:Double,

@@ -47,29 +47,17 @@ class VentaFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        /*fechaInicial = formatoFechaCompleta.format(Date())
-        fechaFinal = formatoFechaCompleta.format(formatoFecha.parse("01-01-2020"))*/
-
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 23);// for 6 hour
-        calendar.set(Calendar.MINUTE, 59);// for 0 min
-        calendar.set(Calendar.SECOND, 59);// for 0 sec
-        fechaFinal = calendar.time
-        fechaInicial = formatoFecha.parse("01-01-2020")
-
         globalVariable = activity?.applicationContext as GlobalClass
 
-        fechaInicialButton = fragmentBuscarPorFechaInicio
-        fechaInicialButton.setOnClickListener {
-            showDialogFechaInicial()
-        }
+        asignarFechas()
+        asignarBotones()
+        crearRecyclerView()
+        asignarFechaInicial()
+        asignarFechaFinal()
+        getVentasObjecto()
+    }
 
-
-        fechaFinalButton = fragmentBuscarPorFechaFinal
-        fechaFinalButton.setOnClickListener {
-            showDialogFechaFinal()
-        }
-
+    fun crearRecyclerView(){
         mViewVentas = RecyclerViewVentas()
         mRecyclerView = rvVentas as RecyclerView
         mRecyclerView.setHasFixedSize(true)
@@ -78,11 +66,18 @@ class VentaFragment : Fragment() {
             mViewVentas.RecyclerAdapter(listaTmp, context)
         }
         mRecyclerView.adapter = mViewVentas
+    }
 
-        getVentasObjecto()
+    fun asignarBotones(){
+        fechaInicialButton = fragmentBuscarPorFechaInicio
+        fechaInicialButton.setOnClickListener {
+            showDialogFechaInicial()
+        }
 
-        asignarFechaInicial()
-        asignarFechaFinal()
+        fechaFinalButton = fragmentBuscarPorFechaFinal
+        fechaFinalButton.setOnClickListener {
+            showDialogFechaFinal()
+        }
     }
 
     fun getVentasObjecto(){
@@ -143,29 +138,25 @@ class VentaFragment : Fragment() {
         val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
         val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
 
-        val calendar = Calendar.getInstance()
+        var calendar = Calendar.getInstance()
         calendar.time = fechaInicial
-        calendar.set(Calendar.HOUR_OF_DAY, 0);// for 6 hour
-        calendar.set(Calendar.MINUTE, 0);// for 0 min
-        calendar.set(Calendar.SECOND, 0);// for 0 sec
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
 
         dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2020").time
         dialogFechaDatePicker.maxDate = fechaFinal.time
 
-        dialogFechaTitulo.text = getString(R.string.dialog_eliminar_articulo)
+        dialogFechaTitulo.text = getString(R.string.dialog_fecha_inicial)
 
         dialogFechaBotonAceptar.setOnClickListener {
             val day: Int = dialogFechaDatePicker.dayOfMonth
             val month: Int = dialogFechaDatePicker.month
             val year: Int = dialogFechaDatePicker.year
 
-            val calendar = Calendar.getInstance()
+            var calendar = Calendar.getInstance()
             calendar.set(year, month, day)
-            calendar.set(Calendar.HOUR_OF_DAY, 0);// for 6 hour
-            calendar.set(Calendar.MINUTE, 0);// for 0 min
-            calendar.set(Calendar.SECOND, 0);// for 0 sec
+            calendar = asignarHoraCalendar(calendar, 0, 0, 0)
             calendar.timeZone = Calendar.getInstance().timeZone;
 
             fechaInicial = calendar.time
@@ -192,25 +183,21 @@ class VentaFragment : Fragment() {
         val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
         val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
 
-        val calendar = Calendar.getInstance()
+        var calendar = Calendar.getInstance()
         calendar.time = fechaFinal
-        calendar.set(Calendar.HOUR_OF_DAY, 0);// for 6 hour
-        calendar.set(Calendar.MINUTE, 0);// for 0 min
-        calendar.set(Calendar.SECOND, 0);// for 0 sec
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
 
         dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-        val currentTime = Calendar.getInstance()
-        currentTime.set(Calendar.HOUR_OF_DAY, 0);// for 6 hour
-        currentTime.set(Calendar.MINUTE, 0);// for 0 min
-        currentTime.set(Calendar.SECOND, 0);// for 0 sec
+        var currentTime = Calendar.getInstance()
+
+        currentTime = asignarHoraCalendar(currentTime, 0, 0, 0)
 
         dialogFechaDatePicker.minDate = fechaInicial.time
-
         dialogFechaDatePicker.maxDate = currentTime.time.time
 
 
-        dialogFechaTitulo.text = getString(R.string.dialog_eliminar_articulo)
+        dialogFechaTitulo.text = getString(R.string.dialog_fecha_final)
 
         dialogFechaBotonAceptar.setOnClickListener {
 
@@ -218,12 +205,10 @@ class VentaFragment : Fragment() {
             val month: Int = dialogFechaDatePicker.month
             val year: Int = dialogFechaDatePicker.year
 
-            val calendar = Calendar.getInstance()
+            var calendar = Calendar.getInstance()
             calendar.set(year, month, day)
             calendar.timeZone = Calendar.getInstance().timeZone;
-            calendar.set(Calendar.HOUR_OF_DAY, 23);// for 6 hour
-            calendar.set(Calendar.MINUTE, 59);// for 0 min
-            calendar.set(Calendar.SECOND, 59);// for 0 sec
+            calendar = asignarHoraCalendar(calendar, 23, 59, 59)
 
             fechaFinal = calendar.time
 
@@ -252,6 +237,23 @@ class VentaFragment : Fragment() {
         calendar.time = fechaFinal
         var text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
         fechaFinalButton.text = text
+    }
+
+    fun asignarHoraCalendar(calendar : Calendar, hora : Int, minuto : Int, segundo : Int) : Calendar{
+        calendar.set(Calendar.HOUR_OF_DAY, hora)
+        calendar.set(Calendar.MINUTE, minuto)
+        calendar.set(Calendar.SECOND, segundo)
+
+        return calendar
+    }
+
+    fun asignarFechas(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
     }
 
 

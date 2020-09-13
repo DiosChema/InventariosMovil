@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class ActualizarVenta(
     var token:String,
-    var idFactura:Int,
+    var idVenta:Int,
     var articulos:List<ActualizarArticuloObjeto>
 ): Serializable

@@ -129,7 +129,7 @@ class Venta : AppCompatActivity() {
 
         val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
         ButtonTerminarVenta?.setOnClickListener {
-            subirFactura()
+            subirVenta()
         }
 
         val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
@@ -161,7 +161,7 @@ class Venta : AppCompatActivity() {
         }
     }
 
-    fun subirFactura() {
+    fun subirVenta() {
 
         actulizarExistencia()
         val url = urls.url+urls.endPointVenta

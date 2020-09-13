@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
-import androidx.core.view.get
 import com.example.perraco.Objets.*
 import com.example.perraco.R
 import com.example.perraco.RecyclerView.AdapterListEditarArticulosVenta
@@ -17,8 +16,6 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class VentaDetalle : AppCompatActivity() {
@@ -61,7 +58,7 @@ class VentaDetalle : AppCompatActivity() {
         VentaDetalleConfirmar = findViewById(R.id.VentaDetalleConfirmar)
         //mRecyclerView = findViewById(R.id.VentaDetalleArticulos)
 
-        listView = findViewById(R.id.VentaDetalleArticulos)
+        listView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
         adapter = AdapterListEditarArticulosVenta(this, venta.articulos.toMutableList())
         (listView as ListView).adapter = adapter
 
@@ -118,7 +115,7 @@ class VentaDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("token", globalVariable.token)
-            jsonObject.put("idFactura", venta._id)
+            jsonObject.put("idVenta", venta._id)
         } catch (e: JSONException) {
             e.printStackTrace()
         }

@@ -15,6 +15,7 @@ import com.example.perraco.Objets.Urls
 import com.example.perraco.Objets.VentasObjeto
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
+import java.text.SimpleDateFormat
 
 class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>() {
 
@@ -48,17 +49,19 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val urls = Urls()
-        val VentasNumeroVenta = view.findViewById(R.id.VentasNumeroVenta) as TextView
-        val VentasNumeroVentaText = view.findViewById(R.id.VentasNumeroVentaText) as TextView
-        val VentasFecha = view.findViewById(R.id.VentasFecha) as TextView
-        val VentasTotalVenta = view.findViewById(R.id.VentasTotalVenta) as TextView
-        val rvArticulosEnVenta = view.findViewById(R.id.VentaDetalleArticulos) as RecyclerView
-        val VentasBotonEditar = view.findViewById(R.id.VentasBotonEditar) as ImageView
+        val ventasFragmentNumeroVenta = view.findViewById(R.id.ventasFragmentNumeroVenta) as TextView
+        val ventasFragmentNumeroVentaText = view.findViewById(R.id.ventasFragmentNumeroVentaText) as TextView
+        val ventasFragmentFecha = view.findViewById(R.id.ventasFragmentFecha) as TextView
+        val ventasFragmentTotalVenta = view.findViewById(R.id.ventasFragmentTotalVenta) as TextView
+        val ventasFragmentRecyclerViewArticulos = view.findViewById(R.id.ventasFragmentRecyclerViewArticulos) as RecyclerView
+        val ventasFragmentBotonEditar = view.findViewById(R.id.ventasFragmentBotonEditar) as ImageView
+
+        var simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
 
         fun bind(venta: VentasObjeto, context: Context) {
             var mViewVentas = RecyclerViewArticulosVenta()
-            var mRecyclerView : RecyclerView = rvArticulosEnVenta as RecyclerView
+            var mRecyclerView : RecyclerView = ventasFragmentRecyclerViewArticulos
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager = LinearLayoutManager(context)
             if (context != null) {
@@ -68,32 +71,32 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
 
 
             itemView.setOnClickListener(View.OnClickListener {
-                if(rvArticulosEnVenta.isVisible) {
-                    rvArticulosEnVenta.setVisibility(View.INVISIBLE)
-                    val params: ViewGroup.LayoutParams = mRecyclerView.getLayoutParams()
+                if(ventasFragmentRecyclerViewArticulos.isVisible) {
+                    ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
+                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
                     params.height = 60
                     mRecyclerView.setLayoutParams(params)
                 }
                 else {
-                    rvArticulosEnVenta.setVisibility(View.VISIBLE)
-                    val params: ViewGroup.LayoutParams = mRecyclerView.getLayoutParams()
+                    ventasFragmentRecyclerViewArticulos.visibility = View.VISIBLE
+                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
                     params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                    mRecyclerView.setLayoutParams(params)
+                    mRecyclerView.layoutParams = params
                 }
             })
 
-            val params2: ViewGroup.LayoutParams = mRecyclerView.getLayoutParams()
-            params2.height = 60
-            mRecyclerView.setLayoutParams(params2)
+            val nuevoTamano: ViewGroup.LayoutParams = mRecyclerView.layoutParams
+            nuevoTamano.height = 60
+            mRecyclerView.layoutParams = nuevoTamano
 
-            rvArticulosEnVenta.setVisibility(View.INVISIBLE)
+            ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
 
-            VentasNumeroVenta.text = venta._id.toString()
-            VentasNumeroVentaText.text = itemView.context.getString(R.string.mensaje_numero_venta)
-            VentasFecha.text = venta.fecha.toString()
-            VentasTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +venta.totalVenta.toString()
+            ventasFragmentNumeroVenta.text = venta._id.toString()
+            ventasFragmentNumeroVentaText.text = itemView.context.getString(R.string.mensaje_numero_venta)
+            ventasFragmentFecha.text = simpleDate.format(venta.fecha)
+            ventasFragmentTotalVenta.text = itemView.context.getString(R.string.mensaje_total_venta) + " $" +venta.totalVenta.toString()
 
-            VentasBotonEditar.setOnClickListener{
+            ventasFragmentBotonEditar.setOnClickListener{
                 val intent = Intent(context, VentaDetalle::class.java).apply {
                     putExtra("venta", venta)
                 }
