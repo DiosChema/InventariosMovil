@@ -47,11 +47,15 @@
     <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
 
 
-
-    <!-- Estadistica -->
+    <!-- Estadistica Articulos -->
     <string name="estadistica_articulo_botton_dia">Hoy</string>
     <string name="estadistica_articulo_botton_semana">Ultima semana</string>
     <string name="estadistica_articulo_botton_mes">Este mes</string>
+
+    <!-- Estadistica Ventas -->
+    <string name="estadistica_ventas_total_venta">Ventas</string>
+    <string name="estadistica_ventas_total_costo">Costos</string>
+    <string name="estadistica_ventas_total_ganancia">Ganancia</string>
 
     <!-- Fechas -->
     <string name="dialog_fecha_inicial">Selecciones la fecha inicial</string>

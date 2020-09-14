@@ -16,25 +16,35 @@ class Menu : AppCompatActivity() {
         setContentView(R.layout.activity_menu)
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        asignarBotones()
+    }
 
+    fun asignarBotones(){
         val buttonVenta = findViewById<ImageView>(R.id.Venta)
-        buttonVenta?.setOnClickListener()
+        buttonVenta.setOnClickListener()
         {
             val intent = Intent(this, Venta::class.java)
             startActivity(intent)
         }
 
         val buttonInventario = findViewById<ImageView>(R.id.Inventario)
-        buttonInventario?.setOnClickListener()
+        buttonInventario.setOnClickListener()
         {
             val intent = Intent(this, Inventario::class.java)
             startActivity(intent)
         }
 
         val buttonEstadistica = findViewById<ImageView>(R.id.estadistica)
-        buttonEstadistica?.setOnClickListener()
+        buttonEstadistica.setOnClickListener()
         {
             val intent = Intent(this, EstadisticaArticulo::class.java)
+            startActivity(intent)
+        }
+
+        val estadistica2 = findViewById<ImageView>(R.id.estadistica2)
+        estadistica2.setOnClickListener()
+        {
+            val intent = Intent(this, EstadisticasVentas::class.java)
             startActivity(intent)
         }
     }

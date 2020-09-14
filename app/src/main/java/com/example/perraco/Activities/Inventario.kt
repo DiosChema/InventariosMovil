@@ -17,17 +17,17 @@ class Inventario : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_inventario)
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        asignarFragments()
 
-        val adapter =
-            MyViewPagerAdapter(
-                supportFragmentManager
-            )
+    }
+
+    fun asignarFragments(){
+        val adapter = MyViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(InventarioFragment() , getString(R.string.fragment_inventario))
         adapter.addFragment(VentaFragment() , getString(R.string.fragment_ventas))
         pager.adapter = adapter
         tab_layout.setupWithViewPager(pager)
-
     }
 
     class MyViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager){

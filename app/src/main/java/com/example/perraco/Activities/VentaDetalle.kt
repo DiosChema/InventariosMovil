@@ -16,6 +16,7 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
 class VentaDetalle : AppCompatActivity() {
@@ -46,6 +47,7 @@ class VentaDetalle : AppCompatActivity() {
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         globalVariable = applicationContext as GlobalClass
+        var simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
 
         context = this;
         venta = intent.getSerializableExtra("venta") as VentasObjeto
@@ -63,7 +65,7 @@ class VentaDetalle : AppCompatActivity() {
         (listView as ListView).adapter = adapter
 
         VentaDetalleNumero.text = venta._id.toString()
-        VentaDetalleFecha.text = venta.fecha.toString()
+        VentaDetalleFecha.text = simpleDate.format(venta.fecha)
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
         VentaDetalleCancelar.visibility = View.INVISIBLE

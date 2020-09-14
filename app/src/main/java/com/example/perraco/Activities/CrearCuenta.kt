@@ -34,16 +34,24 @@ class CrearCuenta : AppCompatActivity() {
         setContentView(R.layout.activity_crear_cuenta)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
+        asignarCampos()
+        asignarBotones()
+
+    }
+
+    fun asignarBotones(){
+        crearCuentaBotonCrearCuenta.setOnClickListener{
+            crearCuenta()
+        }
+    }
+
+    fun asignarCampos(){
         context = this
 
         crearCuentaEmail = findViewById(R.id.crearCuentaEmail)
         crearCuentaPassword = findViewById(R.id.crearCuentaPassword)
         crearCuentaConfirmarPassword = findViewById(R.id.crearCuentaConfirmarPassword)
         crearCuentaBotonCrearCuenta = findViewById(R.id.crearCuentaBotonCrearCuenta)
-
-        crearCuentaBotonCrearCuenta.setOnClickListener{
-            crearCuenta()
-        }
     }
 
     fun crearCuenta(){
