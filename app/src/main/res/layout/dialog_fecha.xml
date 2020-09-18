@@ -29,6 +29,7 @@
         android:layout_alignStart="@+id/dialoFechaDatePicker"
         android:layout_alignLeft="@+id/dialoFechaDatePicker"
         android:layout_below="@+id/dialoFechaDatePicker"
+        android:background="@drawable/round_button_blue"
         android:text="@string/dialog_cancelar" />
 
     <Button
@@ -38,6 +39,7 @@
         android:layout_below="@+id/dialoFechaDatePicker"
         android:layout_alignEnd="@+id/dialoFechaDatePicker"
         android:layout_alignRight="@+id/dialoFechaDatePicker"
+        android:background="@drawable/round_button_blue"
         android:text="@string/dialog_aceptar" />
 
 

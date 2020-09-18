@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity"
-    android:background="@color/background">
+    android:background="@drawable/background">
 
 
 
@@ -90,7 +90,7 @@
                 android:layout_below="@+id/loginPassword"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:background="@drawable/round_button"
+                android:background="@drawable/round_button_blue"
                 android:text="@string/boton_iniciar_sesion" />
 
             <TextView
@@ -101,6 +101,7 @@
                 android:layout_marginTop="15dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:layout_centerHorizontal="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:text="@string/boton_olvidaste_contraseña" />

@@ -74,9 +74,9 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
         editarArticuloVentaCantidadText.text = view.context.getText(R.string.mensaje_cantidad_articulo)
         editarArticuloVentaCantidad.setText(articuloVentaObjeto[i].cantidad.toString())
         editarArticuloVentaPrecio.setText(articuloVentaObjeto[i].precio.toString())
-        editarArticuloVentaPrecioText.text = view.context.getText(R.string.mensaje_precio_venta)
+        editarArticuloVentaPrecioText.text = view.context.getText(R.string.editar_articulo_venta)
         editarArticuloVentaCosto.setText(articuloVentaObjeto[i].costo.toString())
-        editarArticuloVentaCostoText.text = view.context.getText(R.string.mensaje_precio_costo)
+        editarArticuloVentaCostoText.text = view.context.getText(R.string.editar_articulo_costo)
 
         if(!editarHabilitado) {
             editarArticuloVentaCantidad.isEnabled = false

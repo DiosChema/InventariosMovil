@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.VentaDetalle"
-    android:background="@color/background">
-
+    android:background="@drawable/background">
 
         <TextView
             android:id="@+id/VentaDetalleNumeroText"
@@ -63,6 +60,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
+            android:background="@color/transparent"
             app:srcCompat="@android:drawable/ic_menu_delete" />
 
         <ImageButton
@@ -71,6 +69,7 @@
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:background="@color/transparent"
             app:srcCompat="@android:drawable/btn_dialog" />
 
         <ImageButton
@@ -79,6 +78,7 @@
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:background="@color/transparent"
             app:srcCompat="@android:drawable/ic_menu_edit" />
 
         <ImageButton
@@ -89,5 +89,6 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="15dp"
+            android:background="@color/transparent"
             app:srcCompat="@android:drawable/checkbox_on_background" />
     </RelativeLayout>

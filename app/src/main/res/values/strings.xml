@@ -30,8 +30,6 @@
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
     <string name="mensaje_total_venta">Total: </string>
     <string name="mensaje_numero_venta">Venta No.</string>
-    <string name="mensaje_precio_venta">Precio Venta</string>
-    <string name="mensaje_precio_costo">Precio Costo</string>
     <string name="mensaje_correo_electronico">Correo electronico</string>
     <string name="mensaje_crear_cuenta">Crear cuenta</string>
     <string name="mensaje_correo_contrasenia">Contraseña</string>
@@ -60,4 +58,12 @@
     <!-- Fechas -->
     <string name="dialog_fecha_inicial">Selecciones la fecha inicial</string>
     <string name="dialog_fecha_final">Selecciones la fecha final</string>
+
+    <!-- Articulo detalle -->
+    <string name="editar_articulo_venta">Precio Venta</string>
+    <string name="editar_articulo_costo">Precio Costo</string>
+    <string name="editar_articulo_proveedor">Precio Proveedor</string>
+    <string name="editar_articulo_precio">Precio</string>
+    <string name="editar_articulo_cancelar">Cancelar</string>
+
 </resources>

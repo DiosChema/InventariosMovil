@@ -69,9 +69,9 @@ class RecyclerViewEditarArticulosVenta : RecyclerView.Adapter<RecyclerViewEditar
             EditarArticuloVentaCantidadText.text = itemView.context.getText(R.string.mensaje_cantidad_articulo)
             EditarArticuloVentaCantidad.setText(articulo.cantidad.toString())
             EditarArticuloVentaPrecio.setText(articulo.precio.toString())
-            EditarArticuloVentaPrecioText.text = itemView.context.getText(R.string.mensaje_precio_venta)
+            EditarArticuloVentaPrecioText.text = itemView.context.getText(R.string.editar_articulo_venta)
             EditarArticuloVentaCosto.setText(articulo.costo.toString())
-            EditarArticuloVentaCostoText.text = itemView.context.getText(R.string.mensaje_precio_costo)
+            EditarArticuloVentaCostoText.text = itemView.context.getText(R.string.editar_articulo_costo)
 
             EditarArticuloVentaCantidad.isEnabled = false
             EditarArticuloVentaPrecio.isEnabled = false

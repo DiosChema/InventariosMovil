@@ -60,7 +60,7 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         fun bind(articulo: InventarioObjeto, context: Context) {
             itemArticuloInventarioNombre.text = articulo.nombreArticulo
             itemArticuloInventarioDescipcion.text = articulo.descripcionArticulo
-            itemArticuloInventarioPrecio.setText("$" + articulo.precioArticulo)
+            itemArticuloInventarioPrecio.text = "$" + articulo.precioArticulo
             itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
             itemArticuloInventarioCantidad.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo) + articulo.cantidadArticulo
             itemView.setOnClickListener(View.OnClickListener {

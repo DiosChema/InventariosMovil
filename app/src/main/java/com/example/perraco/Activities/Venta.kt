@@ -55,8 +55,6 @@ class Venta : AppCompatActivity() {
 
     lateinit var dialogArticulosFamiliaSpinner: Spinner
     lateinit var dialogArticulosSubFamiliaSpinner: Spinner
-    lateinit var dialogArticulosFamiliaSpinnerButton: ImageButton
-    lateinit var dialogArticulosSubFamiliaSpinnerButton: ImageButton
     lateinit var dialogArticulosSalir: ImageButton
     var subFamiliaId = -1
 
@@ -86,18 +84,8 @@ class Venta : AppCompatActivity() {
 
         dialogArticulosFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosFamiliaSpinner) as Spinner
         dialogArticulosSubFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosSubFamiliaSpinner) as Spinner
-        dialogArticulosFamiliaSpinnerButton = dialog.findViewById(R.id.dialogArticulosFamiliaSpinnerButton) as ImageButton
-        dialogArticulosSubFamiliaSpinnerButton = dialog.findViewById(R.id.dialogArticulosSubFamiliaSpinnerButton) as ImageButton
         dialogArticulosSalir = dialog.findViewById(R.id.dialogArticulosSalir) as ImageButton
         mRecyclerViewArticulos = dialog.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
-
-        dialogArticulosFamiliaSpinnerButton.setOnClickListener{
-            obtenerArticulosFamilia()
-        }
-
-        dialogArticulosSubFamiliaSpinnerButton.setOnClickListener{
-            obtenerArticulosSubFamilia()
-        }
 
         mViewArticulos = RecyclerViewArticulos()
 
@@ -116,7 +104,7 @@ class Venta : AppCompatActivity() {
         nombre = findViewById(R.id.VentaCodigoAgregar)
 
 
-        val ButtonNuevoArticulo = findViewById<ImageButton>(R.id.VentaNuevoArticulo)
+        val ButtonNuevoArticulo = findViewById<ImageView>(R.id.VentaNuevoArticulo)
         ButtonNuevoArticulo?.setOnClickListener {
             if(nombre.text.isNotEmpty())
                 getArticuloObjecto(parseLong(nombre.text.toString()))
@@ -127,12 +115,12 @@ class Venta : AppCompatActivity() {
             showDialogArticulos()
         }
 
-        val ButtonTerminarVenta = findViewById<Button>(R.id.VentaTerminarVenta)
+        val ButtonTerminarVenta = findViewById<ImageView>(R.id.VentaTerminarVenta)
         ButtonTerminarVenta?.setOnClickListener {
             subirVenta()
         }
 
-        val ButtonObtenerCodigoBarras = findViewById<Button>(R.id.VentaObtenerCodigo)
+        val ButtonObtenerCodigoBarras = findViewById<ImageButton>(R.id.VentaObtenerCodigo)
         ButtonObtenerCodigoBarras?.setOnClickListener {
             val intentIntegrator = IntentIntegrator(this)
             intentIntegrator.setBeepEnabled(false)
@@ -389,6 +377,7 @@ class Venta : AppCompatActivity() {
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
                             obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                            obtenerArticulosFamilia()
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>) {
@@ -452,6 +441,7 @@ class Venta : AppCompatActivity() {
                                                     view: View, position: Int, id: Long) {
                             if(listaSubFamilia.size > 0) {
                                 subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                                obtenerArticulosSubFamilia()
                             }
                         }
 

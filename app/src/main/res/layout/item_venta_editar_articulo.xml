@@ -71,6 +71,7 @@
                 app:srcCompat="@drawable/lessicon"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:background="@color/transparent"
                 android:layout_below="@+id/editarArticuloVentaCantidad"
                 android:layout_alignStart="@+id/editarArticuloVentaCantidad"
                 android:layout_alignLeft="@+id/editarArticuloVentaCantidad"/>
@@ -79,6 +80,7 @@
                 android:id="@+id/itemVentaAnadirCantidad"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:background="@color/transparent"
                 android:layout_below="@+id/editarArticuloVentaCantidad"
                 android:layout_alignEnd="@+id/editarArticuloVentaCantidad"
                 android:layout_alignRight="@+id/editarArticuloVentaCantidad"
@@ -106,7 +108,7 @@
                 android:layout_alignLeft="@+id/editarArticuloVentaCostoText"
                 android:layout_alignBottom="@+id/editarArticuloVentaPrecio"
                 android:layout_marginBottom="15dp"
-                android:text="@string/mensaje_precio_venta"
+                android:text="@string/editar_articulo_venta"
                 android:textSize="16sp" />
 
             <EditText
@@ -130,7 +132,7 @@
                 android:layout_toLeftOf="@+id/editarArticuloVentaCosto"
                 android:layout_marginBottom="15dp"
                 android:textSize="16sp"
-                android:text="@string/mensaje_precio_costo" />
+                android:text="@string/editar_articulo_costo" />
 
             <ImageButton
                 android:id="@+id/editarArticuloEliminarArticulo"
@@ -140,6 +142,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_margin="5dp"
+                android:background="@color/transparent"
                 app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </RelativeLayout>

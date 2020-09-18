@@ -43,7 +43,7 @@ import kotlin.collections.ArrayList
 class InventarioDetalle : AppCompatActivity() {
 
     lateinit var invDetalleId : EditText
-    lateinit var invDetalleFoto: ImageButton
+    lateinit var invDetalleFoto: ImageView
     lateinit var invDetalleNombre : EditText
     lateinit var invDetalleNombreDetalle : EditText
     lateinit var invDetalleCantidad : EditText
@@ -57,7 +57,7 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invBotonEliminarSubFamilia : ImageButton
     lateinit var invBotonAgregarSubFamilia : ImageButton
     lateinit var invBottonTomarCodigo : ImageButton
-    lateinit var invDetalleCancelarEdicion : ImageButton
+    lateinit var invDetalleCancelarEdicion : Button
     lateinit var invDetalleEliminarArticulo : ImageButton
 
     lateinit var globalVariable: GlobalClass
@@ -753,8 +753,7 @@ class InventarioDetalle : AppCompatActivity() {
             subFamiliaId != -1 &&
             invDetalleNombreDetalle.text.toString() != "" &&
             listaFamiliaCompleta.size > 0 &&
-            listaSubFamiliaCompleta.size > 0)
-        {
+            listaSubFamiliaCompleta.size > 0) {
             respuesta = false
         }
 

@@ -76,6 +76,7 @@
                 android:layout_below="@+id/itemVentaCantidad"
                 android:layout_alignStart="@+id/itemVentaCantidad"
                 android:layout_alignLeft="@+id/itemVentaCantidad"
+                android:background="@color/transparent"
                 app:srcCompat="@drawable/lessicon" />
 
             <ImageButton
@@ -85,6 +86,7 @@
                 android:layout_below="@+id/itemVentaCantidad"
                 android:layout_alignEnd="@+id/itemVentaCantidad"
                 android:layout_alignRight="@+id/itemVentaCantidad"
+                android:background="@color/transparent"
                 app:srcCompat="@drawable/moreicon" />
 
             <TextView
