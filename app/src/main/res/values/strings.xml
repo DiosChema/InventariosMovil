@@ -55,6 +55,11 @@
     <string name="estadistica_ventas_total_costo">Costos</string>
     <string name="estadistica_ventas_total_ganancia">Ganancia</string>
 
+    <!-- Estadistica Inventario -->
+    <string name="estadistica_inventario_total_articulos">Total Precio Articulos</string>
+    <string name="estadistica_inventario_total_costos">Total Costo Articulos</string>
+    <string name="estadistica_inventario_leyenda_total">Total</string>
+
     <!-- Fechas -->
     <string name="dialog_fecha_inicial">Selecciones la fecha inicial</string>
     <string name="dialog_fecha_final">Selecciones la fecha final</string>
