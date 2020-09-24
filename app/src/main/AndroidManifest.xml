@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.EstadisticaInventario"></activity>
+        <activity android:name=".Activities.Surtido"></activity>
+        <activity android:name=".Activities.EstadisticaInventario" />
         <activity android:name=".Activities.EstadisticasVentas" />
         <activity android:name=".Activities.EstadisticaArticulo" />
         <activity android:name=".Activities.CrearCuenta" />

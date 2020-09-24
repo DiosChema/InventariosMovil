@@ -56,13 +56,22 @@
     <string name="estadistica_ventas_total_ganancia">Ganancia</string>
 
     <!-- Estadistica Inventario -->
-    <string name="estadistica_inventario_total_articulos">Total Precio Articulos</string>
-    <string name="estadistica_inventario_total_costos">Total Costo Articulos</string>
-    <string name="estadistica_inventario_leyenda_total">Total</string>
+    <string name="estadistica_inventario_total_articulos">Ganancia Total</string>
+    <string name="estadistica_inventario_total_costos">Costo Total</string>
+    <string name="estadistica_inventario_leyenda_total">Capital Total</string>
+    <string name="estadistica_inventario_titulo">Capital</string>
+
+    <!-- Surtido -->
+    <string name="surtido_texto_titulo">Ingresar Articulo</string>
+    <string name="surtido_boton_agregar">Agregar Articulo</string>
+    <string name="surtido_confirmar">Confirmar</string>
 
     <!-- Fechas -->
     <string name="dialog_fecha_inicial">Selecciones la fecha inicial</string>
     <string name="dialog_fecha_final">Selecciones la fecha final</string>
+
+    <!-- Dialog numero -->
+    <string name="dialog_numero_text_cantidad">Cantidad</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>

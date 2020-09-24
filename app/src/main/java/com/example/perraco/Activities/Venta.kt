@@ -31,8 +31,7 @@ class Venta : AppCompatActivity() {
 
     var context = this
     var listaTmp:MutableList<InventarioObjeto> = ArrayList()
-    val urls: Urls =
-        Urls()
+    val urls: Urls = Urls()
     lateinit var nombre : TextView
 
     var listaTmpArticulos:MutableList<InventarioObjeto> = ArrayList()
@@ -132,11 +131,7 @@ class Venta : AppCompatActivity() {
 
     }
 
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
+    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents != null) {
@@ -156,33 +151,7 @@ class Venta : AppCompatActivity() {
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
-        //for (i in 0..mViewVenta.itemCount - 1) {
         for (i in 0..adapter?.count!! - 1) {
-            /*val view: View = mRecyclerView.getChildAt(i)
-            val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
-            val textCantidad = textViewCantidad.text.toString()
-
-            val textViewPrecio = view.findViewById(R.id.VentaPrecio) as TextView
-            val textPrecio = textViewPrecio.text.toString()
-
-            val textViewId = view.findViewById(R.id.VentaIdArticulo) as TextView
-            val textId = textViewId.text.toString()
-
-            val textViewNombre = view.findViewById(R.id.VentaNombre) as TextView
-            val textNombre = textViewNombre.text.toString()
-
-            val textViewVentaCostoArticulo = view.findViewById(R.id.VentaCostoArticulo) as TextView
-            val textVentaCostoArticulo = textViewVentaCostoArticulo.text.toString()
-
-
-            val articulo = ArticuloObjeto(
-                parseLong(textId),
-                parseInt(textCantidad),
-                parseDouble(textPrecio),
-                textNombre,
-                parseDouble(textVentaCostoArticulo)
-            )*/
-
             val objeto  = adapter?.obtenerObjeto(i)
             if (objeto != null) {
                 val articulo = ArticuloObjeto(
@@ -269,9 +238,7 @@ class Venta : AppCompatActivity() {
                 dialog.dismiss()
             }
 
-            override fun onLongItemClick(view: View?, position: Int) {
-                // do whatever
-            }
+            override fun onLongItemClick(view: View?, position: Int) {}
         }))
         /*dialogAceptar.setOnClickListener {
             dialog.dismiss()
@@ -486,10 +453,7 @@ class Venta : AppCompatActivity() {
                     if (body != null && body.isNotEmpty()) {
                         val gson = GsonBuilder().create()
 
-                        val articulo = gson.fromJson(
-                            body,
-                            InventarioObjeto::class.java
-                        )
+                        val articulo = gson.fromJson(body,InventarioObjeto::class.java)
                         articulo.cantidadArticulo = 1
 
                         runOnUiThread {
@@ -523,58 +487,11 @@ class Venta : AppCompatActivity() {
         {
             for (i in 0 until adapter?.count!!) {
 
-                val objeto  = adapter?.obtenerObjeto(i)
+                val objeto = adapter?.obtenerObjeto(i)
                 if (objeto != null) {
                     listaTmp[i].cantidadArticulo = objeto.cantidadArticulo
                 }
-
-                /*mRecyclerView.viewTreeObserver
-                    .addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            val textViewCantidad: EditText = mRecyclerView.getChildAt(i)
-                                .findViewById(R.id.VentaCantidad) as EditText
-                            val textCantidad = textViewCantidad.text.toString()
-                            listaTmp[i].cantidadArticulo = parseInt(textCantidad)
-                        }
-                    })*/
-
-                /*mRecyclerView.post(Runnable {
-                    val viewItem: View? = mRecyclerView.getLayoutManager()!!.findViewByPosition(i)
-                    val textViewCantidad = viewItem?.findViewById<View>(R.id.VentaCantidad) as EditText
-
-                    val textCantidad = textViewCantidad.text.toString()
-
-                    listaTmp[i].cantidadArticulo = parseInt(textCantidad)
-                })*/
-
-                /*val holder = mRecyclerView.findViewHolderForAdapterPosition(i)
-                if (null == holder) {
-                    holder.itemView.findViewById<View>(R.id.VentaCantidad).visibility = View.VISIBLE
-                }*/
-
-                /*val title = (mRecyclerView.findViewHolderForAdapterPosition(i)?.itemView?.findViewById(
-                    R.id.VentaCantidad) as EditText).text
-                        .toString()*/
-                //mRecyclerView.adapter.
-
-                /*val v = mRecyclerView.getLayoutManager()?.findViewByPosition(i)
-                if (v != null) {
-                    v.visibility = View.INVISIBLE
-                }
-                val view: View = mRecyclerView.getChildAt(i)
-                val textViewCantidad = view.findViewById(R.id.VentaCantidad) as EditText
-                val textCantidad = textViewCantidad.text.toString()
-                listaTmp[i].cantidadArticulo = parseInt(textCantidad)*/
-
-                //listaTmp[i].cantidadArticulo = parseInt(title)
             }
-
-            /*for (i in 0..mViewVenta.itemCount - 1) {
-                val v = mRecyclerView.getLayoutManager()?.findViewByPosition(i)
-                if (v != null) {
-                    v.visibility = View.VISIBLE
-                }
-            }*/
         }
 
     }

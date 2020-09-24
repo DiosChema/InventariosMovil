@@ -9,13 +9,25 @@
     android:background="@color/background"
     tools:context=".Activities.EstadisticaInventario">
 
+    <TextView
+        android:id="@+id/estadisticaInventarioTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/estadistica_inventario_titulo"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+
     <androidx.cardview.widget.CardView
+        android:layout_marginTop="15dp"
         android:id="@+id/cardViewGraph"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_below="@+id/estadisticaInventarioTitulo"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
         android:elevation="10dp"
         app:cardCornerRadius="10dp">
 
@@ -25,27 +37,25 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <org.eazegraph.lib.charts.PieChart
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <org.eazegraph.lib.charts.PieChart xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/estadisticaInventarioPiechart"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:padding="6dp"
-                android:layout_weight="1"
-                android:layout_marginTop="15dp"
                 android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
+                android:layout_weight="1"
+                android:padding="6dp"
 
                 />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
-                android:orientation="vertical"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
-                >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -55,14 +65,14 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="#9ACD32"/>
+                        android:background="#228B22" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/estadistica_inventario_total_articulos"
+                        android:paddingStart="10dp"
                         android:paddingLeft="10dp"
-                        android:paddingStart="10dp" />
+                        android:text="@string/estadistica_inventario_total_articulos" />
 
                 </LinearLayout>
 
@@ -75,14 +85,14 @@
                     <View
                         android:layout_width="15dp"
                         android:layout_height="match_parent"
-                        android:background="#FF0000"/>
+                        android:background="#FF0000" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/estadistica_inventario_total_costos"
+                        android:paddingStart="10dp"
                         android:paddingLeft="10dp"
-                        android:paddingStart="10dp" />
+                        android:text="@string/estadistica_inventario_total_costos" />
 
                 </LinearLayout>
 
@@ -114,7 +124,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/estadistica_inventario_leyenda_total"
+                android:text="@string/mensaje_total_venta"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="25dp"
@@ -151,7 +161,7 @@
                     android:id="@+id/estadisticaInventarioTotalArticulos"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
-                    android:textColor="#9ACD32"
+                    android:textColor="#228B22"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-light"
                     android:layout_alignParentRight="true"
@@ -221,7 +231,7 @@
                     android:id="@+id/estadisticaInventarioTotal"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
-                    android:textColor="#228B22"
+                    android:textColor="@color/deep_blue"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-light"
                     android:layout_alignParentRight="true"
