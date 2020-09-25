@@ -1,5 +1,6 @@
 package com.example.perraco.Activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -8,23 +9,28 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.perraco.Objets.*
+import com.example.perraco.Dialogs.DialogAgregarArticulos
+import com.example.perraco.Objets.ActualizarInventarioObject
+import com.example.perraco.Objets.GlobalClass
+import com.example.perraco.Objets.InventarioObjeto
+import com.example.perraco.Objets.Urls
 import com.example.perraco.R
-import com.example.perraco.RecyclerView.AdapterListSurtido
 import com.example.perraco.RecyclerView.RecyclerItemClickListener
-import com.example.perraco.RecyclerView.RecyclerViewEstadisticaArticulo
 import com.example.perraco.RecyclerView.RecyclerViewSurtido
 import com.google.gson.GsonBuilder
+import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
 import java.lang.Integer.parseInt
 
-
-class Surtido : AppCompatActivity() {
+class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListener{
     lateinit var mViewEstadisticaArticulo : RecyclerViewSurtido
     lateinit var mRecyclerView : RecyclerView
 
@@ -32,6 +38,18 @@ class Surtido : AppCompatActivity() {
     lateinit var context :Context
     var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
     val urls: Urls = Urls()
+
+    var dialogoAgregarArticulos = DialogAgregarArticulos()
+    /*var dialogArticulos = DialogArticulos()
+    lateinit var dialog : Dialog*/
+
+    /*lateinit var dialogAgregarArticuloCodigo : EditText
+    lateinit var dialogAgregarArticuloCantidad :EditText
+    lateinit var dialogAgregarArticuloAceptar :Button
+    lateinit var dialogAgregarArticuloCancelar :Button
+    lateinit var dialogAgregarArticuloTitulo :TextView
+    lateinit var dialogAgregarArticuloBuscarArticulo:ImageButton
+    lateinit var dialogAgregarArticuloObtenerCodigo :ImageButton*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +61,30 @@ class Surtido : AppCompatActivity() {
 
         crearRecyclerView()
 
+        dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
+        //dialogArticulos.iniciarDialog(globalVariable, context, Activity())
+        //crearDialogArticulos()
+
         var surtidoAgregarCodigo = findViewById<Button>(R.id.surtidoAgregarCodigo)
-        surtidoAgregarCodigo.setOnClickListener{ showDialogAgregarArticulo()}
+        surtidoAgregarCodigo.setOnClickListener{
+            dialogoAgregarArticulos.showDialogAgregarArticulo()
+            //showDialogAgregarArticulo()
+        }
 
         var surtidoConfirmarArticulos = findViewById<Button>(R.id.surtidoConfirmarArticulos)
-        surtidoConfirmarArticulos.setOnClickListener{actualizarInventario()}
+        surtidoConfirmarArticulos.setOnClickListener{
+            actualizarInventario()
+        }
+
+        val VentaObtenerCodigo = findViewById<ImageButton>(R.id.VentaObtenerCodigo)
+        VentaObtenerCodigo?.setOnClickListener {
+            val intentIntegrator = IntentIntegrator(context as Surtido)
+            intentIntegrator.setBeepEnabled(false)
+            intentIntegrator.setCameraId(0)
+            intentIntegrator.setPrompt("SCAN")
+            intentIntegrator.setBarcodeImageEnabled(false)
+            intentIntegrator.initiateScan()
+        }
 
     }
 
@@ -69,17 +106,30 @@ class Surtido : AppCompatActivity() {
         }))
     }
 
-    private fun showDialogAgregarArticulo() {
-        val dialog = Dialog(this)
+    /*private fun crearDialogArticulos(){
+        dialog = Dialog(this)
 
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_agregar_articulo)
-        val dialogAgregarArticuloCodigo = dialog.findViewById(R.id.dialogAgregarArticuloCodigo) as EditText
-        val dialogAgregarArticuloCantidad = dialog.findViewById(R.id.dialogAgregarArticuloCantidad) as EditText
-        val dialogAgregarArticuloAceptar = dialog.findViewById(R.id.dialogAgregarArticuloAceptar) as Button
-        val dialogAgregarArticuloCancelar = dialog.findViewById(R.id.dialogAgregarArticuloCancelar) as Button
-        val dialogAgregarArticuloTitulo = dialog.findViewById(R.id.dialogAgregarArticuloTitulo) as TextView
+        dialogAgregarArticuloCodigo = dialog.findViewById(R.id.dialogAgregarArticuloCodigo) as EditText
+        dialogAgregarArticuloCantidad = dialog.findViewById(R.id.dialogAgregarArticuloCantidad) as EditText
+        dialogAgregarArticuloAceptar = dialog.findViewById(R.id.dialogAgregarArticuloAceptar) as Button
+        dialogAgregarArticuloCancelar = dialog.findViewById(R.id.dialogAgregarArticuloCancelar) as Button
+        dialogAgregarArticuloTitulo = dialog.findViewById(R.id.dialogAgregarArticuloTitulo) as TextView
+        dialogAgregarArticuloBuscarArticulo = dialog.findViewById<View>(R.id.dialogAgregarArticuloBuscarArticulo) as ImageButton
+        dialogAgregarArticuloObtenerCodigo = dialog.findViewById<View>(R.id.dialogAgregarArticuloObtenerCodigo) as ImageButton
+
+        dialogArticulos.onAttach(context)
+
+    }*/
+
+    /*private fun showDialogAgregarArticulo() {
+
+
+        dialogAgregarArticuloBuscarArticulo.setOnClickListener{
+            dialogArticulos.showDialogArticulos()
+        }
 
         dialogAgregarArticuloTitulo.text = getString(R.string.surtido_texto_titulo)
 
@@ -91,9 +141,9 @@ class Surtido : AppCompatActivity() {
         dialogAgregarArticuloCancelar.setOnClickListener {dialog.dismiss()}
         dialog.show()
 
-    }
+    }*/
 
-    fun agregarArticulo(idArticulo : Int, cantidad : Int){
+    /*fun agregarArticulo(idArticulo : Int, cantidad : Int){
         val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
@@ -127,7 +177,7 @@ class Surtido : AppCompatActivity() {
                 }
             }
         })
-    }
+    }*/
 
     fun eventoClick(posicion : Int){
         val dialog: AlertDialog = AlertDialog.Builder(context).create()
@@ -188,6 +238,35 @@ class Surtido : AppCompatActivity() {
                 runOnUiThread { finish() }
             }
         })
+    }
+
+    override fun applyTexts2(articulo : InventarioObjeto) {
+        runOnUiThread{
+            listaArticulos.add(articulo)
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+        }
+    }
+
+    override fun abrirCamara() {
+        val intentIntegrator = IntentIntegrator(context as Surtido)
+        intentIntegrator.setBeepEnabled(false)
+        intentIntegrator.setCameraId(0)
+        intentIntegrator.setPrompt("SCAN")
+        intentIntegrator.setBarcodeImageEnabled(false)
+        intentIntegrator.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents != null) {
+                runOnUiThread {
+                    dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(java.lang.Long.parseLong(result.contents).toString())
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 
 }

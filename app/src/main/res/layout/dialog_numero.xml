@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:minWidth="800dp"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:minWidth="800dp">
 
     <TextView
         android:id="@+id/dialogNumeroTitulo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="18sp"
+        android:text="@string/app_name"
+        android:textSize="28sp"
+        android:textStyle="bold"
         android:textAlignment="center"
+        android:textColor="@color/white"
         android:gravity="center_horizontal"
         android:layout_marginTop="15dp"/>
 
@@ -22,7 +24,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:inputType="numberDecimal"
+        android:inputType="number"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:background="@drawable/round_button_white"
         android:text="" />
 
     <LinearLayout

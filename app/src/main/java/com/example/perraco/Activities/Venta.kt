@@ -48,8 +48,6 @@ class Venta : AppCompatActivity() {
     var listaSubFamilia:MutableList<String> = ArrayList()
     var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
 
-
-
     lateinit var dialog : Dialog
 
     lateinit var dialogArticulosFamiliaSpinner: Spinner
