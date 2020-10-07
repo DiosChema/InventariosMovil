@@ -5,5 +5,5 @@ import java.io.Serializable
 data class FamiliasSubFamiliasObject(
     var familiaId:Int,
     var nombreFamilia:String,
-    var SubFamilia:List<SubFamiliaObjeto>
+    var SubFamilia:MutableList<SubFamiliaObjeto>
 ): Serializable

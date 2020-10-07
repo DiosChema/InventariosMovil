@@ -83,7 +83,7 @@ class EstadisticaInventario : AppCompatActivity() {
 
                     pieChart.addPieSlice(
                         PieModel(
-                            "Total Articulos", Model.totalCostoVenta.toFloat(),
+                            "Total Articulos", (Model.totalCostoVenta - Model.totalCostoProovedor).toFloat(),
                             Color.parseColor("#228B22")
                         )
                     )

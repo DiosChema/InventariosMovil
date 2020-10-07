@@ -68,7 +68,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     lateinit var inventarioObjeto:InventarioObjeto
     var listaFamilia:MutableList<String> = ArrayList()
-    var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
+    var listaFamiliaCompleta:MutableList<FamiliasSubFamiliasObject> = ArrayList()
     var listaSubFamilia:MutableList<String> = ArrayList()
     var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
 
@@ -78,6 +78,7 @@ class InventarioDetalle : AppCompatActivity() {
     var cambioFoto : Boolean = false
 
     var subFamiliaId = -1
+    var posicionPendiente = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,7 +108,7 @@ class InventarioDetalle : AppCompatActivity() {
         }
         else
         {
-            obtenerFamilias(this)
+            obtenerFamilias(this,-1)
             asignarFuncionBotones(false)
         }
 
@@ -194,7 +195,8 @@ class InventarioDetalle : AppCompatActivity() {
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
         cambioFoto = false
-        obtenerFamilia(this,parseInt(articulo.familiaArticulo))
+        posicionPendiente = true
+        obtenerFamilias(this,parseInt(articulo.familiaArticulo))
     }
 
     fun asignarFuncionBotones(esEditar : Boolean){
@@ -233,7 +235,7 @@ class InventarioDetalle : AppCompatActivity() {
                 eliminarFamilia(this)
         }
         invBotonEliminarSubFamilia.setOnClickListener {
-            if (listaSubFamiliaCompleta.size > 0)
+            if (listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size > 0)
                 eliminarSubFamilia(this)
         }
         invBottonTomarCodigo.setOnClickListener{
@@ -372,7 +374,7 @@ class InventarioDetalle : AppCompatActivity() {
                 val familia = gson.fromJson(body,FamiliaObjeto::class.java)
 
                 listaFamilia.add(familia.nombreFamilia)
-                listaFamiliaCompleta.add(familia)
+                listaFamiliaCompleta.add(FamiliasSubFamiliasObject(familia.familiaId, familia.nombreFamilia, ArrayList()))
 
                 runOnUiThread {
                     val adapter = ArrayAdapter(context,
@@ -382,9 +384,8 @@ class InventarioDetalle : AppCompatActivity() {
 
                     invDetalleFamiliaSpinner.onItemSelectedListener = object :
                         AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                        override fun onItemSelected(parent: AdapterView<*>,view: View, position: Int, id: Long) {
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, position)
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>) {
@@ -436,7 +437,8 @@ class InventarioDetalle : AppCompatActivity() {
                 val subFamilia = gson.fromJson(body,SubFamiliaObjeto::class.java)
 
                 listaSubFamilia.add(subFamilia.nombreSubFamilia)
-                listaSubFamiliaCompleta.add(subFamilia)
+                //listaSubFamiliaCompleta.add(subFamilia)
+                listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.add(subFamilia)
 
                 runOnUiThread {
                     val adapter = ArrayAdapter(context,
@@ -449,7 +451,7 @@ class InventarioDetalle : AppCompatActivity() {
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
                             if(listaSubFamilia.size > 0) {
-                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                                subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
                             }
                         }
 
@@ -522,7 +524,8 @@ class InventarioDetalle : AppCompatActivity() {
                                 ) {
                                     obtenerSubFamilias(
                                         context,
-                                        listaFamiliaCompleta[position].familiaId
+                                        //listaFamiliaCompleta[position].familiaId
+                                        listaFamiliaCompleta[position].SubFamilia,0
                                     )
                                 }
 
@@ -552,7 +555,7 @@ class InventarioDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("token", globalVariable.token)
-            jsonObject.put("subFamiliaId", listaSubFamiliaCompleta[invDetalleSubFamiliaSpinner.selectedItemPosition].subFamiliaId)
+            jsonObject.put("subFamiliaId", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[invDetalleSubFamiliaSpinner.selectedItemPosition].subFamiliaId)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -587,7 +590,7 @@ class InventarioDetalle : AppCompatActivity() {
                 if(respuesta.respuesta == 0)
                 {
                     listaSubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
-                    listaSubFamiliaCompleta.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
+                    listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
 
                     runOnUiThread {
                         val adapter = ArrayAdapter(context,
@@ -602,7 +605,7 @@ class InventarioDetalle : AppCompatActivity() {
                                 override fun onItemSelected(parent: AdapterView<*>,
                                                             view: View, position: Int, id: Long) {
                                     if(listaSubFamilia.size > 0) {
-                                        subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                                        subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
                                     }
                                 }
 
@@ -628,11 +631,13 @@ class InventarioDetalle : AppCompatActivity() {
     fun darDeAltaFoto(){
         val drawable = invDetalleFoto.drawable
 
-        val bitmap: Bitmap = (drawable as BitmapDrawable).getBitmap()
+        var bitmap: Bitmap = (drawable as BitmapDrawable).bitmap
 
-        var resized = Bitmap.createScaledBitmap(bitmap, 200, 350, true)
+        var bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
 
-        resized = Bitmap.createBitmap(resized, 25, 50, 150, 250)//cropToSquare(resized)
+        var resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
+
+        //resized = Bitmap.createBitmap(resized, 25, 50, 150, 250)//cropToSquare(resized)
 
         val file = bitmapToFile(resized)
 
@@ -753,7 +758,7 @@ class InventarioDetalle : AppCompatActivity() {
             subFamiliaId != -1 &&
             invDetalleNombreDetalle.text.toString() != "" &&
             listaFamiliaCompleta.size > 0 &&
-            listaSubFamiliaCompleta.size > 0) {
+            listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size > 0) {
             respuesta = false
         }
 
@@ -879,7 +884,7 @@ class InventarioDetalle : AppCompatActivity() {
         })
     }
 
-    fun obtenerFamilias(context: Context){
+    /*fun obtenerFamilias(context: Context){
 
         val url = urls.url+urls.endpointObtenerFamilias+"?token="+globalVariable.token
 
@@ -924,10 +929,104 @@ class InventarioDetalle : AppCompatActivity() {
             }
         })
 
+    }*/
+
+
+    fun obtenerFamilias(context: Context, posicion : Int){
+
+        val url = urls.url+urls.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.token
+        var posicionFamilia = 0
+        var posicionSubFamilia = 0
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+                val body = response.body()?.string()
+                val gson = GsonBuilder().create()
+                listaFamiliaCompleta = gson.fromJson(body,Array<FamiliasSubFamiliasObject>::class.java).toMutableList()
+
+                for (i in 0 until listaFamiliaCompleta.size){
+                    listaFamilia.add(listaFamiliaCompleta[i].nombreFamilia)
+
+                    if(posicionPendiente){
+                        for(y in 0 until listaFamiliaCompleta[i].SubFamilia.size){
+                            if(listaFamiliaCompleta[i].SubFamilia[y].subFamiliaId == posicion){
+                                posicionFamilia = i
+                                posicionSubFamilia = y
+                            }
+                        }
+                    }
+                }
+
+                runOnUiThread {
+                    val adapter = ArrayAdapter(context,
+                        android.R.layout.simple_spinner_item, listaFamilia)
+                    invDetalleFamiliaSpinner.adapter = adapter
+
+                    if(listaFamiliaCompleta.size > 0)
+                        invDetalleFamiliaSpinner.setSelection(posicionFamilia)
+
+                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(parent: AdapterView<*>,
+                                                    view: View, position: Int, id: Long) {
+                            obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, posicionSubFamilia)
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {}
+                    }
+                }
+            }
+        })
+
     }
 
-    fun obtenerSubFamilias(context: Context, familiaId: Int){
-        var subFamiliaTmp = 0
+    fun obtenerSubFamilias(context: Context, listaSubFamiliaCompleta: List<SubFamiliaObjeto>, posicion: Int){
+
+        listaSubFamilia.clear()
+
+        runOnUiThread {
+            for (familias in listaSubFamiliaCompleta) {
+                listaSubFamilia.add(familias.nombreSubFamilia)
+            }
+
+            var adapter = ArrayAdapter(context,
+                android.R.layout.simple_spinner_item, listaSubFamilia)
+            invDetalleSubFamiliaSpinner.adapter = adapter
+/*            adapter = ArrayAdapter(context,
+                android.R.layout.simple_spinner_item, listaSubFamilia)
+            invDetalleSubFamiliaSpinner.adapter = adapter*/
+
+            if(listaSubFamilia.size > 0)
+                invDetalleSubFamiliaSpinner.setSelection(posicion)
+
+            invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long) {
+                    if(listaSubFamilia.size > 0) {
+                        subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // write code to perform some action
+                }
+            }
+
+            posicionPendiente = false
+        }
+
+        /*var subFamiliaTmp = 0
         val url = urls.url+urls.endpointObtenerSubFamilias+"?token="+globalVariable.token+"&familiaId="+familiaId
 
         if(subFamiliaPendiente) {
@@ -972,8 +1071,14 @@ class InventarioDetalle : AppCompatActivity() {
 
                     invDetalleSubFamiliaSpinner.adapter = adapter
 
-                    if(listaSubFamilia.size > 0) {
-                        invDetalleSubFamiliaSpinner.setSelection(subFamiliaTmp)
+                    if(listaSubFamilia.size > 0){
+                        if( !posicionPendiente )
+                            invDetalleSubFamiliaSpinner.setSelection(0)
+                        else
+                        {
+                            invDetalleSubFamiliaSpinner.setSelection(posicion)
+                        }
+
                     }
 
                     invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
@@ -990,14 +1095,15 @@ class InventarioDetalle : AppCompatActivity() {
                         }
                     }
 
+                    posicionPendiente = false
                     progressDialog.dismiss()
                 }
             }
-        })
+        })*/
 
     }
 
-    fun obtenerFamilia(context: Context,familia: Int){
+    /*fun obtenerFamilia(context: Context,familia: Int){
 
         val url = urls.url+urls.endpointObtenerSubFamilia+"?token="+globalVariable.token+"&subFamiliaId="+familia
 
@@ -1070,7 +1176,7 @@ class InventarioDetalle : AppCompatActivity() {
 
             }
         })
-    }
+    }*/
 
 
 }

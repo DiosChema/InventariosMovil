@@ -7,5 +7,6 @@ data class VentasObjeto(
     var _id:Int,
     var fecha:Date,
     var totalVenta:Double,
-    var articulos:List<ArticuloObjeto>
+    var totalCosto:Double,
+    var articulos:List<ArticuloVentaObject>
 ): Serializable

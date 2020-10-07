@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.perraco.Objets.ArticuloObjeto
+import com.example.perraco.Objets.ArticuloVentaObject
 import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
@@ -16,10 +16,10 @@ import com.squareup.picasso.Picasso
 
 class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVenta.ViewHolder>() {
 
-    var articulosInventario: MutableList<ArticuloObjeto>  = ArrayList()
+    var articulosInventario: MutableList<ArticuloVentaObject>  = ArrayList()
     lateinit var context:Context
 
-    fun RecyclerAdapter(articulos : MutableList<ArticuloObjeto>, context: Context){
+    fun RecyclerAdapter(articulos : MutableList<ArticuloVentaObject>, context: Context){
         this.articulosInventario = articulos
         this.context = context
     }
@@ -46,8 +46,8 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nombre = view.findViewById(R.id.ventaArticulosNombre) as TextView
-        val precio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
-        val precioText = view.findViewById(R.id.ventaArticulosPrecioText) as TextView
+        /*val precio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
+        val precioText = view.findViewById(R.id.ventaArticulosPrecioText) as TextView*/
         val ventaArticulosPrecioTotalText = view.findViewById(R.id.ventaArticulosPrecioTotalText) as TextView
         val ventaArticulosPrecioTotal = view.findViewById(R.id.ventaArticulosPrecioTotal) as TextView
         val ventaArticulosDescipcion = view.findViewById(R.id.ventaArticulosDescipcion) as TextView
@@ -56,13 +56,13 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
-        fun bind(articulo: ArticuloObjeto, context: Context) {
-            nombre.text = articulo.nombre
-            precio.text = "$" + articulo.precio.toString()
-            precioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
-            ventaArticulosDescipcion.text = articulo.cantidad.toString()
-            ventaArticulosDescipcionText.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo)
-            ventaArticulosPrecioTotalText.text = itemView.context.getText(R.string.mensaje_total_venta)
+        fun bind(articulo: ArticuloVentaObject, context: Context) {
+            nombre.text = articulo.articulosDetalle[0].nombreArticulo
+            /*precio.text = "$" + articulo.precio.toString()
+            precioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);*/
+            ventaArticulosDescipcion.text = articulo.articulosDetalle[0].descripcionArticulo
+            ventaArticulosDescipcionText.text = itemView.context.getString(R.string.venta_cantidad_articulo_diminutivo) + " " + articulo.cantidad
+            ventaArticulosPrecioTotalText.text = itemView.context.getText(R.string.venta_total)
             ventaArticulosPrecioTotal.text = "$" + (articulo.precio * articulo.cantidad)
 
             val urls = Urls()

@@ -1,22 +1,19 @@
 package com.example.perraco.Activities
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Dialogs.DialogAgregarArticulos
+import com.example.perraco.Dialogs.DialogAgregarNumero
 import com.example.perraco.Objets.ActualizarInventarioObject
 import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.InventarioObjeto
@@ -28,9 +25,8 @@ import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
-import java.lang.Integer.parseInt
 
-class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListener{
+class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListener, DialogAgregarNumero.ExampleDialogListener{
     lateinit var mViewEstadisticaArticulo : RecyclerViewSurtido
     lateinit var mRecyclerView : RecyclerView
 
@@ -40,16 +36,9 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListen
     val urls: Urls = Urls()
 
     var dialogoAgregarArticulos = DialogAgregarArticulos()
-    /*var dialogArticulos = DialogArticulos()
-    lateinit var dialog : Dialog*/
 
-    /*lateinit var dialogAgregarArticuloCodigo : EditText
-    lateinit var dialogAgregarArticuloCantidad :EditText
-    lateinit var dialogAgregarArticuloAceptar :Button
-    lateinit var dialogAgregarArticuloCancelar :Button
-    lateinit var dialogAgregarArticuloTitulo :TextView
-    lateinit var dialogAgregarArticuloBuscarArticulo:ImageButton
-    lateinit var dialogAgregarArticuloObtenerCodigo :ImageButton*/
+    lateinit var surtidoTotalArticulos : TextView
+    lateinit var surtidoTotalVenta : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,30 +51,38 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListen
         crearRecyclerView()
 
         dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
-        //dialogArticulos.iniciarDialog(globalVariable, context, Activity())
-        //crearDialogArticulos()
 
-        var surtidoAgregarCodigo = findViewById<Button>(R.id.surtidoAgregarCodigo)
+        asignarRecursos()
+    }
+
+    fun asignarRecursos(){
+
+        surtidoTotalArticulos = findViewById(R.id.surtidoTotalArticulos)
+        surtidoTotalVenta = findViewById(R.id.surtidoTotalVenta)
+
+        var surtidoAgregarCodigo = findViewById<ImageButton>(R.id.surtidoAgregarArticulo)
         surtidoAgregarCodigo.setOnClickListener{
             dialogoAgregarArticulos.showDialogAgregarArticulo()
-            //showDialogAgregarArticulo()
         }
 
-        var surtidoConfirmarArticulos = findViewById<Button>(R.id.surtidoConfirmarArticulos)
+        var surtidoConfirmarArticulos = findViewById<ImageButton>(R.id.surtidoConfirmarArticulos)
         surtidoConfirmarArticulos.setOnClickListener{
             actualizarInventario()
         }
+    }
 
-        val VentaObtenerCodigo = findViewById<ImageButton>(R.id.VentaObtenerCodigo)
-        VentaObtenerCodigo?.setOnClickListener {
-            val intentIntegrator = IntentIntegrator(context as Surtido)
-            intentIntegrator.setBeepEnabled(false)
-            intentIntegrator.setCameraId(0)
-            intentIntegrator.setPrompt("SCAN")
-            intentIntegrator.setBarcodeImageEnabled(false)
-            intentIntegrator.initiateScan()
+    fun actualizarCantidadCosto(){
+        var totalCantidad = 0
+        var totalCosto = 0.0
+
+
+        for(articulos in listaArticulos){
+            totalCantidad += articulos.cantidadArticulo
+            totalCosto += (articulos.costoArticulo * articulos.cantidadArticulo)
         }
 
+        surtidoTotalArticulos.text = totalCantidad.toString()
+        surtidoTotalVenta.text = "$" + totalCosto.toString()
     }
 
     fun crearRecyclerView(){
@@ -96,120 +93,30 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListen
         mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, context)
         mRecyclerView.adapter = mViewEstadisticaArticulo
 
+        var dialogAgregarNumero = DialogAgregarNumero()
+
         mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                eventoClick(position)
+                dialogAgregarNumero.crearDialog(context, position)
+                //eventoClick(position)
             }
 
             override fun onLongItemClick(view: View?, position: Int) {}
         }))
     }
 
-    /*private fun crearDialogArticulos(){
-        dialog = Dialog(this)
-
-        dialog.setTitle(title)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_agregar_articulo)
-        dialogAgregarArticuloCodigo = dialog.findViewById(R.id.dialogAgregarArticuloCodigo) as EditText
-        dialogAgregarArticuloCantidad = dialog.findViewById(R.id.dialogAgregarArticuloCantidad) as EditText
-        dialogAgregarArticuloAceptar = dialog.findViewById(R.id.dialogAgregarArticuloAceptar) as Button
-        dialogAgregarArticuloCancelar = dialog.findViewById(R.id.dialogAgregarArticuloCancelar) as Button
-        dialogAgregarArticuloTitulo = dialog.findViewById(R.id.dialogAgregarArticuloTitulo) as TextView
-        dialogAgregarArticuloBuscarArticulo = dialog.findViewById<View>(R.id.dialogAgregarArticuloBuscarArticulo) as ImageButton
-        dialogAgregarArticuloObtenerCodigo = dialog.findViewById<View>(R.id.dialogAgregarArticuloObtenerCodigo) as ImageButton
-
-        dialogArticulos.onAttach(context)
-
-    }*/
-
-    /*private fun showDialogAgregarArticulo() {
-
-
-        dialogAgregarArticuloBuscarArticulo.setOnClickListener{
-            dialogArticulos.showDialogArticulos()
-        }
-
-        dialogAgregarArticuloTitulo.text = getString(R.string.surtido_texto_titulo)
-
-        dialogAgregarArticuloAceptar.setOnClickListener {
-            dialog.dismiss()
-            agregarArticulo(parseInt(dialogAgregarArticuloCodigo.text.toString()),parseInt(dialogAgregarArticuloCantidad.text.toString()))
-        }
-
-        dialogAgregarArticuloCancelar.setOnClickListener {dialog.dismiss()}
-        dialog.show()
-
-    }*/
-
-    /*fun agregarArticulo(idArticulo : Int, cantidad : Int){
-        val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage(getString(R.string.mensaje_espera))
-        progressDialog.show()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                progressDialog.dismiss()
-
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                val model = gson.fromJson(body, InventarioObjeto::class.java)
-
-                model.cantidadArticulo = cantidad
-                runOnUiThread {
-                    listaArticulos.add(model)
-                    mViewEstadisticaArticulo.notifyDataSetChanged()
-                    //adapter?.notifyDataSetChanged()
-                }
-            }
-        })
-    }*/
-
-    fun eventoClick(posicion : Int){
-        val dialog: AlertDialog = AlertDialog.Builder(context).create()
-        val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_numero, null)
-        dialog.setView(alertDialogView)
-        val dialogNumeroTitulo = alertDialogView.findViewById<View>(R.id.dialogNumeroTitulo) as TextView
-        val dialogNumeroText = alertDialogView.findViewById<View>(R.id.dialogNumeroText) as EditText
-        val dialogNumeroAceptar = alertDialogView.findViewById<View>(R.id.dialogNumeroAceptar) as Button
-        val dialogNumeroCancelar = alertDialogView.findViewById<View>(R.id.dialogNumeroCancelar) as Button
-
-        dialogNumeroTitulo.text = getString(R.string.dialog_numero_text_cantidad)
-
-        dialogNumeroAceptar.setOnClickListener {
-            if(dialogNumeroText.length() > 0) {
-                listaArticulos[posicion].cantidadArticulo = parseInt(dialogNumeroText.text.toString())
-                mViewEstadisticaArticulo.notifyDataSetChanged()
-                dialog.dismiss()
-            }
-        }
-
-        dialogNumeroCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
     fun actualizarInventario(){
         val url = urls.url+urls.endPointActualizarInventario
 
-        val venta = ActualizarInventarioObject(globalVariable.token.toString(), listaArticulos)
+        var listaArticulosTmp : MutableList<InventarioObjeto> = ArrayList()
+
+        for (articuloTmp in listaArticulos) {
+            if(articuloTmp.cantidadArticulo > 0)
+                listaArticulosTmp.add(articuloTmp)
+        }
+
+        val venta = ActualizarInventarioObject(globalVariable.token.toString(), listaArticulosTmp)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(venta)
@@ -240,10 +147,19 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListen
         })
     }
 
-    override fun applyTexts2(articulo : InventarioObjeto) {
+    override fun applyTexts(articulo : InventarioObjeto) {
         runOnUiThread{
             listaArticulos.add(articulo)
             mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }
+    }
+
+    override fun obtenerNumero(numero : Int, posicion : Int) {
+        runOnUiThread{
+            listaArticulos[posicion].cantidadArticulo = numero
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
         }
     }
 

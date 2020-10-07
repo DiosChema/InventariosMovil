@@ -49,16 +49,20 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
         val estadisticaArticuloDescripcion = view.findViewById(R.id.itemEstadisticaArticuloDescripcion) as TextView
         val estadisticaArticuloCantidad = view.findViewById(R.id.itemEstadisticaArticuloCantidad) as TextView
         val estadisticaArticuloTotal = view.findViewById(R.id.itemEstadisticaArticuloTotal) as TextView
+//        val itemSurtidoArticuloCantidadText = view.findViewById(R.id.itemSurtidoArticuloCantidadText) as TextView
+//        val itemSurtidoArticuloTotalText = view.findViewById(R.id.itemSurtidoArticuloTotalText) as TextView
         val estadisticaArticuloFoto = view.findViewById(R.id.itemEstadisticaArticuloFoto) as ImageView
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
         fun bind(articulo: EstadisticaArticuloObject, context: Context) {
             estadisticaArticuloTitulo.text = articulo._id.nombreArticulo
+            //itemSurtidoArticuloCantidadText.text = itemView.context.getString(R.string.venta_cantidad_articulo_diminutivo)
+            //itemSurtidoArticuloTotalText.text = itemView.context.getString(R.string.venta_total)
             estadisticaArticuloPrecio.text = articulo._id.precioArticulo.toString()
             estadisticaArticuloDescripcion.text = articulo._id.descripcionArticulo
-            estadisticaArticuloCantidad.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo) + " " + articulo.cantidad.toString()
-            estadisticaArticuloTotal.text = itemView.context.getString(R.string.mensaje_total_venta) + " " + articulo.total.toString()
+            estadisticaArticuloCantidad.text = itemView.context.getString(R.string.venta_cantidad_articulo_diminutivo) + articulo.cantidad.toString()
+            estadisticaArticuloTotal.text = itemView.context.getString(R.string.venta_total) + articulo.total.toString()
             val urls = Urls()
             estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }

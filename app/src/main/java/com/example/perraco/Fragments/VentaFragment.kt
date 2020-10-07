@@ -39,8 +39,8 @@ class VentaFragment : Fragment() {
     val formatoFechaCompleta = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
     lateinit var fechaInicial : Date
     lateinit var fechaFinal : Date
-    lateinit var fechaInicialButton : TextView
-    lateinit var fechaFinalButton : TextView
+    lateinit var fechaInicialButton : Button
+    lateinit var fechaFinalButton : Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)

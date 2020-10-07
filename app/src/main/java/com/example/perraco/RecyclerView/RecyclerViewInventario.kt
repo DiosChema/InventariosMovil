@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.perraco.Activities.InventarioDetalle
@@ -35,7 +36,7 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_inventario,
+                R.layout.item_articulo_inventario,
                 parent,
                 false
             )
@@ -53,16 +54,24 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val itemArticuloInventarioPrecioText = view.findViewById(R.id.itemArticuloInventarioPrecioText) as TextView
         val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
+        val itemArticuloInventarioContenedor = view.findViewById(R.id.itemArticuloInventarioContenedor) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
         fun bind(articulo: InventarioObjeto, context: Context) {
+
+            when (position % 2) {
+                1 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                else -> {
+                }
+            }
+
             itemArticuloInventarioNombre.text = articulo.nombreArticulo
             itemArticuloInventarioDescipcion.text = articulo.descripcionArticulo
             itemArticuloInventarioPrecio.text = "$" + articulo.precioArticulo
-            itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.mensaje_precio_articulo);
-            itemArticuloInventarioCantidad.text = itemView.context.getString(R.string.mensaje_cantidad_articulo_diminutivo) + articulo.cantidadArticulo
+            itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo);
+            itemArticuloInventarioCantidad.text = itemView.context.getString(R.string.venta_cantidad_articulo_diminutivo) + " " + articulo.cantidadArticulo
             itemView.setOnClickListener(View.OnClickListener {
                 val intent = Intent(context, InventarioDetalle::class.java).apply {
                     putExtra("articulo", articulo)

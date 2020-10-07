@@ -4,58 +4,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/transparent">
 
-    <LinearLayout
-        android:id="@+id/dialogArticulosContenedor"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@drawable/round_button">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
+            android:id="@+id/dialogArticulosContenedor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/dialogArticulosFamiliaSpinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <Spinner
+                    android:id="@+id/dialogArticulosFamiliaSpinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+
+                <Spinner
+                    android:id="@+id/dialogArticulosSubFamiliaSpinner"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialogoArticulosRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialogArticulosContenedor"
+            android:layout_marginBottom="35dp"/>
 
-            <Spinner
-                android:id="@+id/dialogArticulosSubFamiliaSpinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dialogoArticulosRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dialogArticulosContenedor"
-        android:layout_marginBottom="35dp"/>
-
-    <ImageButton
-        android:id="@+id/dialogArticulosSalir"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/transparent"
-        app:srcCompat="@android:drawable/btn_dialog"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="5dp"/>
-
+        <ImageButton
+            android:id="@+id/dialogArticulosSalir"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/transparent"
+            app:srcCompat="@android:drawable/btn_dialog"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"/>
+    </RelativeLayout>
 </RelativeLayout>

@@ -6,13 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@drawable/background"
     tools:context=".Activities.EstadisticaInventario">
 
     <TextView
         android:id="@+id/estadisticaInventarioTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/open_sans"
         android:text="@string/estadistica_inventario_titulo"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -70,6 +71,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
                         android:paddingStart="10dp"
                         android:paddingLeft="10dp"
                         android:text="@string/estadistica_inventario_total_articulos" />
@@ -90,6 +93,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
                         android:paddingStart="10dp"
                         android:paddingLeft="10dp"
                         android:text="@string/estadistica_inventario_total_costos" />
@@ -124,7 +129,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/mensaje_total_venta"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:text="@string/venta_total"
                 android:textSize="23sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="25dp"
@@ -150,20 +157,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
                     android:text="@string/estadistica_inventario_total_articulos"
                     android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
                     android:text="0"
                     android:id="@+id/estadisticaInventarioTotalArticulos"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="#228B22"
                     android:textStyle="bold"
-                    android:fontFamily="sans-serif-light"
                     android:layout_alignParentRight="true"
                     android:gravity="end"
                     android:layout_alignParentEnd="true" />
@@ -186,7 +194,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
                     android:text="@string/estadistica_inventario_total_costos"
                     android:textSize="18sp"/>
 
@@ -194,12 +203,12 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="0"
+                    android:fontFamily="@font/open_sans"
                     android:id="@+id/estadisticaInventarioTotalCostos"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="#FF0000"
                     android:textStyle="bold"
-                    android:fontFamily="sans-serif-light"
                     android:layout_alignParentRight="true"
                     android:gravity="end" />
 
@@ -220,20 +229,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
                     android:text="@string/estadistica_inventario_leyenda_total"
                     android:textSize="18sp"/>
 
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
                     android:text="0"
                     android:id="@+id/estadisticaInventarioTotal"
                     android:textAlignment="textEnd"
                     android:textSize="18sp"
                     android:textColor="@color/deep_blue"
                     android:textStyle="bold"
-                    android:fontFamily="sans-serif-light"
                     android:layout_alignParentRight="true"
                     android:gravity="end" />
 

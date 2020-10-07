@@ -9,16 +9,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.example.perraco.Objets.ArticuloObjeto
+import com.example.perraco.Objets.ArticuloVentaObject
 import com.example.perraco.Objets.GlobalClass
 import com.example.perraco.Objets.Urls
 import com.example.perraco.R
 import com.squareup.picasso.Picasso
 import java.lang.Double.parseDouble
 
-class AdapterListEditarArticulosVenta(private val activity: Activity, articulosList: MutableList<ArticuloObjeto>) : BaseAdapter() {
+class AdapterListEditarArticulosVenta(private val activity: Activity, articulosList: MutableList<ArticuloVentaObject>) : BaseAdapter() {
 
-    private var articuloVentaObjeto:MutableList<ArticuloObjeto> = ArrayList()
+    private var articuloVentaObjeto:MutableList<ArticuloVentaObject> = ArrayList()
     val urls = Urls()
     private var editarHabilitado = false
 
@@ -38,7 +38,7 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
         return i.toLong()
     }
 
-    fun obtenerObjeto(i : Int): ArticuloObjeto {
+    fun obtenerObjeto(i : Int): ArticuloVentaObject {
         return articuloVentaObjeto[i]
     }
 

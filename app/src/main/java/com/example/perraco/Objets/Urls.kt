@@ -32,8 +32,8 @@ data class Urls(
     var endPointConsultarFamiliasSubFamilias:String)
 {
     constructor(): this(
-        /*"https://tienditaplus.herokuapp.com/"*/
-        "http://pvgestordeinventario-env.eba-p2bc44jy.us-east-1.elasticbeanstalk.com/",
+        "https://tienditaplus.herokuapp.com/",
+        /*"http://pvgestordeinventario-env.eba-p2bc44jy.us-east-1.elasticbeanstalk.com/",*/
         "inventario/obtenerInventario",
         "imagenes/obtenerImagen?image=",
         "familias/consultarFamilias",

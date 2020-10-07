@@ -116,6 +116,9 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread {
+                    Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {

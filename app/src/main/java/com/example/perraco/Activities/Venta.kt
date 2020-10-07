@@ -1,62 +1,48 @@
 package com.example.perraco.Activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.perraco.Dialogs.DialogAgregarArticulos
+import com.example.perraco.Dialogs.DialogAgregarNumero
 import com.example.perraco.Objets.*
 import com.example.perraco.R
-import com.example.perraco.RecyclerView.AdapterListVenta
-import com.example.perraco.RecyclerView.RecyclerItemClickListener
-import com.example.perraco.RecyclerView.RecyclerViewArticulos
+import com.example.perraco.RecyclerView.*
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
-import java.lang.Long.parseLong
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class Venta : AppCompatActivity() {
+class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener, DialogAgregarNumero.ExampleDialogListener{
 
     var context = this
-    var listaTmp:MutableList<InventarioObjeto> = ArrayList()
     val urls: Urls = Urls()
-    lateinit var nombre : TextView
 
-    var listaTmpArticulos:MutableList<InventarioObjeto> = ArrayList()
+    var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
 
-    lateinit var arrayAdapter: ArrayAdapter<*>
-    var listView: ListView? = null
     var adapter: AdapterListVenta? = null
 
-    lateinit var mViewArticulos : RecyclerViewArticulos
-    lateinit var mRecyclerViewArticulos : RecyclerView
+    var dialogoAgregarArticulos = DialogAgregarArticulos()
 
-    var listaFamilia:MutableList<String> = ArrayList()
-    var listaFamiliaCompleta:MutableList<FamiliaObjeto> = ArrayList()
-    var listaSubFamilia:MutableList<String> = ArrayList()
-    var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
+    lateinit var mViewVenta : RecyclerViewVenta
+    lateinit var mRecyclerView : RecyclerView
 
     lateinit var dialog : Dialog
-
-    lateinit var dialogArticulosFamiliaSpinner: Spinner
-    lateinit var dialogArticulosSubFamiliaSpinner: Spinner
-    lateinit var dialogArticulosSalir: ImageButton
-    var subFamiliaId = -1
-
-
     lateinit var globalVariable: GlobalClass
+    lateinit var ventaTotalArticulos: TextView
+    lateinit var ventaTotalVenta: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,103 +51,87 @@ class Venta : AppCompatActivity() {
         globalVariable = applicationContext as GlobalClass
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        //mViewVenta = RecyclerViewVenta()
-        //mRecyclerView = findViewById<ListView>(R.id.rvVenta)
+        dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
+        crearRecyclerView()
 
-        listView = findViewById(R.id.rvVenta) as ListView
-        adapter = AdapterListVenta(this, listaTmp)
-        (listView as ListView).adapter = adapter
+        asignarRecursos()
 
-
-
-        dialog = Dialog(this)
-        dialog.setTitle(title)
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_articulos)
-
-        dialogArticulosFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosFamiliaSpinner) as Spinner
-        dialogArticulosSubFamiliaSpinner = dialog.findViewById(R.id.dialogArticulosSubFamiliaSpinner) as Spinner
-        dialogArticulosSalir = dialog.findViewById(R.id.dialogArticulosSalir) as ImageButton
-        mRecyclerViewArticulos = dialog.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
-
-        mViewArticulos = RecyclerViewArticulos()
-
-        //mRecyclerViewArticulos = dialogoArticulosRecyclerView as RecyclerView
-
+        /*
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val width = displayMetrics.widthPixels
 
         mRecyclerViewArticulos.layoutManager = GridLayoutManager(context,width/360)
-
-        /*mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mViewVenta.RecyclerAdapter(listaTmp, context)
-        mRecyclerView.adapter = mViewVenta*/
-
-        nombre = findViewById(R.id.VentaCodigoAgregar)
-
-
-        val ButtonNuevoArticulo = findViewById<ImageView>(R.id.VentaNuevoArticulo)
-        ButtonNuevoArticulo?.setOnClickListener {
-            if(nombre.text.isNotEmpty())
-                getArticuloObjecto(parseLong(nombre.text.toString()))
-        }
-
-        val ventaObtenerArticulo = findViewById<ImageButton>(R.id.ventaObtenerArticulo)
-        ventaObtenerArticulo?.setOnClickListener {
-            showDialogArticulos()
-        }
-
-        val ButtonTerminarVenta = findViewById<ImageView>(R.id.VentaTerminarVenta)
-        ButtonTerminarVenta?.setOnClickListener {
-            subirVenta()
-        }
-
-        val ButtonObtenerCodigoBarras = findViewById<ImageButton>(R.id.VentaObtenerCodigo)
-        ButtonObtenerCodigoBarras?.setOnClickListener {
-            val intentIntegrator = IntentIntegrator(this)
-            intentIntegrator.setBeepEnabled(false)
-            intentIntegrator.setCameraId(0)
-            intentIntegrator.setPrompt("SCAN")
-            intentIntegrator.setBarcodeImageEnabled(false)
-            intentIntegrator.initiateScan()
-        }
-
+        */
     }
 
-    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents != null) {
-                runOnUiThread {
-                    getArticuloObjecto(parseLong(result.contents))
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
+    fun asignarRecursos(){
+
+        ventaTotalArticulos = findViewById(R.id.ventaTotalArticulos)
+        ventaTotalVenta = findViewById(R.id.ventaTotalVenta)
+
+        val ButtonNuevoArticulo = findViewById<ImageButton>(R.id.ventaNuevoArticulo)
+        ButtonNuevoArticulo.setOnClickListener {
+            dialogoAgregarArticulos.showDialogAgregarArticulo()
         }
+
+        val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
+        ButtonTerminarVenta.setOnClickListener {
+            subirVenta()
+        }
+    }
+
+    fun actualizarCantidadPrecio(){
+
+        var totalCantidad = 0
+        var totalPrecio = 0.0
+
+        for(articulos in listaArticulos){
+            totalCantidad += articulos.cantidadArticulo
+            totalPrecio += (articulos.precioArticulo * articulos.cantidadArticulo)
+        }
+
+        ventaTotalArticulos.text = totalCantidad.toString()
+        ventaTotalVenta.text = "$" + totalPrecio.toString()
+    }
+
+    fun crearRecyclerView(){
+        mViewVenta = RecyclerViewVenta()
+        mRecyclerView = findViewById(R.id.rvVenta)
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
+        mViewVenta.RecyclerAdapter(listaArticulos, context)
+        mRecyclerView.adapter = mViewVenta
+
+        var dialogAgregarNumero = DialogAgregarNumero()
+
+        mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
+            RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                dialogAgregarNumero.crearDialog(context, position)
+            }
+
+            override fun onLongItemClick(view: View?, position: Int) {}
+        }))
     }
 
     fun subirVenta() {
-
-        actulizarExistencia()
         val url = urls.url+urls.endPointVenta
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
-        for (i in 0..adapter?.count!! - 1) {
-            val objeto  = adapter?.obtenerObjeto(i)
-            if (objeto != null) {
-                val articulo = ArticuloObjeto(
-                    objeto.idArticulo,
-                    objeto.cantidadArticulo,
-                    objeto.precioArticulo,
-                    objeto.nombreArticulo,
-                    objeto.costoArticulo)
+        for (articuloTmp in listaArticulos) {
 
-                if(articulo.cantidad > 0)
-                    articulos.add(articulo)
-            }
+            val articulo = ArticuloObjeto(
+                articuloTmp.idArticulo,
+                articuloTmp.cantidadArticulo,
+                articuloTmp.precioArticulo,
+                articuloTmp.nombreArticulo,
+                articuloTmp.costoArticulo)
+
+            if(articulo.cantidad > 0)
+                articulos.add(articulo)
+
         }
 
         if(articulos.size == 0) {
@@ -198,8 +168,8 @@ class Venta : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     progressDialog.dismiss()
-                    listaTmp.clear()
-                    adapter?.notifyDataSetChanged()
+                    listaArticulos.clear()
+                    mViewVenta.notifyDataSetChanged()
                     Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
                 }
 
@@ -208,290 +178,41 @@ class Venta : AppCompatActivity() {
 
     }
 
-    fun obtenerArticulo(idArticulo: Long) : InventarioObjeto?
-    {
-        val articuloTmp : InventarioObjeto? = null
-
-        for(i in 0..listaTmp.size -1) {
-            if(listaTmp[i].idArticulo == idArticulo) {
-                return listaTmp[i]
-            }
+    override fun applyTexts(articulo : InventarioObjeto) {
+        runOnUiThread{
+            listaArticulos.add(articulo)
+            mViewVenta.notifyDataSetChanged()
+            actualizarCantidadPrecio()
         }
-
-        return articuloTmp
-
     }
 
-    private fun showDialogArticulos() {
-        mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
-        mRecyclerViewArticulos.adapter = mViewArticulos
-
-        if(listaFamiliaCompleta.size == 0)
-            obtenerFamilias(context)
-
-        mRecyclerViewArticulos.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerViewArticulos, object :
-            RecyclerItemClickListener.OnItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                getArticuloObjecto(listaTmpArticulos[position].idArticulo)
-                dialog.dismiss()
-            }
-
-            override fun onLongItemClick(view: View?, position: Int) {}
-        }))
-        /*dialogAceptar.setOnClickListener {
-            dialog.dismiss()
-            agregarFamilia(this,dialogText.text.toString())
+    override fun obtenerNumero(numero : Int, posicion : Int) {
+        runOnUiThread{
+            listaArticulos[posicion].cantidadArticulo = numero
+            mViewVenta.notifyDataSetChanged()
+            actualizarCantidadPrecio()
         }
-
-        dialogCancelar.setOnClickListener {
-            dialog.dismiss()
-        }*/
-
-        dialog.show()
-
     }
 
-    fun obtenerArticulosFamilia(){
-        val url = urls.url+urls.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.token
+    override fun abrirCamara() {
+        val intentIntegrator = IntentIntegrator(context as Surtido)
+        intentIntegrator.setBeepEnabled(false)
+        intentIntegrator.setCameraId(0)
+        intentIntegrator.setPrompt("SCAN")
+        intentIntegrator.setBarcodeImageEnabled(false)
+        intentIntegrator.initiateScan()
+    }
 
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-
-                var Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
+    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
+        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents != null) {
                 runOnUiThread {
-                    listaTmpArticulos = Model.toMutableList()
-                    mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
-                    mViewArticulos.notifyDataSetChanged()
+                    dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(java.lang.Long.parseLong(result.contents).toString())
                 }
             }
-        })
-    }
-
-    fun obtenerArticulosSubFamilia(){
-        val url = urls.url+urls.endPointArticulosPorSubFamilia+"?subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId + "&token="+globalVariable.token
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-
-                var Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
-                runOnUiThread {
-                    listaTmpArticulos = Model.toMutableList()
-                    mViewArticulos.RecyclerAdapter(listaTmpArticulos, context)
-                    mViewArticulos.notifyDataSetChanged()
-                }
-            }
-        })
-    }
-
-    fun obtenerFamilias(context: Context){
-
-        val url = urls.url+urls.endpointObtenerFamilias+"?token="+globalVariable.token
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                listaFamiliaCompleta = gson.fromJson(body,Array<FamiliaObjeto>::class.java).toMutableList()
-
-                for (familias in listaFamiliaCompleta) {
-                    listaFamilia.add(familias.nombreFamilia)
-                }
-
-                runOnUiThread {
-                    val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaFamilia)
-                    dialogArticulosFamiliaSpinner.adapter = adapter
-                    dialogArticulosFamiliaSpinner.setSelection(0)
-
-                    dialogArticulosFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
-                            obtenerArticulosFamilia()
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            // write code to perform some action
-                        }
-                    }
-                }
-            }
-        })
-
-    }
-
-    fun obtenerSubFamilias(context: Context, familiaId: Int){
-        var subFamiliaTmp = 0
-        val url = urls.url+urls.endpointObtenerSubFamilias+"?token="+globalVariable.token+"&familiaId="+familiaId
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        val progressDialog = ProgressDialog(this)
-        progressDialog.setMessage(getString(R.string.mensaje_espera))
-        progressDialog.show()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                listaSubFamilia.clear()
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-
-                runOnUiThread {
-                    var adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaSubFamilia)
-                    dialogArticulosSubFamiliaSpinner.adapter = adapter
-
-                    listaSubFamiliaCompleta = gson.fromJson(body,Array<SubFamiliaObjeto>::class.java).toMutableList()
-
-                    for (familias in listaSubFamiliaCompleta) {
-                        listaSubFamilia.add(familias.nombreSubFamilia)
-                    }
-
-                    adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaSubFamilia)
-
-                    dialogArticulosSubFamiliaSpinner.adapter = adapter
-
-                    if(listaSubFamilia.size > 0) {
-                        dialogArticulosSubFamiliaSpinner.setSelection(subFamiliaTmp)
-                    }
-
-                    dialogArticulosSubFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            if(listaSubFamilia.size > 0) {
-                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
-                                obtenerArticulosSubFamilia()
-                            }
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            // write code to perform some action
-                        }
-                    }
-
-                    progressDialog.dismiss()
-                }
-            }
-        })
-
-    }
-
-    fun getArticuloObjecto(idArticulo: Long){
-
-        val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        actulizarExistencia()
-        val elemento = obtenerArticulo(idArticulo)
-
-        if(elemento == null || elemento.cantidadArticulo == 0) {
-            val progressDialog = ProgressDialog(this)
-            progressDialog.setMessage(getString(R.string.mensaje_espera))
-            progressDialog.show()
-
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    progressDialog.dismiss()
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    val body = response.body()?.string()
-                    if (body != null && body.isNotEmpty()) {
-                        val gson = GsonBuilder().create()
-
-                        val articulo = gson.fromJson(body,InventarioObjeto::class.java)
-                        articulo.cantidadArticulo = 1
-
-                        runOnUiThread {
-                            actulizarExistencia()
-                            listaTmp.add(articulo)
-                            adapter?.notifyDataSetChanged()
-                            nombre.text = ""
-                        }
-                    }
-
-                    progressDialog.dismiss()
-                }
-            })
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
-        else
-        {
-            for(i in 0..listaTmp.size -1) {
-                if(listaTmp[i].idArticulo == idArticulo) {
-                    listaTmp[i].cantidadArticulo + 1
-                    runOnUiThread {
-                        adapter?.notifyDataSetChanged()
-                    }
-                }
-            }
-        }
-
     }
-
-    fun actulizarExistencia() {
-        if(adapter?.count!! > 0)
-        {
-            for (i in 0 until adapter?.count!!) {
-
-                val objeto = adapter?.obtenerObjeto(i)
-                if (objeto != null) {
-                    listaTmp[i].cantidadArticulo = objeto.cantidadArticulo
-                }
-            }
-        }
-
-    }
-
 }

@@ -7,8 +7,8 @@
     <string name="mensaje_agregar_articulo">Agregar</string>
     <string name="mensaje_costo_articulo">Costo</string>
     <string name="mensaje_cantidad_articulo">Cantidad</string>
-    <string name="mensaje_cantidad_articulo_diminutivo">Cant: </string>
-    <string name="mensaje_precio_articulo">Precio: </string>
+
+
     <string name="mensaje_detalle_articulo">Detalle</string>
     <string name="mensaje_nombre_articulo">Nombre</string>
     <string name="mensaje_subgrupo_articulo">SubGrupo</string>
@@ -21,14 +21,14 @@
     <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
     <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
     <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
-    <string name="mensaje_anadir_articulo">Añadir nuevo</string>
+    <string name="mensaje_anadir_articulo">Nuevo Articulo</string>
     <string name="fragment_inventario">Inventario</string>
     <string name="fragment_ventas">Ventas</string>
     <string name="mensaje_venta_sin_articulos">No hay articulos</string>
     <string name="mensaje_venta_exitosa">Venta exitosa</string>
     <string name="mensaje_eliminacion_exitosa">Venta eliminada</string>
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
-    <string name="mensaje_total_venta">Total: </string>
+
     <string name="mensaje_numero_venta">Venta No.</string>
     <string name="mensaje_correo_electronico">Correo electronico</string>
     <string name="mensaje_crear_cuenta">Crear cuenta</string>
@@ -44,6 +44,20 @@
     <string name="mensaje_titulo_login">Login</string>
     <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
 
+    <!-- venta/surtido-->
+    <string name="venta_total_articulos">Total Articulos:</string>
+    <string name="venta_total_venta">Total Venta:</string>
+    <string name="surtido_total_costo">Total Costo:</string>
+
+    <!-- RecyclerView venta/surtido-->
+    <string name="venta_cantidad_articulo_diminutivo">Cant: </string>
+    <string name="surtido_costo">Costo: </string>
+    <string name="venta_total">Total: </string>
+    <string name="venta_precio_articulo">Precio: </string>
+
+    <!-- Ventas Inventario -->
+    <string name="ventas_inventario_fecha">Fecha:</string>
+    <string name="ventas_inventario_cantidad">Cant: </string>
 
     <!-- Estadistica Articulos -->
     <string name="estadistica_articulo_botton_dia">Hoy</string>

@@ -4,122 +4,128 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/background"
+    android:background="@color/transparent"
     android:minWidth="800dp">
-
-    <TextView
-        android:id="@+id/dialogAgregarArticuloTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"/>
-
-    <EditText
-        android:id="@+id/dialogAgregarArticuloCodigo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_margin="15dp"
-        android:hint="@string/mensaje_codigo_articulo"
-        android:inputType="number"
-        android:textSize="18sp"
-        android:textAlignment="center"
-        android:gravity="center_horizontal"
-        android:background="@drawable/round_button_white"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:background="@drawable/round_button">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        <TextView
+            android:id="@+id/dialogAgregarArticuloTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"/>
 
         <EditText
-            android:id="@+id/dialogAgregarArticuloCantidad"
-            android:layout_width="0dp"
+            android:id="@+id/dialogAgregarArticuloCodigo"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text=""
-            android:hint="@string/mensaje_cantidad_articulo"
+            android:layout_margin="15dp"
+            android:hint="@string/mensaje_codigo_articulo"
             android:inputType="number"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:background="@drawable/round_button_white"
-            android:gravity="center_horizontal"/>
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"/>
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="15dp">
-
-        <ImageButton
-            android:id="@+id/dialogAgregarArticuloBuscarArticulo"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            app:srcCompat="@android:drawable/ic_search_category_default"
-            android:background="@drawable/round_button_white"
-            android:layout_gravity="center"
-            android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp" />
-
-        <ImageButton
-            android:id="@+id/dialogAgregarArticuloObtenerCodigo"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            app:srcCompat="@android:drawable/ic_menu_camera"
-            android:background="@drawable/round_button_white"
-            android:layout_gravity="center"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="15dp">
-
-        <Button
-            android:id="@+id/dialogAgregarArticuloCancelar"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_cancelar" />
+            android:orientation="horizontal">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/dialogAgregarArticuloAceptar"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+            <EditText
+                android:id="@+id/dialogAgregarArticuloCantidad"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=""
+                android:hint="@string/mensaje_cantidad_articulo"
+                android:inputType="number"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:background="@drawable/round_button_white"
+                android:gravity="center_horizontal"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/dialog_aceptar" />
+            android:orientation="horizontal"
+            android:layout_margin="15dp">
 
+            <ImageButton
+                android:id="@+id/dialogAgregarArticuloBuscarArticulo"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@android:drawable/ic_search_category_default"
+                android:background="@drawable/round_button_white"
+                android:layout_gravity="center"
+                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp" />
 
+            <ImageButton
+                android:id="@+id/dialogAgregarArticuloObtenerCodigo"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:background="@drawable/round_button_white"
+                android:layout_gravity="center"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp">
+
+            <Button
+                android:id="@+id/dialogAgregarArticuloCancelar"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_cancelar" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/dialogAgregarArticuloAceptar"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_aceptar" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

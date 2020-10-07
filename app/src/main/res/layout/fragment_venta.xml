@@ -10,10 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <Button
             android:id="@+id/fragmentBuscarPorFechaInicio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="25dp"
@@ -21,10 +23,12 @@
             android:background="@drawable/round_button_white"
             android:text="@string/hello_blank_fragment" />
 
-        <TextView
+        <Button
             android:id="@+id/fragmentBuscarPorFechaFinal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="25dp"

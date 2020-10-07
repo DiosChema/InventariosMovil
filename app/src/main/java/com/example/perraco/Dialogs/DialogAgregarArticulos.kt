@@ -1,13 +1,11 @@
 package com.example.perraco.Dialogs
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.Intent
-import android.text.Layout
-import android.view.LayoutInflater
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -18,7 +16,6 @@ import com.example.perraco.R
 import com.example.perraco.RecyclerView.RecyclerItemClickListener
 import com.example.perraco.RecyclerView.RecyclerViewArticulos
 import com.google.gson.GsonBuilder
-import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
 import java.lang.Long.parseLong
@@ -70,6 +67,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         listener = contextTmp as ExampleDialogListener
         dialogAgregarArticulo = Dialog(contextTmp)
 
+        dialogAgregarArticulo.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         //dialogArticulos.iniciarDialog(globalVariable, context, activityTmp)
 
         dialogAgregarArticulo.setCancelable(false)
@@ -83,6 +81,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<View>(R.id.dialogAgregarArticuloObtenerCodigo) as ImageButton
 
 
+        dialogAgregarArticuloCantidad.setText("1")
         val dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<ImageButton>(R.id.dialogAgregarArticuloObtenerCodigo)
         dialogAgregarArticuloObtenerCodigo?.setOnClickListener {
             listener.abrirCamara()
@@ -92,6 +91,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogInstance = Dialog(this.contextTmp)
         dialogInstance.setCancelable(false)
         dialogInstance.setContentView(com.example.perraco.R.layout.dialog_articulos)
+
+        dialogInstance.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         dialogArticulosFamiliaSpinner = dialogInstance.findViewById(com.example.perraco.R.id.dialogArticulosFamiliaSpinner) as Spinner
         dialogArticulosSubFamiliaSpinner = dialogInstance.findViewById(com.example.perraco.R.id.dialogArticulosSubFamiliaSpinner) as Spinner
@@ -119,15 +120,13 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
             override fun onLongItemClick(view: View?, position: Int) {}
         }))
-        /*dialogAceptar.setOnClickListener {
-            dialog.dismiss()
-            agregarFamilia(this,dialogText.text.toString())
+
+        dialogArticulosSalir.setOnClickListener{
+            dialogInstance.dismiss()
         }
 
-        dialogCancelar.setOnClickListener {
-            dialog.dismiss()
-        }*/
-
+        dialogAgregarArticuloCodigo.setText("")
+        dialogAgregarArticuloCantidad.setText("1")
         dialogInstance.show()
     }
 
@@ -186,16 +185,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
                 model.cantidadArticulo = cantidad
                 activityTmp.runOnUiThread {
-                    listener.applyTexts2(model)
-                    /*listaArticulos.add(model)
-                    mViewEstadisticaArticulo.notifyDataSetChanged()*/
-                    //adapter?.notifyDataSetChanged()
+                    listener.applyTexts(model)
                 }
             }
         })
     }
-
-
 
     fun obtenerArticulosFamilia(){
         val url = urls.url+urls.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.token
@@ -287,13 +281,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                         AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
+                            obtenerSubFamilias(context,position)
                             obtenerArticulosFamilia()
                         }
 
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            // write code to perform some action
-                        }
+                        override fun onNothingSelected(parent: AdapterView<*>) {}
                     }
                 }
             }
@@ -335,67 +327,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-
-        /*val url = urls.url+urls.endpointObtenerSubFamilias+"?token="+globalVariable.token+"&familiaId="+familiaId
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        val progressDialog = ProgressDialog(context)
-        progressDialog.setMessage(context.getString(com.example.perraco.R.string.mensaje_espera))
-        progressDialog.show()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                listaSubFamilia.clear()
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-
-                activityTmp.runOnUiThread {
-                    var adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaSubFamilia)
-                    dialogArticulosSubFamiliaSpinner.adapter = adapter
-
-                    listaSubFamiliaCompleta = gson.fromJson(body,Array<SubFamiliaObjeto>::class.java).toMutableList()
-
-                    for (familias in listaSubFamiliaCompleta) {
-                        listaSubFamilia.add(familias.nombreSubFamilia)
-                    }
-
-                    adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaSubFamilia)
-
-                    dialogArticulosSubFamiliaSpinner.adapter = adapter
-
-                    if(listaSubFamilia.size > 0) {
-                        dialogArticulosSubFamiliaSpinner.setSelection(subFamiliaTmp)
-                    }
-
-                    dialogArticulosSubFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                            if(listaSubFamilia.size > 0) {
-                                subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
-                                obtenerArticulosSubFamilia()
-                            }
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {}
-                    }
-
-                    progressDialog.dismiss()
-                }
-            }
-        })*/
-
     }
 
     fun getArticuloObjecto(context : Context, idArticulo: Long){
@@ -439,14 +370,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     }
 
     interface ExampleDialogListener {
-        fun applyTexts2(articulo : InventarioObjeto)
+        fun applyTexts(articulo : InventarioObjeto)
         fun abrirCamara()
     }
-
-    /*override fun applyTexts(articulo : InventarioObjeto) {
-        activityTmp.runOnUiThread{
-            dialogAgregarArticuloCodigo.setText(articulo.idArticulo.toString())
-        }
-    }*/
 
 }
