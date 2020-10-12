@@ -12,8 +12,12 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -31,10 +35,7 @@ import com.squareup.picasso.Picasso
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.lang.Double.parseDouble
 import java.lang.Integer.parseInt
 import java.lang.Long.parseLong
@@ -61,13 +62,15 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invBottonTomarCodigo : ImageButton
     lateinit var invDetalleCancelarEdicion : Button
     lateinit var invDetalleEliminarArticulo : ImageButton
+    var posicionFamilia = 0
+    var posicionSubFamilia = 0
 
     lateinit var globalVariable: GlobalClass
 
     private val urls: Urls = Urls()
     var subFamiliaPendiente = false
     var subFamiliaPendienteIndex = 0
-
+    var aaa : String = "a"
     lateinit var inventarioObjeto:InventarioObjeto
     var listaFamilia:MutableList<String> = ArrayList()
     var listaFamiliaCompleta:MutableList<FamiliasSubFamiliasObject> = ArrayList()
@@ -177,7 +180,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         }
         else {
-            invDetalleDarDeAlta.setText(getString(R.string.mensaje_editar))
+            invDetalleDarDeAlta.text = getString(R.string.mensaje_editar)
             invDetalleDarDeAlta.setOnClickListener{
                 habilitarEdicion(true)
             }
@@ -200,6 +203,24 @@ class InventarioDetalle : AppCompatActivity() {
         posicionPendiente = true
         obtenerFamilias(this,parseInt(articulo.familiaArticulo))
     }
+
+    fun reLlenarCampos(articulo : InventarioObjeto){
+        invDetalleId.setText(articulo.idArticulo.toString())
+        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+        invDetalleNombre.setText(articulo.nombreArticulo)
+        invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
+        invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
+        invDetallePrecio.setText(articulo.precioArticulo.toString())
+        invDetalleCosto.setText(articulo.costoArticulo.toString())
+
+        cambioFoto = false
+        posicionPendiente = true
+
+        invDetalleFamiliaSpinner.setSelection(posicionFamilia)
+        invDetalleSubFamiliaSpinner.setSelection(posicionSubFamilia)
+    }
+
+
 
     fun asignarFuncionBotones(esEditar : Boolean){
 
@@ -249,7 +270,7 @@ class InventarioDetalle : AppCompatActivity() {
             intentIntegrator.initiateScan()
         }
         invDetalleCancelarEdicion.setOnClickListener{
-            llenarCampos(inventarioObjeto)
+            reLlenarCampos(inventarioObjeto)
             habilitarEdicion(false)
         }
 
@@ -266,6 +287,7 @@ class InventarioDetalle : AppCompatActivity() {
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogText = dialog.findViewById(R.id.dialogText) as EditText
         val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
@@ -291,6 +313,7 @@ class InventarioDetalle : AppCompatActivity() {
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogText = dialog.findViewById(R.id.dialogText) as EditText
         val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
@@ -316,6 +339,7 @@ class InventarioDetalle : AppCompatActivity() {
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogText = dialog.findViewById(R.id.dialogText) as EditText
         val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
@@ -635,13 +659,14 @@ class InventarioDetalle : AppCompatActivity() {
 
         val bitmap: Bitmap = (drawable as BitmapDrawable).bitmap
 
-        val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
+        /*val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
 
         val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
 
         //resized = Bitmap.createBitmap(resized, 25, 50, 150, 250)//cropToSquare(resized)
 
-        val file = bitmapToFile(resized)
+        val file = bitmapToFile(resized)*/
+        val file = bitmapToFile(bitmap)
 
         val MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg")
         val req: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -734,14 +759,54 @@ class InventarioDetalle : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
-            runOnUiThread {
-                invDetalleId.setText(result.contents)
-            }
+            runOnUiThread { invDetalleId.setText(result.contents) }
 
         } else {
             if (resultCode == Activity.RESULT_OK){
                 cambioFoto = true
-                invDetalleFoto.setImageURI(image_uri)
+
+                try {
+                    val inputStream: InputStream? = image_uri?.let { contentResolver.openInputStream(it) }
+                    //invDetalleFoto.setImageDrawable()
+
+                    val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
+
+                    val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
+
+                    val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
+                    invDetalleFoto.setImageBitmap(resized)
+
+                } catch (e: FileNotFoundException) { }
+
+                //invDetalleFoto.setImageURI(image_uri)
+                runOnUiThread { image_uri?.let { eliminarFoto(it) } }
+            }
+        }
+    }
+
+    fun getFilePath(uri : Uri): String{
+        val projection =
+            arrayOf(MediaStore.Images.Media.DATA)
+
+        val cursor: Cursor? = contentResolver.query(uri, projection, null, null, null)
+        if (cursor != null) {
+            cursor.moveToFirst()
+            val columnIndex: Int = cursor.getColumnIndex(projection[0])
+            val picturePath: String = cursor.getString(columnIndex) // returns null
+            cursor.close()
+            return picturePath
+        }
+        return ""
+    }
+
+    fun eliminarFoto(uri : Uri){
+        val fdelete = File(getFilePath(uri))
+
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                System.out.println("file Deleted :" );
+            } else {
+                System.out.println("file not Deleted :");
             }
         }
     }
@@ -937,8 +1002,6 @@ class InventarioDetalle : AppCompatActivity() {
     fun obtenerFamilias(context: Context, posicion : Int){
 
         val url = urls.url+urls.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.token
-        var posicionFamilia = 0
-        var posicionSubFamilia = 0
 
         val request = Request.Builder()
             .url(url)

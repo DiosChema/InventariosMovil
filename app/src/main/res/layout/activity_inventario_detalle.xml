@@ -6,27 +6,91 @@
     android:layout_height="match_parent"
     tools:context=".Activities.InventarioDetalle"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="15dp">
+        android:layout_margin="25dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/invDetalleId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:hint="@string/mensaje_codigo_articulo"
+                android:maxLength="13"
+                android:inputType="numberSigned"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:background="@drawable/round_button_white"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:importantForAutofill="no" />
+
+            <ImageButton
+                android:id="@+id/invBottonTomarCodigo"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                app:srcCompat="@drawable/barcodeicon"
+                android:background="@drawable/round_button_white"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center"
+                android:contentDescription="@string/capturarCodigoBarras"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/invDetalleNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:maxLength="15"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:hint="@string/mensaje_nombre_articulo"
+            android:background="@drawable/round_button_white"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_marginTop="15dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_gravity="center"
                 android:layout_width="0dp"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
-                card_view:cardCornerRadius="64dp">
+                card_view:cardCornerRadius="400dp">
 
                 <ImageView
                     android:id="@+id/invDetalleFoto"
@@ -39,48 +103,136 @@
 
             </androidx.cardview.widget.CardView>
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/invDetalleNombreDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:minLines="2"
+            android:maxLines="3"
+            android:layout_marginBottom="10dp"
+            android:maxLength="60"
+            android:hint="@string/mensaje_detalle_articulo"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:background="@drawable/round_button_white"
+            android:importantForAutofill="no"
+            android:inputType="text"/>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="4"
-                android:layout_marginTop="25dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/invDetallePrecioText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editar_articulo_venta"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:layout_gravity="center"/>
+
+                <EditText
+                    android:id="@+id/invDetallePrecio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
+                    android:hint="@string/editar_articulo_precio"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLength="8"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/round_button_white"
+                    android:importantForAutofill="no" />
 
-                    <EditText
-                        android:id="@+id/invDetalleId"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="@string/mensaje_codigo_articulo"
-                        android:maxLength="13"
-                        android:inputType="numberSigned"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:background="@drawable/round_button_white"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:importantForAutofill="no" />
+                <TextView
+                    android:id="@+id/invDetalleCostoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/editar_articulo_proveedor"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:layout_gravity="center"/>
 
-                    <ImageButton
-                        android:id="@+id/invBottonTomarCodigo"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        app:srcCompat="@drawable/barcodeicon"
-                        android:background="@drawable/round_button_white"
-                        android:adjustViewBounds="true"
-                        android:scaleType="centerCrop"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/capturarCodigoBarras"/>
+                <EditText
+                    android:id="@+id/invDetalleCosto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/mensaje_costo_articulo"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLength="8"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/round_button_white"
+                    android:importantForAutofill="no"
+                    android:layout_gravity="center" />
 
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/invDetalleCantidadText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mensaje_cantidad_articulo"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLines="1"
+                    android:layout_gravity="center"/>
+
+                <EditText
+                    android:id="@+id/invDetalleCantidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="4"
+                    android:hint="@string/mensaje_cantidad_articulo"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:inputType="number"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:background="@drawable/round_button_white"
+                    android:importantForAutofill="no"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp">
+
+                <!--<ImageButton
+                    android:id="@+id/invBotonEliminarFamilia"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:srcCompat="@drawable/lessicon"
+                    android:background="@color/transparent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/botonEliminar"/>-->
 
                 <TextView
                     android:id="@+id/invTextGrupo"
@@ -91,43 +243,75 @@
                     android:textColor="@color/black"
                     android:text="@string/mensaje_grupo_articulo" />
 
-                <LinearLayout
+                <Spinner
+                    android:id="@+id/invDetalleFamiliaSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:minWidth="100dp"
+                    android:background="@drawable/round_button_white"
                     android:layout_gravity="center"
-                    android:layout_marginTop="3dp">
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:textAlignment="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp">
 
                     <ImageButton
                         android:id="@+id/invBotonEliminarFamilia"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        app:srcCompat="@drawable/lessicon"
-                        android:background="@color/transparent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/botonEliminar"/>
-
-                    <Spinner
-                        android:id="@+id/invDetalleFamiliaSpinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:minWidth="100dp"
-                        android:background="@drawable/round_button_white"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:textAlignment="center"/>
+                        app:srcCompat="@drawable/lessicon"
+                        android:background="@color/transparent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/botonEliminar"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3" />
 
                     <ImageButton
                         android:id="@+id/invBotonAgregarFamilia"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@color/transparent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
                         app:srcCompat="@drawable/moreicon"
                         android:contentDescription="@string/botonAgregar"/>
 
                 </LinearLayout>
+
+                <!--<ImageButton
+                    android:id="@+id/invBotonAgregarFamilia"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@color/transparent"
+                    app:srcCompat="@drawable/moreicon"
+                    android:contentDescription="@string/botonAgregar"/>-->
+
+
+                <!--<ImageButton
+                    android:id="@+id/invBotonEliminarSubFamilia"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:srcCompat="@drawable/lessicon"
+                    android:background="@color/transparent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/botonEliminar"/>-->
+
+
 
                 <TextView
                     android:id="@+id/invTextSubGrupo"
@@ -136,208 +320,83 @@
                     android:layout_gravity="center"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
-                    android:text="@string/mensaje_subgrupo_articulo" />
+                    android:text="@string/mensaje_subgrupo_articulo"/>
+
+                <Spinner
+                    android:id="@+id/invDetalleSubFamiliaSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    android:textAlignment="center"
+                    android:background="@drawable/round_button_white"
+                    android:gravity="center_horizontal"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="3dp">
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginEnd="15dp">
 
                     <ImageButton
                         android:id="@+id/invBotonEliminarSubFamilia"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        app:srcCompat="@drawable/lessicon"
-                        android:background="@color/transparent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/botonEliminar"/>
-
-                    <Spinner
-                        android:id="@+id/invDetalleSubFamiliaSpinner"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:minWidth="100dp"
-                        android:textAlignment="center"
-                        android:background="@drawable/round_button_white"
-                        android:gravity="center_horizontal"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"/>
+                        app:srcCompat="@drawable/lessicon"
+                        android:background="@color/transparent"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/botonEliminar"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="3" />
 
                     <ImageButton
                         android:id="@+id/invBotonAgregarSubFamilia"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        app:srcCompat="@drawable/moreicon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:background="@color/transparent"
-                        android:layout_gravity="center"
-                        android:contentDescription="@string/botonAgregar" />
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/moreicon"
+                        android:contentDescription="@string/botonAgregar"/>
 
                 </LinearLayout>
 
+                <!--<ImageButton
+                    android:id="@+id/invBotonAgregarSubFamilia"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    app:srcCompat="@drawable/moreicon"
+                    android:background="@color/transparent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/botonAgregar" />-->
+
             </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
+        <Button
+            android:id="@+id/invDetalleDarDeAlta"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp">
-
-            <EditText
-                android:id="@+id/invDetalleNombre"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:maxLines="1"
-                android:maxLength="15"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:hint="@string/mensaje_nombre_articulo"
-                android:background="@drawable/round_button_white"
-                android:importantForAutofill="no"
-                android:inputType="text" />
-
-            <EditText
-                android:id="@+id/invDetalleNombreDetalle"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:maxLines="3"
-                android:layout_marginBottom="10dp"
-                android:maxLength="60"
-                android:hint="@string/mensaje_detalle_articulo"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:background="@drawable/round_button_white"
-                android:importantForAutofill="no"
-                android:inputType="text"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/invDetallePrecioText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/editar_articulo_venta"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:layout_gravity="center"/>
-
-                    <EditText
-                        android:id="@+id/invDetallePrecio"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/editar_articulo_precio"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:maxLength="8"
-                        android:inputType="numberDecimal"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/round_button_white"
-                        android:importantForAutofill="no" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/invDetalleCantidadText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/mensaje_cantidad_articulo"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:layout_gravity="center"/>
-
-                    <EditText
-                        android:id="@+id/invDetalleCantidad"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:maxLength="4"
-                        android:hint="@string/mensaje_cantidad_articulo"
-                        android:fontFamily="@font/open_sans"
-                        android:textColor="@color/black"
-                        android:inputType="number"
-                        android:textAlignment="center"
-                        android:gravity="center_horizontal"
-                        android:background="@drawable/round_button_white"
-                        android:importantForAutofill="no" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="15dp">
-
-
-                <TextView
-                    android:id="@+id/invDetalleCostoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/editar_articulo_proveedor"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"/>
-
-                <EditText
-                    android:id="@+id/invDetalleCosto"
-                    android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/mensaje_costo_articulo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLength="8"
-                    android:inputType="numberDecimal"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no" />
-
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/invDetalleDarDeAlta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/mensaje_agregar_articulo"
-                android:fontFamily="@font/open_sans"
-                android:layout_marginTop="25dp"
-                android:textColor="@color/black"
-                android:background="@drawable/round_button_bluelight"/>
-
-        </LinearLayout>
+            android:layout_marginTop="25dp"
+            android:background="@drawable/round_button_bluelight"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/mensaje_agregar_articulo"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/editicon"
+            android:drawableEnd="@drawable/editicon" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -345,13 +404,9 @@
             android:orientation="horizontal">
 
             <View
-                android:layout_width="45dp"
-                android:layout_height="0dp"/>
-
-            <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="7" />
 
             <Button
                 android:id="@+id/invDetalleCancelarEdicion"
@@ -361,31 +416,413 @@
                 android:text="@string/editar_articulo_cancelar"
                 android:fontFamily="@font/open_sans"
                 android:background="@drawable/round_button_red"
-                android:layout_weight="1"
+                android:layout_weight="8"
                 android:textColor="@color/white"
                 app:srcCompat="@android:drawable/btn_dialog" />
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="4" />
 
             <ImageButton
                 android:id="@+id/invDetalleEliminarArticulo"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
                 android:layout_marginTop="15dp"
-                app:srcCompat="@android:drawable/ic_menu_delete"
+                app:srcCompat="@drawable/trashicon"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
                 android:background="@color/transparent"
                 android:contentDescription="@string/botonCancelar" />
 
         </LinearLayout>
 
+    </LinearLayout>
 
 
+<!--
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_margin="15dp">
 
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:layout_gravity="center">
 
+<androidx.cardview.widget.CardView
+    android:id="@+id/card_view"
+    android:layout_gravity="center"
+    android:layout_width="0dp"
+    android:layout_weight="3"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="64dp">
+
+    <ImageView
+        android:id="@+id/invDetalleFoto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:adjustViewBounds="true"
+        android:background= "@color/transparent"
+        android:contentDescription="@string/imagenArticulo"/>
+
+</androidx.cardview.widget.CardView>
+
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="4"
+    android:layout_marginTop="25dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center">
+
+        <EditText
+            android:id="@+id/invDetalleId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/mensaje_codigo_articulo"
+            android:maxLength="13"
+            android:inputType="numberSigned"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:background="@drawable/round_button_white"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:importantForAutofill="no" />
+
+        <ImageButton
+            android:id="@+id/invBottonTomarCodigo"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/barcodeicon"
+            android:background="@drawable/round_button_white"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:contentDescription="@string/capturarCodigoBarras"/>
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/invTextGrupo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:text="@string/mensaje_grupo_articulo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="3dp">
+
+        <ImageButton
+            android:id="@+id/invBotonEliminarFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/lessicon"
+            android:background="@color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/botonEliminar"/>
+
+        <Spinner
+            android:id="@+id/invDetalleFamiliaSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minWidth="100dp"
+            android:background="@drawable/round_button_white"
+            android:layout_gravity="center"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textAlignment="center"/>
+
+        <ImageButton
+            android:id="@+id/invBotonAgregarFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@color/transparent"
+            app:srcCompat="@drawable/moreicon"
+            android:contentDescription="@string/botonAgregar"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/invTextSubGrupo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:text="@string/mensaje_subgrupo_articulo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="3dp">
+
+        <ImageButton
+            android:id="@+id/invBotonEliminarSubFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/lessicon"
+            android:background="@color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/botonEliminar"/>
+
+        <Spinner
+            android:id="@+id/invDetalleSubFamiliaSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minWidth="100dp"
+            android:textAlignment="center"
+            android:background="@drawable/round_button_white"
+            android:gravity="center_horizontal"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"/>
+
+        <ImageButton
+            android:id="@+id/invBotonAgregarSubFamilia"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            app:srcCompat="@drawable/moreicon"
+            android:background="@color/transparent"
+            android:layout_gravity="center"
+            android:contentDescription="@string/botonAgregar" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</LinearLayout>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:layout_marginTop="15dp"
+android:layout_marginLeft="25dp"
+android:layout_marginStart="25dp"
+android:layout_marginEnd="25dp">
+
+<EditText
+    android:id="@+id/invDetalleNombre"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:gravity="center_horizontal"
+    android:maxLines="1"
+    android:maxLength="15"
+    android:fontFamily="@font/open_sans"
+    android:textColor="@color/black"
+    android:hint="@string/mensaje_nombre_articulo"
+    android:background="@drawable/round_button_white"
+    android:importantForAutofill="no"
+    android:inputType="text" />
+
+<EditText
+    android:id="@+id/invDetalleNombreDetalle"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:textAlignment="center"
+    android:gravity="center_horizontal"
+    android:maxLines="3"
+    android:layout_marginBottom="10dp"
+    android:maxLength="60"
+    android:hint="@string/mensaje_detalle_articulo"
+    android:fontFamily="@font/open_sans"
+    android:textColor="@color/black"
+    android:background="@drawable/round_button_white"
+    android:importantForAutofill="no"
+    android:inputType="text"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/invDetallePrecioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/editar_articulo_venta"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/invDetallePrecio"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/editar_articulo_precio"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:maxLength="8"
+            android:inputType="numberDecimal"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/invDetalleCantidadText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mensaje_cantidad_articulo"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/invDetalleCantidad"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:maxLength="4"
+            android:hint="@string/mensaje_cantidad_articulo"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:background="@drawable/round_button_white"
+            android:importantForAutofill="no" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="15dp">
+
+
+    <TextView
+        android:id="@+id/invDetalleCostoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editar_articulo_proveedor"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:id="@+id/invDetalleCosto"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/mensaje_costo_articulo"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:maxLength="8"
+        android:inputType="numberDecimal"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:background="@drawable/round_button_white"
+        android:importantForAutofill="no" />
+
+
+</LinearLayout>
+
+<Button
+    android:id="@+id/invDetalleDarDeAlta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/mensaje_agregar_articulo"
+    android:fontFamily="@font/open_sans"
+    android:layout_marginTop="25dp"
+    android:textColor="@color/black"
+    android:background="@drawable/round_button_bluelight"/>
+
+</LinearLayout>
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+
+<View
+    android:layout_width="45dp"
+    android:layout_height="0dp"/>
+
+<View
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+
+<Button
+    android:id="@+id/invDetalleCancelarEdicion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:text="@string/editar_articulo_cancelar"
+    android:fontFamily="@font/open_sans"
+    android:background="@drawable/round_button_red"
+    android:layout_weight="1"
+    android:textColor="@color/white"
+    app:srcCompat="@android:drawable/btn_dialog" />
+
+<View
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_weight="1" />
+
+<ImageButton
+    android:id="@+id/invDetalleEliminarArticulo"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:layout_marginTop="15dp"
+    app:srcCompat="@android:drawable/ic_menu_delete"
+    android:background="@color/transparent"
+    android:contentDescription="@string/botonCancelar" />
+
+</LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
+
+-->
 
 </ScrollView>
