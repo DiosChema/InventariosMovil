@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
@@ -52,19 +53,28 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 //        val itemSurtidoArticuloCantidadText = view.findViewById(R.id.itemSurtidoArticuloCantidadText) as TextView
 //        val itemSurtidoArticuloTotalText = view.findViewById(R.id.itemSurtidoArticuloTotalText) as TextView
         val estadisticaArticuloFoto = view.findViewById(R.id.itemEstadisticaArticuloFoto) as ImageView
+        val estadisticaArticuloContenedor = view.findViewById(R.id.estadisticaArticuloContenedor) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
         fun bind(articulo: EstadisticaArticuloObject) {
             estadisticaArticuloTitulo.text = articulo._id.nombreArticulo
-            estadisticaArticuloPrecio.text = articulo._id.precioArticulo.toString()
+            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + ":$" + articulo._id.precioArticulo
+            estadisticaArticuloPrecio.text = textTmp
             estadisticaArticuloDescripcion.text = articulo._id.descripcionArticulo
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
+            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
             estadisticaArticuloCantidad.text = textTmp
             textTmp = itemView.context.getString(R.string.venta_total) + articulo.total.toString()
             estadisticaArticuloTotal.text = textTmp
             val urls = Urls()
             estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.token)
+
+            when (position % 2) {
+                1 -> estadisticaArticuloContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                0 -> estadisticaArticuloContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
+                else -> {
+                }
+            }
         }
 
         fun ImageView.loadUrl(url: String) {

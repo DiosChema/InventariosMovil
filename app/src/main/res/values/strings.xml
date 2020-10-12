@@ -57,6 +57,7 @@
     <string name="surtido_costo">Costo: </string>
     <string name="venta_total">Total: </string>
     <string name="venta_precio_articulo">Precio: </string>
+    <string name="venta_precio_por_articulo">P/U: </string>
 
     <!-- Ventas Inventario -->
     <string name="ventas_inventario_fecha">Fecha:</string>
