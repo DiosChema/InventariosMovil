@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Perraco</string>
+    <string name="app_name">Pocket Sale</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
     <string name="mensaje_editar">Editar</string>
@@ -44,13 +44,16 @@
     <string name="mensaje_titulo_login">Login</string>
     <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
 
+    <!-- Login Usuario-->
+    <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida</string>
+    <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada</string>
+
     <!-- venta/surtido-->
     <string name="venta_total_articulos">Total Articulos:</string>
     <string name="venta_total_venta">Total Venta:</string>
     <string name="surtido_total_costo">Total Costo:</string>
 
     <!-- RecyclerView venta/surtido-->
-    <string name="venta_cantidad_articulo_diminutivo">Cant: </string>
     <string name="surtido_costo">Costo: </string>
     <string name="venta_total">Total: </string>
     <string name="venta_precio_articulo">Precio: </string>
@@ -81,11 +84,14 @@
     <string name="surtido_confirmar">Confirmar</string>
 
     <!-- Fechas -->
-    <string name="dialog_fecha_inicial">Selecciones la fecha inicial</string>
-    <string name="dialog_fecha_final">Selecciones la fecha final</string>
+    <string name="dialog_fecha_inicial">Selecciona la fecha inicial</string>
+    <string name="dialog_fecha_final">Selecciona la fecha final</string>
 
     <!-- Dialog numero -->
     <string name="dialog_numero_text_cantidad">Cantidad</string>
+
+    <!-- Dialog Texto -->
+    <string name="dialog_texto">Ingrese texto</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>
@@ -93,5 +99,25 @@
     <string name="editar_articulo_proveedor">Precio Proveedor</string>
     <string name="editar_articulo_precio">Precio</string>
     <string name="editar_articulo_cancelar">Cancelar</string>
+
+    <!-- Descripcion de imagenes -->
+    <string name="imagenAplicacion">Imagen de la aplicación</string>
+    <string name="ventanaVenta">Ventana de venta</string>
+    <string name="imagenInventarioVentas">Ventana de inventario y ventas</string>
+    <string name="imagenArticulosMasVendidos">Ventana de articulos mas vendidos</string>
+    <string name="ventanaGraficas">Ventana con graficas de ventas y capital</string>
+    <string name="ventanaSurtido">Ventana de surtido</string>
+    <string name="terminarSurtido">Termina el surtido</string>
+    <string name="agregarArticulo">Llama a ventana de nuevo articulo</string>
+    <string name="imagenArticulo">Imagen del articulo</string>
+    <string name="capturarCodigoBarras">Boton para capturar codigo de barras</string>
+    <string name="botonEliminar">Boton para eliminar</string>
+    <string name="botonAgregar">Boton para agregar</string>
+    <string name="botonCancelar">Boton para cancelar</string>
+    <string name="terminarVenta">Terminar Venta</string>
+    <string name="botonEditar">Boton editar</string>
+    <string name="botonAceptar">Boton aceptar</string>
+    <string name="buscarArticulo">Ventana para buscar articulo</string>
+    <string name="ocultar_contrasena">ocultar contrasena</string>
 
 </resources>

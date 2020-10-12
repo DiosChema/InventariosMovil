@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.VentaDetalle"
-    android:background="@drawable/background">
+    android:background="@color/white">
 
         <TextView
             android:id="@+id/VentaDetalleNumeroText"
@@ -28,8 +28,7 @@
             android:layout_alignTop="@+id/VentaDetalleNumeroText"
             android:layout_toEndOf="@+id/VentaDetalleNumeroText"
             android:layout_toRightOf="@+id/VentaDetalleNumeroText"
-            android:textSize="25sp"
-            android:text="9999" />
+            android:textSize="25sp"/>
 
         <TextView
             android:id="@+id/VentaDetalleFecha"
@@ -39,9 +38,10 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginTop="24dp"
             android:textSize="20sp"
-            android:text="2020-08-25 17:44:39" />
+            tools:ignore="RelativeOverlap" />
 
     <ListView
         android:id="@+id/ventasFragmentRecyclerViewArticulos"
@@ -49,7 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/VentaDetalleNumeroText"
         android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="55dp"/>
 
     <ImageButton
@@ -62,7 +64,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:srcCompat="@android:drawable/ic_menu_delete"
+        android:contentDescription="@string/botonEliminar" />
 
         <ImageButton
             android:id="@+id/VentaDetalleCancelar"
@@ -71,7 +74,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/btn_dialog" />
+            app:srcCompat="@android:drawable/btn_dialog"
+            android:contentDescription="@string/botonCancelar"/>
 
         <ImageButton
             android:id="@+id/VentaDetalleEditar"
@@ -80,7 +84,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            android:contentDescription="@string/botonEditar"/>
 
         <ImageButton
             android:id="@+id/VentaDetalleConfirmar"
@@ -90,6 +95,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/checkbox_on_background" />
+            app:srcCompat="@android:drawable/checkbox_on_background"
+            android:contentDescription="@string/botonAceptar" />
     </RelativeLayout>

@@ -28,7 +28,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvInventario"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rvNuevoArticulo" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

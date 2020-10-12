@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/round_button_bluelight">
 
     <TextView
         android:id="@+id/dialogFechaTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:textSize="25sp"
-        android:text="hello_blank_fragment"/>
+        android:layout_marginTop="25dp"
+        android:textSize="25sp"/>
 
     <DatePicker
         android:id="@+id/dialoFechaDatePicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/dialogFechaTitulo"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
         android:calendarViewShown="false"
-        android:datePickerMode="spinner" />
+        android:theme="@style/my_time_picker_style"
+        android:datePickerMode="spinner"
+        tools:targetApi="lollipop" />
 
-    <Button
-        android:id="@+id/dialogFechaBotonCancelar"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/dialoFechaDatePicker"
-        android:layout_alignLeft="@+id/dialoFechaDatePicker"
-        android:layout_below="@+id/dialoFechaDatePicker"
-        android:background="@drawable/round_button_blue"
-        android:text="@string/dialog_cancelar" />
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp">
 
-    <Button
-        android:id="@+id/dialogFechaBotonAceptar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/dialoFechaDatePicker"
-        android:layout_alignEnd="@+id/dialoFechaDatePicker"
-        android:layout_alignRight="@+id/dialoFechaDatePicker"
-        android:background="@drawable/round_button_blue"
-        android:text="@string/dialog_aceptar" />
+        <Button
+            android:id="@+id/dialogFechaBotonCancelar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:text="@string/dialog_cancelar" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/dialogFechaBotonAceptar"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:text="@string/dialog_aceptar" />
+
+    </LinearLayout>
+
+</LinearLayout>

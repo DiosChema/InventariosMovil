@@ -13,7 +13,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="5dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
 
@@ -26,7 +27,8 @@
                 android:layout_width="100dp"
                 android:layout_height="120dp"
                 android:layout_margin="5dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/imagenArticulo" />
 
             <TextView
                 android:id="@+id/itemVentaNombre"
@@ -39,7 +41,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/itemVentaFoto"
                 android:layout_toEndOf="@+id/itemVentaFoto"
-                tools:text= "dadawdawdwd" />
+                tools:text= "dadawdawdwd"
+                tools:ignore="RelativeOverlap" />
 
             <TextView
                 android:id="@+id/itemVentaPrecio"
@@ -65,7 +68,9 @@
                 android:maxLength="4"
                 android:minWidth="75dp"
                 android:textSize="30sp"
-                tools:text="0000" />
+                tools:text="0000"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <ImageButton
                 android:id="@+id/itemVentaArticulo"
@@ -75,7 +80,8 @@
                 android:layout_alignStart="@+id/itemVentaCantidad"
                 android:layout_alignLeft="@+id/itemVentaCantidad"
                 android:background="@color/transparent"
-                app:srcCompat="@drawable/lessicon" />
+                app:srcCompat="@drawable/lessicon"
+                android:contentDescription="@string/app_name" />
 
             <ImageButton
                 android:id="@+id/itemVentaAnadirCantidad"
@@ -85,7 +91,8 @@
                 android:layout_alignEnd="@+id/itemVentaCantidad"
                 android:layout_alignRight="@+id/itemVentaCantidad"
                 android:background="@color/transparent"
-                app:srcCompat="@drawable/moreicon" />
+                app:srcCompat="@drawable/moreicon"
+                android:contentDescription="@string/app_name" />
 
             <TextView
                 android:id="@+id/itemVentaIdArticulo"
@@ -101,7 +108,8 @@
                 android:layout_alignParentRight="true"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Cant        " />
+                android:text="@string/ventas_inventario_cantidad"
+                tools:ignore="RelativeOverlap" />
 
             <TextView
                 android:id="@+id/itemVentaCostoTotal"
@@ -110,7 +118,6 @@
                 android:layout_below="@+id/itemVentaPrecio"
                 android:layout_alignStart="@+id/itemVentaPrecio"
                 android:layout_alignLeft="@+id/itemVentaPrecio"
-                android:hint="$$$"
                 android:textSize="22sp"
                 android:layout_marginBottom="5dp"/>
 

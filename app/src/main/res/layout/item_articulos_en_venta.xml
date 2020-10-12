@@ -23,7 +23,8 @@
             android:id="@+id/ventaArticulosFoto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/imagenArticulo" />
 
     </androidx.cardview.widget.CardView>
 
@@ -53,7 +54,7 @@
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text="20" />
+            android:text="@string/ventas_inventario_cantidad" />
 
     </LinearLayout>
 
@@ -82,7 +83,7 @@
             android:textColor="@color/black"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:text="$9999.99"
+            android:text="@string/ventas_inventario_cantidad"
             android:textStyle="bold"
             android:textSize="20sp"/>
 
@@ -98,44 +99,4 @@
 
 
     </LinearLayout>
-
-
-<!--    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/ventaArticulosPrecioText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="18sp"
-            tools:text="@string/mensaje_precio_articulo" />
-
-        <TextView
-            android:id="@+id/ventaArticulosPrecio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="90dp"
-            android:maxEms="4"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="$9999.99"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-
-
-    </LinearLayout>
-    -->
-
-
-
 </LinearLayout>

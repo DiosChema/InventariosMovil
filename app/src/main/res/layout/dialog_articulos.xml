@@ -5,26 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/transparent">
+    android:background="@color/transparent"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="30dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/round_button">
+        android:background="@drawable/round_button_bluelight">
 
         <LinearLayout
             android:id="@+id/dialogArticulosContenedor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp">
 
                 <Spinner
                     android:id="@+id/dialogArticulosFamiliaSpinner"
@@ -38,7 +45,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_margin="10dp">
+                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp">
 
                 <Spinner
                     android:id="@+id/dialogArticulosSubFamiliaSpinner"
@@ -65,6 +75,7 @@
             android:background="@color/transparent"
             app:srcCompat="@android:drawable/btn_dialog"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/botonCancelar" />
     </RelativeLayout>
 </RelativeLayout>
