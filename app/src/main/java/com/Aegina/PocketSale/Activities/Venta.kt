@@ -175,6 +175,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener,
                     progressDialog.dismiss()
                     listaArticulos.clear()
                     mViewVenta.notifyDataSetChanged()
+                    actualizarCantidadPrecio()
                     Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
                 }
 

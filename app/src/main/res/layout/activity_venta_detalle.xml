@@ -1,49 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.VentaDetalle"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/VentaDetalleNumeroText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="20dp"
-            android:textSize="25sp"
-            android:text="@string/mensaje_numero_venta" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
 
         <TextView
             android:id="@+id/VentaDetalleNumero"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/VentaDetalleNumeroText"
-            android:layout_toEndOf="@+id/VentaDetalleNumeroText"
-            android:layout_toRightOf="@+id/VentaDetalleNumeroText"
-            android:textSize="25sp"/>
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:minLines="2"
+            android:text="@string/mensaje_numero_venta"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/VentaDetalleFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="24dp"
-            android:textSize="20sp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:textSize="22sp"
+            android:minLines="2"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:text="@string/mensaje_numero_venta"
             tools:ignore="RelativeOverlap" />
 
-    <ListView
+    </LinearLayout>
+
+    <!--ListView
         android:id="@+id/ventasFragmentRecyclerViewArticulos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,51 +59,93 @@
         android:layout_marginStart="5dp"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="55dp"/>
+        android:layout_marginBottom="55dp"/>-->
 
-    <ImageButton
-            android:id="@+id/VentaDetalleEliminarVenta"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginLeft="15dp"
-            android:background="@color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_delete"
-        android:contentDescription="@string/botonEliminar" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ventasFragmentRecyclerViewArticulos"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"/>
 
-        <ImageButton
-            android:id="@+id/VentaDetalleCancelar"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/transparent"
-            app:srcCompat="@android:drawable/btn_dialog"
-            android:contentDescription="@string/botonCancelar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginEnd="25dp">
 
-        <ImageButton
+        <Button
             android:id="@+id/VentaDetalleEditar"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/transparent"
-            app:srcCompat="@android:drawable/ic_menu_edit"
-            android:contentDescription="@string/botonEditar"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/round_button_bluelight"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/mensaje_editar"
+            android:textColor="@color/black"
+            android:drawableRight="@drawable/editicon"
+            android:drawableEnd="@drawable/editicon" />
 
-        <ImageButton
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="7" />
+
+            <Button
+                android:id="@+id/VentaDetalleCancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/editar_articulo_cancelar"
+                android:fontFamily="@font/open_sans"
+                android:background="@drawable/round_button_red"
+                android:layout_weight="8"
+                android:textColor="@color/white"
+                app:srcCompat="@android:drawable/btn_dialog" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="4" />
+
+            <ImageButton
+                android:id="@+id/VentaDetalleEliminarVenta"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_marginTop="15dp"
+                app:srcCompat="@drawable/trashicon"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:background="@color/transparent"
+                android:contentDescription="@string/botonCancelar"  />
+
+
+        </LinearLayout>
+
+
+
+        <!--<ImageButton
             android:id="@+id/VentaDetalleConfirmar"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/checkicon"
+            android:scaleType="centerCrop"
             android:background="@color/transparent"
-            app:srcCompat="@android:drawable/checkbox_on_background"
-            android:contentDescription="@string/botonAceptar" />
-    </RelativeLayout>
+            android:contentDescription="@string/botonAceptar" />-->
+
+    </LinearLayout>
+
+</LinearLayout>

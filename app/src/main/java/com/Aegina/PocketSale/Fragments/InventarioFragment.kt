@@ -88,10 +88,10 @@ class InventarioFragment : Fragment() {
 
                 if(body != null && body.isNotEmpty()) {
                     val gson = GsonBuilder().create()
-                    val Model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
+                    val model = gson.fromJson(body, Array<InventarioObjeto>::class.java).toList()
 
                     activity?.runOnUiThread {
-                        mViewInventario.RecyclerAdapter(Model.toMutableList(), activity!!)
+                        mViewInventario.RecyclerAdapter(model.toMutableList(), activity!!)
                         mViewInventario.notifyDataSetChanged()
                     }
                 }

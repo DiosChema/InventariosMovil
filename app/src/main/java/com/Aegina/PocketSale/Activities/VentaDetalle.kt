@@ -2,17 +2,27 @@
 
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.pm.ActivityInfo
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.AdapterListEditarArticulosVenta
+import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
+import com.Aegina.PocketSale.RecyclerView.RecyclerViewVenta
+import com.Aegina.PocketSale.RecyclerView.RecyclerViewVentaDetalle
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import org.json.JSONException
@@ -21,23 +31,24 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
-class VentaDetalle : AppCompatActivity() {
+class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListener {
 
     lateinit var venta: VentasObjeto
-    /*lateinit var mViewArticulosVenta : RecyclerViewEditarArticulosVenta
-    lateinit var mRecyclerView : RecyclerView*/
+    lateinit var mViewArticulosVenta : RecyclerViewVentaDetalle
+    lateinit var mRecyclerView : RecyclerView
 
     lateinit var VentaDetalleNumero : TextView
     lateinit var VentaDetalleFecha : TextView
     lateinit var VentaDetalleEliminarVenta : ImageButton
-    lateinit var VentaDetalleCancelar : ImageButton
-    lateinit var VentaDetalleEditar : ImageButton
-    lateinit var VentaDetalleConfirmar : ImageButton
+    lateinit var VentaDetalleCancelar : Button
+    lateinit var VentaDetalleEditar : Button
+    var editar = false
+
+    val dialogAgregarNumero = DialogAgregarNumero()
 
     lateinit var globalVariable: GlobalClass
 
-    var listView: ListView? = null
-    var adapter: AdapterListEditarArticulosVenta? = null
+    lateinit var listaArticulos : MutableList<InventarioObjeto>
 
     var context = this;
 
@@ -49,7 +60,8 @@ class VentaDetalle : AppCompatActivity() {
 
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         globalVariable = applicationContext as GlobalClass
-        val simpleDate = SimpleDateFormat("dd/MM/yyyy HH:mm:ss")
+        val simpleDate = SimpleDateFormat("dd/MM/yyyy")
+        val simpleDateHours = SimpleDateFormat("HH:mm:ss")
 
         context = this;
         venta = intent.getSerializableExtra("venta") as VentasObjeto
@@ -59,62 +71,93 @@ class VentaDetalle : AppCompatActivity() {
         VentaDetalleEliminarVenta = findViewById(R.id.VentaDetalleEliminarVenta)
         VentaDetalleCancelar = findViewById(R.id.VentaDetalleCancelar)
         VentaDetalleEditar = findViewById(R.id.VentaDetalleEditar)
-        VentaDetalleConfirmar = findViewById(R.id.VentaDetalleConfirmar)
-        //mRecyclerView = findViewById(R.id.VentaDetalleArticulos)
 
-        listView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
-        adapter = AdapterListEditarArticulosVenta(this, venta.articulos.toMutableList())
-        (listView as ListView).adapter = adapter
+        mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
 
-        VentaDetalleNumero.text = venta._id.toString()
-        VentaDetalleFecha.text = simpleDate.format(venta.fecha)
+        var textTmp = getString(R.string.mensaje_numero_venta) + System.getProperty ("line.separator") +  venta._id
+        VentaDetalleNumero.text = textTmp
+        textTmp = simpleDate.format(venta.fecha) + System.getProperty ("line.separator") + simpleDateHours.format(venta.fecha)
+        VentaDetalleFecha.text = textTmp
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
         VentaDetalleCancelar.visibility = View.INVISIBLE
-        VentaDetalleConfirmar.visibility = View.INVISIBLE
+        editar = false
 
-        /*mViewArticulosVenta = RecyclerViewEditarArticulosVenta()
-
+        mViewArticulosVenta = RecyclerViewVentaDetalle()
+        mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        mViewArticulosVenta.RecyclerAdapter(venta.articulos.toMutableList(), this)
-        mRecyclerView.adapter = mViewArticulosVenta*/
+        mRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        listaArticulos = listaInventarioObjeto(venta)
+        mViewArticulosVenta.RecyclerAdapter(listaArticulos, context)
+        mRecyclerView.adapter = mViewArticulosVenta
 
         VentaDetalleEliminarVenta.setOnClickListener{
             showDialogEliminarVenta()
         }
 
         VentaDetalleEditar.setOnClickListener{
-            VentaDetalleEliminarVenta.visibility = View.VISIBLE
-            VentaDetalleCancelar.visibility = View.VISIBLE
-            VentaDetalleEditar.visibility = View.INVISIBLE
-            VentaDetalleConfirmar.visibility = View.VISIBLE
-            habilitarEdicion(true)
+            if(!editar) {
+                VentaDetalleEditar.text = getString(R.string.mensaje_actualizar_articulo)
+                VentaDetalleEliminarVenta.visibility = View.VISIBLE
+                VentaDetalleCancelar.visibility = View.VISIBLE
+                editar = true
+                habilitarEdicion(true)
+
+                mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
+                    RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View?, position: Int) {
+                        if(editar) dialogAgregarNumero.crearDialog(context, position)
+                    }
+
+                    override fun onLongItemClick(view: View?, position: Int) {}
+                }))
+            }
+            else
+            {
+                showDialogActualizarVenta()
+            }
         }
 
-        VentaDetalleConfirmar.setOnClickListener{
+        /*VentaDetalleConfirmar.setOnClickListener{
             showDialogActualizarVenta()
-        }
+        }*/
 
         VentaDetalleCancelar.setOnClickListener{
+            VentaDetalleEditar.text = getString(R.string.mensaje_editar)
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
             VentaDetalleCancelar.visibility = View.INVISIBLE
-            VentaDetalleEditar.visibility = View.VISIBLE
-            VentaDetalleConfirmar.visibility = View.INVISIBLE
+            editar = false
             habilitarEdicion(false)
-
-            /*mViewArticulosVenta.RecyclerAdapter(venta.articulos.toMutableList(), this)
-            mRecyclerView.adapter = mViewArticulosVenta*/
-            adapter?.notifyDataSetChanged()
         }
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
     }
 
+    fun listaInventarioObjeto(venta: VentasObjeto): MutableList<InventarioObjeto> {
+
+        var listatmp : MutableList<InventarioObjeto> = arrayListOf()
+
+        for(articulos in venta.articulos){
+            listatmp.add(
+                InventarioObjeto(articulos.idArticulo,
+                    articulos.articulosDetalle[0].nombreArticulo,
+                    articulos.articulosDetalle[0].descripcionArticulo,
+                    articulos.cantidad,
+                    articulos.precio,
+                    articulos.articulosDetalle[0].familiaArticulo,
+                    articulos.costo,
+                    ""
+                )
+            )
+        }
+
+        return listatmp
+    }
+
     private fun eliminarVenta(){
         val url = urls.url+urls.endPointEliminarVenta
-
 
         val jsonObject = JSONObject()
         try {
@@ -156,49 +199,22 @@ class VentaDetalle : AppCompatActivity() {
     private fun actualizarVenta(){
         val url = urls.url+urls.endPointActualizarVenta
 
-        val listaArticulos: MutableList<ActualizarArticuloObjeto> = ArrayList()
+        val listaArticulosTmp: MutableList<ActualizarArticuloObjeto> = ArrayList()
 
-        //for (i in 0..mViewArticulosVenta.itemCount - 1) {
-        for (i in 0 until adapter?.count!!) {
-            /*val view: View = mRecyclerView.getChildAt(i)
-
-            val EditarArticuloVentaCantidad = view.findViewById(R.id.EditarArticuloVentaCantidad) as EditText
-            val textCantidad = EditarArticuloVentaCantidad.text.toString()
-
-            val EditarArticuloVentaPrecio = view.findViewById(R.id.EditarArticuloVentaPrecio) as TextView
-            val textPrecio = EditarArticuloVentaPrecio.text.toString()
-
-            val EditarArticuloVentaCosto = view.findViewById(R.id.EditarArticuloVentaCosto) as TextView
-            val textCosto = EditarArticuloVentaCosto.text.toString()
-
-            val articulo = ActualizarArticuloObjeto(
-                venta._id,
-                venta.articulos[i].idArticulo,
-                parseInt(textCantidad),
-                parseDouble(textPrecio),
-                venta.articulos[i].nombre,
-                parseDouble(textCosto)
-            )
-
-            if(articulo.cantidad > 0)
-                listaArticulos.add(articulo)
-
-             */
-            val objeto  = adapter?.obtenerObjeto(i)
-
-            if (objeto != null && objeto.cantidad > 0) {
-                listaArticulos.add(ActualizarArticuloObjeto(
+        for (articulo in listaArticulos) {
+            if ( articulo.cantidadArticulo > 0) {
+                listaArticulosTmp.add(ActualizarArticuloObjeto(
                     venta._id,
-                    objeto.idArticulo,
-                    objeto.cantidad,
-                    objeto.precio,
-                    objeto.nombre,
-                    objeto.costo
+                    articulo.idArticulo,
+                    articulo.cantidadArticulo,
+                    articulo.precioArticulo,
+                    articulo.nombreArticulo,
+                    articulo.costoArticulo
                 ))
             }
         }
 
-        val ventaActualizada = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulos)
+        val ventaActualizada = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulosTmp)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(ventaActualizada)
@@ -238,6 +254,7 @@ class VentaDetalle : AppCompatActivity() {
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogText = dialog.findViewById(R.id.dialogText) as EditText
         val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
@@ -263,6 +280,7 @@ class VentaDetalle : AppCompatActivity() {
         dialog.setTitle(title)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val dialogText = dialog.findViewById(R.id.dialogText) as EditText
         val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
         val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
@@ -284,8 +302,17 @@ class VentaDetalle : AppCompatActivity() {
     }
 
     private fun habilitarEdicion(habilitar : Boolean) {
-            adapter!!.setHabilitar(habilitar)
-            adapter!!.notifyDataSetChanged()
+        listaArticulos = listaInventarioObjeto(venta)
+        mViewArticulosVenta.RecyclerAdapter(listaArticulos, context)
+        mRecyclerView.adapter = mViewArticulosVenta
+    }
+
+    override fun obtenerNumero(numero : Int, posicion : Int) {
+        runOnUiThread{
+            listaArticulos[posicion].cantidadArticulo = numero
+            mViewArticulosVenta.RecyclerAdapter(listaArticulos, context)
+            mRecyclerView.adapter = mViewArticulosVenta
+        }
     }
 
 }

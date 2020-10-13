@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
+
 
                 val json = response.body()!!.string()
                 val gson = GsonBuilder().create()
@@ -138,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                             -1 -> Toast.makeText(context, getString(R.string.login_usuario_credenciales_incorrectas), Toast.LENGTH_SHORT).show()
                             -2 -> Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
                         }
-
                     }
                 }
                 else{
@@ -147,6 +146,8 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(context, Menu::class.java)
                     startActivity(intent)
                 }
+
+                progressDialog.dismiss()
             }
         })
 

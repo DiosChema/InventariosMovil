@@ -168,7 +168,7 @@ class InventarioDetalle : AppCompatActivity() {
             invDetalleCancelarEdicion.visibility = View.VISIBLE
             invDetalleEliminarArticulo.visibility = View.VISIBLE
 
-            invDetalleDarDeAlta.setText(getString(R.string.mensaje_actualizar_articulo))
+            invDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)
             invDetalleDarDeAlta.setOnClickListener{
                 if (!datosVacios())
                     actualizarArticulo()

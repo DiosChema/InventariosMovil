@@ -1,57 +1,43 @@
 <resources>
     <string name="app_name">Pocket Sale</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
-    <string name="mensaje_editar">Editar</string>
-    <string name="mensaje_actualizar_articulo">Actualizar</string>
-    <string name="mensaje_agregar_articulo">Agregar</string>
-    <string name="mensaje_costo_articulo">Costo</string>
-    <string name="mensaje_cantidad_articulo">Cantidad</string>
 
 
-    <string name="mensaje_detalle_articulo">Detalle</string>
-    <string name="mensaje_nombre_articulo">Nombre</string>
-    <string name="mensaje_subgrupo_articulo">SubGrupo</string>
-    <string name="mensaje_grupo_articulo">Grupo</string>
-    <string name="mensaje_codigo_articulo">Codigo</string>
-    <string name="dialog_cancelar">Cancelar</string>
-    <string name="dialog_aceptar">Aceptar</string>
-    <string name="dialog_agregar_familia">Añadir Familia</string>
-    <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
-    <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
+    <!-- Editar Venta -->
     <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
     <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
-    <string name="mensaje_anadir_articulo">Nuevo Articulo</string>
-    <string name="fragment_inventario">Inventario</string>
-    <string name="fragment_ventas">Ventas</string>
-    <string name="mensaje_venta_sin_articulos">No hay articulos</string>
     <string name="mensaje_venta_exitosa">Venta exitosa</string>
     <string name="mensaje_eliminacion_exitosa">Venta eliminada</string>
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
+    <string name="mensaje_numero_venta">Venta: </string>
 
-    <string name="mensaje_numero_venta">Venta No.</string>
-    <string name="mensaje_correo_electronico">Correo electronico</string>
-    <string name="mensaje_crear_cuenta">Crear cuenta</string>
-    <string name="mensaje_correo_contrasenia">Contraseña</string>
-    <string name="mensaje_correo_repetir_contrasenia">Repetir contraseña</string>
-    <string name="boton_iniciar_sesion">Iniciar Sesion</string>
-    <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
-    <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
+
+    <!-- Mensaje de espera-->
+    <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
+
+    <!-- Crear cuenta Usuario-->
     <string name="mensaje_cuenta_creada">Envio de registro exitoso! revisa tu correo para terminar el registro</string>
     <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres</string>
-    <string name="mensaje_contraseña_diferente">La contraseña debe de ser la misma</string>
-    <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
-    <string name="mensaje_titulo_login">Login</string>
     <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
+    <string name="mensaje_contraseña_diferente">La contraseña debe de ser la misma</string>
+    <string name="mensaje_correo_repetir_contrasenia">Repetir contraseña</string>
+    <string name="mensaje_correo_contrasenia">Contraseña</string>
+    <string name="mensaje_crear_cuenta">Crear cuenta</string>
 
     <!-- Login Usuario-->
     <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida</string>
     <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada</string>
+    <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
+    <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
+    <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
+    <string name="boton_iniciar_sesion">Iniciar Sesion</string>
+    <string name="mensaje_correo_electronico">Correo electronico</string>
 
     <!-- venta/surtido-->
     <string name="venta_total_articulos">Total Articulos:</string>
     <string name="venta_total_venta">Total Venta:</string>
     <string name="surtido_total_costo">Total Costo:</string>
+    <string name="mensaje_venta_sin_articulos">No hay articulos</string>
 
     <!-- RecyclerView venta/surtido-->
     <string name="surtido_costo">Costo: </string>
@@ -62,6 +48,9 @@
     <!-- Ventas Inventario -->
     <string name="ventas_inventario_fecha">Fecha:</string>
     <string name="ventas_inventario_cantidad">Cant: </string>
+    <string name="fragment_ventas">Ventas</string>
+    <string name="fragment_inventario">Inventario</string>
+    <string name="mensaje_anadir_articulo">Nuevo Articulo</string>
 
     <!-- Estadistica Articulos -->
     <string name="estadistica_articulo_botton_dia">Hoy</string>
@@ -93,6 +82,10 @@
 
     <!-- Dialog Texto -->
     <string name="dialog_texto">Ingrese texto</string>
+    <string name="dialog_agregar_familia">Añadir Familia</string>
+    <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
+    <string name="dialog_cancelar">Cancelar</string>
+    <string name="dialog_aceptar">Aceptar</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>
@@ -100,6 +93,17 @@
     <string name="editar_articulo_proveedor">Precio Proveedor</string>
     <string name="editar_articulo_precio">Precio</string>
     <string name="editar_articulo_cancelar">Cancelar</string>
+    <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
+    <string name="mensaje_detalle_articulo">Detalle</string>
+    <string name="mensaje_nombre_articulo">Nombre</string>
+    <string name="mensaje_subgrupo_articulo">SubGrupo</string>
+    <string name="mensaje_grupo_articulo">Grupo</string>
+    <string name="mensaje_codigo_articulo">Codigo</string>
+    <string name="mensaje_actualizar_articulo">Actualizar</string>
+    <string name="mensaje_agregar_articulo">Agregar</string>
+    <string name="mensaje_costo_articulo">Costo</string>
+    <string name="mensaje_cantidad_articulo">Cantidad</string>
+    <string name="mensaje_editar">Editar</string>
 
     <!-- Descripcion de imagenes -->
     <string name="imagenAplicacion">Imagen de la aplicación</string>

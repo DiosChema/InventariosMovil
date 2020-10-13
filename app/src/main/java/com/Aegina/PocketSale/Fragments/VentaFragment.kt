@@ -56,9 +56,8 @@ class VentaFragment : Fragment() {
         asignarFechas()
         asignarBotones()
         crearRecyclerView()
-        asignarFechaInicial()
-        asignarFechaFinal()
-        getVentasObjecto()
+        asignarFechaHoy()
+        obtenerVentas()
     }
 
     fun crearRecyclerView(){
@@ -82,9 +81,63 @@ class VentaFragment : Fragment() {
         fechaFinalButton.setOnClickListener {
             showDialogFechaFinal()
         }
+
+        val fragmentVentasBuscarHoy = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarHoy)
+        fragmentVentasBuscarHoy.setOnClickListener {
+            asignarFechaHoy()
+        }
+        val fragmentVentasBuscarSemana = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarSemana)
+        fragmentVentasBuscarSemana.setOnClickListener {
+            asignarFechaSemana()
+        }
+        val fragmentVentasBuscarMes = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarMes)
+        fragmentVentasBuscarMes.setOnClickListener {
+            asignarFechaMes()
+        }
     }
 
-    fun getVentasObjecto(){
+    fun asignarFechaHoy(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarEstadisticaVentas()
+    }
+
+    fun asignarFechaSemana(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarEstadisticaVentas()
+    }
+
+    fun asignarFechaMes(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarEstadisticaVentas()
+    }
+
+    fun buscarEstadisticaVentas(){
+        asignarFechaInicial()
+        asignarFechaFinal()
+        obtenerVentas()
+    }
+
+    fun obtenerVentas(){
 
         val url = urls.url+urls.endPointBuscarVentaPorFecha+
                 "?token="+globalVariable.token +
@@ -113,10 +166,10 @@ class VentaFragment : Fragment() {
                 if(body != null && body.isNotEmpty()) {
 
                     val gson = GsonBuilder().create()
-                    var Model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
+                    var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
 
                     activity?.runOnUiThread {
-                        mViewVentas.RecyclerAdapter(Model.toMutableList(), activity!!)
+                        mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
                         mViewVentas.notifyDataSetChanged()
                         progressDialog.dismiss()
                     }
@@ -129,7 +182,7 @@ class VentaFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        getVentasObjecto()
+        obtenerVentas()
     }
 
     fun showDialogFechaInicial() {
@@ -168,7 +221,7 @@ class VentaFragment : Fragment() {
             asignarFechaInicial()
             dialog.dismiss()
 
-            getVentasObjecto()
+            obtenerVentas()
         }
 
         dialogFechaBotonCancelar.setOnClickListener {
@@ -221,7 +274,7 @@ class VentaFragment : Fragment() {
             asignarFechaFinal()
             dialog.dismiss()
 
-            getVentasObjecto()
+            obtenerVentas()
         }
 
         dialogFechaBotonCancelar.setOnClickListener {

@@ -1,10 +1,12 @@
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -37,11 +39,16 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
                     Integer.parseInt(dialogNumeroText.text.toString())
                 mViewEstadisticaArticulo.notifyDataSetChanged()*/
                 listener.obtenerNumero(Integer.parseInt(dialogNumeroText.text.toString()),posicion)
+                val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+                imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+
                 dialog.dismiss()
             }
         }
 
         dialogNumeroCancelar.setOnClickListener {
+            val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             dialog.dismiss()
         }
 
