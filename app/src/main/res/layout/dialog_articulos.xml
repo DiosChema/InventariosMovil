@@ -37,6 +37,8 @@
                     android:id="@+id/dialogArticulosFamiliaSpinner"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:theme="@style/mySpinnerItemStyle"
+                    android:spinnerMode="dropdown"
                     android:fontFamily="@font/open_sans"/>
             </LinearLayout>
 
@@ -54,6 +56,8 @@
                     android:id="@+id/dialogArticulosSubFamiliaSpinner"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:theme="@style/mySpinnerItemStyle"
                     android:fontFamily="@font/open_sans"/>
 
             </LinearLayout>

@@ -40,8 +40,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     lateinit var dialogAgregarArticuloBuscarArticulo:ImageButton
     lateinit var dialogAgregarArticuloObtenerCodigo :ImageButton
 
-
-
     lateinit var mViewArticulos : RecyclerViewArticulos
     lateinit var mRecyclerViewArticulos : RecyclerView
 
@@ -273,7 +271,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
                 activityTmp.runOnUiThread {
                     val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaFamilia)
+                        R.layout.item_spinner, listaFamilia)
                     dialogArticulosFamiliaSpinner.adapter = adapter
                     dialogArticulosFamiliaSpinner.setSelection(0)
 
@@ -302,12 +300,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         }
 
         var adapter = ArrayAdapter(context,
-            android.R.layout.simple_spinner_item, listaSubFamilia)
-        dialogArticulosSubFamiliaSpinner.adapter = adapter
-
-        adapter = ArrayAdapter(context,
-            android.R.layout.simple_spinner_item, listaSubFamilia)
-
+            R.layout.item_spinner, listaSubFamilia)
         dialogArticulosSubFamiliaSpinner.adapter = adapter
 
         if(listaSubFamilia.size > 0) {

@@ -31,7 +31,8 @@
     <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
     <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
     <string name="boton_iniciar_sesion">Iniciar Sesion</string>
-    <string name="mensaje_correo_electronico">Correo electronico</string>
+    <string name="mensaje_correo_electronico">Correo</string>
+    <string name="mensaje_crear_correo">Ingrese correo</string>
 
     <!-- venta/surtido-->
     <string name="venta_total_articulos">Total Articulos:</string>
