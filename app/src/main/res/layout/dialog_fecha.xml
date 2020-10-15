@@ -13,6 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:hint="@string/app_name"
         android:textSize="25sp"/>
 
     <DatePicker
@@ -38,8 +41,10 @@
 
         <Button
             android:id="@+id/dialogFechaBotonCancelar"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:minWidth="1200dp"
             android:background="@drawable/round_button_white"
             android:text="@string/dialog_cancelar" />
 
@@ -50,8 +55,10 @@
 
         <Button
             android:id="@+id/dialogFechaBotonAceptar"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:minWidth="120dp"
             android:background="@drawable/round_button_white"
             android:text="@string/dialog_aceptar" />
 

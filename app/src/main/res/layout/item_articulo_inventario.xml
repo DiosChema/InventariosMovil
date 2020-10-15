@@ -23,7 +23,7 @@
             android:layout_gravity="center"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            card_view:cardCornerRadius="64dp"
+            card_view:cardCornerRadius="255dp"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp">
 
@@ -83,7 +83,7 @@
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/black"
                 android:layout_marginTop="5dp"
-                android:textSize="12sp"
+                android:textSize="16sp"
                 tools:text="Precio:"/>
 
             <TextView

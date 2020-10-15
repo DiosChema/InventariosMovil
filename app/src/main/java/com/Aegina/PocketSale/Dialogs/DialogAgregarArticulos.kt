@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
@@ -100,7 +101,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         mRecyclerViewArticulos = dialogInstance.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
 
         mViewArticulos = RecyclerViewArticulos()
-        mRecyclerViewArticulos.layoutManager = GridLayoutManager(this.contextTmp,2)
+        mRecyclerViewArticulos.layoutManager = LinearLayoutManager(this.contextTmp)
 
     }
 

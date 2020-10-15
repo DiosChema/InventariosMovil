@@ -37,6 +37,7 @@
             android:layout_marginStart="25dp"
             android:layout_marginRight="25dp"
             android:layout_gravity="center"
+            android:maxLines="2"
             android:text="@string/estadistica_articulo_botton_semana"
             android:background="@drawable/round_button_white" />
 

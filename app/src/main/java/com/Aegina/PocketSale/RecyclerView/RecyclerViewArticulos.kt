@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.item_articulo.view.*
 
 
 class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHolder>() {
@@ -45,13 +47,18 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val urls = Urls()
-        val articuloFoto = view.findViewById(com.Aegina.PocketSale.R.id.articuloFoto) as ImageView
-        val articuloNombre = view.findViewById(com.Aegina.PocketSale.R.id.articuloNombre) as TextView
+        val articuloFoto = view.findViewById(com.Aegina.PocketSale.R.id.itemArticuloFoto) as ImageView
+        val articuloNombre = view.findViewById(com.Aegina.PocketSale.R.id.itemArticuloNombre) as TextView
+        val itemArticuloDescripcion = view.findViewById(com.Aegina.PocketSale.R.id.itemArticuloDescripcion) as TextView
+        val itemArticuloPrecio = view.findViewById(com.Aegina.PocketSale.R.id.itemArticuloPrecio) as TextView
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
         fun bind(articulo: InventarioObjeto) {
             articuloNombre.text = articulo.nombreArticulo
+            itemArticuloDescripcion.text = articulo.descripcionArticulo
+            val textTmp = itemView.context.getString(R.string.venta_precio_articulo) + articulo.precioArticulo
+            itemArticuloPrecio.text = textTmp
             articuloFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }
 

@@ -428,14 +428,14 @@
             <ImageButton
                 android:id="@+id/invDetalleEliminarArticulo"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
                 android:layout_marginTop="15dp"
                 app:srcCompat="@drawable/trashicon"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:background="@color/transparent"
-                android:contentDescription="@string/botonCancelar" />
+                android:contentDescription="@string/botonCancelar"/>
 
         </LinearLayout>
     </LinearLayout>
