@@ -6,13 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Fragments.EstadisticaVentaFragment
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
 
-class Inventario : AppCompatActivity() {
+class InventarioPager : AppCompatActivity(), DialogFecha.ExampleDialogListener {
+
+    lateinit var adapter : MyViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +27,7 @@ class Inventario : AppCompatActivity() {
     }
 
     fun asignarFragments(){
-        val adapter = MyViewPagerAdapter(supportFragmentManager)
+        adapter = MyViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(InventarioFragment() , getString(R.string.fragment_inventario))
         adapter.addFragment(VentaFragment() , getString(R.string.fragment_ventas))
         pager.adapter = adapter
@@ -51,5 +55,20 @@ class Inventario : AppCompatActivity() {
             return titleList[position]
         }
 
+    }
+
+    override fun obtenerFechaInicial() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as VentaFragment).obtenerFechaInicial()
+    }
+
+    override fun obtenerFechaFinal() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as VentaFragment).obtenerFechaFinal()
+    }
+
+    override fun obtenerFecha() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as VentaFragment).obtenerFecha()
     }
 }

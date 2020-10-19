@@ -11,7 +11,6 @@
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
     <string name="mensaje_numero_venta">Venta: </string>
 
-
     <!-- Mensaje de espera-->
     <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
 
@@ -30,15 +29,17 @@
     <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
     <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
     <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
-    <string name="boton_iniciar_sesion">Iniciar Sesion</string>
+    <string name="boton_iniciar_sesion">Iniciar Sesión</string>
     <string name="mensaje_correo_electronico">Correo</string>
     <string name="mensaje_crear_correo">Ingrese correo</string>
 
     <!-- venta/surtido-->
-    <string name="venta_total_articulos">Total Articulos:</string>
+    <string name="venta_total_articulos">Total Artículos:</string>
     <string name="venta_total_venta">Total Venta:</string>
     <string name="surtido_total_costo">Total Costo:</string>
-    <string name="mensaje_venta_sin_articulos">No hay articulos</string>
+    <string name="mensaje_venta_sin_articulos">No hay artículos</string>
+    <string name="mensaje_venta_no_se_encontro_articulo">No se encontro artículo</string>
+
 
     <!-- RecyclerView venta/surtido-->
     <string name="surtido_costo">Costo: </string>
@@ -99,7 +100,7 @@
     <string name="mensaje_nombre_articulo">Nombre</string>
     <string name="mensaje_subgrupo_articulo">SubGrupo</string>
     <string name="mensaje_grupo_articulo">Grupo</string>
-    <string name="mensaje_codigo_articulo">Codigo</string>
+    <string name="mensaje_codigo_articulo">Código</string>
     <string name="mensaje_actualizar_articulo">Actualizar</string>
     <string name="mensaje_agregar_articulo">Agregar</string>
     <string name="mensaje_costo_articulo">Costo</string>
@@ -121,9 +122,9 @@
     <string name="botonAgregar">Boton para agregar</string>
     <string name="botonCancelar">Boton para cancelar</string>
     <string name="terminarVenta">Terminar Venta</string>
-    <string name="botonEditar">Boton editar</string>
-    <string name="botonAceptar">Boton aceptar</string>
-    <string name="buscarArticulo">Ventana para buscar articulo</string>
-    <string name="ocultar_contrasena">ocultar contrasena</string>
+    <string name="botonEditar">Botón editar</string>
+    <string name="botonAceptar">Botón aceptar</string>
+    <string name="buscarArticulo">Ventana para buscar artículo</string>
+    <string name="ocultar_contrasena">Ocultar contrasena</string>
 
 </resources>

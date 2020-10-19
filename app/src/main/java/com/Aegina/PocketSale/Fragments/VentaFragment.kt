@@ -16,6 +16,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
@@ -39,18 +40,20 @@ class VentaFragment : Fragment() {
 
     lateinit var globalVariable: GlobalClass
     val urls = Urls()
-    val formatoFecha = SimpleDateFormat("MM-dd-yyyy")
     val formatoFechaCompleta = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
     lateinit var fechaInicial : Date
     lateinit var fechaFinal : Date
     lateinit var fechaInicialButton : Button
     lateinit var fechaFinalButton : Button
 
+    var dialogFecha = DialogFecha()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dialogFecha.crearVentana(activity!!)
         globalVariable = activity?.applicationContext as GlobalClass
 
         asignarFechas()
@@ -82,7 +85,7 @@ class VentaFragment : Fragment() {
             showDialogFechaFinal()
         }
 
-        val fragmentVentasBuscarHoy = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarHoy)
+        /*val fragmentVentasBuscarHoy = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarHoy)
         fragmentVentasBuscarHoy.setOnClickListener {
             asignarFechaHoy()
         }
@@ -93,7 +96,7 @@ class VentaFragment : Fragment() {
         val fragmentVentasBuscarMes = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarMes)
         fragmentVentasBuscarMes.setOnClickListener {
             asignarFechaMes()
-        }
+        }*/
     }
 
     fun asignarFechaHoy(){
@@ -186,14 +189,15 @@ class VentaFragment : Fragment() {
     }
 
     fun showDialogFechaInicial() {
-        val dialog: AlertDialog = AlertDialog.Builder(activity).create()
+        dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
+        /*val dialog: AlertDialog = AlertDialog.Builder(activity).create()
         val inflater = activity!!.layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaInicial
@@ -228,18 +232,19 @@ class VentaFragment : Fragment() {
             dialog.dismiss()
         }
 
-        dialog.show()
+        dialog.show()*/
     }
 
     fun showDialogFechaFinal() {
-        val dialog: AlertDialog = AlertDialog.Builder(activity).create()
+        dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
+        /*val dialog: AlertDialog = AlertDialog.Builder(activity).create()
         val inflater = activity!!.layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaFinal
@@ -281,7 +286,7 @@ class VentaFragment : Fragment() {
             dialog.dismiss()
         }
 
-        dialog.show()
+        dialog.show()*/
     }
 
     fun asignarFechaInicial(){
@@ -313,6 +318,22 @@ class VentaFragment : Fragment() {
 
         calendar = asignarHoraCalendar(calendar, 0, 0, 0)
         fechaInicial = calendar.time
+    }
+
+    fun obtenerFechaInicial() {
+        fechaInicial = dialogFecha.fechaInicial
+        buscarEstadisticaVentas()
+    }
+
+    fun obtenerFechaFinal() {
+        fechaFinal = dialogFecha.fechaFinal
+        buscarEstadisticaVentas()
+    }
+
+    fun obtenerFecha() {
+        fechaInicial = dialogFecha.fechaInicial
+        fechaFinal = dialogFecha.fechaFinal
+        buscarEstadisticaVentas()
     }
 
 

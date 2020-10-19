@@ -1,26 +1,31 @@
 package com.Aegina.PocketSale.Activities
 
 import android.content.pm.ActivityInfo
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Fragments.EstadisticaInventarioFragment
 import com.Aegina.PocketSale.Fragments.EstadisticaVentaFragment
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
-class EstadisticasPager : AppCompatActivity() {
+class EstadisticasPager : AppCompatActivity(), DialogFecha.ExampleDialogListener {
+
+    lateinit var adapter : MyViewPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estadisticas_pager)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         asignarFragments()
     }
 
     fun asignarFragments(){
-        val adapter = MyViewPagerAdapter(supportFragmentManager)
+        adapter = MyViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(EstadisticaInventarioFragment() , getString(R.string.fragment_inventario))
         adapter.addFragment(EstadisticaVentaFragment() , getString(R.string.fragment_ventas))
         pager.adapter = adapter
@@ -48,5 +53,20 @@ class EstadisticasPager : AppCompatActivity() {
             return titleList[position]
         }
 
+    }
+
+    override fun obtenerFechaInicial() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as EstadisticaVentaFragment).obtenerFechaInicial()
+    }
+
+    override fun obtenerFechaFinal() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as EstadisticaVentaFragment).obtenerFechaFinal()
+    }
+
+    override fun obtenerFecha() {
+        val fragment: Fragment = adapter.getItem(1)
+        (fragment as EstadisticaVentaFragment).obtenerFecha()
     }
 }

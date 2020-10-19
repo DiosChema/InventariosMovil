@@ -129,12 +129,12 @@ class EstadisticasVentas : AppCompatActivity() {
     fun showDialogFechaInicial() {
         val dialog: AlertDialog = AlertDialog.Builder(context).create()
         val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaInicial
@@ -174,12 +174,12 @@ class EstadisticasVentas : AppCompatActivity() {
     fun showDialogFechaFinal() {
         val dialog: AlertDialog = AlertDialog.Builder(context).create()
         val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaFinal

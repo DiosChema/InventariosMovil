@@ -10,29 +10,32 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.Aegina.PocketSale.Objets.GlobalClass"
+        android:name=".Objets.GlobalClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.Aegina.PocketSale.Fragments.EstadisticaVentaFragment"
+        <activity android:name=".Dialogs.DialogFecha"></activity>
+        <activity
+            android:name=".Fragments.EstadisticaVentaFragment"
             tools:ignore="Instantiatable" />
-        <activity android:name="com.Aegina.PocketSale.Fragments.EstadisticaInventarioFragment"
+        <activity
+            android:name=".Fragments.EstadisticaInventarioFragment"
             tools:ignore="Instantiatable" />
-        <activity android:name="com.Aegina.PocketSale.Activities.EstadisticasPager" />
-        <activity android:name="com.Aegina.PocketSale.Activities.Surtido" />
-        <activity android:name="com.Aegina.PocketSale.Activities.EstadisticaInventario" />
-        <activity android:name="com.Aegina.PocketSale.Activities.EstadisticasVentas" />
-        <activity android:name="com.Aegina.PocketSale.Activities.EstadisticaArticulo" />
-        <activity android:name="com.Aegina.PocketSale.Activities.CrearCuenta" />
-        <activity android:name="com.Aegina.PocketSale.Activities.Menu" />
-        <activity android:name="com.Aegina.PocketSale.Activities.VentaDetalle" />
-        <activity android:name="com.Aegina.PocketSale.Activities.Venta" />
-        <activity android:name="com.Aegina.PocketSale.Activities.InventarioDetalle" />
-        <activity android:name="com.Aegina.PocketSale.Activities.Inventario" />
-        <activity android:name="com.Aegina.PocketSale.Activities.MainActivity">
+        <activity android:name=".Activities.EstadisticasPager" />
+        <activity android:name=".Activities.Surtido" />
+        <activity android:name=".Activities.EstadisticaInventario" />
+        <activity android:name=".Activities.EstadisticasVentas" />
+        <activity android:name=".Activities.EstadisticaArticulo" />
+        <activity android:name=".Activities.CrearCuenta" />
+        <activity android:name=".Activities.Menu" />
+        <activity android:name=".Activities.VentaDetalle" />
+        <activity android:name=".Activities.Venta" />
+        <activity android:name=".Activities.InventarioDetalle" />
+        <activity android:name=".Activities.InventarioPager" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

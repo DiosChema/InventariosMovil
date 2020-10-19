@@ -15,6 +15,7 @@ import android.widget.DatePicker
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -27,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EstadisticaArticulo : AppCompatActivity() {
+class EstadisticaArticulo : AppCompatActivity(), DialogFecha.ExampleDialogListener {
 
     var listaTmp:MutableList<EstadisticaArticuloObject> = ArrayList()
     lateinit var context : Context;
@@ -43,11 +44,13 @@ class EstadisticaArticulo : AppCompatActivity() {
     lateinit var estadisticaArticuloFechaFinal : TextView
 
     val urls = Urls()
+    var dialogFecha = DialogFecha()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_estadistica_articulo)
         context = this
+        dialogFecha.crearVentana(this)
         globalVariable = context.applicationContext as GlobalClass
 
         asignarBotones()
@@ -75,7 +78,7 @@ class EstadisticaArticulo : AppCompatActivity() {
             showDialogFechaFinal()
         }
 
-        val estadisticaArticuloBuscarHoy = findViewById<Button>(R.id.estadisticaArticuloBuscarHoy)
+        /*val estadisticaArticuloBuscarHoy = findViewById<Button>(R.id.estadisticaArticuloBuscarHoy)
         estadisticaArticuloBuscarHoy.setOnClickListener {
             asignarFechaHoy()
         }
@@ -86,7 +89,7 @@ class EstadisticaArticulo : AppCompatActivity() {
         val estadisticaArticuloBuscarMes = findViewById<Button>(R.id.estadisticaArticuloBuscarMes)
         estadisticaArticuloBuscarMes.setOnClickListener {
             asignarFechaMes()
-        }
+        }*/
     }
 
     fun obtenerArticulos(){
@@ -132,14 +135,14 @@ class EstadisticaArticulo : AppCompatActivity() {
     }
 
     fun showDialogFechaInicial() {
-        val dialog: AlertDialog = AlertDialog.Builder(context).create()
+        /*val dialog: AlertDialog = AlertDialog.Builder(context).create()
         val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaInicial
@@ -174,18 +177,19 @@ class EstadisticaArticulo : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        dialog.show()
+        dialog.show()*/
+        dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
     }
 
     fun showDialogFechaFinal() {
-        val dialog: AlertDialog = AlertDialog.Builder(context).create()
+        /*val dialog: AlertDialog = AlertDialog.Builder(context).create()
         val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha, null)
+        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
         dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialoFechaDatePicker) as DatePicker
+        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
+        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
+        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
+        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
 
         var calendar = Calendar.getInstance()
         calendar.time = fechaFinal
@@ -227,7 +231,8 @@ class EstadisticaArticulo : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        dialog.show()
+        dialog.show()*/
+        dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
     }
 
     fun asignarFechaInicial(){
@@ -291,5 +296,21 @@ class EstadisticaArticulo : AppCompatActivity() {
         asignarFechaInicial()
         asignarFechaFinal()
         obtenerArticulos()
+    }
+
+    override fun obtenerFechaInicial() {
+        fechaInicial = dialogFecha.fechaInicial
+        buscarArticulo()
+    }
+
+    override fun obtenerFechaFinal() {
+        fechaFinal = dialogFecha.fechaFinal
+        buscarArticulo()
+    }
+
+    override fun obtenerFecha() {
+        fechaInicial = dialogFecha.fechaInicial
+        fechaFinal = dialogFecha.fechaFinal
+        buscarArticulo()
     }
 }

@@ -28,7 +28,7 @@ class Menu : AppCompatActivity() {
         val buttonInventario = findViewById<ImageView>(R.id.Inventario)
         buttonInventario.setOnClickListener()
         {
-            val intent = Intent(this, Inventario::class.java)
+            val intent = Intent(this, InventarioPager::class.java)
             startActivity(intent)
         }
 

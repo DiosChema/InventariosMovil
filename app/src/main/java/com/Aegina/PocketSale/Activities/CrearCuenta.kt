@@ -37,7 +37,6 @@ class CrearCuenta : AppCompatActivity() {
 
         asignarCampos()
         asignarBotones()
-
     }
 
     fun asignarBotones(){

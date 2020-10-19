@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
+import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
@@ -41,7 +42,6 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener,
     lateinit var mViewVenta : RecyclerViewVenta
     lateinit var mRecyclerView : RecyclerView
 
-    lateinit var dialog : Dialog
     lateinit var globalVariable: GlobalClass
     lateinit var ventaTotalArticulos: TextView
     lateinit var ventaTotalVenta: TextView
@@ -221,4 +221,5 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener,
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
+
 }

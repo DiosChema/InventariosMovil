@@ -59,7 +59,7 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
         fun bind(articulo: EstadisticaArticuloObject) {
             estadisticaArticuloTitulo.text = articulo._id.nombreArticulo
-            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + ":$" + articulo._id.precioArticulo
+            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + articulo._id.precioArticulo
             estadisticaArticuloPrecio.text = textTmp
             estadisticaArticuloDescripcion.text = articulo._id.descripcionArticulo
             textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()

@@ -9,9 +9,9 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.animation.TranslateAnimation
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.*
@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import java.lang.Long.parseLong
+
 
 class DialogAgregarArticulos : AppCompatDialogFragment(){
 
@@ -146,7 +147,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 val codigoTmp = parseLong(dialogAgregarArticuloCodigo.text.toString())
                 val cantidadTmp = Integer.parseInt(dialogAgregarArticuloCantidad.text.toString())
 
-                dialogAgregarArticulo.dismiss()
                 agregarArticulo(codigoTmp, cantidadTmp)
             }
         }
@@ -182,9 +182,19 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 val gson = GsonBuilder().create()
                 val model = gson.fromJson(body, InventarioObjeto::class.java)
 
-                model.cantidadArticulo = cantidad
-                activityTmp.runOnUiThread {
-                    listener.applyTexts(model)
+                if(model != null) {
+                    model.cantidadArticulo = cantidad
+                    activityTmp.runOnUiThread {
+                        listener.applyTexts(model)
+                        dialogAgregarArticulo.dismiss()
+                    }
+                }else{
+                    activityTmp.runOnUiThread {
+                        val animObj = TranslateAnimation(0F,
+                            dialogAgregarArticuloCodigo.width.toFloat()/15, 0F, 0F)
+                        animObj.duration = 250
+                        dialogAgregarArticuloCodigo.startAnimation(animObj)
+                    }
                 }
             }
         })

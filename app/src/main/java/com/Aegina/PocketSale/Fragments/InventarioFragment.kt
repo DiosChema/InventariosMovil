@@ -36,7 +36,7 @@ class InventarioFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        globalVariable = getActivity()?.applicationContext as GlobalClass
+        globalVariable = activity?.applicationContext as GlobalClass
 
         crearRecyclerView()
         asignarBotones()
