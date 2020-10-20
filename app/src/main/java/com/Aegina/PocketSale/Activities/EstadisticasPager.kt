@@ -12,7 +12,8 @@ import com.Aegina.PocketSale.Fragments.EstadisticaVentaFragment
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
-class EstadisticasPager : AppCompatActivity(), DialogFecha.ExampleDialogListener {
+class EstadisticasPager : AppCompatActivity(),
+    DialogFecha.DialogFecha {
 
     lateinit var adapter : MyViewPagerAdapter
 

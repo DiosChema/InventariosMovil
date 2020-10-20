@@ -38,21 +38,39 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"/>
 
-        <EditText
-            android:id="@+id/dialogAgregarArticuloCodigo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_margin="5dp"
-            android:hint="@string/mensaje_codigo_articulo"
-            android:inputType="number"
-            android:textColor="@color/black"
-            android:fontFamily="@font/open_sans"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:background="@drawable/round_button_white"
-            android:importantForAutofill="no" />
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <EditText
+                android:id="@+id/dialogAgregarArticuloCodigo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text=""
+                android:layout_margin="5dp"
+                android:hint="@string/mensaje_codigo_articulo"
+                android:inputType="number"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:background="@drawable/round_button_white"
+                android:importantForAutofill="no" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
         <TextView
             android:layout_width="wrap_content"

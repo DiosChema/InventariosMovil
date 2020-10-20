@@ -7,14 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogFecha
-import com.Aegina.PocketSale.Fragments.EstadisticaVentaFragment
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
 
-class InventarioPager : AppCompatActivity(), DialogFecha.ExampleDialogListener {
+class InventarioPager : AppCompatActivity(),
+    DialogFecha.DialogFecha {
 
     lateinit var adapter : MyViewPagerAdapter
 

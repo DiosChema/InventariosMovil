@@ -2,7 +2,6 @@
 
 package com.Aegina.PocketSale.Activities
 
-import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.pm.ActivityInfo
@@ -12,16 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
-import com.Aegina.PocketSale.RecyclerView.AdapterListEditarArticulosVenta
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
-import com.Aegina.PocketSale.RecyclerView.RecyclerViewVenta
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewVentaDetalle
 import com.google.gson.GsonBuilder
 import okhttp3.*
@@ -31,7 +27,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import kotlin.collections.ArrayList
 
-class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListener {
+class VentaDetalle : AppCompatActivity(),
+    DialogAgregarNumero.DialogAgregarNumero {
 
     lateinit var venta: VentasObjeto
     lateinit var mViewArticulosVenta : RecyclerViewVentaDetalle
@@ -50,7 +47,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
 
     lateinit var listaArticulos : MutableList<InventarioObjeto>
 
-    var context = this;
+    var context = this
 
     val urls: Urls = Urls()
 
@@ -63,7 +60,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
         val simpleDate = SimpleDateFormat("dd/MM/yyyy")
         val simpleDateHours = SimpleDateFormat("HH:mm:ss")
 
-        context = this;
+        context = this
         venta = intent.getSerializableExtra("venta") as VentasObjeto
 
         VentaDetalleNumero = findViewById(R.id.VentaDetalleNumero)
@@ -102,7 +99,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
                 VentaDetalleEliminarVenta.visibility = View.VISIBLE
                 VentaDetalleCancelar.visibility = View.VISIBLE
                 editar = true
-                habilitarEdicion(true)
+                habilitarEdicion()
 
                 mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
                     RecyclerItemClickListener.OnItemClickListener {
@@ -128,7 +125,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
             VentaDetalleCancelar.visibility = View.INVISIBLE
             editar = false
-            habilitarEdicion(false)
+            habilitarEdicion()
         }
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
@@ -137,7 +134,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
 
     fun listaInventarioObjeto(venta: VentasObjeto): MutableList<InventarioObjeto> {
 
-        var listatmp : MutableList<InventarioObjeto> = arrayListOf()
+        val listatmp : MutableList<InventarioObjeto> = arrayListOf()
 
         for(articulos in venta.articulos){
             listatmp.add(
@@ -301,7 +298,7 @@ class VentaDetalle : AppCompatActivity(), DialogAgregarNumero.ExampleDialogListe
         dialog.show()
     }
 
-    private fun habilitarEdicion(habilitar : Boolean) {
+    private fun habilitarEdicion() {
         listaArticulos = listaInventarioObjeto(venta)
         mViewArticulosVenta.RecyclerAdapter(listaArticulos, context)
         mRecyclerView.adapter = mViewArticulosVenta

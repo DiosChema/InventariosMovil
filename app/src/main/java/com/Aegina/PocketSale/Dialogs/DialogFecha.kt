@@ -29,7 +29,7 @@ class DialogFecha : AppCompatDialogFragment(){
     lateinit var dialogFechaBotonCancelar : Button
     lateinit var dialogFechaBotonAceptar : Button
 
-    lateinit var listener: ExampleDialogListener
+    lateinit var fecha: DialogFecha
     lateinit var dialogFecha : Dialog
 
     var tipoFechaInicial = false
@@ -48,7 +48,7 @@ class DialogFecha : AppCompatDialogFragment(){
         dialogFecha.setCancelable(false)
         dialogFecha.setContentView(R.layout.dialog_fecha)
 
-        listener = context as ExampleDialogListener
+        fecha = context as DialogFecha
         asignarBotones()
     }
 
@@ -63,7 +63,7 @@ class DialogFecha : AppCompatDialogFragment(){
         dialogFecha.setCancelable(false)
         dialogFecha.setContentView(R.layout.dialog_fecha)
 
-        listener = context as ExampleDialogListener
+        fecha = context as DialogFecha
         asignarBotones()
     }
 
@@ -106,11 +106,11 @@ class DialogFecha : AppCompatDialogFragment(){
         if(tipoFechaInicial) {
             asignarFechaInicial()
 
-            listener.obtenerFechaInicial()
+            fecha.obtenerFechaInicial()
         }
         else {
             asignarFechaFinal()
-            listener.obtenerFechaFinal()
+            fecha.obtenerFechaFinal()
         }
 
         dialogFecha.dismiss()
@@ -150,7 +150,7 @@ class DialogFecha : AppCompatDialogFragment(){
         dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2020").time
         dialogFechaDatePicker.maxDate = fechaFinal.time
 
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.time = fechaInicial
         dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
     }
@@ -165,7 +165,7 @@ class DialogFecha : AppCompatDialogFragment(){
         dialogFechaDatePicker.minDate = fechaInicial.time
         dialogFechaDatePicker.maxDate = currentTime.time.time
 
-        var calendar = Calendar.getInstance()
+        val calendar = Calendar.getInstance()
         calendar.time = fechaFinal
         dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
     }
@@ -178,7 +178,7 @@ class DialogFecha : AppCompatDialogFragment(){
         calendar = asignarHoraCalendar(calendar, 23, 59, 59)
         fechaFinal = calendar.time
 
-        listener.obtenerFecha()
+        fecha.obtenerFecha()
         dialogFecha.dismiss()
     }
 
@@ -187,12 +187,12 @@ class DialogFecha : AppCompatDialogFragment(){
         calendar = asignarHoraCalendar(calendar, 0, 0, 0)
         fechaFinal = calendar.time
 
-        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar.add(Calendar.DAY_OF_MONTH, -6)
 
         calendar = asignarHoraCalendar(calendar, 23, 59, 59)
         fechaInicial = calendar.time
 
-        listener.obtenerFecha()
+        fecha.obtenerFecha()
         dialogFecha.dismiss()
     }
 
@@ -205,7 +205,7 @@ class DialogFecha : AppCompatDialogFragment(){
         calendar = asignarHoraCalendar(calendar, 23, 59, 59)
         fechaInicial = calendar.time
 
-        listener.obtenerFecha()
+        fecha.obtenerFecha()
         dialogFecha.dismiss()
     }
 
@@ -219,7 +219,7 @@ class DialogFecha : AppCompatDialogFragment(){
         return calendar
     }
 
-    interface ExampleDialogListener {
+    interface DialogFecha {
         fun obtenerFechaInicial()
         fun obtenerFechaFinal()
         fun obtenerFecha()

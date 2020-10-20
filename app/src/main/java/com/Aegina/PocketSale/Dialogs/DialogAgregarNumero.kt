@@ -15,7 +15,7 @@ import com.Aegina.PocketSale.R
 
 class DialogAgregarNumero : AppCompatDialogFragment() {
 
-    lateinit var listener: ExampleDialogListener
+    lateinit var agregarNumero: DialogAgregarNumero
 
     fun crearDialog(context : Context, posicion : Int){
         val dialog = Dialog(context)
@@ -24,7 +24,7 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_numero)
 
-        listener = context as ExampleDialogListener
+        agregarNumero = context as DialogAgregarNumero
 
         val dialogNumeroTitulo = dialog.findViewById<View>(R.id.dialogNumeroTitulo) as TextView
         val dialogNumeroText = dialog.findViewById<View>(R.id.dialogNumeroText) as EditText
@@ -38,8 +38,8 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
                 listaArticulos[posicion].cantidadArticulo =
                     Integer.parseInt(dialogNumeroText.text.toString())
                 mViewEstadisticaArticulo.notifyDataSetChanged()*/
-                listener.obtenerNumero(Integer.parseInt(dialogNumeroText.text.toString()),posicion)
-                val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+                agregarNumero.obtenerNumero(Integer.parseInt(dialogNumeroText.text.toString()),posicion)
+                val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 
                 dialog.dismiss()
@@ -47,7 +47,7 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
         }
 
         dialogNumeroCancelar.setOnClickListener {
-            val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
             dialog.dismiss()
         }
@@ -55,7 +55,7 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
         dialog.show()
     }
 
-    interface ExampleDialogListener {
+    interface DialogAgregarNumero {
         fun obtenerNumero(numero : Int, posicion : Int)
     }
 

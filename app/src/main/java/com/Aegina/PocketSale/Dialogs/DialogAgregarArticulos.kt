@@ -30,7 +30,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     val urls: Urls = Urls()
     lateinit var dialogAgregarArticulo : Dialog
 
-    lateinit var listener: ExampleDialogListener
+    lateinit var agregarArticulo: DialogAgregarArticulo
     lateinit var activityTmp: Activity
     lateinit var globalVariable: GlobalClass
 
@@ -66,11 +66,10 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         activityTmp = activity
         globalVariable = globalVariableTmp
 
-        listener = contextTmp as ExampleDialogListener
+        agregarArticulo = contextTmp as DialogAgregarArticulo
         dialogAgregarArticulo = Dialog(contextTmp)
 
         dialogAgregarArticulo.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        //dialogArticulos.iniciarDialog(globalVariable, context, activityTmp)
 
         dialogAgregarArticulo.setCancelable(false)
         dialogAgregarArticulo.setContentView(R.layout.dialog_agregar_articulo)
@@ -86,7 +85,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogAgregarArticuloCantidad.setText("1")
         val dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<ImageButton>(R.id.dialogAgregarArticuloObtenerCodigo)
         dialogAgregarArticuloObtenerCodigo?.setOnClickListener {
-            listener.abrirCamara()
+            agregarArticulo.abrirCamara()
         }
 
         //dialogArticulos.onAttach(contextTmp)
@@ -185,15 +184,20 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 if(model != null) {
                     model.cantidadArticulo = cantidad
                     activityTmp.runOnUiThread {
-                        listener.applyTexts(model)
+                        agregarArticulo.numeroArticulo(model)
                         dialogAgregarArticulo.dismiss()
                     }
                 }else{
                     activityTmp.runOnUiThread {
-                        val animObj = TranslateAnimation(0F,
-                            dialogAgregarArticuloCodigo.width.toFloat()/15, 0F, 0F)
-                        animObj.duration = 250
-                        dialogAgregarArticuloCodigo.startAnimation(animObj)
+                        val animation1 = TranslateAnimation(0.0f,
+                            dialogAgregarArticuloCodigo.width.toFloat()/15,
+                            0.0f,
+                            0.0f)
+
+                        animation1.duration = 150 // animation duration
+                        animation1.repeatCount = 2
+                        animation1.repeatMode = 2
+                        dialogAgregarArticuloCodigo.startAnimation(animation1)
                     }
                 }
             }
@@ -310,7 +314,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             listaSubFamilia.add(familias.nombreSubFamilia)
         }
 
-        var adapter = ArrayAdapter(context,
+        val adapter = ArrayAdapter(context,
             R.layout.item_spinner, listaSubFamilia)
         dialogArticulosSubFamiliaSpinner.adapter = adapter
 
@@ -371,8 +375,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     }
 
-    interface ExampleDialogListener {
-        fun applyTexts(articulo : InventarioObjeto)
+    interface DialogAgregarArticulo {
+        fun numeroArticulo(articulo : InventarioObjeto)
         fun abrirCamara()
     }
 

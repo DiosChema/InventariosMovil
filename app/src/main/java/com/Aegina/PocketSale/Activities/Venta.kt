@@ -3,7 +3,6 @@
 package com.Aegina.PocketSale.Activities
 
 import android.app.Activity
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
-import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
@@ -28,7 +26,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener, DialogAgregarNumero.ExampleDialogListener{
+class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
+    DialogAgregarNumero.DialogAgregarNumero {
 
     var context = this
     val urls: Urls = Urls()
@@ -184,7 +183,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.ExampleDialogListener,
 
     }
 
-    override fun applyTexts(articulo : InventarioObjeto) {
+    override fun numeroArticulo(articulo : InventarioObjeto) {
         runOnUiThread{
             listaArticulos.add(articulo)
             mViewVenta.notifyDataSetChanged()

@@ -2,16 +2,10 @@
 
 package com.Aegina.PocketSale.Activities
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.DatePicker
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,10 +22,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class EstadisticaArticulo : AppCompatActivity(), DialogFecha.ExampleDialogListener {
+class EstadisticaArticulo : AppCompatActivity(),
+    DialogFecha.DialogFecha {
 
     var listaTmp:MutableList<EstadisticaArticuloObject> = ArrayList()
-    lateinit var context : Context;
+    lateinit var context : Context
     lateinit var mViewEstadisticaArticulo : RecyclerViewEstadisticaArticulo
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
@@ -115,7 +110,7 @@ class EstadisticaArticulo : AppCompatActivity(), DialogFecha.ExampleDialogListen
             }
             override fun onResponse(call: Call, response: Response)
             {
-                var body = response.body()?.string()
+                val body = response.body()?.string()
 
                 if(body != null && body.isNotEmpty()) {
                     val gson = GsonBuilder().create()
@@ -273,7 +268,7 @@ class EstadisticaArticulo : AppCompatActivity(), DialogFecha.ExampleDialogListen
         calendar = asignarHoraCalendar(calendar, 23, 59, 59)
         fechaFinal = calendar.time
 
-        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar.add(Calendar.DAY_OF_MONTH, -6)
         calendar = asignarHoraCalendar(calendar, 0, 0, 0)
         fechaInicial = calendar.time
 
@@ -285,7 +280,7 @@ class EstadisticaArticulo : AppCompatActivity(), DialogFecha.ExampleDialogListen
         calendar = asignarHoraCalendar(calendar, 23, 59, 59)
         fechaFinal = calendar.time
 
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
         calendar = asignarHoraCalendar(calendar, 0, 0, 0)
         fechaInicial = calendar.time
 

@@ -5,7 +5,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     signingConfigs {
         release {
-            storeFile file('C:\\Users\\Chemardo\\Desktop\\keystore.jks')
+            storeFile file('C:\\Users\\Chemardo\\AndroidStudioProjects\\Perraco\\app\\release\\keystore.jks')
             storePassword 'N1etz5che_?'
             keyAlias 'AeginaKeyStore'
             keyPassword 'N1etz5che_?'
@@ -26,8 +26,8 @@ android {
         applicationId "com.Aegina.PocketSale"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 7
-        versionName "1.5"
+        versionCode 8
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release

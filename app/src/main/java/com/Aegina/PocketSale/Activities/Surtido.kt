@@ -28,7 +28,8 @@ import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
 
-class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListener, DialogAgregarNumero.ExampleDialogListener{
+class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticulo,
+    DialogAgregarNumero.DialogAgregarNumero {
     lateinit var mViewEstadisticaArticulo : RecyclerViewSurtido
     lateinit var mRecyclerView : RecyclerView
 
@@ -153,7 +154,7 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.ExampleDialogListen
         })
     }
 
-    override fun applyTexts(articulo : InventarioObjeto) {
+    override fun numeroArticulo(articulo : InventarioObjeto) {
         runOnUiThread{
             listaArticulos.add(articulo)
             mViewEstadisticaArticulo.notifyDataSetChanged()
