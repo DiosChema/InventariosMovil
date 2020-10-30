@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:background="@drawable/round_button_bluelight">
 
-        <TextView
+        <!--<TextView
             android:id="@+id/dialogTerminarVentaTitulo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,13 +25,14 @@
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"/>-->
 
         <TextView
+            android:id="@+id/dialogTotalVentaText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mensaje_codigo_articulo"
-            android:textSize="20sp"
+            android:text="@string/venta_total_venta"
+            android:textSize="22sp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
@@ -48,22 +49,20 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <EditText
-                android:id="@+id/dialogAgregarArticuloCodigo"
+            <TextView
+                android:id="@+id/dialogTotalVenta"
                 android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:text=""
-                android:layout_margin="5dp"
-                android:hint="@string/mensaje_codigo_articulo"
-                android:inputType="number"
+                android:text="@string/app_name"
+                android:textSize="28sp"
+                android:textAlignment="center"
                 android:textColor="@color/black"
                 android:fontFamily="@font/open_sans"
-                android:textSize="18sp"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:background="@drawable/round_button_white"
-                android:importantForAutofill="no" />
+                android:minLines="1"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/round_button_white"/>
 
             <View
                 android:layout_width="0dp"
@@ -73,15 +72,16 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/dialogTotalPagoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mensaje_cantidad_articulo"
-            android:textSize="20sp"
+            android:text="@string/mensaje_venta_pago"
+            android:textSize="22sp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="15dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -94,11 +94,12 @@
                 android:layout_weight="1" />
 
             <EditText
-                android:id="@+id/dialogAgregarArticuloCantidad"
+                android:id="@+id/dialogTotalPago"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.3"
+                android:layout_weight="2"
                 android:layout_marginTop="5dp"
+                android:minLines="2"
                 android:text=""
                 android:hint="@string/mensaje_cantidad_articulo"
                 android:inputType="number"
@@ -117,57 +118,47 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/dialogTotalCambioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mensaje_venta_cambio"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="15dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_gravity="center"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/transparent"
-                card_view:cardCornerRadius="128dp">
-
-                <ImageButton
-                    android:id="@+id/dialogAgregarArticuloBuscarArticulo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/magnifyingglassicon"
-                    android:scaleType="centerCrop"
-                    android:background="@color/light_blue"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/buscarArticulo" />
-
-            </androidx.cardview.widget.CardView>
+            android:orientation="horizontal">
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_gravity="center"
+            <TextView
+                android:id="@+id/dialogTotalCambio"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                card_view:cardCornerRadius="128dp">
+                android:layout_weight="3"
+                android:text="@string/app_name"
+                android:textSize="28sp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                android:minLines="1"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/round_button_white"/>
 
-                <ImageButton
-                    android:id="@+id/dialogAgregarArticuloObtenerCodigo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
-                    app:srcCompat="@drawable/barcodeicon"
-                    android:scaleType="centerCrop"
-                    android:background="@color/light_blue"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/capturarCodigoBarras"/>
-
-            </androidx.cardview.widget.CardView>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
         </LinearLayout>
 
@@ -193,7 +184,7 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/dialogAgregarArticuloAceptar"
+                android:id="@+id/dialogTerminarVentaAceptar"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:layout_height="wrap_content"

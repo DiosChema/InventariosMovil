@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.InventarioDetalle
 import com.Aegina.PocketSale.Objets.GlobalClass
@@ -54,12 +56,15 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val itemArticuloInventarioPrecioText = view.findViewById(R.id.itemArticuloInventarioPrecioText) as TextView
         val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
+        val itemArticuloInventarioCantidadText = view.findViewById(R.id.itemArticuloInventarioCantidadText) as TextView
         val itemArticuloInventarioContenedor = view.findViewById(R.id.itemArticuloInventarioContenedor) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
         fun bind(articulo: InventarioObjeto, context: Context) {
+
+            //itemArticuloInventarioFoto.setImageResource(R.drawable.waiticon)
 
             when (position % 2) {
                 1 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
@@ -73,8 +78,9 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
             var textTmp = "$" + articulo.precioArticulo
             itemArticuloInventarioPrecio.text = textTmp
             itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo)
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidadArticulo
-            itemArticuloInventarioCantidad.text = textTmp
+            //textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidadArticulo
+            itemArticuloInventarioCantidadText.text = itemView.context.getString(R.string.ventas_inventario_cantidad)
+            itemArticuloInventarioCantidad.text = articulo.cantidadArticulo.toString()
             itemView.setOnClickListener {
                 val intent = Intent(context, InventarioDetalle::class.java).apply {
                     putExtra("articulo", articulo)

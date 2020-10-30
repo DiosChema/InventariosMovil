@@ -76,8 +76,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogAgregarArticuloCodigo = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloCodigo) as EditText
         dialogAgregarArticuloCantidad = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloCantidad) as EditText
         dialogAgregarArticuloAceptar = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloAceptar) as Button
-        dialogAgregarArticuloCancelar = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloCancelar) as Button
-        dialogAgregarArticuloTitulo = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloTitulo) as TextView
+        dialogAgregarArticuloCancelar = dialogAgregarArticulo.findViewById(R.id.dialogTerminarVentaCancelar) as Button
+        dialogAgregarArticuloTitulo = dialogAgregarArticulo.findViewById(R.id.dialogTerminarVentaTitulo) as TextView
         dialogAgregarArticuloBuscarArticulo = dialogAgregarArticulo.findViewById<View>(R.id.dialogAgregarArticuloBuscarArticulo) as ImageButton
         dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<View>(R.id.dialogAgregarArticuloObtenerCodigo) as ImageButton
 

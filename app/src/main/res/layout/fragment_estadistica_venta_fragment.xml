@@ -248,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
-                    android:text="@string/estadistica_inventario_leyenda_total"
+                    android:text="@string/estadistica_inventario_total"
                     android:textSize="18sp"
                     tools:ignore="RelativeOverlap" />
 

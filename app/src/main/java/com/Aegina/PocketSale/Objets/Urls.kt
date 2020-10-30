@@ -29,7 +29,8 @@ data class Urls(
     var endPointEstadisticasPorFecha:String,
     var endPointEstadisticasInventario:String,
     var endPointActualizarInventario:String,
-    var endPointConsultarFamiliasSubFamilias:String)
+    var endPointConsultarFamiliasSubFamilias:String,
+    var endPointActualizarFechaCompra:String)
 {
     constructor(): this(
         "https://tienditaplus.herokuapp.com/",
@@ -61,6 +62,6 @@ data class Urls(
         "ventas/estadisticasPorFecha",
         "estadisticas/obtenerTotalInventario",
         "inventario/actualizarInventario",
-        "familias/consultarFamiliasSubFamilias")
-
+        "familias/consultarFamiliasSubFamilias",
+        "users/acutalizarFecha")
 }

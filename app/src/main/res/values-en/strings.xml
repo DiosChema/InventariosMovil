@@ -33,7 +33,7 @@
     <string name="venta_precio_articulo">"Price: "</string>
     <string name="venta_precio_por_articulo">"U/P: "</string>
     <string name="ventas_inventario_fecha">Date:</string>
-    <string name="ventas_inventario_cantidad">"Qty: "</string>
+    <string name="ventas_inventario_cantidad">"Qty:"</string>
     <string name="fragment_ventas">Sales</string>
     <string name="fragment_inventario">Inventory</string>
     <string name="mensaje_anadir_articulo">New Item</string>
@@ -46,6 +46,7 @@
     <string name="estadistica_inventario_total_articulos">Total profit</string>
     <string name="estadistica_inventario_total_costos">Total cost</string>
     <string name="estadistica_inventario_leyenda_total">Total Capital</string>
+    <string name="estadistica_inventario_total">Total</string>
     <string name="estadistica_inventario_titulo">Capital</string>
     <string name="surtido_texto_titulo">Enter item</string>
     <string name="surtido_boton_agregar">New Item</string>
@@ -57,7 +58,7 @@
     <string name="dialog_agregar_familia">Add Family</string>
     <string name="dialog_agregar_subfamilia">Add Subfamily</string>
     <string name="dialog_cancelar">Cancel</string>
-    <string name="dialog_aceptar">To accept</string>
+    <string name="dialog_aceptar">Accept</string>
     <string name="editar_articulo_venta">Sale price</string>
     <string name="editar_articulo_costo">Price Cost</string>
     <string name="editar_articulo_proveedor">Supplier Price</string>
@@ -93,4 +94,7 @@
     <string name="buscarArticulo">Item search window</string>
     <string name="ocultar_contrasena">Hide password</string>
     <string name="mensaje_venta_no_se_encontro_articulo">No item found</string>
+    <string name="ventas_inventario_cantidad_chico">#</string>
+    <string name="mensaje_venta_pago">Payment:</string>
+    <string name="mensaje_venta_cambio">Exchange:</string>
 </resources>

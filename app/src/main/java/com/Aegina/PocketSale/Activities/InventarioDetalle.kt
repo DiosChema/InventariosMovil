@@ -768,11 +768,7 @@ class InventarioDetalle : AppCompatActivity() {
         val fdelete = File(getFilePath(uri))
 
         if (fdelete.exists()) {
-            if (fdelete.delete()) {
-                System.out.println("file Deleted :" )
-            } else {
-                System.out.println("file not Deleted :")
-            }
+            if (fdelete.delete()) { return } else { return }
         }
     }
 

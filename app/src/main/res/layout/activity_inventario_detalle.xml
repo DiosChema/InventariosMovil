@@ -163,7 +163,8 @@
                     android:textAlignment="center"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no" />
+                    android:importantForAutofill="no"
+                    android:layout_marginTop="1dp"/>
 
                 <TextView
                     android:id="@+id/invDetalleCostoText"
@@ -173,7 +174,8 @@
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:maxLines="1"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="7dp"/>
 
                 <EditText
                     android:id="@+id/invDetalleCosto"
@@ -188,7 +190,8 @@
                     android:gravity="center_horizontal"
                     android:background="@drawable/round_button_white"
                     android:importantForAutofill="no"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"/>
 
                 <TextView
                     android:id="@+id/invDetalleCantidadText"
@@ -198,7 +201,8 @@
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:maxLines="1"
-                    android:layout_gravity="center"/>
+                    android:layout_gravity="center"
+                    android:layout_marginTop="7dp"/>
 
                 <EditText
                     android:id="@+id/invDetalleCantidad"
@@ -213,7 +217,8 @@
                     android:gravity="center_horizontal"
                     android:background="@drawable/round_button_white"
                     android:importantForAutofill="no"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"/>
 
             </LinearLayout>
 
@@ -224,15 +229,6 @@
                 android:orientation="vertical"
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp">
-
-                <!--<ImageButton
-                    android:id="@+id/invBotonEliminarFamilia"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:srcCompat="@drawable/lessicon"
-                    android:background="@color/transparent"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/botonEliminar"/>-->
 
                 <TextView
                     android:id="@+id/invTextGrupo"
@@ -247,6 +243,7 @@
                     android:id="@+id/invDetalleFamiliaSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="34dp"
                     android:minWidth="100dp"
                     android:background="@drawable/round_button_white"
                     android:layout_gravity="center"
@@ -326,6 +323,7 @@
                     android:id="@+id/invDetalleSubFamiliaSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minHeight="34dp"
                     android:minWidth="100dp"
                     android:textAlignment="center"
                     android:background="@drawable/round_button_white"

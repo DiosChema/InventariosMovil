@@ -126,7 +126,6 @@ class EstadisticaArticulo : AppCompatActivity(),
 
             }
         })
-
     }
 
     fun showDialogFechaInicial() {

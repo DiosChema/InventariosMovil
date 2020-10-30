@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
+import com.Aegina.PocketSale.Dialogs.DialogFinalizarVenta
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
@@ -21,22 +22,22 @@ import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
+import java.lang.Float.parseFloat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 
 class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
-    DialogAgregarNumero.DialogAgregarNumero {
+    DialogAgregarNumero.DialogAgregarNumero, DialogFinalizarVenta.DialogFinalizarVenta {
 
     var context = this
     val urls: Urls = Urls()
 
     var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
-
     var adapter: AdapterListVenta? = null
-
     var dialogoAgregarArticulos = DialogAgregarArticulos()
+    var dialogoFinalizarVenta = DialogFinalizarVenta()
 
     lateinit var mViewVenta : RecyclerViewVenta
     lateinit var mRecyclerView : RecyclerView
@@ -56,14 +57,6 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         crearRecyclerView()
 
         asignarRecursos()
-
-        /*
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val width = displayMetrics.widthPixels
-
-        mRecyclerViewArticulos.layoutManager = GridLayoutManager(context,width/360)
-        */
     }
 
     fun asignarRecursos(){
@@ -78,7 +71,8 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
         val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
         ButtonTerminarVenta.setOnClickListener {
-            subirVenta()
+            if(listaArticulos.size > 0)
+                dialogoFinalizarVenta.crearDialog(context,parseFloat(ventaTotalVenta.text.toString().substring(1,ventaTotalVenta.text.length)))
         }
 
         actualizarCantidadPrecio()
@@ -196,6 +190,12 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
             listaArticulos[posicion].cantidadArticulo = numero
             mViewVenta.notifyDataSetChanged()
             actualizarCantidadPrecio()
+        }
+    }
+
+    override fun finalizarVenta(cambio : Float) {
+        runOnUiThread{
+            subirVenta()
         }
     }
 

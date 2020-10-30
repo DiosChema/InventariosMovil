@@ -2,7 +2,6 @@
     <string name="app_name">Pocket Sale</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-
     <!-- Editar Venta -->
     <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
     <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
@@ -39,6 +38,8 @@
     <string name="surtido_total_costo">Total Costo:</string>
     <string name="mensaje_venta_sin_articulos">No hay artículos</string>
     <string name="mensaje_venta_no_se_encontro_articulo">No se encontro artículo</string>
+    <string name="mensaje_venta_pago">Pago:</string>
+    <string name="mensaje_venta_cambio">Cambio:</string>
 
 
     <!-- RecyclerView venta/surtido-->
@@ -49,7 +50,8 @@
 
     <!-- Ventas Inventario -->
     <string name="ventas_inventario_fecha">Fecha:</string>
-    <string name="ventas_inventario_cantidad">Cant: </string>
+    <string name="ventas_inventario_cantidad">Cant:</string>
+    <string name="ventas_inventario_cantidad_chico">#</string>
     <string name="fragment_ventas">Ventas</string>
     <string name="fragment_inventario">Inventario</string>
     <string name="mensaje_anadir_articulo">Nuevo Articulo</string>
@@ -68,6 +70,7 @@
     <string name="estadistica_inventario_total_articulos">Ganancia Total</string>
     <string name="estadistica_inventario_total_costos">Costo Total</string>
     <string name="estadistica_inventario_leyenda_total">Capital Total</string>
+    <string name="estadistica_inventario_total">Total</string>
     <string name="estadistica_inventario_titulo">Capital</string>
 
     <!-- Surtido -->

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.GlobalClass
@@ -43,18 +44,29 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val itemSurtidoArticuloTitulo = view.findViewById(R.id.itemSurtidoArticuloTitulo) as TextView
         val itemSurtidoArticuloCantidad = view.findViewById(R.id.itemSurtidoArticuloCantidad) as TextView
         val itemSurtidoArticuloTotal = view.findViewById(R.id.itemSurtidoArticuloTotal) as TextView
-        val itemSurtidoArticuloPrecioText = view.findViewById(R.id.itemSurtidoArticuloPrecioText) as TextView
+        //val itemSurtidoArticuloPrecioText = view.findViewById(R.id.itemSurtidoArticuloPrecioText) as TextView
+        val itemSurtidoArticuloPrecioTotal = view.findViewById(R.id.itemSurtidoArticuloPrecioTotal) as TextView
         val itemSurtidoArticuloPrecio = view.findViewById(R.id.itemSurtidoArticuloPrecio) as TextView
+        val itemArticuloInventarioContenedor = view.findViewById(R.id.itemArticuloInventarioContenedor) as LinearLayout
 
         fun bind(venta: InventarioObjeto) {
+
+            when (position % 2) {
+                //1 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundarticulo2))
+                //0 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundarticulo1))
+                else -> {
+                }
+            }
+
             itemSurtidoArticuloTitulo.text = venta.nombreArticulo
-            var textTmp = "$" +venta.precioArticulo
+            var textTmp = itemView.context.getString(R.string.venta_precio_articulo) + "\n$" +venta.precioArticulo
             itemSurtidoArticuloPrecio.text = textTmp
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + venta.cantidadArticulo.toString()
-            itemSurtidoArticuloPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo)
+            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidadArticulo.toString()
+            //itemSurtidoArticuloPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo)
             itemSurtidoArticuloCantidad.text = textTmp
-            textTmp = itemView.context.getString(R.string.venta_total) + (venta.precioArticulo * venta.cantidadArticulo).toString()
-            itemSurtidoArticuloTotal.text = textTmp
+            textTmp = itemView.context.getString(R.string.venta_total) + "\n$" + (venta.precioArticulo * venta.cantidadArticulo).toString()
+            itemSurtidoArticuloPrecioTotal.text = textTmp
+            //itemSurtidoArticuloTotal.text = textTmp
             itemSurtidoArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.token)
         }
 
