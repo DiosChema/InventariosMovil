@@ -82,6 +82,13 @@
     <string name="dialog_fecha_inicial">Selecciona la fecha inicial</string>
     <string name="dialog_fecha_final">Selecciona la fecha final</string>
 
+    <!-- Suscripcion -->
+    <string name="suscripcion_mes">Mes</string>
+    <string name="suscripcion_meses">Meses</string>
+    <string name="suscripcion_meses_diminutivo">Mes</string>
+    <string name="suscripcion_meses_descuento">Ahorra</string>
+    <string name="suscripcion_meses_total">Precio Total</string>
+
     <!-- Dialog numero -->
     <string name="dialog_numero_text_cantidad">Cantidad</string>
 

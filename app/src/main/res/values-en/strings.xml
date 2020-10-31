@@ -97,4 +97,9 @@
     <string name="ventas_inventario_cantidad_chico">#</string>
     <string name="mensaje_venta_pago">Payment:</string>
     <string name="mensaje_venta_cambio">Exchange:</string>
+    <string name="suscripcion_mes">Month</string>
+    <string name="suscripcion_meses">Months</string>
+    <string name="suscripcion_meses_diminutivo">Mo</string>
+    <string name="suscripcion_meses_descuento">Save</string>
+    <string name="suscripcion_meses_total">Total</string>
 </resources>
