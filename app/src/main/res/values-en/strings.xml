@@ -36,7 +36,8 @@
     <string name="ventas_inventario_cantidad">"Qty:"</string>
     <string name="fragment_ventas">Sales</string>
     <string name="fragment_inventario">Inventory</string>
-    <string name="mensaje_anadir_articulo">New Item</string>
+    <string name="mensaje_anadir_articulo">NEW ITEM</string>
+    <string name="ventas_inventario_buscar_articulo">SEARCH</string>
     <string name="estadistica_articulo_botton_dia">Today</string>
     <string name="estadistica_articulo_botton_semana">Last week</string>
     <string name="estadistica_articulo_botton_mes">This month</string>
@@ -102,4 +103,7 @@
     <string name="suscripcion_meses_diminutivo">Mo</string>
     <string name="suscripcion_meses_descuento">Save</string>
     <string name="suscripcion_meses_total">Total</string>
+    <string name="dialog_filtro_cantidad">Stock</string>
+    <string name="dialog_filtro_minimo_diminutivo">Min</string>
+    <string name="dialog_filtro_maximo_diminutivo">Max</string>
 </resources>

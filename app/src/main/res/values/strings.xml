@@ -54,7 +54,8 @@
     <string name="ventas_inventario_cantidad_chico">#</string>
     <string name="fragment_ventas">Ventas</string>
     <string name="fragment_inventario">Inventario</string>
-    <string name="mensaje_anadir_articulo">Nuevo Articulo</string>
+    <string name="mensaje_anadir_articulo">NUEVO ARTICULO</string>
+    <string name="ventas_inventario_buscar_articulo">BUSCAR</string>
 
     <!-- Estadistica Articulos -->
     <string name="estadistica_articulo_botton_dia">Hoy</string>
@@ -98,6 +99,11 @@
     <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
     <string name="dialog_cancelar">Cancelar</string>
     <string name="dialog_aceptar">Aceptar</string>
+
+    <!-- Dialog filtros -->
+    <string name="dialog_filtro_cantidad">Cantidad en inventario</string>
+    <string name="dialog_filtro_minimo_diminutivo">Min</string>
+    <string name="dialog_filtro_maximo_diminutivo">Max</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>

@@ -69,7 +69,4 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
     interface DialogFinalizarVenta {
         fun finalizarVenta(cambio : Float)
     }
-
-
-
 }

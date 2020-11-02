@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
 import com.Aegina.PocketSale.R
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_inventario.*
 
 
 class InventarioPager : AppCompatActivity(),
-    DialogFecha.DialogFecha {
+    DialogFecha.DialogFecha, DialogFiltrarArticulos.DialogFiltrarArticulos {
 
     lateinit var adapter : MyViewPagerAdapter
 
@@ -23,7 +24,6 @@ class InventarioPager : AppCompatActivity(),
         setContentView(R.layout.activity_inventario)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         asignarFragments()
-
     }
 
     fun asignarFragments(){
@@ -70,5 +70,16 @@ class InventarioPager : AppCompatActivity(),
     override fun obtenerFecha() {
         val fragment: Fragment = adapter.getItem(1)
         (fragment as VentaFragment).obtenerFecha()
+    }
+
+    override fun filtrosArticulos(familiaIdTmp:Int,subFamiliaIdTmp:Int,minCantidad:Int,maxCantidad:Int) {
+        val fragment: Fragment = adapter.getItem(0)
+        (fragment as InventarioFragment).filtroFamilia = familiaIdTmp
+        (fragment).filtroSubFamilia = subFamiliaIdTmp
+        (fragment).filtroMinCantidad = minCantidad
+        (fragment).filtroMaxCantidad = maxCantidad
+        (fragment).getInventarioObjecto()
+
+
     }
 }
