@@ -2,6 +2,8 @@
 
 package com.Aegina.PocketSale.Fragments
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -9,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -38,6 +41,11 @@ class InventarioFragment : Fragment() {
     var filtroMinCantidad = -1
     var filtroMaxCantidad = -1
 
+    var mostrarBotones = false
+
+
+    lateinit var fragmentInventarioContenedorRecyclerView : LinearLayout
+
     var dialogFiltrarArticulos = DialogFiltrarArticulos()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +66,7 @@ class InventarioFragment : Fragment() {
 
     fun crearRecyclerView(){
         mViewInventario = RecyclerViewInventario()
-        mRecyclerView = rvInventario as RecyclerView
+        mRecyclerView = fragmentInventarioRecyclerView as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         if (context != null) {
@@ -68,6 +76,13 @@ class InventarioFragment : Fragment() {
     }
 
     fun asignarBotones(){
+
+        var tamanoOriginal = 0
+        var tamanoNuevo = 0
+
+        val fragmentInventarioBotones = fragmentInventarioBotones
+        val fragmentInventarioContenedor = fragmentInventarioContenedor
+
         val fragmentInventarioNuevoArticulo = fragmentInventarioNuevoArticulo
         fragmentInventarioNuevoArticulo.setOnClickListener()
         {
@@ -76,9 +91,80 @@ class InventarioFragment : Fragment() {
         }
 
         val fragmentInventarioFiltroArticulo = fragmentInventarioFiltroArticulo
-        fragmentInventarioFiltroArticulo.setOnClickListener(){
+        fragmentInventarioFiltroArticulo.setOnClickListener()
+        {
             dialogFiltrarArticulos.mostrarDialog()
         }
+
+        /*val fragmentInventarioMostrarVentana = fragmentInventarioMostrarVentana
+
+        fragmentInventarioMostrarVentana.setOnClickListener()
+        {
+
+            val perro = mRecyclerView.layoutParams.height
+            val perro2 = mRecyclerView.height
+
+            if(tamanoOriginal == 0)
+            {
+                tamanoOriginal = mRecyclerView.height
+                tamanoNuevo = mRecyclerView.height + fragmentInventarioBotones.height
+            }
+
+            if(!mostrarBotones)
+            {
+                fragmentInventarioMostrarVentana.setImageResource(R.drawable.upicon)
+
+                var modificarTamano = mRecyclerView.layoutParams
+
+                mRecyclerView.layoutParams = modificarTamano
+                //fragmentInventarioBotones.visibility = View.GONE
+                /*val animate = TranslateAnimation(
+                    0F,
+                    0F, fragmentInventarioBotones.height.toFloat(), 0F
+                )
+                animate.duration = 200
+                animate.fillAfter = true
+                fragmentInventarioBotones.startAnimation(animate)*/
+                //Handler().postDelayed(Runnable { fragmentInventarioBotones.visibility = View.GONE }, 200)
+                fragmentInventarioContenedor!!.animate()
+                    .translationY(-fragmentInventarioBotones.height.toFloat())
+                    .alpha(1.0f)
+                    .setListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator?) {
+                            super.onAnimationEnd(animation)
+
+
+                            var modificarTamano = mRecyclerView.layoutParams
+                            //modificarTamano.height = tamanoOriginal
+                            modificarTamano.height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+                            mRecyclerView.layoutParams = modificarTamano
+
+                        }
+                    })
+
+
+
+                mostrarBotones = true
+            }
+            else
+            {
+                fragmentInventarioMostrarVentana.setImageResource(R.drawable.dropicon)
+                //fragmentInventarioBotones.visibility = View.VISIBLE
+
+                fragmentInventarioContenedor.animate()
+                    .translationY(0F)
+                    .alpha(1.0f)
+
+                var modificarTamano = mRecyclerView.layoutParams
+                modificarTamano.height = tamanoOriginal
+
+                mRecyclerView.layoutParams = modificarTamano
+
+                mostrarBotones = false
+            }
+
+        }*/
     }
 
     fun getInventarioObjecto(){

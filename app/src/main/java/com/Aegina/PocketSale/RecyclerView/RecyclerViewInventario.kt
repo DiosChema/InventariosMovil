@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.InventarioDetalle
 import com.Aegina.PocketSale.Objets.GlobalClass
@@ -50,37 +48,37 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
+
         val itemArticuloInventarioNombre = view.findViewById(R.id.itemArticuloInventarioNombre) as TextView
         val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
+        val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
         val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
         val itemArticuloInventarioPrecioText = view.findViewById(R.id.itemArticuloInventarioPrecioText) as TextView
-        val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
-        val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
-        val itemArticuloInventarioCantidadText = view.findViewById(R.id.itemArticuloInventarioCantidadText) as TextView
-        val itemArticuloInventarioContenedor = view.findViewById(R.id.itemArticuloInventarioContenedor) as LinearLayout
+        val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
         fun bind(articulo: InventarioObjeto, context: Context) {
 
-            //itemArticuloInventarioFoto.setImageResource(R.drawable.waiticon)
-
             when (position % 2) {
-                1 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
-                0 -> itemArticuloInventarioContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
+                1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                0 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
                 else -> {
                 }
             }
 
             itemArticuloInventarioNombre.text = articulo.nombreArticulo
             itemArticuloInventarioDescipcion.text = articulo.descripcionArticulo
-            var textTmp = "$" + articulo.precioArticulo
-            itemArticuloInventarioPrecio.text = textTmp
+
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidadArticulo.toString()
+            itemArticuloInventarioCantidad.text = textTmp
+
             itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo)
-            //textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidadArticulo
-            itemArticuloInventarioCantidadText.text = itemView.context.getString(R.string.ventas_inventario_cantidad)
-            itemArticuloInventarioCantidad.text = articulo.cantidadArticulo.toString()
+            textTmp = "$" + articulo.precioArticulo
+            itemArticuloInventarioPrecio.text = textTmp
+
             itemView.setOnClickListener {
                 val intent = Intent(context, InventarioDetalle::class.java).apply {
                     putExtra("articulo", articulo)

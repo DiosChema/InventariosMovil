@@ -7,9 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.Aegina.PocketSale.Objets.GlobalClass
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginTextPasswordOlvidada : TextView
     lateinit var loginTextNuevaCuenta : TextView
     lateinit var loginPasswordButton : ImageView
+    lateinit var loginLayout : LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +55,13 @@ class MainActivity : AppCompatActivity() {
         loginTextPasswordOlvidada = findViewById(R.id.loginTextPasswordOlvidada)
         loginTextNuevaCuenta = findViewById(R.id.loginTextNuevaCuenta)
         loginPasswordButton = findViewById(R.id.loginPasswordButton)
+        loginLayout = findViewById(R.id.loginLayout)
 
         loginEmail.setText("taco666@hotmail.com")
         loginPassword.setText("perraco12")
+
+        //Handler().postDelayed(Runnable { loginLayout.visibility = View.VISIBLE }, 500)
+
     }
 
     fun asignarBotones(){

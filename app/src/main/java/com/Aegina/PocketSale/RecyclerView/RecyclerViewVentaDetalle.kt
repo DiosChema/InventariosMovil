@@ -47,25 +47,27 @@ class RecyclerViewVentaDetalle : RecyclerView.Adapter<RecyclerViewVentaDetalle.V
         //val itemSurtidoArticuloPrecioText = view.findViewById(R.id.itemSurtidoArticuloPrecioText) as TextView
         val itemSurtidoArticuloPrecio = view.findViewById(R.id.itemSurtidoArticuloPrecio) as TextView
         val itemSurtidoContenedor = view.findViewById(R.id.itemSurtidoContenedor) as LinearLayout
+        val itemSurtidoArticuloPrecioTotal = view.findViewById(R.id.itemSurtidoArticuloPrecioTotal) as TextView
 
         fun bind(venta: InventarioObjeto) {
 
-            when (position % 2) {
+            /*when (position % 2) {
                 1 -> itemSurtidoContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundarticulo2))
                 0 -> itemSurtidoContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundarticulo1))
                 else -> {
                 }
-            }
+            }*/
 
             itemSurtidoArticuloTitulo.text = venta.nombreArticulo
-            var textTmp = "$" +venta.precioArticulo
+            var textTmp = itemView.context.getString(R.string.venta_precio_articulo) + " " + "$" +venta.precioArticulo
             itemSurtidoArticuloPrecio.text = textTmp
             textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidadArticulo.toString()
             //itemSurtidoArticuloPrecioText.text = (itemView.context.getString(R.string.venta_precio_articulo)
-            itemSurtidoArticuloCantidad.text = (itemView.context.getString(R.string.venta_precio_articulo) + " " + textTmp)
+            itemSurtidoArticuloCantidad.text = textTmp
             textTmp = itemView.context.getString(R.string.venta_total) + " " + (venta.precioArticulo * venta.cantidadArticulo).toString()
-            itemSurtidoArticuloTotal.text = textTmp
+            //itemSurtidoArticuloTotal.text = textTmp
             itemSurtidoArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            itemSurtidoArticuloPrecioTotal.text = textTmp
         }
 
         fun ImageView.loadUrl(url: String) {

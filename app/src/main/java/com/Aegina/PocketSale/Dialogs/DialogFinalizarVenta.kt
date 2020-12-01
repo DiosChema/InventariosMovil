@@ -45,6 +45,10 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
                 if (s.isNotEmpty()/* && parseFloat(s.toString()) >= totalVenta*/) {
                     dialogTotalCambio.text = (parseFloat(s.toString()) - totalVenta).toString()
                 }
+                else
+                {
+                    dialogTotalCambio.text = ""
+                }
             }
         })
 
@@ -56,7 +60,7 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
 
         dialogTerminarVentaAceptar.setOnClickListener {
             if(dialogTotalPago.text.isNotEmpty()){
-                if(parseFloat(dialogTotalPago.text.toString()) > totalVenta){
+                if(parseFloat(dialogTotalPago.text.toString()) >= totalVenta){
                     dialog.dismiss()
                     finalizarVenta.finalizarVenta(parseFloat(dialogTotalPago.text.toString()) - totalVenta)
                 }
