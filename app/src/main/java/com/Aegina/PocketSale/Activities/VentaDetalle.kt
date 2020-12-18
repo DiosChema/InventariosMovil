@@ -18,7 +18,7 @@ import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
-import com.Aegina.PocketSale.RecyclerView.RecyclerViewVentaDetalle
+import com.Aegina.PocketSale.RecyclerView.RecyclerViewVenta
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import org.json.JSONException
@@ -31,7 +31,7 @@ class VentaDetalle : AppCompatActivity(),
     DialogAgregarNumero.DialogAgregarNumero {
 
     lateinit var venta: VentasObjeto
-    lateinit var mViewArticulosVenta : RecyclerViewVentaDetalle
+    lateinit var mViewArticulosVenta : RecyclerViewVenta
     lateinit var mRecyclerView : RecyclerView
 
     lateinit var VentaDetalleNumero : TextView
@@ -80,7 +80,7 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleCancelar.visibility = View.INVISIBLE
         editar = false
 
-        mViewArticulosVenta = RecyclerViewVentaDetalle()
+        mViewArticulosVenta = RecyclerViewVenta()
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -154,11 +154,11 @@ class VentaDetalle : AppCompatActivity(),
     }
 
     private fun eliminarVenta(){
-        val url = urls.url+urls.endPointEliminarVenta
+        val url = urls.url+urls.endPointVentas.endPointEliminarVenta
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idVenta", venta._id)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -194,7 +194,7 @@ class VentaDetalle : AppCompatActivity(),
     }
 
     private fun actualizarVenta(){
-        val url = urls.url+urls.endPointActualizarVenta
+        val url = urls.url+urls.endPointVentas.endPointActualizarVenta
 
         val listaArticulosTmp: MutableList<ActualizarArticuloObjeto> = ArrayList()
 
@@ -211,7 +211,7 @@ class VentaDetalle : AppCompatActivity(),
             }
         }
 
-        val ventaActualizada = ActualizarVenta(globalVariable.token.toString(),venta._id,listaArticulosTmp)
+        val ventaActualizada = ActualizarVenta(globalVariable.usuario!!.token,venta._id,listaArticulosTmp)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(ventaActualizada)

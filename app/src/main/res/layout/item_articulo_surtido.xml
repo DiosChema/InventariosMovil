@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/itemArticuloVentaContainer"
+    android:id="@+id/itemSurtidoContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,7 +15,7 @@
     android:layout_marginBottom="3dp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/itemArticuloVentaCardView"
+        android:id="@+id/itemSurtidoCardView"
         android:layout_gravity="center"
         android:layout_width="0dp"
         android:layout_weight="1.5"
@@ -27,7 +27,7 @@
         android:layout_marginBottom="5dp">
 
         <ImageView
-            android:id="@+id/itemArticuloVentaImagen"
+            android:id="@+id/itemSurtidoImagen"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:srcCompat="@android:drawable/ic_menu_camera"
@@ -53,7 +53,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/itemArticuloVentaNombre"
+                android:id="@+id/itemSurtidoNombre"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -70,7 +70,7 @@
                 android:layout_weight=".2"/>
 
             <TextView
-                android:id="@+id/itemArticuloVentaDescipcion"
+                android:id="@+id/itemSurtidoDescipcion"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.8"
@@ -89,7 +89,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/itemArticuloVentaCantidad"
+                    android:id="@+id/itemSurtidoCantidad"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -101,7 +101,7 @@
                     tools:text= "Cantidad"/>
 
                 <TextView
-                    android:id="@+id/ventaArticulosPrecio"
+                    android:id="@+id/itemSurtidoPrecio"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -131,7 +131,7 @@
             android:layout_marginBottom="5dp">
 
             <TextView
-                android:id="@+id/itemArticuloVentaPrecioTotalText"
+                android:id="@+id/itemSurtidoPrecioTotalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
@@ -143,7 +143,7 @@
                 android:textSize="20sp"/>
 
             <TextView
-                android:id="@+id/itemArticuloVentaPrecioTotal"
+                android:id="@+id/itemSurtidoPrecioTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"

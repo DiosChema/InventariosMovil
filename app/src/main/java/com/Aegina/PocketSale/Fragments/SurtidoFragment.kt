@@ -1,79 +1,75 @@
-@file:Suppress("DEPRECATION")
-
-package com.Aegina.PocketSale.Activities
+package com.Aegina.PocketSale.Fragments
 
 import android.app.Activity
 import android.app.ProgressDialog
-import android.content.Context
-import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
+import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
+import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Objets.ActualizarInventarioObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
-import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtido
 import com.google.gson.GsonBuilder
-import com.google.zxing.integration.android.IntentIntegrator
+import kotlinx.android.synthetic.main.activity_surtido.*
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
-class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticulo,
-    DialogAgregarNumero.DialogAgregarNumero {
+class SurtidoFragment : Fragment() {
+
     lateinit var mViewEstadisticaArticulo : RecyclerViewSurtido
     lateinit var mRecyclerView : RecyclerView
-
     lateinit var globalVariable: GlobalClass
-    lateinit var context :Context
-    var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
-    val urls: Urls = Urls()
+
+    val urls = Urls()
+
+    var dialogFecha = DialogFecha()
+    val context = activity
+
+    lateinit var txtViewSurtidoTotalArticulos : TextView
+    lateinit var txtViewSurtidoTotalVenta : TextView
 
     var dialogoAgregarArticulos = DialogAgregarArticulos()
+    var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
 
-    lateinit var surtidoTotalArticulos : TextView
-    lateinit var surtidoTotalVenta : TextView
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.activity_surtido, container, false)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_surtido)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        dialogFecha.crearVentana(activity!!)
+        globalVariable = activity?.applicationContext as GlobalClass
 
-        context = this
-        globalVariable = applicationContext as GlobalClass
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-
-        crearRecyclerView()
-
-        dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogArticulos(activity!!,globalVariable, Activity())
 
         asignarRecursos()
+        crearRecyclerView()
     }
 
     fun asignarRecursos(){
 
-        surtidoTotalArticulos = findViewById(R.id.surtidoTotalArticulos)
-        surtidoTotalVenta = findViewById(R.id.surtidoTotalVenta)
+        txtViewSurtidoTotalArticulos = surtidoTotalArticulos
+        txtViewSurtidoTotalVenta = surtidoTotalVenta
 
-        val surtidoAgregarCodigo = findViewById<ImageButton>(R.id.surtidoAgregarArticulo)
-        surtidoAgregarCodigo.setOnClickListener{
-            dialogoAgregarArticulos.showDialogAgregarArticulo()
+        val imgButtonSurtidoConfirmarArticulos = surtidoConfirmarArticulos
+        imgButtonSurtidoConfirmarArticulos.setOnClickListener{
+            actualizarInventario()
         }
 
-        val surtidoConfirmarArticulos = findViewById<ImageButton>(R.id.surtidoConfirmarArticulos)
-        surtidoConfirmarArticulos.setOnClickListener{
-            actualizarInventario()
+        val imgButtonSurtidoAgregarCodigo = surtidoAgregarArticulo
+        imgButtonSurtidoAgregarCodigo.setOnClickListener{
+            dialogoAgregarArticulos.showDialogAgregarArticulo()
         }
 
         actualizarCantidadCosto()
@@ -89,31 +85,31 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
             totalCosto += (articulos.costoArticulo * articulos.cantidadArticulo)
         }
 
-        surtidoTotalArticulos.text = totalCantidad.toString()
+        txtViewSurtidoTotalArticulos.text = totalCantidad.toString()
 
         val textoSurtidoVenta = "$$totalCosto"
-        surtidoTotalVenta.text = textoSurtidoVenta
+        txtViewSurtidoTotalVenta.text = textoSurtidoVenta
     }
 
     fun crearRecyclerView(){
         mViewEstadisticaArticulo = RecyclerViewSurtido()
-        mRecyclerView = findViewById(R.id.surtidoRecyclerView)
+        mRecyclerView = surtidoRecyclerView
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(context)
-        mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, context)
+        mRecyclerView.layoutManager = LinearLayoutManager(activity)
+        mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, activity!!)
         mRecyclerView.adapter = mViewEstadisticaArticulo
 
         val dialogAgregarNumero = DialogAgregarNumero()
 
-        mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
+        /*mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(activity, mRecyclerView, object :
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
-                dialogAgregarNumero.crearDialog(context, position)
+                dialogAgregarNumero.crearDialog(activity!!, position)
                 //eventoClick(position)
             }
 
             override fun onLongItemClick(view: View?, position: Int) {}
-        }))
+        }))*/
     }
 
     fun actualizarInventario(){
@@ -142,7 +138,7 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
             .post(body)
             .build()
 
-        val progressDialog = ProgressDialog(this)
+        val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.show()
 
@@ -155,37 +151,56 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
             override fun onResponse(call: Call, response: Response)
             {
                 progressDialog.dismiss()
-                runOnUiThread { finish() }
+                activity?.runOnUiThread {
+                    listaArticulos.clear()
+                    mViewEstadisticaArticulo.notifyDataSetChanged()
+                }
             }
         })
     }
 
-    override fun numeroArticulo(articulo : InventarioObjeto) {
-        runOnUiThread{
+    fun numeroArticulo(articulo : InventarioObjeto) {
+
+        var articuloNuevo = true
+
+        for (i in 0 until listaArticulos.size)
+        {
+            if(listaArticulos[i].idArticulo == articulo.idArticulo)
+            {
+                listaArticulos[i].cantidadArticulo++
+                articuloNuevo = false
+            }
+        }
+
+        if(articuloNuevo)
+        {
             listaArticulos.add(articulo)
+        }
+
+        activity?.runOnUiThread{
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
     }
 
-    override fun obtenerNumero(numero : Int, posicion : Int) {
-        runOnUiThread{
+    fun obtenerNumero(numero : Int, posicion : Int) {
+        activity?.runOnUiThread{
             listaArticulos[posicion].cantidadArticulo = numero
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
     }
 
-    override fun abrirCamara() {
+    /*override fun abrirCamara() {
         val intentIntegrator = IntentIntegrator(context as Surtido)
         intentIntegrator.setBeepEnabled(false)
         intentIntegrator.setCameraId(0)
         intentIntegrator.setPrompt("SCAN")
         intentIntegrator.setBarcodeImageEnabled(false)
         intentIntegrator.initiateScan()
-    }
+    }*/
 
-    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
         if (result != null) {
             if (result.contents != null) {
@@ -196,6 +211,10 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }*/
+
+    fun asignarCodigoBarras(codigo : Long){
+        dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(codigo.toString())
     }
 
 }

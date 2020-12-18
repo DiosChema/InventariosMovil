@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.Suscripcion"></activity>
+        <activity android:name=".Activities.PerfilDetalle"></activity>
+        <activity android:name=".Activities.Perfil" />
+        <activity android:name=".Activities.Suscripcion" />
         <activity android:name=".Dialogs.DialogFecha" />
         <activity
             android:name=".Fragments.EstadisticaVentaFragment"
@@ -37,6 +39,7 @@
         <activity android:name=".Activities.Venta" />
         <activity android:name=".Activities.InventarioDetalle" />
         <activity android:name=".Activities.InventarioPager" />
+        <activity android:name=".Activities.SurtidoPager" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

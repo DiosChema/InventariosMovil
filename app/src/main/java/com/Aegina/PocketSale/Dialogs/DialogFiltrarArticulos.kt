@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.media.Image
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
@@ -138,7 +137,7 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
 
     fun obtenerFamilias(context: Context){
 
-        val url = urls.url+urls.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.token
+        val url = urls.url+urls.endPointFamilias.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)

@@ -50,8 +50,8 @@ class EstadisticasVentas : AppCompatActivity() {
     }
 
     fun obtenerEstadisticasVentas(){
-        val url = urls.url+urls.endPointEstadisticasPorFecha+
-                "?token="+globalVariable.token +
+        val url = urls.url+urls.endPointVentas.endPointEstadisticasPorFecha+
+                "?token="+globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
                 "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
 

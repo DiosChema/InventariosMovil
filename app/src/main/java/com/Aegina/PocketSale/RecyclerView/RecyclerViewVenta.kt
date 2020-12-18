@@ -43,9 +43,9 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val itemArticuloVentaImagen = view.findViewById(R.id.itemArticuloVentaImagen) as ImageView
         val itemArticuloVentaNombre = view.findViewById(R.id.itemArticuloVentaNombre) as TextView
         val itemArticuloVentaDescipcion = view.findViewById(R.id.itemArticuloVentaDescipcion) as TextView
-        val ventaArticulosPrecio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
-        val ventaArticulosPrecioTotalText = view.findViewById(R.id.ventaArticulosPrecioTotalText) as TextView
-        val ventaArticulosPrecioTotal = view.findViewById(R.id.ventaArticulosPrecioTotal) as TextView
+        val itemArticuloVentaPrecio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
+        val itemArticuloVentaPrecioTotalText = view.findViewById(R.id.itemArticuloVentaPrecioTotalText) as TextView
+        val itemArticuloVentaPrecioTotal = view.findViewById(R.id.itemArticuloVentaPrecioTotal) as TextView
         val itemArticuloVentaCantidad = view.findViewById(R.id.itemArticuloVentaCantidad) as TextView
         val itemArticuloVentaContainer = view.findViewById(R.id.itemArticuloVentaContainer) as LinearLayout
 
@@ -62,16 +62,16 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
             itemArticuloVentaDescipcion.text = venta.descripcionArticulo
 
             var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + venta.precioArticulo
-            ventaArticulosPrecio.text = textTmp
+            itemArticuloVentaPrecio.text = textTmp
 
             textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidadArticulo
             itemArticuloVentaCantidad.text = textTmp
 
-            ventaArticulosPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
+            itemArticuloVentaPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
             textTmp = "$" + (venta.precioArticulo * venta.cantidadArticulo).toString()
-            ventaArticulosPrecioTotal.text =  textTmp
+            itemArticuloVentaPrecioTotal.text =  textTmp
 
-            itemArticuloVentaImagen.loadUrl(urls.url+urls.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            itemArticuloVentaImagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {

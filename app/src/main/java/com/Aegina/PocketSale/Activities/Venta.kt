@@ -114,7 +114,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     }
 
     fun subirVenta() {
-        val url = urls.url+urls.endPointVenta
+        val url = urls.url+urls.endPointVentas.endPointVenta
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
@@ -140,7 +140,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
         val currentDate = sdf.format(Date())
 
-        val venta = VentaObjeto(globalVariable.token.toString(), currentDate.toString(), articulos)
+        val venta = VentaObjeto(globalVariable.usuario!!.token, currentDate.toString(), articulos)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(venta)

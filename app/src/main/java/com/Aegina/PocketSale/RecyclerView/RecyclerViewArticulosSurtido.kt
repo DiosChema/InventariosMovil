@@ -14,7 +14,7 @@ import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
 
 
-class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVenta.ViewHolder>() {
+class RecyclerViewArticulosSurtido : RecyclerView.Adapter<RecyclerViewArticulosSurtido.ViewHolder>() {
 
     var articulosInventario: MutableList<ArticuloVentaObject>  = ArrayList()
     lateinit var context:Context
@@ -62,7 +62,7 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad
             ventaArticulosDescipcionText.text = textTmp
             ventaArticulosPrecioTotalText.text = itemView.context.getText(R.string.venta_total)
-            textTmp = "$" + (articulo.precio * articulo.cantidad)
+            textTmp = "$" + (articulo.costo * articulo.cantidad)
             ventaArticulosPrecioTotal.text = textTmp
 
             val urls = Urls()

@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import androidx.core.view.isVisible as isVisible1
 
-class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>() {
+class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolder>() {
 
     var ventas: MutableList<VentasObjeto> = ArrayList()
     lateinit var context: Context
@@ -66,7 +66,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         fun bind(venta: VentasObjeto, context: Context) {
             var tamanoOriginal = 0
             var cantidadArticulos = 0
-            val mViewVentas = RecyclerViewArticulosVenta()
+            val mViewVentas = RecyclerViewArticulosSurtido()
             val mRecyclerView : RecyclerView = ventasFragmentRecyclerViewArticulos
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -114,7 +114,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.toString()
+            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalCosto.toString()
             ventasFragmentTotalVenta.text = textTmp
 
             ventasFragmentBotonEditar.setOnClickListener{

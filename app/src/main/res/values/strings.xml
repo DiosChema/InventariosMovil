@@ -78,6 +78,8 @@
     <string name="surtido_texto_titulo">Ingresar Articulo</string>
     <string name="surtido_boton_agregar">Agregar Articulo</string>
     <string name="surtido_confirmar">Confirmar</string>
+    <string name="surtido_proveedor">Proveedor</string>
+    <string name="surtido_Registro">Registro</string>
 
     <!-- Fechas -->
     <string name="dialog_fecha_inicial">Selecciona la fecha inicial</string>
@@ -123,6 +125,17 @@
     <string name="mensaje_cantidad_articulo">Cantidad</string>
     <string name="mensaje_editar">Editar</string>
 
+    <!-- Perfil -->
+    <string name="perfil_nombre_empleado">Nombre</string>
+    <string name="perfil_correo_empleado">Correo</string>
+    <string name="perfil_permisos_leyenda">Permisos</string>
+    <string name="perfil_permisos_venta">Venta</string>
+    <string name="perfil_permisos_modificas_articulos">Modificar Inventario</string>
+    <string name="perfil_permisos_crear_articulos">Crear Articulos</string>
+    <string name="perfil_permisos_estadisticas">Ver estadisticas</string>
+    <string name="perfil_permisos_proovedoor">Proovedor</string>
+    <string name="perfil_eliminar_articulo">¿Estas seguro que deseas eliminar este empleado?</string>
+
     <!-- Descripcion de imagenes -->
     <string name="imagenAplicacion">Imagen de la aplicación</string>
     <string name="ventanaVenta">Ventana de venta</string>
@@ -142,5 +155,8 @@
     <string name="botonAceptar">Botón aceptar</string>
     <string name="buscarArticulo">Ventana para buscar artículo</string>
     <string name="ocultar_contrasena">Ocultar contrasena</string>
+
+    <!-- Descripcion de imagenes -->
+    <string name="permisos_denegado">Necesita permiso para obtener acceso a esta opción.</string>
 
 </resources>

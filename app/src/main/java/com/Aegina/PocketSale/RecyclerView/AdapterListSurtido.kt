@@ -44,20 +44,20 @@ class AdapterListSurtido(private val activity: Activity, articulosList: MutableL
         val view: View
 
         val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        view = inflater.inflate(R.layout.item_surtido_articulo, null)
+        view = inflater.inflate(R.layout.item_articulo_surtido, null)
 
         if(inventarioObjeto[i].cantidadArticulo == 0)
             return inflater.inflate(R.layout.item_vacio, null)
 
-        val itemSurtidoArticuloFoto = view.findViewById(R.id.itemSurtidoArticuloFoto) as ImageView
+        /*val itemSurtidoArticuloFoto = view.findViewById(R.id.itemSurtidoArticuloFoto) as ImageView
         val itemSurtidoArticuloTitulo = view.findViewById(R.id.itemSurtidoArticuloTitulo) as TextView
-        val itemSurtidoArticuloCantidad = view.findViewById(R.id.itemSurtidoArticuloCantidad) as TextView
+        val itemSurtidoArticuloCantidad = view.findViewById(R.id.itemSurtidoArticuloCantidad) as TextView*/
 
         val globalVariable = view.context.applicationContext as GlobalClass
 
-        itemSurtidoArticuloTitulo.text = inventarioObjeto[i].nombreArticulo
+        /*itemSurtidoArticuloTitulo.text = inventarioObjeto[i].nombreArticulo
         itemSurtidoArticuloCantidad.setText(inventarioObjeto[i].cantidadArticulo.toString())
-        itemSurtidoArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)
+        itemSurtidoArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)*/
 
         /*view.setOnClickListener{
             eventoClick(view,i)

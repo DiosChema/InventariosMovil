@@ -69,7 +69,7 @@ class AdapterListEditarArticulosVenta(private val activity: Activity, articulosL
 
         val globalVariable = view.context.applicationContext as GlobalClass
 
-        editarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articuloVentaObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)
+        editarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articuloVentaObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         editarArticuloVentaNombre.text = articuloVentaObjeto[i].nombre
         editarArticuloVentaCantidadText.text = view.context.getText(R.string.mensaje_cantidad_articulo)
         editarArticuloVentaCantidad.setText(articuloVentaObjeto[i].cantidad.toString())

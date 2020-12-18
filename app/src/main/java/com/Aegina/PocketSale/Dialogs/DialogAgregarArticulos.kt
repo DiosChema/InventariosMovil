@@ -156,7 +156,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     }
 
     fun agregarArticulo(idArticulo : Long, cantidad : Int){
-        val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
+        val url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
             .url(url)
@@ -205,7 +205,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     }
 
     fun obtenerArticulosFamilia(){
-        val url = urls.url+urls.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.token
+        val url = urls.url+urls.endPointsInventario.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)
@@ -233,7 +233,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     }
 
     fun obtenerArticulosSubFamilia(){
-        val url = urls.url+urls.endPointArticulosPorSubFamilia+"?subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId + "&token="+globalVariable.token
+        val url = urls.url+urls.endPointsInventario.endPointArticulosPorSubFamilia+"?subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId + "&token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)
@@ -262,7 +262,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     fun obtenerFamilias(context: Context){
 
-        val url = urls.url+urls.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.token
+        val url = urls.url+urls.endPointFamilias.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)
@@ -337,7 +337,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     fun getArticuloObjecto(context : Context, idArticulo: Long){
 
-        val url = urls.url+urls.endPointArticulo+"?token="+globalVariable.token+"&idArticulo="+idArticulo
+        val url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
             .url(url)

@@ -47,7 +47,7 @@ class EstadisticaInventario : AppCompatActivity() {
 
     fun obtenerTotales() {
 
-        val url = urls.url+urls.endPointEstadisticasInventario+"?token="+globalVariable.token
+        val url = urls.url+urls.endPointEstadisticas.endPointEstadisticasInventario+"?token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)

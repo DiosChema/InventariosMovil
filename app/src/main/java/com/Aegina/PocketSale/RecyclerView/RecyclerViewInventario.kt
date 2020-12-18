@@ -80,12 +80,15 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
             itemArticuloInventarioPrecio.text = textTmp
 
             itemView.setOnClickListener {
-                val intent = Intent(context, InventarioDetalle::class.java).apply {
-                    putExtra("articulo", articulo)
+                if(globalVariable.usuario!!.permisosModificarInventario)
+                {
+                    val intent = Intent(context, InventarioDetalle::class.java).apply {
+                        putExtra("articulo", articulo)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
-            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {

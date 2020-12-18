@@ -191,7 +191,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun llenarCampos(articulo : InventarioObjeto){
         invDetalleId.setText(articulo.idArticulo.toString())
-        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         invDetalleNombre.setText(articulo.nombreArticulo)
         invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
@@ -207,7 +207,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun reLlenarCampos(articulo : InventarioObjeto){
         invDetalleId.setText(articulo.idArticulo.toString())
-        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+        invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         invDetalleNombre.setText(articulo.nombreArticulo)
         invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
@@ -362,11 +362,11 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun agregarFamilia(context: Context, nombreFamilia : String){
 
-        val url = urls.url+urls.endPointAgregarFamilia
+        val url = urls.url+urls.endPointFamilias.endPointAgregarFamilia
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("nombreFamilia", nombreFamilia)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -424,11 +424,11 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun agregarSubFamilia(context: Context, nombreFamilia : String){
 
-        val url = urls.url+urls.endPointAgregarSubFamilia
+        val url = urls.url+urls.endPointFamilias.endPointAgregarSubFamilia
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("nombreSubFamilia", nombreFamilia)
             jsonObject.put("idFamilia", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
         } catch (e: JSONException) {
@@ -490,11 +490,11 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun eliminarFamilia(context: Context){
 
-        val url = urls.url+urls.endPointEliminarFamilia
+        val url = urls.url+urls.endPointFamilias.endPointEliminarFamilia
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("familiaId", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].familiaId)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -573,11 +573,11 @@ class InventarioDetalle : AppCompatActivity() {
     }
 
     fun eliminarSubFamilia(context: Context){
-        val url = urls.url+urls.endPointEliminarSubFamilia
+        val url = urls.url+urls.endPointFamilias.endPointEliminarSubFamilia
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("subFamiliaId", listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[invDetalleSubFamiliaSpinner.selectedItemPosition].subFamiliaId)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -661,14 +661,14 @@ class InventarioDetalle : AppCompatActivity() {
         val req: RequestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
             .addFormDataPart(
                 "token",
-                globalVariable.token.toString())
+                globalVariable.usuario!!.token)
             .addFormDataPart(
                 "image",
                 invDetalleId.text.toString()+".jpeg",
                 RequestBody.create(MEDIA_TYPE_JPEG, file)
             ).build()
         val request = Request.Builder()
-            .url(urls.url+urls.endpointSubirImagen)
+            .url(urls.url+urls.endPointImagenes.endpointSubirImagen)
             .post(req)
             .build()
         val client = OkHttpClient()
@@ -832,11 +832,11 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun darDeAltaArticulo(){
 
-        val url = urls.url+urls.endpointDarAltaArticulo
+        val url = urls.url+urls.endPointsInventario.endpointDarAltaArticulo
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
@@ -874,11 +874,11 @@ class InventarioDetalle : AppCompatActivity() {
     }
 
     fun actualizarArticulo(){
-        val url = urls.url+urls.endPointActualizarArticulo
+        val url = urls.url+urls.endPointsInventario.endPointActualizarArticulo
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idArticulo", invDetalleId.text)
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", invDetalleCosto.text)
@@ -915,11 +915,11 @@ class InventarioDetalle : AppCompatActivity() {
     }
 
     fun eliminarArticulo(){
-        val url = urls.url+urls.endPointEliminarArticulo
+        val url = urls.url+urls.endPointsInventario.endPointEliminarArticulo
 
         val jsonObject = JSONObject()
         try {
-            jsonObject.put("token", globalVariable.token)
+            jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -999,7 +999,7 @@ class InventarioDetalle : AppCompatActivity() {
 
     fun obtenerFamilias(context: Context, posicion : Int){
 
-        val url = urls.url+urls.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.token
+        val url = urls.url+urls.endPointFamilias.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.usuario!!.token
 
         val request = Request.Builder()
             .url(url)

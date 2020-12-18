@@ -12,7 +12,6 @@ import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.item_articulo.view.*
 
 
 class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHolder>() {
@@ -59,7 +58,7 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
             itemArticuloDescripcion.text = articulo.descripcionArticulo
             val textTmp = itemView.context.getString(R.string.venta_precio_articulo) + articulo.precioArticulo
             itemArticuloPrecio.text = textTmp
-            articuloFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            articuloFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {

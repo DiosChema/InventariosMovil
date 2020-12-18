@@ -67,7 +67,7 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
             textTmp = itemView.context.getString(R.string.venta_total) + articulo.total.toString()
             estadisticaArticuloTotal.text = textTmp
             val urls = Urls()
-            estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
             when (position % 2) {
                 1 -> estadisticaArticuloContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))

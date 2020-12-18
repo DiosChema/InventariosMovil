@@ -72,7 +72,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/ventaArticulosPrecioTotalText"
+            android:id="@+id/itemArticuloVentaPrecioTotalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -82,7 +82,7 @@
             tools:text="@string/venta_total" />
 
         <TextView
-            android:id="@+id/ventaArticulosPrecioTotal"
+            android:id="@+id/itemArticuloVentaPrecioTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"

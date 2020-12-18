@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -187,8 +186,8 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
     }
 
     fun obtenerArticulos(tipoCompra: Int){
-        val url = urls.url+urls.endPointActualizarFechaCompra+
-                "?token="+globalVariable.token +
+        val url = urls.url+urls.endPointUsers.endPointActualizarFechaCompra+
+                "?token="+globalVariable.usuario!!.token +
                 "&tipoCompra=" + tipoCompra
 
         val request = Request.Builder()

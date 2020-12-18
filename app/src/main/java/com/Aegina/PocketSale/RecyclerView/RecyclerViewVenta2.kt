@@ -110,7 +110,7 @@ class RecyclerViewVenta2 : RecyclerView.Adapter<RecyclerViewVenta2.ViewHolder>()
                 }
             })
 
-            imagenArticulo.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            imagenArticulo.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {

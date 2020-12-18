@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
@@ -31,7 +29,7 @@ class RecyclerViewVentaDetalle : RecyclerView.Adapter<RecyclerViewVentaDetalle.V
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ViewHolder(layoutInflater.inflate(R.layout.item_surtido_articulo,parent,false))
+        return ViewHolder(layoutInflater.inflate(R.layout.item_articulo_surtido,parent,false))
     }
 
     override fun getItemCount(): Int {return articulos.size}
@@ -40,14 +38,14 @@ class RecyclerViewVentaDetalle : RecyclerView.Adapter<RecyclerViewVentaDetalle.V
         val urls = Urls()
         var globalVariable = view.context.applicationContext as GlobalClass
 
-        val itemSurtidoArticuloFoto = view.findViewById(R.id.itemSurtidoArticuloFoto) as ImageView
+        /*val itemSurtidoArticuloFoto = view.findViewById(R.id.itemSurtidoArticuloFoto) as ImageView
         val itemSurtidoArticuloTitulo = view.findViewById(R.id.itemSurtidoArticuloTitulo) as TextView
         val itemSurtidoArticuloCantidad = view.findViewById(R.id.itemSurtidoArticuloCantidad) as TextView
         val itemSurtidoArticuloTotal = view.findViewById(R.id.itemSurtidoArticuloTotal) as TextView
         //val itemSurtidoArticuloPrecioText = view.findViewById(R.id.itemSurtidoArticuloPrecioText) as TextView
         val itemSurtidoArticuloPrecio = view.findViewById(R.id.itemSurtidoArticuloPrecio) as TextView
         val itemSurtidoContenedor = view.findViewById(R.id.itemSurtidoContenedor) as LinearLayout
-        val itemSurtidoArticuloPrecioTotal = view.findViewById(R.id.itemSurtidoArticuloPrecioTotal) as TextView
+        val itemSurtidoArticuloPrecioTotal = view.findViewById(R.id.itemSurtidoArticuloPrecioTotal) as TextView*/
 
         fun bind(venta: InventarioObjeto) {
 
@@ -57,7 +55,7 @@ class RecyclerViewVentaDetalle : RecyclerView.Adapter<RecyclerViewVentaDetalle.V
                 else -> {
                 }
             }*/
-
+/*
             itemSurtidoArticuloTitulo.text = venta.nombreArticulo
             var textTmp = itemView.context.getString(R.string.venta_precio_articulo) + " " + "$" +venta.precioArticulo
             itemSurtidoArticuloPrecio.text = textTmp
@@ -67,7 +65,7 @@ class RecyclerViewVentaDetalle : RecyclerView.Adapter<RecyclerViewVentaDetalle.V
             textTmp = itemView.context.getString(R.string.venta_total) + " " + (venta.precioArticulo * venta.cantidadArticulo).toString()
             //itemSurtidoArticuloTotal.text = textTmp
             itemSurtidoArticuloFoto.loadUrl(urls.url+urls.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.token)
-            itemSurtidoArticuloPrecioTotal.text = textTmp
+            itemSurtidoArticuloPrecioTotal.text = textTmp*/
         }
 
         fun ImageView.loadUrl(url: String) {

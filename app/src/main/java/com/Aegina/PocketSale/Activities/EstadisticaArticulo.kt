@@ -88,8 +88,8 @@ class EstadisticaArticulo : AppCompatActivity(),
     }
 
     fun obtenerArticulos(){
-        val url = urls.url+urls.endPointArticulosMasVendidos+
-                "?token="+globalVariable.token +
+        val url = urls.url+urls.endPointEstadisticas.endPointArticulosMasVendidos+
+                "?token="+ globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
                 "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
 

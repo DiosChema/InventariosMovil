@@ -106,7 +106,7 @@ class AdapterListVenta(private val activity: Activity, articulosList: MutableLis
             }
         })
 
-        imagenArticulo.loadUrl(urls.url+urls.endPointImagenes+inventarioObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.token)
+        imagenArticulo.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+inventarioObjeto[i].idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
         return view
     }

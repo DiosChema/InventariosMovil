@@ -3,7 +3,6 @@
 package com.Aegina.PocketSale.Fragments
 
 import android.app.ProgressDialog
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -88,8 +87,8 @@ class EstadisticaVentaFragment() : Fragment() {
 
     fun obtenerTotales() {
 
-        val url = urls.url+urls.endPointEstadisticasPorFecha+
-                "?token="+globalVariable.token +
+        val url = urls.url+urls.endPointVentas.endPointEstadisticasPorFecha+
+                "?token="+globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
                 "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
 

@@ -2,17 +2,12 @@
 
 package com.Aegina.PocketSale.Fragments
 
-import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.DatePicker
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +55,7 @@ class VentaFragment : Fragment() {
         asignarBotones()
         crearRecyclerView()
         asignarFechaHoy()
-        obtenerVentas()
+        //obtenerVentas()
     }
 
     fun crearRecyclerView(){
@@ -142,8 +137,8 @@ class VentaFragment : Fragment() {
 
     fun obtenerVentas(){
 
-        val url = urls.url+urls.endPointBuscarVentaPorFecha+
-                "?token="+globalVariable.token +
+        val url = urls.url+urls.endPointVentas.endPointBuscarVentaPorFecha+
+                "?token="+globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
                 "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
 

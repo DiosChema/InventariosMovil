@@ -7,15 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Respuesta
+import com.Aegina.PocketSale.Objets.RespuestaLogin
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.google.gson.GsonBuilder
@@ -99,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val url = urls.url+urls.endPointLoginUsuario
+        val url = urls.url+urls.endPointUsers.endPointLoginUsuario
 
         val jsonObject = JSONObject()
         try {
@@ -137,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                 val json = response.body()!!.string()
                 val gson = GsonBuilder().create()
 
-                val respuesta = gson.fromJson(json, Respuesta::class.java)
+                val respuesta = gson.fromJson(json, RespuestaLogin::class.java)
 
                 if(respuesta.status != 0){
                     runOnUiThread {
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 else{
                     val globalVariable = applicationContext as GlobalClass
-                    globalVariable.token = respuesta.respuesta
+                    globalVariable.usuario = respuesta.usuario
                     val intent = Intent(context, Menu::class.java)
                     startActivity(intent)
                 }

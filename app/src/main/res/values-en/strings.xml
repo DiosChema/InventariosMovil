@@ -52,6 +52,8 @@
     <string name="surtido_texto_titulo">Enter item</string>
     <string name="surtido_boton_agregar">New Item</string>
     <string name="surtido_confirmar">Confirm</string>
+    <string name="surtido_proveedor">Supplier</string>
+    <string name="surtido_Registro">Record</string>
     <string name="dialog_fecha_inicial">Select start date</string>
     <string name="dialog_fecha_final">Select the end date</string>
     <string name="dialog_numero_text_cantidad">Quantity</string>
@@ -106,4 +108,5 @@
     <string name="dialog_filtro_cantidad">Stock</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
+    <string name="permisos_denegado">You need permission to access this option.</string>
 </resources>

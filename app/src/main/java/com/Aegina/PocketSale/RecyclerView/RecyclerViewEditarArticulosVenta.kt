@@ -64,7 +64,7 @@ class RecyclerViewEditarArticulosVenta : RecyclerView.Adapter<RecyclerViewEditar
 
         fun bind(articulo: ArticuloObjeto) {
 
-            EditarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.token)
+            EditarArticuloVentaFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
             EditarArticuloVentaNombre.text = articulo.nombre
             EditarArticuloVentaCantidadText.text = itemView.context.getText(R.string.mensaje_cantidad_articulo)
             EditarArticuloVentaCantidad.setText(articulo.cantidad.toString())

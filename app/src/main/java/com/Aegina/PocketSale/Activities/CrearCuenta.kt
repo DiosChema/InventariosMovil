@@ -76,7 +76,7 @@ class CrearCuenta : AppCompatActivity() {
             return
         }
 
-        val url = urls.url+urls.endPointRegistrarNuevaTienda
+        val url = urls.url+urls.endPointUsers.endPointRegistrarNuevaTienda
 
         val jsonObject = JSONObject()
         try {

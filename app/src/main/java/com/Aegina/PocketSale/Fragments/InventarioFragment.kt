@@ -2,8 +2,6 @@
 
 package com.Aegina.PocketSale.Fragments
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -12,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -86,8 +85,15 @@ class InventarioFragment : Fragment() {
         val fragmentInventarioNuevoArticulo = fragmentInventarioNuevoArticulo
         fragmentInventarioNuevoArticulo.setOnClickListener()
         {
-            val intent = Intent(activity, InventarioDetalle::class.java)
-            startActivity(intent)
+            if(globalVariable.usuario!!.permisosAltaInventario)
+            {
+                val intent = Intent(activity, InventarioDetalle::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(activity,getString(R.string.permisos_denegado), Toast.LENGTH_LONG).show()
+            }
         }
 
         val fragmentInventarioFiltroArticulo = fragmentInventarioFiltroArticulo
@@ -170,7 +176,7 @@ class InventarioFragment : Fragment() {
     fun getInventarioObjecto(){
         val urls = Urls()
 
-        var url = urls.url+urls.endPointInventario+"?token="+globalVariable.token
+        var url = urls.url+urls.endPointsInventario.endPointInventario+"?token="+globalVariable.usuario!!.token
 
         if(filtroFamilia != -1) url += "&familiaId=" + filtroFamilia
         if(filtroSubFamilia != -1) url += "&subFamiliaId=" + filtroSubFamilia
