@@ -36,8 +36,6 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
-import java.lang.Double
-import java.lang.Long
 import java.util.*
 
 class PerfilDetalle : AppCompatActivity() {
@@ -247,11 +245,11 @@ class PerfilDetalle : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            cambioFoto = true
-
-            try {
+        if (resultCode == Activity.RESULT_OK)
+        {
+            try
+            {
+                cambioFoto = true
                 val inputStream: InputStream? = image_uri?.let { contentResolver.openInputStream(it) }
                 val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
                 val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
@@ -291,7 +289,7 @@ class PerfilDetalle : AppCompatActivity() {
         perfilDetalleNombre.setText(empleado.nombre)
         perfilDetalleCorreo.setText(empleado.user)
         //perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
-        perfilDetalleFoto.loadUrl("https://pbs.twimg.com/profile_images/1029038815577600003/yY-0bQpa_400x400.jpg")
+        perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&empleado=123")
         perfilDetallePermisosVenta.isChecked = empleado.permisosVenta
         perfilDetallePermisosModificarInventario.isChecked = empleado.permisosModificarInventario
         perfilDetallePermisosCrearArticulos.isChecked = empleado.permisosAltaInventario
@@ -356,14 +354,55 @@ class PerfilDetalle : AppCompatActivity() {
     }
 
     private fun actualizarEmpleado() {
-        //nada
+        val url = urls.url+urls.endPointUsers.endPointActualizarEmpleado
+
+        val jsonObject = JSONObject()
+        try
+        {
+            jsonObject.put("token", globalVariable.usuario!!.token)
+            jsonObject.put("nombre", perfilDetalleNombre.text)
+            jsonObject.put("email", empleadoObject.user)
+            jsonObject.put("permisosAdministrador", empleadoObject.permisosAdministrador)
+            jsonObject.put("permisosVenta", perfilDetallePermisosVenta.isChecked)
+            jsonObject.put("permisosModificarInventario", perfilDetallePermisosModificarInventario.isChecked)
+            jsonObject.put("permisosAltaInventario", perfilDetallePermisosCrearArticulos.isChecked)
+            jsonObject.put("permisosEstadisticas", perfilDetallePermisosEstadisticas.isChecked)
+            jsonObject.put("permisosProovedor", perfilDetallePermisosProovedor.isChecked)
+        }
+        catch (e: JSONException)
+        {
+            e.printStackTrace()
+        }
+
+        val client = OkHttpClient()
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .put(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response) {
+                if(cambioFoto) darDeAltaFoto()
+                else finish()
+            }
+        })
     }
 
     fun datosVacios() : Boolean {
 
         if(perfilDetalleNombre.text.toString() == ""){return moverCampo(perfilDetalleNombre)}
         //if(perfilDetalleCorreo.text.toString() == ""){return moverCampo(perfilDetalleCorreo)}
-        if(perfilDetalleCorreo.text.toString().isEmailValid()){return moverCampo(perfilDetalleCorreo)}
+        if(!perfilDetalleCorreo.text.toString().isEmailValid()){return moverCampo(perfilDetalleCorreo)}
 
 
         return false
@@ -403,7 +442,7 @@ class PerfilDetalle : AppCompatActivity() {
 
         dialogAceptar.setOnClickListener {
             dialog.dismiss()
-            //eliminarEmpleado()
+            eliminarEmpleado()
         }
 
         dialogCancelar.setOnClickListener {
@@ -412,6 +451,44 @@ class PerfilDetalle : AppCompatActivity() {
 
         dialog.show()
 
+    }
+
+    private fun eliminarEmpleado() {
+        val url = urls.url+urls.endPointUsers.endPointEliminarEmpleado
+
+        val jsonObject = JSONObject()
+        try
+        {
+            jsonObject.put("token", globalVariable.usuario!!.token)
+            jsonObject.put("email", empleadoObject.user)
+            jsonObject.put("permisosAdministrador", empleadoObject.permisosAdministrador)
+        }
+        catch (e: JSONException)
+        {
+            e.printStackTrace()
+        }
+
+        val client = OkHttpClient()
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .delete(body)
+            .build()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response) {
+                finish()
+            }
+        })
     }
 
     fun ImageView.loadUrl(url: String) {

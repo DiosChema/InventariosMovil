@@ -909,7 +909,8 @@ class InventarioDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
-                darDeAltaFoto()
+                if(cambioFoto) darDeAltaFoto()
+                else finish()
             }
         })
     }

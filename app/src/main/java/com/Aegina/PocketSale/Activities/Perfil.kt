@@ -107,4 +107,9 @@ class Perfil : AppCompatActivity() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        obtenerEmpleados()
+    }
+
 }

@@ -78,7 +78,7 @@ class RecyclerViewEmpleado : RecyclerView.Adapter<RecyclerViewEmpleado.ViewHolde
             }
 
             //empleadoFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token)
-            empleadoFoto.loadUrl("https://pbs.twimg.com/profile_images/1029038815577600003/yY-0bQpa_400x400.jpg")
+            empleadoFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&empleado=123")
         }
 
         fun ImageView.loadUrl(url: String) {
