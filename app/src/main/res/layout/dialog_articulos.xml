@@ -7,6 +7,10 @@
     android:orientation="vertical"
     android:background="@color/transparent"
     android:layout_marginTop="30dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginRight="5dp"
+    android:layout_marginEnd="5dp"
     android:layout_marginBottom="30dp">
 
     <RelativeLayout
@@ -50,10 +54,61 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialogoArticulosRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/dialogArticulosSubFamiliaSpinner"
             android:layout_marginTop="15dp"
-            android:layout_marginBottom="35dp"/>
+            android:layout_marginBottom="175dp"/>
+
+        <!--<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/dialogArticulosSubFamiliaSpinner"
+            android:orientation="horizontal"
+            android:layout_marginBottom="75dp">
+
+        <View
+            android:id="@+id/dialogArticulosSeparador"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="30dp"
+            android:layout_marginEnd="30dp"/>
+
+            <LinearLayout
+                android:id="@+id/dialogArticulosCarrito"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginLeft="-35dp"
+                android:layout_marginStart="-35dp">
+
+                <ImageButton
+                    android:id="@+id/dialogArticulosMenuLateral"
+                    android:layout_width="30dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/menor_que_icon"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/background_boton_redondo"
+                    android:contentDescription="@string/botonCancelar"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dialogoArticulosRecyclerViewLista"
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/white"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        -->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialogoArticulosRecyclerViewLista"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_above="@+id/dialogArticulosSalir"/>
 
         <ImageButton
             android:id="@+id/dialogArticulosSalir"
@@ -65,5 +120,22 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
             android:contentDescription="@string/botonCancelar" />
+
+        <ImageButton
+            android:id="@+id/dialogArticulosAceptar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/check_icon"
+            android:contentDescription="@string/botonCancelar"
+            android:visibility="invisible"/>
+
+
+
+
     </RelativeLayout>
 </RelativeLayout>

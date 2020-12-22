@@ -106,6 +106,9 @@
     <string name="dialog_filtro_cantidad">Cantidad en inventario</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
+    <string name="dialog_filtro_Nombre">Buscar por Nombre</string>
+    <string name="dialog_filtro_Nombre_diminutivo">Nombre</string>
+    <string name="dialog_filtro_precio">Precio en inventario</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>

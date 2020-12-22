@@ -13,9 +13,6 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
-import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
-import com.Aegina.PocketSale.Fragments.InventarioFragment
-import com.Aegina.PocketSale.Fragments.VentaFragment
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import com.google.zxing.integration.android.IntentIntegrator
@@ -101,6 +98,11 @@ class SurtidoPager : AppCompatActivity(),
     override fun obtenerNumero(numero : Int, posicion : Int) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as SurtidoFragment).obtenerNumero(numero,posicion)
+    }
+
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {
+        val fragment: Fragment = adapter.getItem(0)
+        (fragment as SurtidoFragment).agregarArticulos(articulosCarrito)
     }
 
     override fun abrirCamara() {

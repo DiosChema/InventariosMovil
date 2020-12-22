@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:orientation="horizontal">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/itemListaCardView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        card_view:cardCornerRadius="400dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/itemListaFoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:adjustViewBounds="true"
+            android:background= "@color/transparent"
+            android:contentDescription="@string/imagenArticulo"/>
+
+    </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/itemListaCantidad"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/background_round"
+            android:gravity="center"
+            android:text="1" />
+
+
+    </RelativeLayout>
+</RelativeLayout>

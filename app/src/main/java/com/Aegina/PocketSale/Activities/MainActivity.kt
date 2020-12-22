@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginPasswordButton : ImageView
     lateinit var loginLayout : LinearLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -46,7 +47,8 @@ class MainActivity : AppCompatActivity() {
         asignarBotones()
     }
 
-    fun asignarCampos(){
+    fun asignarCampos()
+    {
         context = this
         loginEmail = findViewById(R.id.loginEmail)
         loginPassword = findViewById(R.id.loginPassword)
@@ -63,37 +65,51 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun asignarBotones(){
-        loginBotonIniciarSesion.setOnClickListener{
+    fun asignarBotones()
+    {
+        loginBotonIniciarSesion.setOnClickListener()
+        {
             iniciarSesion()
         }
 
-        loginTextNuevaCuenta.setOnClickListener{
+        loginTextNuevaCuenta.setOnClickListener()
+        {
             pantallaCrearCuenta()
         }
 
-        loginPasswordButton.setOnClickListener {
-            if(loginPassword.transformationMethod == PasswordTransformationMethod.getInstance()){
-                loginPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-            } else{
-                loginPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-            }
+        loginPasswordButton.setOnClickListener()
+        {
+
+            loginPassword.transformationMethod =
+                if (loginPassword.transformationMethod == PasswordTransformationMethod.getInstance())
+                {
+                    HideReturnsTransformationMethod.getInstance()
+                }
+                else
+                {
+                    PasswordTransformationMethod.getInstance()
+                }
         }
     }
 
 
-    fun iniciarSesion(){
+    fun iniciarSesion()
+    {
+
+        habilitarBotones(false)
 
         var email = loginEmail.text.toString()
         email = email.toLowerCase(Locale.ROOT)
         val password = loginPassword.text.toString()
 
-        if(!email.isEmailValid()) {
+        if(!email.isEmailValid())
+        {
             Toast.makeText(this, getString(R.string.mensaje_email_invalido), Toast.LENGTH_SHORT).show()
             return
         }
 
-        if(password.length < 8){
+        if(password.length < 8)
+        {
             Toast.makeText(this, getString(R.string.mensaje_contraseña_corta), Toast.LENGTH_SHORT).show()
             return
         }
@@ -101,10 +117,14 @@ class MainActivity : AppCompatActivity() {
         val url = urls.url+urls.endPointUsers.endPointLoginUsuario
 
         val jsonObject = JSONObject()
-        try {
+
+        try
+        {
             jsonObject.put("user", email)
             jsonObject.put("password", password)
-        } catch (e: JSONException) {
+        }
+        catch (e: JSONException)
+        {
             e.printStackTrace()
         }
 
@@ -122,46 +142,65 @@ class MainActivity : AppCompatActivity() {
 
         val client = OkHttpClient()
 
-        client.newCall(request).enqueue(object : Callback {
+        client.newCall(request).enqueue(object : Callback
+        {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-                runOnUiThread {
+
+                runOnUiThread()
+                {
+                    habilitarBotones(true)
                     Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
                 }
             }
+
             override fun onResponse(call: Call, response: Response)
             {
-
-
                 val json = response.body()!!.string()
                 val gson = GsonBuilder().create()
 
                 val respuesta = gson.fromJson(json, RespuestaLogin::class.java)
 
-                if(respuesta.status != 0){
-                    runOnUiThread {
-                        when (respuesta.status) {
+                if(respuesta.status != 0)
+                {
+                    runOnUiThread()
+                    {
+                        when (respuesta.status)
+                        {
                             -1 -> Toast.makeText(context, getString(R.string.login_usuario_credenciales_incorrectas), Toast.LENGTH_SHORT).show()
                             -2 -> Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
-                else{
+                else
+                {
                     val globalVariable = applicationContext as GlobalClass
                     globalVariable.usuario = respuesta.usuario
                     val intent = Intent(context, Menu::class.java)
                     startActivity(intent)
                 }
 
-                progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    progressDialog.dismiss()
+                    habilitarBotones(true)
+                }
             }
         })
 
     }
 
+    fun habilitarBotones(habilitar: Boolean)
+    {
+        loginBotonIniciarSesion.isEnabled = habilitar
+        loginTextNuevaCuenta.isEnabled = habilitar
+    }
+
     fun pantallaCrearCuenta(){
+        habilitarBotones(false)
         val intent = Intent(context, CrearCuenta::class.java)
         startActivity(intent)
+        habilitarBotones(true)
     }
 
     fun String.isEmailValid(): Boolean {

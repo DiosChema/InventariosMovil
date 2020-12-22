@@ -34,7 +34,8 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     var context = this
     val urls: Urls = Urls()
 
-    var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
+    var listaArticulosVenta: MutableList<InventarioObjeto> = ArrayList()
+    var listaArticulosVentaTmp: MutableList<InventarioObjeto> = ArrayList()
     var adapter: AdapterListVenta? = null
     var dialogoAgregarArticulos = DialogAgregarArticulos()
     var dialogoFinalizarVenta = DialogFinalizarVenta()
@@ -71,7 +72,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
         val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
         ButtonTerminarVenta.setOnClickListener {
-            if(listaArticulos.size > 0)
+            if(listaArticulosVenta.size > 0)
                 dialogoFinalizarVenta.crearDialog(context,parseFloat(ventaTotalVenta.text.toString().substring(1,ventaTotalVenta.text.length)))
         }
 
@@ -83,7 +84,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         var totalCantidad = 0
         var totalPrecio = 0.0
 
-        for(articulos in listaArticulos){
+        for(articulos in listaArticulosVenta){
             totalCantidad += articulos.cantidadArticulo
             totalPrecio += (articulos.precioArticulo * articulos.cantidadArticulo)
         }
@@ -98,7 +99,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         mRecyclerView = findViewById(R.id.rvVenta)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
-        mViewVenta.RecyclerAdapter(listaArticulos, context)
+        mViewVenta.RecyclerAdapter(listaArticulosVenta, context)
         mRecyclerView.adapter = mViewVenta
 
         val dialogAgregarNumero = DialogAgregarNumero()
@@ -118,7 +119,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
         val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
-        for (articuloTmp in listaArticulos) {
+        for (articuloTmp in listaArticulosVenta) {
 
             val articulo = ArticuloObjeto(
                 articuloTmp.idArticulo,
@@ -166,7 +167,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
             override fun onResponse(call: Call, response: Response) {
                 runOnUiThread {
                     progressDialog.dismiss()
-                    listaArticulos.clear()
+                    listaArticulosVenta.clear()
                     mViewVenta.notifyDataSetChanged()
                     actualizarCantidadPrecio()
                     Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
@@ -177,9 +178,45 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
     }
 
-    override fun numeroArticulo(articulo : InventarioObjeto) {
+    override fun numeroArticulo(articuloCarrito : InventarioObjeto) {
         runOnUiThread{
-            listaArticulos.add(articulo)
+            if(!comprobarArticuloEnVenta(articuloCarrito))
+            {
+                listaArticulosVenta.add(articuloCarrito)
+            }
+
+
+            mViewVenta.notifyDataSetChanged()
+            actualizarCantidadPrecio()
+        }
+    }
+
+    fun comprobarArticuloEnVenta(articuloTmp: InventarioObjeto): Boolean
+    {
+        for (i in 0 until listaArticulosVenta.size)
+        {
+            if(articuloTmp.idArticulo == listaArticulosVenta[i].idArticulo)
+            {
+                listaArticulosVenta[i].cantidadArticulo += articuloTmp.cantidadArticulo
+                return true
+            }
+        }
+
+        return false
+    }
+
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {
+        runOnUiThread{
+            for(i in 0 until articulosCarrito.size)
+            {
+                if(!comprobarArticuloEnVenta(articulosCarrito[i]))
+                {
+                    listaArticulosVenta.add(articulosCarrito[i])
+                }
+            }
+
+            //listaArticulosVenta.addAll(articulosCarrito)
+
             mViewVenta.notifyDataSetChanged()
             actualizarCantidadPrecio()
         }
@@ -187,7 +224,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
     override fun obtenerNumero(numero : Int, posicion : Int) {
         runOnUiThread{
-            listaArticulos[posicion].cantidadArticulo = numero
+            listaArticulosVenta[posicion].cantidadArticulo = numero
             mViewVenta.notifyDataSetChanged()
             actualizarCantidadPrecio()
         }

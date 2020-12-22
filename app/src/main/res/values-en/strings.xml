@@ -108,6 +108,9 @@
     <string name="dialog_filtro_cantidad">Stock</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
+    <string name="dialog_filtro_Nombre">Search by name</string>
+    <string name="dialog_filtro_Nombre_diminutivo">Name</string>
+    <string name="dialog_filtro_precio">Price</string>
     <string name="permisos_denegado">You need permission to access this option.</string>
     <string name="perfil_nombre_empleado">Name</string>
     <string name="perfil_correo_empleado">Email</string>

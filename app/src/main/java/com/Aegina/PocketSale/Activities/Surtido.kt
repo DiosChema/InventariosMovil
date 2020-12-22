@@ -176,6 +176,14 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
         }
     }
 
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {
+        runOnUiThread{
+            listaArticulos.addAll(articulosCarrito)
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }
+    }
+
     override fun abrirCamara() {
         val intentIntegrator = IntentIntegrator(context as Surtido)
         intentIntegrator.setBeepEnabled(false)

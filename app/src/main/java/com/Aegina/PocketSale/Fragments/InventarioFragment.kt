@@ -35,12 +35,15 @@ class InventarioFragment : Fragment() {
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
 
-    var filtroFamilia = -1
+    /*var filtroFamilia = -1
     var filtroSubFamilia = -1
     var filtroMinCantidad = -1
     var filtroMaxCantidad = -1
+    var filtroMinPrecio = -1.0
+    var filtroMaxPrecio = -1.0
+    var filtronombreArticulo = ""*/
 
-    var mostrarBotones = false
+    //var mostrarBotones = false
 
 
     lateinit var fragmentInventarioContenedorRecyclerView : LinearLayout
@@ -173,16 +176,28 @@ class InventarioFragment : Fragment() {
         }*/
     }
 
+    fun obtenerListaArticulos(listaArticulos: MutableList<InventarioObjeto>)
+    {
+        activity?.runOnUiThread {
+            mViewInventario.RecyclerAdapter(listaArticulos, activity!!)
+            mViewInventario.notifyDataSetChanged()
+        }
+
+    }
+
     fun getInventarioObjecto(){
         val urls = Urls()
 
         var url = urls.url+urls.endPointsInventario.endPointInventario+"?token="+globalVariable.usuario!!.token
-
+/*
         if(filtroFamilia != -1) url += "&familiaId=" + filtroFamilia
         if(filtroSubFamilia != -1) url += "&subFamiliaId=" + filtroSubFamilia
         if(filtroMinCantidad != -1) url += "&minimoCantidad=" + filtroMinCantidad
         if(filtroMaxCantidad != -1) url += "&maximoCantidad=" + filtroMaxCantidad
-
+        if(filtroMinPrecio != -1.0) url += "&minimoPrecio=" + filtroMinPrecio
+        if(filtroMaxPrecio != -1.0) url += "&maximoPrecio=" + filtroMaxPrecio
+        if(filtronombreArticulo != "") url += "&nombreArticulo=" + filtronombreArticulo
+*/
         val request = Request.Builder()
             .url(url)
             .get()

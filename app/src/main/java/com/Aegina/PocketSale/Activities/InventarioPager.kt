@@ -10,6 +10,7 @@ import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
+import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
@@ -72,14 +73,21 @@ class InventarioPager : AppCompatActivity(),
         (fragment as VentaFragment).obtenerFecha()
     }
 
-    override fun filtrosArticulos(familiaIdTmp:Int,subFamiliaIdTmp:Int,minCantidad:Int,maxCantidad:Int) {
+    /*override fun filtrosArticulos(familiaIdTmp:Int,subFamiliaIdTmp:Int,minCantidad:Int,maxCantidad:Int,minPrecio:Double,maxPrecio:Double,nombre:String) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as InventarioFragment).filtroFamilia = familiaIdTmp
         (fragment).filtroSubFamilia = subFamiliaIdTmp
         (fragment).filtroMinCantidad = minCantidad
         (fragment).filtroMaxCantidad = maxCantidad
+        (fragment).filtroMinPrecio = minPrecio
+        (fragment).filtroMaxPrecio = maxPrecio
+        (fragment).filtronombreArticulo = nombre
         (fragment).getInventarioObjecto()
+    }*/
 
-
+    override fun listaArticulos(listaArticulos: MutableList<InventarioObjeto>)
+    {
+        val fragment: Fragment = adapter.getItem(0)
+        (fragment as InventarioFragment).obtenerListaArticulos(listaArticulos)
     }
 }

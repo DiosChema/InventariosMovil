@@ -60,7 +60,7 @@
             android:layout_below="@id/dialogFiltroArticulosFamiliaSpinner"/>
 
         <TextView
-            android:id="@+id/dialogFiltroCantidadText"
+            android:id="@+id/dialogFiltroNombreText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
@@ -68,7 +68,41 @@
             android:textSize="20sp"
             android:layout_below="@+id/dialogFiltroArticulosSubFamiliaSpinner"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/dialog_filtro_Nombre" />
+
+        <EditText
+            android:id="@+id/dialogFiltroNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialogFiltroNombreText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/round_button_white"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:hint="@string/dialog_filtro_Nombre_diminutivo"
+            android:inputType="text"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/dialogFiltroCantidadText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_below="@+id/dialogFiltroNombre"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
             android:text="@string/dialog_filtro_cantidad" />
 
         <EditText
@@ -122,11 +156,74 @@
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"/>
 
+        <TextView
+            android:id="@+id/dialogFiltroPrecioText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_below="@+id/dialogFiltroCantidadSeparador"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:text="@string/dialog_filtro_precio" />
+
+        <EditText
+            android:id="@+id/dialogFiltroPrecioMinimo"
+            android:layout_width="wrap_content"
+            android:minWidth="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/dialog_filtro_minimo_diminutivo"
+            android:maxEms="9"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:inputType="numberDecimal"
+            android:gravity="center"
+            android:layout_alignTop="@+id/dialogFiltroPrecioSeparador"
+            android:layout_toStartOf="@+id/dialogFiltroPrecioSeparador"
+            android:layout_toLeftOf="@+id/dialogFiltroPrecioSeparador"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"/>
+
+        <TextView
+            android:id="@+id/dialogFiltroPrecioSeparador"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_below="@+id/dialogFiltroPrecioText"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/open_sans"
+            android:text="-"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/dialogFiltroPrecioMaximo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:hint="@string/dialog_filtro_maximo_diminutivo"
+            android:maxEms="9"
+            android:minWidth="100dp"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_alignTop="@+id/dialogFiltroPrecioSeparador"
+            android:layout_toEndOf="@+id/dialogFiltroPrecioSeparador"
+            android:layout_toRightOf="@+id/dialogFiltroPrecioSeparador"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"/>
+
         <ImageButton
             android:id="@+id/invBottonTomarCodigo"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_below="@+id/dialogFiltroCantidadSeparador"
+            android:layout_below="@+id/dialogFiltroPrecioMaximo"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:layout_centerHorizontal="true"

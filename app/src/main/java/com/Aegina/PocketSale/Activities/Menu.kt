@@ -88,7 +88,6 @@ class Menu : AppCompatActivity() {
             {
                 Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
             }
-
         }
 
         val estadistica4 = findViewById<ImageView>(R.id.estadistica4)

@@ -56,6 +56,7 @@ class CrearCuenta : AppCompatActivity() {
 
     fun crearCuenta(){
 
+        crearCuentaBotonCrearCuenta.isEnabled = false
         var email = crearCuentaEmail.text.toString()
         email = email.toLowerCase(Locale.ROOT)
         val password = crearCuentaPassword.text.toString()
@@ -102,36 +103,46 @@ class CrearCuenta : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    crearCuentaBotonCrearCuenta.isEnabled = true
+                    progressDialog.dismiss()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
-
                 val json = response.body()!!.string()
                 val gson = GsonBuilder().create()
+                var mensajeRespuesta : String
 
                 val respuesta = gson.fromJson(json, Respuesta::class.java)
 
-                if(respuesta.status != 0){
-                    runOnUiThread {
-                        Toast.makeText(context, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                mensajeRespuesta =
+                    if(respuesta.status != 0)
+                    {
+                        respuesta.mensaje
                     }
+                    else
+                    {
+                        getString(R.string.mensaje_cuenta_creada)
+                    }
+
+                runOnUiThread {
+                    Toast.makeText(context, mensajeRespuesta, Toast.LENGTH_SHORT).show()
+                    progressDialog.dismiss()
+                    crearCuentaBotonCrearCuenta.isEnabled = true
                 }
-                else{
-                    runOnUiThread{
-                        Toast.makeText(context, getString(R.string.mensaje_cuenta_creada), Toast.LENGTH_SHORT).show()
-                    }
+
+                if(respuesta.status == 0)
+                {
                     finish()
                 }
             }
         })
-
-
-
     }
 
-    fun String.isEmailValid(): Boolean {
+    fun String.isEmailValid(): Boolean
+    {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 }

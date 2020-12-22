@@ -191,6 +191,14 @@ class SurtidoFragment : Fragment() {
         }
     }
 
+    fun agregarArticulos(articulos: MutableList<InventarioObjeto>) {
+        activity?.runOnUiThread{
+            listaArticulos.addAll(articulos)
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }
+    }
+
     /*override fun abrirCamara() {
         val intentIntegrator = IntentIntegrator(context as Surtido)
         intentIntegrator.setBeepEnabled(false)
