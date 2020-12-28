@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/itemArticuloContainer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/round_button_white"
+    android:background="@drawable/roundedbutton"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    android:weightSum="3"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
         android:layout_gravity="center"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         card_view:cardCornerRadius="255dp"
         android:layout_margin="3dp">
 
@@ -30,54 +29,50 @@
 
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_weight="2"
-        android:layout_marginLeft="2dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginRight="2dp"
-        android:layout_marginEnd="2dp" >
+        android:weightSum="1"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp" >
 
         <TextView
             android:id="@+id/itemArticuloNombre"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:textSize="18sp"
             android:maxLines="2"
-            android:gravity="center"
             android:text="@string/app_name"/>
 
-            <TextView
-                android:id="@+id/itemArticuloDescripcion"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/open_sans"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:maxLines="3"/>
+        <TextView
+            android:id="@+id/itemArticuloDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textSize="16sp"
+            android:maxLines="2"/>
 
-            <TextView
-                android:id="@+id/itemArticuloPrecio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:gravity="center"
-                android:text="@string/app_name"
-                android:maxLines="2"/>
-
-
-
+        <TextView
+            android:id="@+id/itemArticuloPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:maxLines="1"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
     </LinearLayout>
-
-
-
 
 </LinearLayout>

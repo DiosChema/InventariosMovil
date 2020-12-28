@@ -40,11 +40,7 @@ class Perfil : AppCompatActivity() {
         asignarBotones()
         crearRecyclerView()
         obtenerEmpleados()
-
-
     }
-
-
 
     private fun asignarRecursos() {
         perfilAgregarEmpleado = findViewById(R.id.perfilAgregarEmpleado)

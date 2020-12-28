@@ -53,6 +53,7 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invDetalleCantidad : EditText
     lateinit var invDetallePrecio : EditText
     lateinit var invDetalleCosto : EditText
+    lateinit var invDetalleInventarioOptimo : EditText
     lateinit var invDetalleFamiliaSpinner : Spinner
     lateinit var invDetalleSubFamiliaSpinner : Spinner
     lateinit var invDetalleDarDeAlta : Button
@@ -130,6 +131,7 @@ class InventarioDetalle : AppCompatActivity() {
         invDetalleCantidad = findViewById(R.id.invDetalleCantidad)
         invDetallePrecio = findViewById(R.id.invDetallePrecio)
         invDetalleCosto = findViewById(R.id.invDetalleCosto)
+        invDetalleInventarioOptimo = findViewById(R.id.invDetalleInventarioOptimo)
         invDetalleFamiliaSpinner = findViewById(R.id.invDetalleFamiliaSpinner)
         invDetalleSubFamiliaSpinner = findViewById(R.id.invDetalleSubFamiliaSpinner)
         invDetalleDarDeAlta = findViewById(R.id.invDetalleDarDeAlta)
@@ -137,7 +139,7 @@ class InventarioDetalle : AppCompatActivity() {
         invBotonAgregarFamilia = findViewById(R.id.invBotonAgregarFamilia)
         invBotonEliminarSubFamilia = findViewById(R.id.invBotonEliminarSubFamilia)
         invBotonAgregarSubFamilia = findViewById(R.id.invBotonAgregarSubFamilia)
-        invBottonTomarCodigo = findViewById(R.id.invBottonTomarCodigo)
+        invBottonTomarCodigo = findViewById(R.id.dialogFiltroReestablecerCampos)
         invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
         invDetalleEliminarArticulo = findViewById(R.id.invDetalleEliminarArticulo)
 
@@ -153,6 +155,7 @@ class InventarioDetalle : AppCompatActivity() {
         invDetalleCantidad.isEnabled = activar
         invDetallePrecio.isEnabled = activar
         invDetalleCosto.isEnabled = activar
+        invDetalleInventarioOptimo.isEnabled = activar
         invDetalleFamiliaSpinner.isEnabled = activar
         invDetalleSubFamiliaSpinner.isEnabled = activar
         invDetalleDarDeAlta.isEnabled = true
@@ -197,6 +200,7 @@ class InventarioDetalle : AppCompatActivity() {
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
         invDetallePrecio.setText(articulo.precioArticulo.toString())
         invDetalleCosto.setText(articulo.costoArticulo.toString())
+        invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
 
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
@@ -213,6 +217,7 @@ class InventarioDetalle : AppCompatActivity() {
         invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
         invDetallePrecio.setText(articulo.precioArticulo.toString())
         invDetalleCosto.setText(articulo.costoArticulo.toString())
+        invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
 
         cambioFoto = false
         posicionPendiente = true
@@ -783,6 +788,7 @@ class InventarioDetalle : AppCompatActivity() {
         if(invDetalleNombreDetalle.text.toString() == ""){return moverCampo(invDetalleNombreDetalle)}
         if(invDetallePrecio.text.toString() == ""){return moverCampo(invDetallePrecio)}
         if(invDetalleCosto.text.toString() == ""){return moverCampo(invDetalleCosto)}
+        if(invDetalleInventarioOptimo.text.toString() == ""){return moverCampo(invDetalleInventarioOptimo)}
         if(invDetalleCantidad.text.toString() == ""){return moverCampo(invDetalleCantidad)}
         if(listaFamiliaCompleta.size == 0){return moverCampoSpinner(invDetalleFamiliaSpinner)}
         if(subFamiliaId == -1 || listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size == 0){return moverCampoSpinner(invDetalleSubFamiliaSpinner)}
@@ -840,6 +846,7 @@ class InventarioDetalle : AppCompatActivity() {
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
             jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
+            jsonObject.put("inventarioOptimo", parseInt(invDetalleInventarioOptimo.text.toString()))
             jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
             jsonObject.put("precioArticulo", parseDouble(invDetallePrecio.text.toString()))
             jsonObject.put("familiaArticulo", subFamiliaId)
@@ -879,11 +886,12 @@ class InventarioDetalle : AppCompatActivity() {
         val jsonObject = JSONObject()
         try {
             jsonObject.put("token", globalVariable.usuario!!.token)
-            jsonObject.put("idArticulo", invDetalleId.text)
+            jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
             jsonObject.put("nombreArticulo", invDetalleNombre.text)
-            jsonObject.put("costoArticulo", invDetalleCosto.text)
-            jsonObject.put("cantidadArticulo", invDetalleCantidad.text)
-            jsonObject.put("precioArticulo", invDetallePrecio.text)
+            jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
+            jsonObject.put("inventarioOptimo", parseInt(invDetalleInventarioOptimo.text.toString()))
+            jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
+            jsonObject.put("precioArticulo", parseDouble(invDetallePrecio.text.toString()))
             jsonObject.put("familiaArticulo", subFamiliaId)
             jsonObject.put("descripcionArticulo", invDetalleNombreDetalle.text)
         } catch (e: JSONException) {
@@ -949,54 +957,6 @@ class InventarioDetalle : AppCompatActivity() {
             }
         })
     }
-
-    /*fun obtenerFamilias(context: Context){
-
-        val url = urls.url+urls.endpointObtenerFamilias+"?token="+globalVariable.token
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                listaFamiliaCompleta = gson.fromJson(body,Array<FamiliaObjeto>::class.java).toMutableList()
-
-                for (familias in listaFamiliaCompleta) {
-                    listaFamilia.add(familias.nombreFamilia)
-                }
-
-                runOnUiThread {
-                    val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaFamilia)
-                    invDetalleFamiliaSpinner.adapter = adapter
-                    invDetalleFamiliaSpinner.setSelection(0)
-
-                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].familiaId)
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            // write code to perform some action
-                        }
-                    }
-                }
-            }
-        })
-
-    }*/
-
 
     fun obtenerFamilias(context: Context, posicion : Int){
 

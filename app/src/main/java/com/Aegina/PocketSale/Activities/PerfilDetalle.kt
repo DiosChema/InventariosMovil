@@ -28,8 +28,10 @@ import android.view.animation.TranslateAnimation
 import android.widget.*
 import com.Aegina.PocketSale.Objets.EmpleadoObject
 import com.Aegina.PocketSale.Objets.GlobalClass
+import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
+import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import com.squareup.picasso.Picasso
 import okhttp3.*
@@ -82,17 +84,20 @@ class PerfilDetalle : AppCompatActivity() {
             StrictMode.setThreadPolicy(policy)
         }
 
-        if(intent.getSerializableExtra("empleado") != null)
-        {
-            empleadoObject = intent.getSerializableExtra("empleado") as EmpleadoObject
+        when {
+            intent.getSerializableExtra("empleado") != null -> {
+                empleadoObject = intent.getSerializableExtra("empleado") as EmpleadoObject
 
-            habilitarEdicion(false)
-            llenarCampos(empleadoObject)
-            asignarFuncionBotones(true)
-        }
-        else
-        {
-            asignarFuncionBotones(false)
+                habilitarEdicion(false)
+                llenarCampos(empleadoObject)
+                asignarFuncionBotones(true)
+            }
+            intent.extras != null -> {
+                buscarEmpleado()
+            }
+            else -> {
+                asignarFuncionBotones(false)
+            }
         }
 
     }
@@ -311,6 +316,9 @@ class PerfilDetalle : AppCompatActivity() {
         perfilDetalleDarDeAlta = findViewById(R.id.perfilDetalleDarDeAlta)
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
+
+        perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
+        perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -318,15 +326,28 @@ class PerfilDetalle : AppCompatActivity() {
         perfilDetalleNombre.isEnabled = activar
         perfilDetalleFoto.isEnabled = activar
         perfilDetalleFoto.isEnabled = activar
-        perfilDetallePermisosVenta.isEnabled = activar
-        perfilDetallePermisosVenta.isEnabled = activar
-        perfilDetallePermisosModificarInventario.isEnabled = activar
-        perfilDetallePermisosCrearArticulos.isEnabled = activar
-        perfilDetallePermisosEstadisticas.isEnabled = activar
-        perfilDetallePermisosProovedor.isEnabled = activar
+
         perfilDetalleDarDeAlta.isEnabled = true
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
         perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
+
+        if(globalVariable.usuario!!.permisosAdministrador)
+        {
+            perfilDetallePermisosVenta.isEnabled = false
+            perfilDetallePermisosModificarInventario.isEnabled = false
+            perfilDetallePermisosCrearArticulos.isEnabled = false
+            perfilDetallePermisosEstadisticas.isEnabled = false
+            perfilDetallePermisosProovedor.isEnabled = false
+        }
+        else
+        {
+            perfilDetallePermisosVenta.isEnabled = activar
+            perfilDetallePermisosModificarInventario.isEnabled = activar
+            perfilDetallePermisosCrearArticulos.isEnabled = activar
+            perfilDetallePermisosEstadisticas.isEnabled = activar
+            perfilDetallePermisosProovedor.isEnabled = activar
+        }
+
 
         if (activar) {
 
@@ -487,6 +508,42 @@ class PerfilDetalle : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 finish()
+            }
+        })
+    }
+
+    private fun buscarEmpleado() {
+        val url = urls.url + urls.endPointUsers.endPointObtenerEmpleado + "?user=" + globalVariable.usuario!!.user
+
+        val request = Request.Builder()
+            .url(url)
+            .get()
+            .build()
+
+        val client = OkHttpClient()
+
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.show()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
+            }
+            override fun onResponse(call: Call, response: Response) {
+
+                val body = response.body()?.string()
+
+                val gson = GsonBuilder().create()
+                empleadoObject = gson.fromJson(body, EmpleadoObject::class.java)
+
+                runOnUiThread()
+                {
+                    habilitarEdicion(false)
+                    llenarCampos(empleadoObject)
+                    asignarFuncionBotones(true)
+                    progressDialog.dismiss()
+                }
             }
         })
     }

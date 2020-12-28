@@ -1,141 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/transparent"
-    android:layout_marginTop="30dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginRight="5dp"
-    android:layout_marginEnd="5dp"
-    android:layout_marginBottom="30dp">
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="8dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical"
         android:background="@drawable/round_button_bluelight">
 
-        <Spinner
-            android:id="@+id/dialogArticulosFamiliaSpinner"
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="34dp"
-            android:theme="@style/mySpinnerItemStyle"
-            android:spinnerMode="dropdown"
-            android:fontFamily="@font/open_sans"
-            android:background="@drawable/round_button_white"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp" />
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/dialogArticulosSubFamiliaSpinner"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="34dp"
-            android:spinnerMode="dropdown"
-            android:theme="@style/mySpinnerItemStyle"
-            android:fontFamily="@font/open_sans"
-            android:background="@drawable/round_button_white"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_below="@id/dialogArticulosFamiliaSpinner"/>
+            <ImageButton
+                android:id="@+id/dialogArticulosCamara"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/barcodeicon"
+                android:contentDescription="@string/botonCancelar" />
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/dialog_lista_articulos"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="3dp"/>
+
+            <ImageButton
+                android:id="@+id/dialogArticulosFiltro"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/icono_filtro"
+                android:contentDescription="@string/botonCancelar" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialogoArticulosRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/dialogArticulosSubFamiliaSpinner"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="175dp"/>
+            android:layout_height="match_parent"/>
 
-        <!--<LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/dialogArticulosSubFamiliaSpinner"
-            android:orientation="horizontal"
-            android:layout_marginBottom="75dp">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:orientation="vertical"
+        android:background="@drawable/round_button_bluelight"
+        android:layout_marginTop="15dp">
 
         <View
-            android:id="@+id/dialogArticulosSeparador"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="30dp"
-            android:layout_marginEnd="30dp"/>
-
-            <LinearLayout
-                android:id="@+id/dialogArticulosCarrito"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_marginLeft="-35dp"
-                android:layout_marginStart="-35dp">
-
-                <ImageButton
-                    android:id="@+id/dialogArticulosMenuLateral"
-                    android:layout_width="30dp"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="15dp"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/menor_que_icon"
-                    android:scaleType="centerCrop"
-                    android:background="@drawable/background_boton_redondo"
-                    android:contentDescription="@string/botonCancelar"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/dialogoArticulosRecyclerViewLista"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/white"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-        -->
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialogoArticulosRecyclerViewLista"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
-            android:layout_above="@+id/dialogArticulosSalir"/>
+            android:layout_height="110dp"/>
 
-        <ImageButton
-            android:id="@+id/dialogArticulosSalir"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/round_button_red"
-            app:srcCompat="@drawable/cancelicon"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:contentDescription="@string/botonCancelar" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-        <ImageButton
-            android:id="@+id/dialogArticulosAceptar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:adjustViewBounds="true"
-            android:background="@drawable/check_icon"
-            android:contentDescription="@string/botonCancelar"
-            android:visibility="invisible"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <ImageButton
+                android:id="@+id/dialogArticulosSalir"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:background="@drawable/round_button_red"
+                app:srcCompat="@drawable/cancelicon"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:layout_marginBottom="5dp"
+                android:contentDescription="@string/botonCancelar" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
 
+            <ImageView
+                android:id="@+id/dialogArticulosAceptar"
+                android:layout_width="90dp"
+                android:layout_height="50dp"
+                android:src="@drawable/check_icon"
+                android:adjustViewBounds="true"
+                android:layout_marginRight="35dp"
+                android:layout_marginEnd="35dp"
+                android:background="@drawable/round_button_blue"
+                android:contentDescription="@string/botonCancelar"/>
+        </LinearLayout>
 
-    </RelativeLayout>
-</RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -15,7 +15,6 @@ import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 import java.lang.Double.parseDouble
-import java.lang.Float.parseFloat
 import java.lang.Integer.parseInt
 
 class DialogFiltrarArticulos : AppCompatDialogFragment() {
@@ -44,7 +43,7 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
     lateinit var dialogFiltroCantidadMaximo: EditText
     lateinit var dialogFiltroPrecioMinimo: EditText
     lateinit var dialogFiltroPrecioMaximo: EditText
-    lateinit var invBottonTomarCodigo: ImageButton
+    lateinit var invBottonReestablecerCampos: ImageButton
 
 
     var subFamiliaId = -1
@@ -78,7 +77,7 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
         dialogFiltroCantidadMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroCantidadMaximo) as EditText
         dialogFiltroPrecioMinimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMinimo) as EditText
         dialogFiltroPrecioMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMaximo) as EditText
-        invBottonTomarCodigo = dialogFiltrarArticulos.findViewById(R.id.invBottonTomarCodigo) as ImageButton
+        invBottonReestablecerCampos = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroReestablecerCampos) as ImageButton
 
         dialogArticulosFamiliaSpinner.isEnabled = false
         dialogArticulosSubFamiliaSpinner.isEnabled = false
@@ -91,7 +90,7 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
             dialogArticulosSubFamiliaSpinner.isEnabled = checkBoxSubFamilia.isChecked
         }
 
-        invBottonTomarCodigo.setOnClickListener{
+        invBottonReestablecerCampos.setOnClickListener{
             reestablecerCampos()
         }
 
@@ -199,8 +198,12 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
 
         dialogFiltroCantidadMinimo.setText("")
         dialogFiltroCantidadMaximo.setText("")
+        dialogFiltroPrecioMinimo.setText("")
+        dialogFiltroPrecioMaximo.setText("")
+        dialogFiltroNombre.setText("")
 
         checkBoxFamilia.isChecked = false
+        checkBoxSubFamilia.isChecked = false
         checkBoxSubFamilia.isChecked = false
 
     }

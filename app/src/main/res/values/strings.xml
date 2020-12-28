@@ -106,14 +106,21 @@
     <string name="dialog_filtro_cantidad">Cantidad en inventario</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
+    <string name="dialog_filtro">Filtros</string>
+    <string name="dialog_filtro_inventario_optimo">Existencia no optima</string>
     <string name="dialog_filtro_Nombre">Buscar por Nombre</string>
     <string name="dialog_filtro_Nombre_diminutivo">Nombre</string>
     <string name="dialog_filtro_precio">Precio en inventario</string>
+
+    <!-- Dialog articulos -->
+    <string name="dialog_lista_articulos">Articulos</string>
+    <string name="dialog_lista_articulo_no_existe">El articulo no existe</string>
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>
     <string name="editar_articulo_costo">Precio Costo</string>
     <string name="editar_articulo_proveedor">Precio Proveedor</string>
+    <string name="editar_articulo_inventario_optimo">Inventario Optimo</string>
     <string name="editar_articulo_precio">Precio</string>
     <string name="editar_articulo_cancelar">Cancelar</string>
     <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>

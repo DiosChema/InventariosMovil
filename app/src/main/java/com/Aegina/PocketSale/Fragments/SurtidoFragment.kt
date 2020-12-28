@@ -51,7 +51,9 @@ class SurtidoFragment : Fragment() {
         dialogFecha.crearVentana(activity!!)
         globalVariable = activity?.applicationContext as GlobalClass
 
-        dialogoAgregarArticulos.crearDialogArticulos(activity!!,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogInicial(activity!!,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogArticulos()
+        dialogoAgregarArticulos.crearDialogFiltros()
 
         asignarRecursos()
         crearRecyclerView()
@@ -69,7 +71,7 @@ class SurtidoFragment : Fragment() {
 
         val imgButtonSurtidoAgregarCodigo = surtidoAgregarArticulo
         imgButtonSurtidoAgregarCodigo.setOnClickListener{
-            dialogoAgregarArticulos.showDialogAgregarArticulo()
+            dialogoAgregarArticulos.mostrarDialogArticulos()
         }
 
         actualizarCantidadCosto()
@@ -159,9 +161,31 @@ class SurtidoFragment : Fragment() {
         })
     }
 
-    fun numeroArticulo(articulo : InventarioObjeto) {
+    fun comprobarArticuloEnVenta(articuloTmp: InventarioObjeto): Boolean
+    {
+        for (i in 0 until listaArticulos.size)
+        {
+            if(articuloTmp.idArticulo == listaArticulos[i].idArticulo)
+            {
+                listaArticulos[i].cantidadArticulo += articuloTmp.cantidadArticulo
+                return true
+            }
+        }
 
-        var articuloNuevo = true
+        return false
+    }
+
+    fun numeroArticulo(articuloCarrito : InventarioObjeto) {
+        activity?.runOnUiThread{
+            if(!comprobarArticuloEnVenta(articuloCarrito))
+            {
+                listaArticulos.add(articuloCarrito)
+            }
+
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }
+        /*var articuloNuevo = true
 
         for (i in 0 until listaArticulos.size)
         {
@@ -180,7 +204,7 @@ class SurtidoFragment : Fragment() {
         activity?.runOnUiThread{
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
-        }
+        }*/
     }
 
     fun obtenerNumero(numero : Int, posicion : Int) {
@@ -191,12 +215,28 @@ class SurtidoFragment : Fragment() {
         }
     }
 
-    fun agregarArticulos(articulos: MutableList<InventarioObjeto>) {
-        activity?.runOnUiThread{
-            listaArticulos.addAll(articulos)
+    fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {
+        activity?.runOnUiThread()
+        {
+            for(i in 0 until articulosCarrito.size)
+            {
+                if(!comprobarArticuloEnVenta(articulosCarrito[i]))
+                {
+                    listaArticulos.add(articulosCarrito[i])
+                }
+            }
+
+            //listaArticulosVenta.addAll(articulosCarrito)
+
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
+
+        /*activity?.runOnUiThread{
+            listaArticulos.addAll(articulos)
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }*/
     }
 
     /*override fun abrirCamara() {
@@ -221,8 +261,8 @@ class SurtidoFragment : Fragment() {
         }
     }*/
 
-    fun asignarCodigoBarras(codigo : Long){
-        dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(codigo.toString())
+    fun buscarArticulo(codigo : Long){
+        dialogoAgregarArticulos.buscarArticulo(codigo)
     }
 
 }

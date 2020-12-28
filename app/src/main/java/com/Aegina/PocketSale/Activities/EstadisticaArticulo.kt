@@ -4,6 +4,7 @@ package com.Aegina.PocketSale.Activities
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -47,6 +48,7 @@ class EstadisticaArticulo : AppCompatActivity(),
         context = this
         dialogFecha.crearVentana(this)
         globalVariable = context.applicationContext as GlobalClass
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         asignarBotones()
         crearRecyclerView()

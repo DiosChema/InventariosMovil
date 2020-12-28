@@ -95,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 
     fun iniciarSesion()
     {
-
         habilitarBotones(false)
 
         var email = loginEmail.text.toString()

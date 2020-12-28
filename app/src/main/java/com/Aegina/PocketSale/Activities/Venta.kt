@@ -35,7 +35,6 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     val urls: Urls = Urls()
 
     var listaArticulosVenta: MutableList<InventarioObjeto> = ArrayList()
-    var listaArticulosVentaTmp: MutableList<InventarioObjeto> = ArrayList()
     var adapter: AdapterListVenta? = null
     var dialogoAgregarArticulos = DialogAgregarArticulos()
     var dialogoFinalizarVenta = DialogFinalizarVenta()
@@ -54,7 +53,9 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         globalVariable = applicationContext as GlobalClass
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogInicial(context,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogArticulos()
+        dialogoAgregarArticulos.crearDialogFiltros()
         crearRecyclerView()
 
         asignarRecursos()
@@ -67,7 +68,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
         val ButtonNuevoArticulo = findViewById<ImageButton>(R.id.ventaNuevoArticulo)
         ButtonNuevoArticulo.setOnClickListener {
-            dialogoAgregarArticulos.showDialogAgregarArticulo()
+            dialogoAgregarArticulos.mostrarDialogArticulos()
         }
 
         val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
@@ -185,7 +186,6 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
                 listaArticulosVenta.add(articuloCarrito)
             }
 
-
             mViewVenta.notifyDataSetChanged()
             actualizarCantidadPrecio()
         }
@@ -250,12 +250,16 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         if (result != null) {
             if (result.contents != null) {
                 runOnUiThread {
-                    dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(java.lang.Long.parseLong(result.contents).toString())
+                    dialogoAgregarArticulos.buscarArticulo(java.lang.Long.parseLong(result.contents))
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
+        dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
     }
 
 }

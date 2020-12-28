@@ -40,7 +40,7 @@
                 android:importantForAutofill="no" />
 
             <ImageButton
-                android:id="@+id/invBottonTomarCodigo"
+                android:id="@+id/dialogFiltroReestablecerCampos"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 app:srcCompat="@drawable/barcodeicon"
@@ -382,7 +382,34 @@
             </LinearLayout>
 
 
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/invDetalleInventarioOptimoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/editar_articulo_inventario_optimo"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"/>
+
+        <EditText
+            android:id="@+id/invDetalleInventarioOptimo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/editar_articulo_inventario_optimo"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:maxLength="8"
+            android:inputType="numberSigned"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/round_button_white"
+            android:importantForAutofill="no"
+            android:layout_marginTop="1dp"/>
 
         <Button
             android:id="@+id/invDetalleDarDeAlta"

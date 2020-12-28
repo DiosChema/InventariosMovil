@@ -18,7 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.PerfilDetalle"></activity>
+        <activity android:name=".Activities.TiendaDetalle"></activity>
+        <activity android:name=".Activities.MenuPerfil" />
+        <activity android:name=".Activities.PerfilDetalle" />
         <activity android:name=".Activities.Perfil" />
         <activity android:name=".Activities.Suscripcion" />
         <activity android:name=".Dialogs.DialogFecha" />

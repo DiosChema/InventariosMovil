@@ -2,6 +2,7 @@
 
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -9,8 +10,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.TranslateAnimation
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,30 +23,17 @@ import com.Aegina.PocketSale.RecyclerView.RecyclerViewListaArticulos
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
-import java.lang.Long.parseLong
+import java.lang.Double
 
 
 class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     lateinit var contextTmp :Context
     val urls: Urls = Urls()
-    lateinit var dialogAgregarArticulo : Dialog
 
     lateinit var agregarArticulo: DialogAgregarArticulo
     lateinit var activityTmp: Activity
     lateinit var globalVariable: GlobalClass
-
-    lateinit var dialogAgregarArticuloCodigo : EditText
-    lateinit var dialogAgregarArticuloCantidad :EditText
-    lateinit var dialogAgregarArticuloAceptar :Button
-    //lateinit var dialogAgregarArticuloMenuLateral :ImageButton
-    lateinit var dialogAgregarArticuloCancelar :Button
-    lateinit var dialogAgregarArticuloTitulo :TextView
-    lateinit var dialogAgregarArticuloBuscarArticulo:ImageButton
-    lateinit var dialogAgregarArticuloObtenerCodigo :ImageButton
-    //lateinit var dialogArticulosCarrito :LinearLayout
-
-    //lateinit var dialogArticulosSeparador:View
 
     lateinit var mViewArticulos : RecyclerViewArticulos
     lateinit var mRecyclerViewArticulos : RecyclerView
@@ -59,64 +46,55 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     var listaSubFamilia:MutableList<String> = ArrayList()
     var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
 
+    lateinit var dialogFiltrarArticulos:Dialog
+
+    lateinit var dialogArticulosFiltro: ImageButton
+    lateinit var dialogFiltroArticulosCancelar: Button
+
+    lateinit var dialogFiltroArticulosAceptar: Button
+    lateinit var checkBoxFamilia: CheckBox
+    lateinit var checkBoxSubFamilia: CheckBox
+    lateinit var dialogFiltroInventarioOptimo: CheckBox
+    lateinit var dialogFiltroNombre: EditText
+    lateinit var dialogFiltroCantidadMinimo: EditText
+    lateinit var dialogFiltroCantidadMaximo: EditText
+    lateinit var dialogFiltroPrecioMinimo: EditText
+    lateinit var dialogFiltroPrecioMaximo: EditText
+    lateinit var dialogFiltroReestablecerCampos: ImageButton
+    lateinit var dialogArticulosCamara: ImageButton
+
     lateinit var dialogInstance : Dialog
-    //lateinit var listener: DialogArticulos.ExampleDialogListenerArticulos
 
     lateinit var dialogArticulosFamiliaSpinner: Spinner
     lateinit var dialogArticulosSubFamiliaSpinner: Spinner
     lateinit var dialogArticulosSalir: ImageButton
-    lateinit var dialogArticulosAceptar: ImageButton
+    lateinit var dialogArticulosAceptar: ImageView
     var subFamiliaId = -1
-    var listaArticuloFamilias:MutableList<ArticuloInventarioObjeto> = ArrayList()
+    var listaArticulos:MutableList<ArticuloInventarioObjeto> = ArrayList()
     var listaArticulosCarrito:MutableList<ArticuloInventarioObjeto> = ArrayList()
-    lateinit var articuloTmp : ArticuloInventarioObjeto
 
-    var tamañoMenuLateral = 0
-
-    fun crearDialogArticulos(context: Context, globalVariableTmp: GlobalClass, activity : Activity){
-
+    fun crearDialogInicial(context: Context, globalVariableTmp: GlobalClass, activity : Activity)
+    {
         contextTmp = context
         activityTmp = activity
         globalVariable = globalVariableTmp
-
         agregarArticulo = contextTmp as DialogAgregarArticulo
-        /*dialogAgregarArticulo = Dialog(contextTmp)
+    }
 
-        dialogAgregarArticulo.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialogAgregarArticulo.setCancelable(false)
-        dialogAgregarArticulo.setContentView(R.layout.dialog_agregar_articulo)
-        dialogAgregarArticuloCodigo = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloCodigo) as EditText
-        dialogAgregarArticuloCantidad = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloCantidad) as EditText
-        dialogAgregarArticuloAceptar = dialogAgregarArticulo.findViewById(R.id.dialogAgregarArticuloAceptar) as Button
-        dialogAgregarArticuloCancelar = dialogAgregarArticulo.findViewById(R.id.dialogTerminarVentaCancelar) as Button
-        dialogAgregarArticuloTitulo = dialogAgregarArticulo.findViewById(R.id.dialogTerminarVentaTitulo) as TextView
-        dialogAgregarArticuloBuscarArticulo = dialogAgregarArticulo.findViewById<View>(R.id.dialogAgregarArticuloBuscarArticulo) as ImageButton
-        dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<View>(R.id.dialogAgregarArticuloObtenerCodigo) as ImageButton
-
-
-        dialogAgregarArticuloCantidad.setText("1")
-        val dialogAgregarArticuloObtenerCodigo = dialogAgregarArticulo.findViewById<ImageButton>(R.id.dialogAgregarArticuloObtenerCodigo)
-        dialogAgregarArticuloObtenerCodigo?.setOnClickListener {
-            agregarArticulo.abrirCamara()
-        }*/
-
-        //dialogArticulos.onAttach(contextTmp)
+    fun crearDialogArticulos(){
         dialogInstance = Dialog(this.contextTmp)
         dialogInstance.setCancelable(false)
         dialogInstance.setContentView(R.layout.dialog_articulos)
 
         dialogInstance.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogInstance.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
 
-        dialogArticulosFamiliaSpinner = dialogInstance.findViewById(R.id.dialogArticulosFamiliaSpinner) as Spinner
-        dialogArticulosSubFamiliaSpinner = dialogInstance.findViewById(R.id.dialogArticulosSubFamiliaSpinner) as Spinner
         dialogArticulosSalir = dialogInstance.findViewById(R.id.dialogArticulosSalir) as ImageButton
-        dialogArticulosAceptar = dialogInstance.findViewById(R.id.dialogArticulosAceptar) as ImageButton
-        //dialogAgregarArticuloMenuLateral = dialogInstance.findViewById(R.id.dialogArticulosMenuLateral) as ImageButton
+        dialogArticulosAceptar = dialogInstance.findViewById(R.id.dialogArticulosAceptar) as ImageView
+        dialogArticulosFiltro = dialogInstance.findViewById(R.id.dialogArticulosFiltro) as ImageButton
+        dialogArticulosCamara = dialogInstance.findViewById(R.id.dialogArticulosCamara) as ImageButton
         mRecyclerViewArticulos = dialogInstance.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
         mRecyclerViewListaArticulos = dialogInstance.findViewById(R.id.dialogoArticulosRecyclerViewLista) as RecyclerView
-        //dialogArticulosCarrito = dialogInstance.findViewById(R.id.dialogArticulosCarrito) as LinearLayout
-        //dialogArticulosSeparador = dialogInstance.findViewById(R.id.dialogArticulosSeparador) as View
 
         mViewArticulos = RecyclerViewArticulos()
         mRecyclerViewArticulos.layoutManager = LinearLayoutManager(this.contextTmp)
@@ -124,28 +102,21 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         mViewListaArticulos = RecyclerViewListaArticulos()
         mRecyclerViewListaArticulos.layoutManager = LinearLayoutManager(this.contextTmp, LinearLayoutManager.HORIZONTAL ,false)
 
-
-
-
         mRecyclerViewArticulos.addOnItemTouchListener(RecyclerItemClickListener(contextTmp, mRecyclerViewArticulos, object :
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int)
             {
-                /*getArticuloObjecto(contextTmp, listaTmpArticulos[position].idArticulo)
-                dialogInstance.dismiss()*/
                 if(listaArticulosCarrito.size == 0)
                 {
                     dialogInstance.dismiss()
 
-                    var articuloTmp = listaArticuloFamilias[position]
+                    var articuloTmp = listaArticulos[position]
                     articuloTmp.cantidadArticulo = 1
                     agregarArticulo.numeroArticulo(crearArticulos(articuloTmp))
-
-                    //dialogAgregarArticulo.dismiss()
                 }
                 else
                 {
-                    var articuloTmp = listaArticuloFamilias[position]
+                    var articuloTmp = listaArticulos[position]
 
                     if(!comprobarArticuloEnCarrito(articuloTmp))
                     {
@@ -159,7 +130,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
             override fun onLongItemClick(view: View?, position: Int)
             {
-                var articuloTmp = listaArticuloFamilias[position]
+                var articuloTmp = listaArticulos[position]
 
                 if(!comprobarArticuloEnCarrito(articuloTmp))
                 {
@@ -173,6 +144,16 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             }
         }))
 
+        dialogArticulosCamara.setOnClickListener()
+        {
+            agregarArticulo.abrirCamara()
+        }
+
+        dialogArticulosFiltro.setOnClickListener()
+        {
+            mostrarDialogFiltros()
+        }
+
         dialogArticulosSalir.setOnClickListener()
         {
             dialogInstance.dismiss()
@@ -182,13 +163,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         {
             agregarArticulo.agregarArticulos(crearListaArticulos(listaArticulosCarrito))
             dialogInstance.dismiss()
-            //dialogAgregarArticulo.dismiss()
         }
-
-        /*dialogAgregarArticuloMenuLateral.setOnClickListener()
-        {
-            moverCampo()
-        }*/
 
         mRecyclerViewListaArticulos.addOnItemTouchListener(RecyclerItemClickListener(contextTmp, mRecyclerViewListaArticulos, object :
             RecyclerItemClickListener.OnItemClickListener {
@@ -212,202 +187,125 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     }
 
-    fun comprobarArticuloEnCarrito(articuloTmp: ArticuloInventarioObjeto) : Boolean
+    fun llenarListaArticulos(listaArticulosTmp: MutableList<ArticuloInventarioObjeto>)
     {
-        for (i in 0 until listaArticulosCarrito.size)
-        {
-            if(articuloTmp.idArticulo == listaArticulosCarrito[i].idArticulo)
-            {
-                listaArticulosCarrito[i].cantidadArticulo++
-                mViewListaArticulos.notifyDataSetChanged()
-                return true
-            }
-        }
+        listaArticulos = listaArticulosTmp
 
-        return false
+        activityTmp.runOnUiThread {
+            mViewArticulos.RecyclerAdapter(listaArticulos, contextTmp)
+            mViewArticulos.notifyDataSetChanged()
+        }
     }
 
-    /*fun moverCampo() {
-        /*val animation1 = TranslateAnimation(0.0f,
-            mRecyclerViewListaArticulos.width.toFloat(),
-            0.0f,
-            0.0f)
-
-        animation1.fillAfter = false
-        animation1.duration = 350 // animation duration*/
-
-        if(tamañoMenuLateral == 0)
-        {
-            tamañoMenuLateral = dialogArticulosSeparador.width
-        }
-
-
-        if(tamañoMenuLateral == dialogArticulosSeparador.width)
-        {
-            val animation1 = TranslateAnimation(0.0f,
-                mRecyclerViewListaArticulos.width.toFloat() * -1,
-                0.0f,
-                0.0f)
-
-            animation1.fillAfter = false
-            animation1.duration = 350 // animation duration
-
-            animation1.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(animation: Animation) {}
-                override fun onAnimationRepeat(animation: Animation) {}
-                override fun onAnimationEnd(animation: Animation) {
-
-                    var layoutParams = dialogArticulosSeparador.layoutParams
-                    layoutParams.width = layoutParams.width -  mRecyclerViewListaArticulos.width
-                    dialogArticulosSeparador.layoutParams = layoutParams
-                    /*val params =
-                        view!!.layoutParams as FrameLayout.LayoutParams
-                    params.topMargin += amountToMoveDown
-                    params.leftMargin += amountToMoveRight
-                    view!!.layoutParams = params*/
-                }
-            })
-
-
-            dialogArticulosCarrito.startAnimation(animation1)
-        }
-        else
-        {
-            val animation1 = TranslateAnimation(0.0f,
-                mRecyclerViewListaArticulos.width.toFloat(),
-                0.0f,
-                0.0f)
-
-            animation1.fillAfter = false
-            animation1.duration = 350 // animation duration
-
-            animation1.setAnimationListener(object : Animation.AnimationListener {
-                override fun onAnimationStart(animation: Animation) {}
-                override fun onAnimationRepeat(animation: Animation) {}
-                override fun onAnimationEnd(animation: Animation) {
-
-                    var layoutParams = dialogArticulosSeparador.layoutParams
-                    layoutParams.width = tamañoMenuLateral
-                    dialogArticulosSeparador.layoutParams = layoutParams
-                    /*val params =
-                        view!!.layoutParams as FrameLayout.LayoutParams
-                    params.topMargin += amountToMoveDown
-                    params.leftMargin += amountToMoveRight
-                    view!!.layoutParams = params*/
-                }
-            })
-
-
-            dialogArticulosCarrito.startAnimation(animation1)
-        }
-
-
-    }*/
-
-    fun showDialogArticulos(){
-        mViewArticulos.RecyclerAdapter(listaArticuloFamilias, contextTmp)
-        mRecyclerViewArticulos.adapter = mViewArticulos
-
-        mViewListaArticulos.RecyclerAdapter(listaArticulosCarrito, contextTmp)
-        mRecyclerViewListaArticulos.adapter = mViewListaArticulos
+    fun crearDialogFiltros(){
 
         if(listaFamiliaCompleta.size == 0)
             obtenerFamilias(contextTmp)
 
+        dialogFiltrarArticulos = Dialog(this.contextTmp)
 
-        /*val animation1 = TranslateAnimation(0.0f,
-            dialogArticulosCarrito.width.toFloat(),
-            0.0f,
-            0.0f)
+        dialogFiltrarArticulos.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogFiltrarArticulos.setCancelable(false)
+        dialogFiltrarArticulos.setContentView(R.layout.dialog_filtro_articulos)
 
-        animation1.duration = 0 // animation duration
-        dialogArticulosCarrito.startAnimation(animation1)*/
+        dialogArticulosFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosFamiliaSpinner) as Spinner
+        dialogArticulosSubFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosSubFamiliaSpinner) as Spinner
+        dialogFiltroArticulosCancelar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosCancelar) as Button
+        dialogFiltroArticulosAceptar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosAceptar) as Button
+        checkBoxFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxFamilia) as CheckBox
+        checkBoxSubFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxSubFamilia) as CheckBox
+        dialogFiltroInventarioOptimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroInventarioOptimo) as CheckBox
+        dialogFiltroNombre = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroNombre) as EditText
+        dialogFiltroCantidadMinimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroCantidadMinimo) as EditText
+        dialogFiltroCantidadMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroCantidadMaximo) as EditText
+        dialogFiltroPrecioMinimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMinimo) as EditText
+        dialogFiltroPrecioMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMaximo) as EditText
+        dialogFiltroReestablecerCampos = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroReestablecerCampos) as ImageButton
 
-        //moverCampo(dialogArticulosCarrito, 1)
-        /*dialogAgregarArticuloCodigo.setText("")
-        dialogAgregarArticuloCantidad.setText("1")
-        dialogInstance.show()*/
+        dialogArticulosFamiliaSpinner.isEnabled = false
+        dialogArticulosSubFamiliaSpinner.isEnabled = false
 
-        dialogInstance.show()
+        checkBoxFamilia.setOnClickListener{
+            dialogArticulosFamiliaSpinner.isEnabled = checkBoxFamilia.isChecked
+        }
+
+        checkBoxSubFamilia.setOnClickListener{
+            dialogArticulosSubFamiliaSpinner.isEnabled = checkBoxSubFamilia.isChecked
+        }
+
+        dialogFiltroReestablecerCampos.setOnClickListener{
+            reestablecerFiltros()
+        }
+
+        dialogFiltroArticulosCancelar.setOnClickListener{
+            dialogFiltrarArticulos.dismiss()
+        }
+
+        dialogFiltroArticulosAceptar.setOnClickListener{
+            buscarArticulos()
+
+            dialogFiltrarArticulos.dismiss()
+
+        }
+
     }
 
-    fun showDialogAgregarArticulo() {
-
-        listaArticulosCarrito.clear()
-
-        /*dialogAgregarArticuloBuscarArticulo.setOnClickListener{
-            showDialogArticulos()
-        }*/
-
-        //dialogAgregarArticuloTitulo.text = contextTmp.getString(R.string.surtido_texto_titulo)
-
-        /*dialogAgregarArticuloAceptar.setOnClickListener {
-
-
-            if(dialogAgregarArticuloCodigo.text.isNotEmpty() && dialogAgregarArticuloCantidad.text.isNotEmpty()) {
-                val codigoTmp = parseLong(dialogAgregarArticuloCodigo.text.toString())
-                val cantidadTmp = Integer.parseInt(dialogAgregarArticuloCantidad.text.toString())
-
-                agregarArticulo(codigoTmp, cantidadTmp)
-            }
-        }*/
-
-        //dialogAgregarArticuloCancelar.setOnClickListener {dialogAgregarArticulo.dismiss()}
-        showDialogArticulos()
-
+    fun mostrarDialogFiltros(){
+        dialogFiltrarArticulos.show()
     }
 
-    fun agregarArticulo(idArticulo : Long, cantidad : Int){
-        val url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
+    fun buscarArticulos()
+    {
+        val urls = Urls()
+
+        var url = urls.url+urls.endPointsInventario.endPointInventario+"?token="+globalVariable.usuario!!.token
+
+        if(checkBoxFamilia.isChecked) url += "&familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId
+        if(checkBoxSubFamilia.isChecked) url += "&subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId
+        if(dialogFiltroInventarioOptimo.isChecked) url += "&inventarioOptimo=" + "true"
+        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + Integer.parseInt(dialogFiltroCantidadMinimo.text.toString())
+        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
+        if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
+        if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
+        if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombreArticulo=" + dialogFiltroNombre.text.toString()
 
         val request = Request.Builder()
             .url(url)
             .get()
             .build()
+
+        val client = OkHttpClient()
 
         val progressDialog = ProgressDialog(contextTmp)
         progressDialog.setMessage(contextTmp.getString(R.string.mensaje_espera))
         progressDialog.show()
 
-        val client = OkHttpClient()
-
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
             }
             override fun onResponse(call: Call, response: Response)
             {
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty()) {
+                    val gson = GsonBuilder().create()
+                    val model = gson.fromJson(body, Array<ArticuloInventarioObjeto>::class.java).toList()
+
+                    agregarArticulo.listaArticulos(model.toMutableList())
+                }
+
                 progressDialog.dismiss()
 
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                val model = gson.fromJson(body, ArticuloInventarioObjeto::class.java)
-
-                if(model != null) {
-                    model.cantidadArticulo = cantidad
-                    activityTmp.runOnUiThread {
-                        agregarArticulo.numeroArticulo(crearArticulos(model))
-                        //dialogAgregarArticulo.dismiss()
-                    }
-                }else{
-                    activityTmp.runOnUiThread {
-                        val animation1 = TranslateAnimation(0.0f,
-                            dialogAgregarArticuloCodigo.width.toFloat()/15,
-                            0.0f,
-                            0.0f)
-
-                        animation1.duration = 150 // animation duration
-                        animation1.repeatCount = 2
-                        animation1.repeatMode = 2
-                        dialogAgregarArticuloCodigo.startAnimation(animation1)
-                    }
-                }
             }
         })
     }
 
-    fun obtenerArticulosFamilia(){
-        val url = urls.url+urls.endPointsInventario.endPointArticulosPorFamilia+"?familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId + "&token="+globalVariable.usuario!!.token
+    fun buscarArticulo(idArticulo: Long)
+    {
+        val urls = Urls()
+
+        var url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
             .url(url)
@@ -416,50 +314,52 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         val client = OkHttpClient()
 
+        val progressDialog = ProgressDialog(contextTmp)
+        progressDialog.setMessage(contextTmp.getString(R.string.mensaje_espera))
+        progressDialog.show()
+
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                progressDialog.dismiss()
             }
             override fun onResponse(call: Call, response: Response)
             {
                 val body = response.body()?.string()
-                val gson = GsonBuilder().create()
 
-                val Model = gson.fromJson(body, Array<ArticuloInventarioObjeto>::class.java).toList()
-                activityTmp.runOnUiThread {
-                    listaArticuloFamilias = Model.toMutableList()
-                    mViewArticulos.RecyclerAdapter(listaArticuloFamilias, contextTmp)
-                    mViewArticulos.notifyDataSetChanged()
+                if(body != null && body.isNotEmpty()) {
+                    val gson = GsonBuilder().create()
+                    val model = gson.fromJson(body, InventarioObjeto::class.java)
+
+                    model.cantidadArticulo = 1
+
+                    agregarArticulo.numeroArticulo(model)
+                    dialogInstance.dismiss()
+
                 }
+                else
+                {
+                    activityTmp.runOnUiThread {
+                        Toast.makeText(contextTmp, contextTmp.getString(R.string.dialog_lista_articulo_no_existe), Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                progressDialog.dismiss()
+
             }
         })
     }
 
-    fun obtenerArticulosSubFamilia(){
-        val url = urls.url+urls.endPointsInventario.endPointArticulosPorSubFamilia+"?subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId + "&token="+globalVariable.usuario!!.token
+    fun reestablecerFiltros() {
+        if(listaFamilia.size > 0)
+            dialogArticulosFamiliaSpinner.setSelection(0)
 
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
+        dialogFiltroCantidadMinimo.setText("")
+        dialogFiltroCantidadMaximo.setText("")
 
-        val client = OkHttpClient()
+        checkBoxFamilia.isChecked = false
+        checkBoxSubFamilia.isChecked = false
+        dialogFiltroInventarioOptimo.isChecked = false
 
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-
-                val Model = gson.fromJson(body, Array<ArticuloInventarioObjeto>::class.java).toList()
-                activityTmp.runOnUiThread {
-                    listaArticuloFamilias = Model.toMutableList()
-                    mViewArticulos.RecyclerAdapter(listaArticuloFamilias, contextTmp)
-                    mViewArticulos.notifyDataSetChanged()
-                }
-            }
-        })
     }
 
     fun obtenerFamilias(context: Context){
@@ -497,7 +397,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                         override fun onItemSelected(parent: AdapterView<*>,
                                                     view: View, position: Int, id: Long) {
                             obtenerSubFamilias(context,position)
-                            obtenerArticulosFamilia()
                         }
 
                         override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -529,12 +428,42 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if(listaSubFamilia.size > 0) {
                     subFamiliaId = listaSubFamiliaCompleta[position].subFamiliaId
-                    obtenerArticulosSubFamilia()
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+    }
+
+    fun comprobarArticuloEnCarrito(articuloTmp: ArticuloInventarioObjeto) : Boolean
+    {
+        for (i in 0 until listaArticulosCarrito.size)
+        {
+            if(articuloTmp.idArticulo == listaArticulosCarrito[i].idArticulo)
+            {
+                listaArticulosCarrito[i].cantidadArticulo++
+                mViewListaArticulos.notifyDataSetChanged()
+                return true
+            }
+        }
+
+        return false
+    }
+
+    fun mostrarDialogArticulos(){
+
+        if(listaArticulos.size == 0)
+        {
+            buscarArticulos()
+        }
+
+        listaArticulosCarrito.clear()
+        mViewArticulos.RecyclerAdapter(listaArticulos, contextTmp)
+        mRecyclerViewArticulos.adapter = mViewArticulos
+
+        mViewListaArticulos.RecyclerAdapter(listaArticulosCarrito, contextTmp)
+        mRecyclerViewListaArticulos.adapter = mViewListaArticulos
+        dialogInstance.show()
     }
 
     fun crearListaArticulos(articuloInventarioObjeto: MutableList<ArticuloInventarioObjeto>): MutableList<InventarioObjeto>
@@ -552,7 +481,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                     articuloInventarioObjeto[i].precioArticulo,
                     articuloInventarioObjeto[i].familiaArticulo,
                     articuloInventarioObjeto[i].costoArticulo,
-                    "")
+                    articuloInventarioObjeto[i].inventarioOptimo)
             )
         }
 
@@ -569,53 +498,14 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             articuloInventarioObjeto.precioArticulo,
             articuloInventarioObjeto.familiaArticulo,
             articuloInventarioObjeto.costoArticulo,
-            "")
-    }
-
-    fun getArticuloObjecto(context : Context, idArticulo: Long){
-
-        val url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        val progressDialog = ProgressDialog(context)
-        progressDialog.setMessage(context.getString(R.string.mensaje_espera))
-        progressDialog.show()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-                articuloTmp = ArticuloInventarioObjeto(0,"","",0, 0.0, "", 0.0, "")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val body = response.body()?.string()
-                if (body != null && body.isNotEmpty()) {
-                    val gson = GsonBuilder().create()
-
-                    val articulo = gson.fromJson(body,ArticuloInventarioObjeto::class.java)
-                    articulo.cantidadArticulo = 1
-                    //listener.applyTexts(articulo)
-                    activityTmp.runOnUiThread {
-                        dialogAgregarArticuloCodigo.setText(articulo.idArticulo.toString())
-                    }
-                }
-
-                progressDialog.dismiss()
-            }
-        })
-
+            articuloInventarioObjeto.inventarioOptimo)
     }
 
     interface DialogAgregarArticulo {
         fun numeroArticulo(articulo : InventarioObjeto)
         fun agregarArticulos(articulosCarrito : MutableList<InventarioObjeto>)
         fun abrirCamara()
+        fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>)
     }
 
 }

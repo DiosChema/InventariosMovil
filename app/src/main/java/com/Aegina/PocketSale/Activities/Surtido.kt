@@ -16,10 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
-import com.Aegina.PocketSale.Objets.ActualizarInventarioObject
-import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.InventarioObjeto
-import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtido
@@ -56,7 +53,8 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
 
         crearRecyclerView()
 
-        dialogoAgregarArticulos.crearDialogArticulos(context,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogInicial(context,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogArticulos()
 
         asignarRecursos()
     }
@@ -68,7 +66,7 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
 
         val surtidoAgregarCodigo = findViewById<ImageButton>(R.id.surtidoAgregarArticulo)
         surtidoAgregarCodigo.setOnClickListener{
-            dialogoAgregarArticulos.showDialogAgregarArticulo()
+            dialogoAgregarArticulos.mostrarDialogArticulos()
         }
 
         val surtidoConfirmarArticulos = findViewById<ImageButton>(R.id.surtidoConfirmarArticulos)
@@ -198,12 +196,16 @@ class Surtido : AppCompatActivity() , DialogAgregarArticulos.DialogAgregarArticu
         if (result != null) {
             if (result.contents != null) {
                 runOnUiThread {
-                    dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(java.lang.Long.parseLong(result.contents).toString())
+                    dialogoAgregarArticulos.buscarArticulo(java.lang.Long.parseLong(result.contents))
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
+        TODO("Not yet implemented")
     }
 
 }

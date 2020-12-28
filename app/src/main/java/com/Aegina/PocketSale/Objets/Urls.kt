@@ -48,7 +48,10 @@ data class Urls(
             "users/obtenerEmpleados",
             "users/darAltaEmpleado",
             "users/eliminarEmpleado",
-            "users/actualizarEmpleado"),
+            "users/actualizarEmpleado",
+            "users/obtenerEmpleado",
+            "users/obtenerDatosTienda",
+            "users/actualizarDatosTienda"),
         UrlsVentas(
             "ventas/actualizarVenta",
             "ventas/buscarVentaPorFecha",
@@ -104,7 +107,10 @@ data class UrlsUsers(
     var endPointObtenerEmpleados:String,
     var endPointAltaEmpleado:String,
     var endPointEliminarEmpleado:String,
-    var endPointActualizarEmpleado:String
+    var endPointActualizarEmpleado:String,
+    var endPointObtenerEmpleado:String,
+    var endPointObtenerDatosTienda:String,
+    var endPointActualizarDatosTienda:String
 )
 
 data class UrlsVentas(

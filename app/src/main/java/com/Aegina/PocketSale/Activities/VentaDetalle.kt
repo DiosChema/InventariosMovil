@@ -145,7 +145,7 @@ class VentaDetalle : AppCompatActivity(),
                     articulos.precio,
                     articulos.articulosDetalle[0].familiaArticulo,
                     articulos.costo,
-                    ""
+                    articulos.articulosDetalle[0].inventarioOptimo
                 )
             )
         }

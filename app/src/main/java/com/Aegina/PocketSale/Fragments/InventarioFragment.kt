@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.InventarioDetalle
+import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
+import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
@@ -35,20 +37,9 @@ class InventarioFragment : Fragment() {
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
 
-    /*var filtroFamilia = -1
-    var filtroSubFamilia = -1
-    var filtroMinCantidad = -1
-    var filtroMaxCantidad = -1
-    var filtroMinPrecio = -1.0
-    var filtroMaxPrecio = -1.0
-    var filtronombreArticulo = ""*/
-
-    //var mostrarBotones = false
-
-
     lateinit var fragmentInventarioContenedorRecyclerView : LinearLayout
 
-    var dialogFiltrarArticulos = DialogFiltrarArticulos()
+    var dialogAgregarArticulos = DialogAgregarArticulos()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_inventario, container, false)
@@ -60,10 +51,12 @@ class InventarioFragment : Fragment() {
         crearRecyclerView()
         asignarBotones()
         crearDialog()
+        dialogAgregarArticulos.buscarArticulos()
     }
 
     private fun crearDialog() {
-        dialogFiltrarArticulos.crearDialog(activity!!,globalVariable, Activity())
+        dialogAgregarArticulos.crearDialogInicial(activity!!,globalVariable, Activity())
+        dialogAgregarArticulos.crearDialogFiltros()
     }
 
     fun crearRecyclerView(){
@@ -78,12 +71,6 @@ class InventarioFragment : Fragment() {
     }
 
     fun asignarBotones(){
-
-        var tamanoOriginal = 0
-        var tamanoNuevo = 0
-
-        val fragmentInventarioBotones = fragmentInventarioBotones
-        val fragmentInventarioContenedor = fragmentInventarioContenedor
 
         val fragmentInventarioNuevoArticulo = fragmentInventarioNuevoArticulo
         fragmentInventarioNuevoArticulo.setOnClickListener()
@@ -102,84 +89,32 @@ class InventarioFragment : Fragment() {
         val fragmentInventarioFiltroArticulo = fragmentInventarioFiltroArticulo
         fragmentInventarioFiltroArticulo.setOnClickListener()
         {
-            dialogFiltrarArticulos.mostrarDialog()
+            dialogAgregarArticulos.mostrarDialogFiltros()
         }
-
-        /*val fragmentInventarioMostrarVentana = fragmentInventarioMostrarVentana
-
-        fragmentInventarioMostrarVentana.setOnClickListener()
-        {
-
-            val perro = mRecyclerView.layoutParams.height
-            val perro2 = mRecyclerView.height
-
-            if(tamanoOriginal == 0)
-            {
-                tamanoOriginal = mRecyclerView.height
-                tamanoNuevo = mRecyclerView.height + fragmentInventarioBotones.height
-            }
-
-            if(!mostrarBotones)
-            {
-                fragmentInventarioMostrarVentana.setImageResource(R.drawable.upicon)
-
-                var modificarTamano = mRecyclerView.layoutParams
-
-                mRecyclerView.layoutParams = modificarTamano
-                //fragmentInventarioBotones.visibility = View.GONE
-                /*val animate = TranslateAnimation(
-                    0F,
-                    0F, fragmentInventarioBotones.height.toFloat(), 0F
-                )
-                animate.duration = 200
-                animate.fillAfter = true
-                fragmentInventarioBotones.startAnimation(animate)*/
-                //Handler().postDelayed(Runnable { fragmentInventarioBotones.visibility = View.GONE }, 200)
-                fragmentInventarioContenedor!!.animate()
-                    .translationY(-fragmentInventarioBotones.height.toFloat())
-                    .alpha(1.0f)
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator?) {
-                            super.onAnimationEnd(animation)
-
-
-                            var modificarTamano = mRecyclerView.layoutParams
-                            //modificarTamano.height = tamanoOriginal
-                            modificarTamano.height = ViewGroup.LayoutParams.WRAP_CONTENT
-
-                            mRecyclerView.layoutParams = modificarTamano
-
-                        }
-                    })
-
-
-
-                mostrarBotones = true
-            }
-            else
-            {
-                fragmentInventarioMostrarVentana.setImageResource(R.drawable.dropicon)
-                //fragmentInventarioBotones.visibility = View.VISIBLE
-
-                fragmentInventarioContenedor.animate()
-                    .translationY(0F)
-                    .alpha(1.0f)
-
-                var modificarTamano = mRecyclerView.layoutParams
-                modificarTamano.height = tamanoOriginal
-
-                mRecyclerView.layoutParams = modificarTamano
-
-                mostrarBotones = false
-            }
-
-        }*/
     }
 
-    fun obtenerListaArticulos(listaArticulos: MutableList<InventarioObjeto>)
+    fun obtenerListaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>)
     {
-        activity?.runOnUiThread {
-            mViewInventario.RecyclerAdapter(listaArticulos, activity!!)
+        listaTmp.clear()
+
+        for(i in 0 until listaArticulos.size)
+        {
+            listaTmp.add(
+                InventarioObjeto(
+                    listaArticulos[i].idArticulo,
+                    listaArticulos[i].nombreArticulo,
+                    listaArticulos[i].descripcionArticulo,
+                    listaArticulos[i].cantidadArticulo,
+                    listaArticulos[i].precioArticulo,
+                    listaArticulos[i].familiaArticulo,
+                    listaArticulos[i].costoArticulo,
+                    listaArticulos[i].inventarioOptimo))
+        }
+
+
+        activity?.runOnUiThread()
+        {
+            mViewInventario.RecyclerAdapter(listaTmp, activity!!)
             mViewInventario.notifyDataSetChanged()
         }
 
@@ -189,15 +124,6 @@ class InventarioFragment : Fragment() {
         val urls = Urls()
 
         var url = urls.url+urls.endPointsInventario.endPointInventario+"?token="+globalVariable.usuario!!.token
-/*
-        if(filtroFamilia != -1) url += "&familiaId=" + filtroFamilia
-        if(filtroSubFamilia != -1) url += "&subFamiliaId=" + filtroSubFamilia
-        if(filtroMinCantidad != -1) url += "&minimoCantidad=" + filtroMinCantidad
-        if(filtroMaxCantidad != -1) url += "&maximoCantidad=" + filtroMaxCantidad
-        if(filtroMinPrecio != -1.0) url += "&minimoPrecio=" + filtroMinPrecio
-        if(filtroMaxPrecio != -1.0) url += "&maximoPrecio=" + filtroMaxPrecio
-        if(filtronombreArticulo != "") url += "&nombreArticulo=" + filtronombreArticulo
-*/
         val request = Request.Builder()
             .url(url)
             .get()
@@ -236,7 +162,7 @@ class InventarioFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        getInventarioObjecto()
+        dialogAgregarArticulos.buscarArticulos()
     }
 
 

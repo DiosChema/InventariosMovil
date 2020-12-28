@@ -17,9 +17,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/itemArticuloVentaCardView"
         android:layout_gravity="center"
-        android:layout_width="0dp"
-        android:layout_weight="1.5"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         card_view:cardCornerRadius="400dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
@@ -43,6 +42,7 @@
         android:layout_weight="4.5"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp">
 
@@ -55,8 +55,7 @@
             <TextView
                 android:id="@+id/itemArticuloInventarioNombre"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -64,38 +63,30 @@
                 android:maxLines="1"
                 tools:text= "dadawdawdwd"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight=".2"/>
-
             <TextView
                 android:id="@+id/itemArticuloInventarioDescipcion"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.8"
+                android:layout_weight="1"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/black"
+                android:gravity="center_vertical"
                 android:textSize="14sp"
-                android:maxLines="1"
+                android:maxLines="2"
                 tools:text= "dadawdawdwd"
                 android:layout_marginLeft="4dp"
                 android:layout_marginStart="4dp"/>
 
-                <TextView
-                    android:id="@+id/itemArticuloInventarioCantidad"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:maxLines="1"
-                    tools:text= "Cantidad"/>
-
-
-
+            <TextView
+                android:id="@+id/itemArticuloInventarioCantidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:maxLines="1"
+                tools:text= "Cantidad"/>
 
         </LinearLayout>
 

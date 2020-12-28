@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import com.google.zxing.integration.android.IntentIntegrator
@@ -120,12 +121,17 @@ class SurtidoPager : AppCompatActivity(),
             if (result.contents != null) {
                 runOnUiThread {
                     val fragment: Fragment = adapter.getItem(0)
-                    (fragment as SurtidoFragment).asignarCodigoBarras(java.lang.Long.parseLong(result.contents))
+                    (fragment as SurtidoFragment).buscarArticulo(java.lang.Long.parseLong(result.contents))
                 }
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
+        val fragment: Fragment = adapter.getItem(0)
+        (fragment as SurtidoFragment).dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
     }
 
 }

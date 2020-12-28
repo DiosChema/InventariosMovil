@@ -9,8 +9,8 @@
     <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:background="@color/transparent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/itemListaCardView"

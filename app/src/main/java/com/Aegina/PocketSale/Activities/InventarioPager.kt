@@ -6,17 +6,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
+import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
 
 class InventarioPager : AppCompatActivity(),
-    DialogFecha.DialogFecha, DialogFiltrarArticulos.DialogFiltrarArticulos {
+    DialogFecha.DialogFecha, DialogAgregarArticulos.DialogAgregarArticulo {
 
     lateinit var adapter : MyViewPagerAdapter
 
@@ -85,8 +87,13 @@ class InventarioPager : AppCompatActivity(),
         (fragment).getInventarioObjecto()
     }*/
 
-    override fun listaArticulos(listaArticulos: MutableList<InventarioObjeto>)
-    {
+    override fun numeroArticulo(articulo: InventarioObjeto) {}
+
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {}
+
+    override fun abrirCamara() {}
+
+    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as InventarioFragment).obtenerListaArticulos(listaArticulos)
     }

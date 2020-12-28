@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.R
 
-
 class Menu : AppCompatActivity() {
 
     lateinit var globalVariable: GlobalClass
@@ -81,7 +80,7 @@ class Menu : AppCompatActivity() {
             //val intent = Intent(this, Suscripcion::class.java)
             if(globalVariable.usuario!!.permisosAdministrador)
             {
-                val intent = Intent(this, Perfil::class.java)
+                val intent = Intent(this, MenuPerfil::class.java)
                 startActivity(intent)
             }
             else
