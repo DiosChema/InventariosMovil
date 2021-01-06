@@ -2,8 +2,10 @@
 
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,9 +14,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
@@ -38,6 +42,7 @@ class VentaDetalle : AppCompatActivity(),
     lateinit var VentaDetalleFecha : TextView
     lateinit var VentaDetalleEliminarVenta : ImageButton
     lateinit var VentaDetalleCancelar : Button
+    lateinit var VentaDetalleEliminarVentaCardView : CardView
     lateinit var VentaDetalleEditar : Button
     var editar = false
 
@@ -47,7 +52,8 @@ class VentaDetalle : AppCompatActivity(),
 
     lateinit var listaArticulos : MutableList<InventarioObjeto>
 
-    var context = this
+    lateinit var context : Context
+    lateinit var activity: Activity
 
     val urls: Urls = Urls()
 
@@ -61,12 +67,14 @@ class VentaDetalle : AppCompatActivity(),
         val simpleDateHours = SimpleDateFormat("HH:mm:ss")
 
         context = this
+        activity = this
         venta = intent.getSerializableExtra("venta") as VentasObjeto
 
         VentaDetalleNumero = findViewById(R.id.VentaDetalleNumero)
         VentaDetalleFecha = findViewById(R.id.VentaDetalleFecha)
         VentaDetalleEliminarVenta = findViewById(R.id.VentaDetalleEliminarVenta)
         VentaDetalleCancelar = findViewById(R.id.VentaDetalleCancelar)
+        VentaDetalleEliminarVentaCardView = findViewById(R.id.VentaDetalleEliminarVentaCardView)
         VentaDetalleEditar = findViewById(R.id.VentaDetalleEditar)
 
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
@@ -77,7 +85,7 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleFecha.text = textTmp
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
-        VentaDetalleCancelar.visibility = View.INVISIBLE
+        VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
         editar = false
 
         mViewArticulosVenta = RecyclerViewVenta()
@@ -97,7 +105,7 @@ class VentaDetalle : AppCompatActivity(),
             if(!editar) {
                 VentaDetalleEditar.text = getString(R.string.mensaje_actualizar_articulo)
                 VentaDetalleEliminarVenta.visibility = View.VISIBLE
-                VentaDetalleCancelar.visibility = View.VISIBLE
+                VentaDetalleEliminarVentaCardView.visibility = View.VISIBLE
                 editar = true
                 habilitarEdicion()
 
@@ -123,7 +131,7 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleCancelar.setOnClickListener{
             VentaDetalleEditar.text = getString(R.string.mensaje_editar)
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
-            VentaDetalleCancelar.visibility = View.INVISIBLE
+            VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
             editar = false
             habilitarEdicion()
         }
@@ -181,14 +189,42 @@ class VentaDetalle : AppCompatActivity(),
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
-                runOnUiThread {
-                    Toast.makeText(context, getString(R.string.mensaje_eliminacion_exitosa), Toast.LENGTH_SHORT).show()
+                val body = response.body()!!.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            runOnUiThread()
+                            {
+                                Toast.makeText(context, getString(R.string.mensaje_eliminacion_exitosa), Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+
+                    }
+                    catch(e:Exception){}
                 }
-                finish()
+                progressDialog.dismiss()
+
             }
         })
     }
@@ -232,18 +268,40 @@ class VentaDetalle : AppCompatActivity(),
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                runOnUiThread {
-                    progressDialog.dismiss()
-                    Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
-                    finish()
-                }
 
+                val body = response.body()!!.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            runOnUiThread {
+                                progressDialog.dismiss()
+                                Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
             }
         })
-
     }
 
     private fun showDialogEliminarVenta() {

@@ -125,9 +125,9 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
 
                 when (purchase.sku) {
-                    "pocketsale_ms00000001" -> obtenerArticulos(1)
-                    "pocketsale_ms00000006" -> obtenerArticulos(6)
-                    "pocketsale_ms00000012" -> obtenerArticulos(12)
+                    "pocketsale_ms00000001" -> actualizarSuscripcion(1)
+                    "pocketsale_ms00000006" -> actualizarSuscripcion(6)
+                    "pocketsale_ms00000012" -> actualizarSuscripcion(12)
                     else -> {
                     }
                 }
@@ -155,8 +155,8 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
 
                         val skuList = ArrayList<String>()
                         skuList.add("pocketsale_ms00000001")
-                        skuList.add("pocketsale_ms00000006")
-                        skuList.add("pocketsale_ms00000012")
+                        skuList.add("pocketsale_ms00000002")
+                        skuList.add("pocketsale_ms00000004")
 
                         val params = SkuDetailsParams.newBuilder()
                             .setSkusList(skuList)
@@ -185,7 +185,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         })
     }
 
-    fun obtenerArticulos(tipoCompra: Int){
+    fun actualizarSuscripcion(tipoCompra: Int){
         val url = urls.url+urls.endPointUsers.endPointActualizarFechaCompra+
                 "?token="+globalVariable.usuario!!.token +
                 "&tipoCompra=" + tipoCompra

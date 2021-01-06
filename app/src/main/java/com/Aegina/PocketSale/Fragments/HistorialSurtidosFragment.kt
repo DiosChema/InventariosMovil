@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
@@ -138,21 +140,34 @@ class HistorialSurtidosFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 var body = response.body()?.string()
 
-                if(body != null && body.isNotEmpty()) {
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
 
-                    val gson = GsonBuilder().create()
-                    var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
-
-                    activity?.runOnUiThread {
-                        mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
-                        mViewVentas.notifyDataSetChanged()
-                        progressDialog.dismiss()
+                        activity?.runOnUiThread {
+                            mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
+                            mViewVentas.notifyDataSetChanged()
+                            progressDialog.dismiss()
+                        }
                     }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(activity!!.applicationContext,body,activity!!)
+                    }
+
                 }
 
                 progressDialog.dismiss()

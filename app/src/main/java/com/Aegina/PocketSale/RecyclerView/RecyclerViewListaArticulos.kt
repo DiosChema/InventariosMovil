@@ -13,6 +13,7 @@ import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 
 class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticulos.ViewHolder>() {
@@ -69,7 +70,8 @@ class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticul
         }
 
         fun ImageView.loadUrl(url: String) {
-            Picasso.with(context).load(url).into(this)
+            try {Picasso.with(context).load(url).into(this)}
+            catch(e: Exception){}
         }
     }
 }

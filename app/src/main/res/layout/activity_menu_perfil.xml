@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.MenuPerfil">
@@ -11,13 +12,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:background="@drawable/backgroundmenu"
-            android:adjustViewBounds="true"
-            android:src="@drawable/notebookicon"
-            android:contentDescription="@string/ventanaVenta" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            card_view:cardCornerRadius="40dp"
+            android:layout_marginTop="5dp">
+
+            <ImageView
+                android:id="@+id/menuPerfilTienda"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/logopockets"
+                android:adjustViewBounds="true"
+                android:background= "@color/transparent"
+                android:contentDescription="@string/imagenArticulo"/>
+
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"

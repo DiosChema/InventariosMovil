@@ -4,6 +4,7 @@ package com.Aegina.PocketSale.Activities
 
 import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFinalizarVenta
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
@@ -31,11 +33,11 @@ import kotlin.collections.ArrayList
 class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     DialogAgregarNumero.DialogAgregarNumero, DialogFinalizarVenta.DialogFinalizarVenta {
 
-    var context = this
+    lateinit var context : Context
+    lateinit var activity: Activity
     val urls: Urls = Urls()
 
     var listaArticulosVenta: MutableList<InventarioObjeto> = ArrayList()
-    var adapter: AdapterListVenta? = null
     var dialogoAgregarArticulos = DialogAgregarArticulos()
     var dialogoFinalizarVenta = DialogFinalizarVenta()
 
@@ -49,6 +51,9 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_venta)
+
+        context = this
+        activity = this
 
         globalVariable = applicationContext as GlobalClass
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -163,17 +168,41 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                runOnUiThread {
-                    progressDialog.dismiss()
-                    listaArticulosVenta.clear()
-                    mViewVenta.notifyDataSetChanged()
-                    actualizarCantidadPrecio()
-                    Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
-                }
 
+                val body = response.body()!!.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            runOnUiThread {
+                                listaArticulosVenta.clear()
+                                mViewVenta.notifyDataSetChanged()
+                                actualizarCantidadPrecio()
+                                Toast.makeText(context, getString(R.string.mensaje_venta_exitosa), Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+
+                    }
+                    catch(e:Exception){}
+                }
+                progressDialog.dismiss()
             }
         })
 
@@ -237,7 +266,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     }
 
     override fun abrirCamara() {
-        val intentIntegrator = IntentIntegrator(context)
+        val intentIntegrator = IntentIntegrator(activity)
         intentIntegrator.setBeepEnabled(false)
         intentIntegrator.setCameraId(0)
         intentIntegrator.setPrompt("SCAN")
@@ -260,6 +289,20 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
     override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
         dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
+    }
+
+    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+
+    override fun lanzarMensaje(mensaje: String) {
+        runOnUiThread()
+        {
+            Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun procesarError(json: String) {
+        val errores = Errores()
+        errores.procesarError(this,json,this)
     }
 
 }

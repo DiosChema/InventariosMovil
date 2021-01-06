@@ -2,6 +2,7 @@ package com.Aegina.PocketSale.Activities
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -11,7 +12,9 @@ import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
+import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
@@ -75,18 +78,6 @@ class InventarioPager : AppCompatActivity(),
         (fragment as VentaFragment).obtenerFecha()
     }
 
-    /*override fun filtrosArticulos(familiaIdTmp:Int,subFamiliaIdTmp:Int,minCantidad:Int,maxCantidad:Int,minPrecio:Double,maxPrecio:Double,nombre:String) {
-        val fragment: Fragment = adapter.getItem(0)
-        (fragment as InventarioFragment).filtroFamilia = familiaIdTmp
-        (fragment).filtroSubFamilia = subFamiliaIdTmp
-        (fragment).filtroMinCantidad = minCantidad
-        (fragment).filtroMaxCantidad = maxCantidad
-        (fragment).filtroMinPrecio = minPrecio
-        (fragment).filtroMaxPrecio = maxPrecio
-        (fragment).filtronombreArticulo = nombre
-        (fragment).getInventarioObjecto()
-    }*/
-
     override fun numeroArticulo(articulo: InventarioObjeto) {}
 
     override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {}
@@ -96,5 +87,19 @@ class InventarioPager : AppCompatActivity(),
     override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as InventarioFragment).obtenerListaArticulos(listaArticulos)
+    }
+
+    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+
+    override fun lanzarMensaje(mensaje: String) {
+        runOnUiThread()
+        {
+            Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun procesarError(json: String) {
+        val errores = Errores()
+        errores.procesarError(this,json,this)
     }
 }

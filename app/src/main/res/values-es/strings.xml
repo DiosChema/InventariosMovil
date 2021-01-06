@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pocket Sale</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Editar Venta -->
+    <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
+    <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
+    <string name="mensaje_venta_exitosa">Venta exitosa</string>
+    <string name="mensaje_eliminacion_exitosa">Venta eliminada</string>
+    <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
+    <string name="mensaje_numero_venta">Venta: </string>
+
+    <!-- Mensaje de espera-->
+    <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
+
+    <!-- Crear cuenta Usuario-->
+    <string name="mensaje_cuenta_creada">Envio de registro exitoso! revisa tu correo para terminar el registro</string>
+    <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres</string>
+    <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
+    <string name="mensaje_contraseña_diferente">La contraseña debe de ser la misma</string>
+    <string name="mensaje_correo_repetir_contrasenia">Repetir contraseña</string>
+    <string name="mensaje_correo_contrasenia">Contraseña</string>
+    <string name="mensaje_crear_cuenta">Crear cuenta</string>
+
+    <!-- Login Usuario-->
+    <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida</string>
+    <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada</string>
+    <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
+    <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
+    <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
+    <string name="boton_iniciar_sesion">Iniciar Sesión</string>
+    <string name="mensaje_correo_electronico">Correo</string>
+    <string name="mensaje_crear_correo">Ingrese correo</string>
+
+    <!-- venta/surtido-->
+    <string name="venta_total_articulos">Total Artículos:</string>
+    <string name="venta_total_venta">Total Venta:</string>
+    <string name="surtido_total_costo">Total Costo:</string>
+    <string name="mensaje_venta_sin_articulos">No hay artículos</string>
+    <string name="mensaje_venta_no_se_encontro_articulo">No se encontro artículo</string>
+    <string name="mensaje_venta_pago">Pago:</string>
+    <string name="mensaje_venta_cambio">Cambio:</string>
+
+
+    <!-- RecyclerView venta/surtido-->
+    <string name="surtido_costo">Costo: </string>
+    <string name="venta_total">Total: </string>
+    <string name="venta_precio_articulo">Precio: </string>
+    <string name="venta_precio_por_articulo">C/U: </string>
+
+    <!-- Ventas Inventario -->
+    <string name="ventas_inventario_fecha">Fecha:</string>
+    <string name="ventas_inventario_cantidad">Cant:</string>
+    <string name="ventas_inventario_cantidad_chico">#</string>
+    <string name="fragment_ventas">Ventas</string>
+    <string name="fragment_inventario">Inventario</string>
+    <string name="mensaje_anadir_articulo">NUEVO ARTICULO</string>
+    <string name="ventas_inventario_buscar_articulo">BUSCAR</string>
+
+    <!-- Estadistica Articulos -->
+    <string name="estadistica_articulo_botton_dia">Hoy</string>
+    <string name="estadistica_articulo_botton_semana">Ultima semana</string>
+    <string name="estadistica_articulo_botton_mes">Este mes</string>
+
+    <!-- Estadistica Ventas -->
+    <string name="estadistica_ventas_total_venta">Ventas</string>
+    <string name="estadistica_ventas_total_costo">Costos</string>
+    <string name="estadistica_ventas_total_ganancia">Ganancia</string>
+
+    <!-- Estadistica Inventario -->
+    <string name="estadistica_inventario_total_articulos">Ganancia Total</string>
+    <string name="estadistica_inventario_total_costos">Costo Total</string>
+    <string name="estadistica_inventario_leyenda_total">Capital Total</string>
+    <string name="estadistica_inventario_total">Total</string>
+    <string name="estadistica_inventario_titulo">Capital</string>
+
+    <!-- Surtido -->
+    <string name="surtido_texto_titulo">Ingresar Articulo</string>
+    <string name="surtido_boton_agregar">Agregar Articulo</string>
+    <string name="surtido_confirmar">Confirmar</string>
+    <string name="surtido_proveedor">Proveedor</string>
+    <string name="surtido_Registro">Registro</string>
+
+    <!-- Fechas -->
+    <string name="dialog_fecha_inicial">Selecciona la fecha inicial</string>
+    <string name="dialog_fecha_final">Selecciona la fecha final</string>
+
+    <!-- Suscripcion -->
+    <string name="suscripcion_mes">Mes</string>
+    <string name="suscripcion_meses">Meses</string>
+    <string name="suscripcion_meses_diminutivo">Mes</string>
+    <string name="suscripcion_meses_descuento">Ahorra</string>
+    <string name="suscripcion_meses_total">Precio Total</string>
+
+    <!-- Dialog numero -->
+    <string name="dialog_numero_text_cantidad">Cantidad</string>
+
+    <!-- Dialog Texto -->
+    <string name="dialog_texto">Ingrese texto</string>
+    <string name="dialog_agregar_familia">Añadir Familia</string>
+    <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
+    <string name="dialog_cancelar">Cancelar</string>
+    <string name="dialog_aceptar">Aceptar</string>
+
+    <!-- Dialog filtros -->
+    <string name="dialog_filtro_cantidad">Cantidad en inventario</string>
+    <string name="dialog_filtro_minimo_diminutivo">Min</string>
+    <string name="dialog_filtro_maximo_diminutivo">Max</string>
+    <string name="dialog_filtro">Filtros</string>
+    <string name="dialog_filtro_inventario_optimo">Existencia no optima</string>
+    <string name="dialog_filtro_Nombre">Buscar por Nombre</string>
+    <string name="dialog_filtro_Nombre_diminutivo">Nombre</string>
+    <string name="dialog_filtro_precio">Precio en inventario</string>
+
+    <!-- Dialog articulos -->
+    <string name="dialog_lista_articulos">Articulos</string>
+    <string name="dialog_lista_articulo_no_existe">El articulo no existe</string>
+
+    <!-- Articulo detalle -->
+    <string name="editar_articulo_venta">Precio Venta</string>
+    <string name="editar_articulo_costo">Precio Costo</string>
+    <string name="editar_articulo_proveedor">Precio Proveedor</string>
+    <string name="editar_articulo_inventario_optimo">Inventario Optimo</string>
+    <string name="editar_articulo_precio">Precio</string>
+    <string name="editar_articulo_cancelar">Cancelar</string>
+    <string name="dialog_eliminar_articulo">¿Estas seguro que deseas eliminar este articulo?</string>
+    <string name="mensaje_detalle_articulo">Detalle</string>
+    <string name="mensaje_nombre_articulo">Nombre</string>
+    <string name="mensaje_subgrupo_articulo">SubGrupo</string>
+    <string name="mensaje_grupo_articulo">Grupo</string>
+    <string name="mensaje_codigo_articulo">Código</string>
+    <string name="mensaje_actualizar_articulo">Actualizar</string>
+    <string name="mensaje_agregar_articulo">Agregar</string>
+    <string name="mensaje_costo_articulo">Costo</string>
+    <string name="mensaje_cantidad_articulo">Cantidad</string>
+    <string name="mensaje_editar">Editar</string>
+
+    <!-- Perfil -->
+    <string name="perfil_nombre_empleado">Nombre</string>
+    <string name="perfil_correo_empleado">Correo</string>
+    <string name="perfil_permisos_leyenda">Permisos</string>
+    <string name="perfil_permisos_venta">Venta</string>
+    <string name="perfil_permisos_modificas_articulos">Modificar Inventario</string>
+    <string name="perfil_permisos_crear_articulos">Crear Articulos</string>
+    <string name="perfil_permisos_estadisticas">Ver estadisticas</string>
+    <string name="perfil_permisos_proovedoor">Proovedor</string>
+    <string name="perfil_eliminar_articulo">¿Estas seguro que deseas eliminar este empleado?</string>
+
+    <!-- Descripcion de imagenes -->
+    <string name="imagenAplicacion">Imagen de la aplicación</string>
+    <string name="ventanaVenta">Ventana de venta</string>
+    <string name="imagenInventarioVentas">Ventana de inventario y ventas</string>
+    <string name="imagenArticulosMasVendidos">Ventana de articulos mas vendidos</string>
+    <string name="ventanaGraficas">Ventana con graficas de ventas y capital</string>
+    <string name="ventanaSurtido">Ventana de surtido</string>
+    <string name="terminarSurtido">Termina el surtido</string>
+    <string name="agregarArticulo">Llama a ventana de nuevo articulo</string>
+    <string name="imagenArticulo">Imagen del articulo</string>
+    <string name="capturarCodigoBarras">Boton para capturar codigo de barras</string>
+    <string name="botonEliminar">Boton para eliminar</string>
+    <string name="botonAgregar">Boton para agregar</string>
+    <string name="botonCancelar">Boton para cancelar</string>
+    <string name="terminarVenta">Terminar Venta</string>
+    <string name="botonEditar">Botón editar</string>
+    <string name="botonAceptar">Botón aceptar</string>
+    <string name="buscarArticulo">Ventana para buscar artículo</string>
+    <string name="ocultar_contrasena">Ocultar contrasena</string>
+
+    <!-- Descripcion de imagenes -->
+    <string name="permisos_denegado">Necesita permiso para obtener acceso a esta opción.</string>
+    <string name="dialog_foto_titulo">Selecionar método</string>
+    <string name="mensaje_venta_exitos2a">Venta exitosa</string>
+    <string name="mensaje_error">Ha ocurrido un error. Por favor intente de nuevo</string>
+    <string name="mensaje_sesion_expirada">La sesión expiró, inicia sesión de nuevo</string>
+    <string name="numero_idioma">2</string>
+</resources>

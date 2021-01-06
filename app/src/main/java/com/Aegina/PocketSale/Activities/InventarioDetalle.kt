@@ -12,7 +12,6 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -28,6 +27,9 @@ import android.view.WindowManager
 import android.view.animation.TranslateAnimation
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.google.gson.GsonBuilder
@@ -38,13 +40,15 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
 import java.lang.Double.parseDouble
+import java.lang.Exception
 import java.lang.Integer.parseInt
 import java.lang.Long.parseLong
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class InventarioDetalle : AppCompatActivity() {
+class InventarioDetalle : AppCompatActivity(),
+    DialogSeleccionarFoto.DialogSeleccionarFoto {
 
     lateinit var invDetalleId : EditText
     lateinit var invDetalleFoto: ImageView
@@ -64,8 +68,10 @@ class InventarioDetalle : AppCompatActivity() {
     lateinit var invBottonTomarCodigo : ImageButton
     lateinit var invDetalleCancelarEdicion : Button
     lateinit var invDetalleEliminarArticulo : ImageButton
+    lateinit var invDetalleEliminarArticuloCardView : CardView
     var posicionFamilia = 0
     var posicionSubFamilia = 0
+    var dialogSeleccionarFoto = DialogSeleccionarFoto()
 
     lateinit var globalVariable: GlobalClass
 
@@ -87,12 +93,18 @@ class InventarioDetalle : AppCompatActivity() {
     var subFamiliaId = -1
     var posicionPendiente = false
 
+    lateinit var context : Context
+    lateinit var activity: Activity
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
         setContentView(R.layout.activity_inventario_detalle)
 
         globalVariable = applicationContext as GlobalClass
+
+        context = this
+        activity = this
 
         asignarRecursos()
 
@@ -121,6 +133,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
+        dialogSeleccionarFoto.crearDialog(this)
     }
 
     fun asignarRecursos() {
@@ -142,9 +155,10 @@ class InventarioDetalle : AppCompatActivity() {
         invBottonTomarCodigo = findViewById(R.id.dialogFiltroReestablecerCampos)
         invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
         invDetalleEliminarArticulo = findViewById(R.id.invDetalleEliminarArticulo)
+        invDetalleEliminarArticuloCardView = findViewById(R.id.invDetalleEliminarArticuloCardView)
 
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
-        invDetalleEliminarArticulo.visibility = View.INVISIBLE
+        invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -165,12 +179,12 @@ class InventarioDetalle : AppCompatActivity() {
         invBotonAgregarSubFamilia.isEnabled = activar
         invBottonTomarCodigo.isEnabled = false
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
-        invDetalleEliminarArticulo.visibility = View.INVISIBLE
+        invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
 
         if (activar) {
 
             invDetalleCancelarEdicion.visibility = View.VISIBLE
-            invDetalleEliminarArticulo.visibility = View.VISIBLE
+            invDetalleEliminarArticuloCardView.visibility = View.VISIBLE
 
             invDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)
             invDetalleDarDeAlta.setOnClickListener{
@@ -231,27 +245,7 @@ class InventarioDetalle : AppCompatActivity() {
     fun asignarFuncionBotones(esEditar : Boolean){
 
         invDetalleFoto.setOnClickListener{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_DENIED ||
-                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_DENIED
-                ) {
-                    //permission was not enabled
-                    val permission = arrayOf(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    //show popup to request permission
-                    requestPermissions(permission, PERMISSION_CODE)
-                } else {
-                    //permission already granted
-                    openCamera()
-                }
-            } else {
-                //system os is < marshmallow
-                openCamera()
-            }
+            dialogSeleccionarFoto.mostrarDialogoFoto()
         }
         invBotonAgregarFamilia.setOnClickListener{
             showDialogAgregarFamilia()
@@ -394,33 +388,49 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 progressDialog.dismiss()
 
-                val json = response.body()?.string()
-                val gson = GsonBuilder().create()
-                val familia = gson.fromJson(json,FamiliaObjeto::class.java)
+                val body = response.body()?.string()
 
-                listaFamilia.add(familia.nombreFamilia)
-                listaFamiliaCompleta.add(FamiliasSubFamiliasObject(familia.familiaId, familia.nombreFamilia, ArrayList()))
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val familia = gson.fromJson(body,FamiliaObjeto::class.java)
 
-                runOnUiThread {
-                    val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaFamilia)
-                    invDetalleFamiliaSpinner.adapter = adapter
-                    invDetalleFamiliaSpinner.setSelection(listaFamilia.size-1)
+                        listaFamilia.add(familia.nombreFamilia)
+                        listaFamiliaCompleta.add(FamiliasSubFamiliasObject(familia.familiaId, familia.nombreFamilia, ArrayList()))
 
-                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, position)
+                        runOnUiThread {
+                            val adapter = ArrayAdapter(context,
+                                android.R.layout.simple_spinner_item, listaFamilia)
+                            invDetalleFamiliaSpinner.adapter = adapter
+                            invDetalleFamiliaSpinner.setSelection(listaFamilia.size-1)
+
+                            invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                                AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>,view: View, position: Int, id: Long) {
+                                    obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, position)
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // write code to perform some action
+                                }
+                            }
                         }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {
-                            // write code to perform some action
-                        }
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(context,body,activity)
                     }
                 }
             }
@@ -457,37 +467,53 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
+                val body = response.body()?.string()
 
-                val json = response.body()?.string()
-                val gson = GsonBuilder().create()
-                val subFamilia = gson.fromJson(json,SubFamiliaObjeto::class.java)
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val subFamilia = gson.fromJson(body,SubFamiliaObjeto::class.java)
 
-                listaSubFamilia.add(subFamilia.nombreSubFamilia)
-                //listaSubFamiliaCompleta.add(subFamilia)
-                listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.add(subFamilia)
+                        listaSubFamilia.add(subFamilia.nombreSubFamilia)
+                        //listaSubFamiliaCompleta.add(subFamilia)
+                        listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.add(subFamilia)
 
-                runOnUiThread {
-                    val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaSubFamilia)
-                    invDetalleSubFamiliaSpinner.adapter = adapter
-                    invDetalleSubFamiliaSpinner.setSelection(listaSubFamilia.size-1)
+                        runOnUiThread {
+                            val adapter = ArrayAdapter(context,
+                                android.R.layout.simple_spinner_item, listaSubFamilia)
+                            invDetalleSubFamiliaSpinner.adapter = adapter
+                            invDetalleSubFamiliaSpinner.setSelection(listaSubFamilia.size-1)
 
-                    invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            if(listaSubFamilia.size > 0) {
-                                subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
+                            invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                                AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>,
+                                                            view: View, position: Int, id: Long) {
+                                    if(listaSubFamilia.size > 0) {
+                                        subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
+                                    }
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {}
                             }
                         }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {}
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(context,body,activity)
                     }
                 }
+
+                progressDialog.dismiss()
             }
         })
 
@@ -522,56 +548,70 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
+                val body = response.body()?.string()
 
-                val json = response.body()?.string()
-                val gson = GsonBuilder().create()
-                val respuesta = gson.fromJson(json,RespuestaObjeto::class.java)
-
-                if(respuesta.respuesta == 0)
+                if(body != null && body.isNotEmpty())
                 {
-                    listaFamilia.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
-                    listaFamiliaCompleta.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
+                    try
+                    {
+                        val gson = GsonBuilder().create()
 
-                    runOnUiThread {
-                        val adapter = ArrayAdapter(context,
-                            android.R.layout.simple_spinner_item, listaFamilia)
-                        invDetalleFamiliaSpinner.adapter = adapter
+                        val respuesta = gson.fromJson(body,RespuestaObjeto::class.java)
 
-                        if(listaFamilia.size > 0) {
-                            invDetalleFamiliaSpinner.setSelection(0)
+                        if(respuesta.respuesta == 0)
+                        {
+                            listaFamilia.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
+                            listaFamiliaCompleta.removeAt(invDetalleFamiliaSpinner.selectedItemPosition)
 
-                            invDetalleFamiliaSpinner.onItemSelectedListener = object :
-                                AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(
-                                    parent: AdapterView<*>,
-                                    view: View, position: Int, id: Long
-                                ) {
-                                    obtenerSubFamilias(
-                                        context,
-                                        //listaFamiliaCompleta[position].familiaId
-                                        listaFamiliaCompleta[position].SubFamilia,0
-                                    )
-                                }
+                            runOnUiThread {
+                                val adapter = ArrayAdapter(context,
+                                    android.R.layout.simple_spinner_item, listaFamilia)
+                                invDetalleFamiliaSpinner.adapter = adapter
 
-                                override fun onNothingSelected(parent: AdapterView<*>) {
-                                    // write code to perform some action
+                                if(listaFamilia.size > 0) {
+                                    invDetalleFamiliaSpinner.setSelection(0)
+
+                                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                                        AdapterView.OnItemSelectedListener {
+                                        override fun onItemSelected(
+                                            parent: AdapterView<*>,
+                                            view: View, position: Int, id: Long
+                                        ) {
+                                            obtenerSubFamilias(
+                                                context,
+                                                listaFamiliaCompleta[position].SubFamilia,0
+                                            )
+                                        }
+
+                                        override fun onNothingSelected(parent: AdapterView<*>) {
+                                            // write code to perform some action
+                                        }
+                                    }
                                 }
                             }
+
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
                         }
                     }
-
-                }
-                else
-                {
-                    runOnUiThread {
-                        Toast.makeText(context, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(context,body,activity)
                     }
                 }
 
+                progressDialog.dismiss()
             }
         })
 
@@ -606,52 +646,64 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 progressDialog.dismiss()
 
-                val json = response.body()?.string()
+                val body = response.body()?.string()
                 val gson = GsonBuilder().create()
-                val respuesta = gson.fromJson(json,RespuestaObjeto::class.java)
+                val respuesta = gson.fromJson(body,RespuestaObjeto::class.java)
 
-                if(respuesta.respuesta == 0)
+                if(body != null && body.isNotEmpty())
                 {
-                    listaSubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
-                    listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
+                    try
+                    {
+                        if(respuesta.respuesta == 0)
+                        {
+                            listaSubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
+                            listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.removeAt(invDetalleSubFamiliaSpinner.selectedItemPosition)
 
-                    runOnUiThread {
-                        val adapter = ArrayAdapter(context,
-                            android.R.layout.simple_spinner_item, listaSubFamilia)
-                        invDetalleSubFamiliaSpinner.adapter = adapter
+                            runOnUiThread {
+                                val adapter = ArrayAdapter(context,
+                                    android.R.layout.simple_spinner_item, listaSubFamilia)
+                                invDetalleSubFamiliaSpinner.adapter = adapter
 
-                        if(listaSubFamilia.size > 0) {
-                            invDetalleSubFamiliaSpinner.setSelection(0)
+                                if(listaSubFamilia.size > 0) {
+                                    invDetalleSubFamiliaSpinner.setSelection(0)
 
-                            invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
-                                AdapterView.OnItemSelectedListener {
-                                override fun onItemSelected(parent: AdapterView<*>,
-                                                            view: View, position: Int, id: Long) {
-                                    if(listaSubFamilia.size > 0) {
-                                        subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
+                                    invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                                        AdapterView.OnItemSelectedListener {
+                                        override fun onItemSelected(parent: AdapterView<*>,
+                                                                    view: View, position: Int, id: Long) {
+                                            if(listaSubFamilia.size > 0) {
+                                                subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
+                                            }
+                                        }
+
+                                        override fun onNothingSelected(parent: AdapterView<*>) {
+                                            // write code to perform some action
+                                        }
                                     }
-                                }
-
-                                override fun onNothingSelected(parent: AdapterView<*>) {
-                                    // write code to perform some action
                                 }
                             }
                         }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
                     }
-
-                }
-                else
-                {
-                    runOnUiThread {
-                        Toast.makeText(context, respuesta.mensaje, Toast.LENGTH_SHORT).show()
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(context,body,activity)
                     }
                 }
-
             }
         })
     }
@@ -680,6 +732,7 @@ class InventarioDetalle : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                finish()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -733,28 +786,54 @@ class InventarioDetalle : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
+
+        if (result != null)
+        {
             runOnUiThread { invDetalleId.setText(result.contents) }
+        }
+        else
+        {
+            if (resultCode == Activity.RESULT_OK)
+            {
+                try
+                {
+                    val inputStream: InputStream? =
+                        if(requestCode == IMAGE_PICK_CODE)
+                        {
+                            data?.data?.let { contentResolver.openInputStream(it) }
+                        }
+                        else
+                        {
+                            image_uri?.let { contentResolver.openInputStream(it) }
+                        }
 
-        } else {
-            if (resultCode == Activity.RESULT_OK){
-                cambioFoto = true
-
-                try {
-                    val inputStream: InputStream? = image_uri?.let { contentResolver.openInputStream(it) }
+                    cambioFoto = true
                     val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
-                    val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
-                    val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
+
+                    val bitmapCuadrado =
+                        if(bitmap.height > bitmap.width)
+                        {
+                            Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
+                        }
+                        else
+                        {
+                            Bitmap.createBitmap(bitmap,((bitmap.width - bitmap.height)/2),0,bitmap.height,bitmap.height)
+                        }
+
+                    val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 100, 100, true)
+
                     invDetalleFoto.setImageBitmap(resized)
 
                 } catch (e: FileNotFoundException) { }
-                runOnUiThread { image_uri?.let { eliminarFoto(it) } }
+                //runOnUiThread { image_uri?.let { eliminarFoto(it) } }
             }
         }
+
     }
 
-    fun getFilePath(uri : Uri): String{
+    /*fun getFilePath(uri : Uri): String{
         val projection =
             arrayOf(MediaStore.Images.Media.DATA)
 
@@ -775,10 +854,11 @@ class InventarioDetalle : AppCompatActivity() {
         if (fdelete.exists()) {
             if (fdelete.delete()) { return } else { return }
         }
-    }
+    }*/
 
     fun ImageView.loadUrl(url: String) {
-        Picasso.with(context).load(url).into(this)
+        try {Picasso.with(context).load(url).into(this)}
+        catch(e:Exception){}
     }
 
     fun datosVacios() : Boolean {
@@ -792,18 +872,6 @@ class InventarioDetalle : AppCompatActivity() {
         if(invDetalleCantidad.text.toString() == ""){return moverCampo(invDetalleCantidad)}
         if(listaFamiliaCompleta.size == 0){return moverCampoSpinner(invDetalleFamiliaSpinner)}
         if(subFamiliaId == -1 || listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size == 0){return moverCampoSpinner(invDetalleSubFamiliaSpinner)}
-
-        /*if( invDetalleId.text.toString() != "" &&
-            invDetalleNombre.text.toString() != "" &&
-            invDetalleCosto.text.toString() != "" &&
-            invDetalleCantidad.text.toString() != "" &&
-            invDetallePrecio.text.toString() != "" &&
-            subFamiliaId != -1 &&
-            invDetalleNombreDetalle.text.toString() != "" &&
-            listaFamiliaCompleta.size > 0 &&
-            listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size > 0) {
-            respuesta = false
-        }*/
 
         return false
     }
@@ -871,11 +939,36 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
-                if(cambioFoto) darDeAltaFoto()
-                else finish()
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body,Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            progressDialog.dismiss()
+                            if(cambioFoto) darDeAltaFoto()
+                            else finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
             }
         })
     }
@@ -914,11 +1007,36 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
-                if(cambioFoto) darDeAltaFoto()
-                else finish()
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body,Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            progressDialog.dismiss()
+                            if(cambioFoto) darDeAltaFoto()
+                            else finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
             }
         })
     }
@@ -950,10 +1068,37 @@ class InventarioDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body,Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
+
                 progressDialog.dismiss()
-                finish()
             }
         })
     }
@@ -971,44 +1116,63 @@ class InventarioDetalle : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    finish()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 val body = response.body()?.string()
-                val gson = GsonBuilder().create()
-                listaFamiliaCompleta = gson.fromJson(body,Array<FamiliasSubFamiliasObject>::class.java).toMutableList()
 
-                for (i in 0 until listaFamiliaCompleta.size){
-                    listaFamilia.add(listaFamiliaCompleta[i].nombreFamilia)
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        listaFamiliaCompleta = gson.fromJson(body,Array<FamiliasSubFamiliasObject>::class.java).toMutableList()
 
-                    if(posicionPendiente){
-                        for(y in 0 until listaFamiliaCompleta[i].SubFamilia.size){
-                            if(listaFamiliaCompleta[i].SubFamilia[y].subFamiliaId == posicion){
-                                posicionFamilia = i
-                                posicionSubFamilia = y
+                        for (i in 0 until listaFamiliaCompleta.size){
+                            listaFamilia.add(listaFamiliaCompleta[i].nombreFamilia)
+
+                            if(posicionPendiente){
+                                for(y in 0 until listaFamiliaCompleta[i].SubFamilia.size){
+                                    if(listaFamiliaCompleta[i].SubFamilia[y].subFamiliaId == posicion){
+                                        posicionFamilia = i
+                                        posicionSubFamilia = y
+                                    }
+                                }
+                            }
+                        }
+
+                        runOnUiThread {
+                            val adapter = ArrayAdapter(context,
+                                android.R.layout.simple_spinner_item, listaFamilia)
+                            invDetalleFamiliaSpinner.adapter = adapter
+
+                            if(listaFamiliaCompleta.size > 0)
+                                invDetalleFamiliaSpinner.setSelection(posicionFamilia)
+
+                            invDetalleFamiliaSpinner.onItemSelectedListener = object :
+                                AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(parent: AdapterView<*>,
+                                                            view: View, position: Int, id: Long) {
+                                    obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, posicionSubFamilia)
+                                }
+
+                                override fun onNothingSelected(parent: AdapterView<*>) {}
                             }
                         }
                     }
-                }
-
-                runOnUiThread {
-                    val adapter = ArrayAdapter(context,
-                        android.R.layout.simple_spinner_item, listaFamilia)
-                    invDetalleFamiliaSpinner.adapter = adapter
-
-                    if(listaFamiliaCompleta.size > 0)
-                        invDetalleFamiliaSpinner.setSelection(posicionFamilia)
-
-                    invDetalleFamiliaSpinner.onItemSelectedListener = object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>,
-                                                    view: View, position: Int, id: Long) {
-                            obtenerSubFamilias(context,listaFamiliaCompleta[position].SubFamilia, posicionSubFamilia)
-                        }
-
-                        override fun onNothingSelected(parent: AdapterView<*>) {}
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarErrorCerrarVentana(context,body,activity)
                     }
                 }
+
+
             }
         })
 
@@ -1026,10 +1190,6 @@ class InventarioDetalle : AppCompatActivity() {
             val adapter = ArrayAdapter(context,
                 android.R.layout.simple_spinner_item, listaSubFamilia)
             invDetalleSubFamiliaSpinner.adapter = adapter
-/*            adapter = ArrayAdapter(context,
-                android.R.layout.simple_spinner_item, listaSubFamilia)
-            invDetalleSubFamiliaSpinner.adapter = adapter*/
-
             if(listaSubFamilia.size > 0)
                 invDetalleSubFamiliaSpinner.setSelection(posicion)
 
@@ -1049,5 +1209,75 @@ class InventarioDetalle : AppCompatActivity() {
 
             posicionPendiente = false
         }
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    override fun abrirGaleria()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_DENIED)
+            {
+                //permission denied
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                //show popup to request runtime permission
+                requestPermissions(permissions, PERMISSION_CODE)
+            }
+            else{
+                //permission already granted
+                pickImageFromGallery()
+            }
+        }
+        else
+        {
+            //system OS is < Marshmallow
+            pickImageFromGallery()
+        }
+    }
+
+    override fun abrirCamara() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED
+            )
+            {
+                //permission was not enabled
+                val permission = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                //show popup to request permission
+                requestPermissions(permission, PERMISSION_CODE)
+            }
+            else
+            {
+                //permission already granted
+                openCamera()
+            }
+        }
+        else
+        {
+            //system os is < marshmallow
+            openCamera()
+        }
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
     }
 }

@@ -1,5 +1,6 @@
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -7,8 +8,11 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.EmpleadoObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -24,8 +28,9 @@ class Perfil : AppCompatActivity() {
     lateinit var mViewEmpleados : RecyclerViewEmpleado
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
-    lateinit var context: Context
-    lateinit var perfilAgregarEmpleado: Button
+    lateinit var context : Context
+    lateinit var activity: Activity
+    lateinit var perfilAgregarEmpleado: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +40,7 @@ class Perfil : AppCompatActivity() {
         globalVariable = this.applicationContext as GlobalClass
 
         context = this
+        activity = this
 
         asignarRecursos()
         asignarBotones()
@@ -81,19 +87,32 @@ class Perfil : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 val body = response.body()?.string()
 
                 if(body != null && body.isNotEmpty()) {
-                    val gson = GsonBuilder().create()
-                    val model = gson.fromJson(body, Array<EmpleadoObject>::class.java).toList()
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val model = gson.fromJson(body, Array<EmpleadoObject>::class.java).toList()
 
-                    runOnUiThread {
-                        mViewEmpleados.RecyclerAdapter(model.toMutableList(), context)
-                        mViewEmpleados.notifyDataSetChanged()
+                        runOnUiThread {
+                            mViewEmpleados.RecyclerAdapter(model.toMutableList(), context)
+                            mViewEmpleados.notifyDataSetChanged()
+                        }
                     }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(context,body,activity)
+                    }
+
                 }
 
                 progressDialog.dismiss()
@@ -101,11 +120,6 @@ class Perfil : AppCompatActivity() {
             }
         })
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        obtenerEmpleados()
     }
 
 }

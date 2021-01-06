@@ -13,6 +13,7 @@ import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadisticaArticulo.ViewHolder>() {
 
@@ -46,12 +47,10 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val estadisticaArticuloTitulo = view.findViewById(R.id.itemEstadisticaArticuloTitulo) as TextView
-        val estadisticaArticuloPrecio = view.findViewById(R.id.itemEstadisticaArticuloPrecio) as TextView
+        //val estadisticaArticuloPrecio = view.findViewById(R.id.itemEstadisticaArticuloPrecio) as TextView
         val estadisticaArticuloDescripcion = view.findViewById(R.id.itemEstadisticaArticuloDescripcion) as TextView
         val estadisticaArticuloCantidad = view.findViewById(R.id.itemEstadisticaArticuloCantidad) as TextView
-        val estadisticaArticuloTotal = view.findViewById(R.id.itemEstadisticaArticuloTotal) as TextView
-//        val itemSurtidoArticuloCantidadText = view.findViewById(R.id.itemSurtidoArticuloCantidadText) as TextView
-//        val itemSurtidoArticuloTotalText = view.findViewById(R.id.itemSurtidoArticuloTotalText) as TextView
+        //val estadisticaArticuloTotal = view.findViewById(R.id.itemEstadisticaArticuloTotal) as TextView
         val estadisticaArticuloFoto = view.findViewById(R.id.itemEstadisticaArticuloFoto) as ImageView
         val estadisticaArticuloContenedor = view.findViewById(R.id.estadisticaArticuloContenedor) as LinearLayout
 
@@ -60,12 +59,12 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
         fun bind(articulo: EstadisticaArticuloObject) {
             estadisticaArticuloTitulo.text = articulo._id.nombreArticulo
             var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + articulo._id.precioArticulo
-            estadisticaArticuloPrecio.text = textTmp
+            //estadisticaArticuloPrecio.text = textTmp
             estadisticaArticuloDescripcion.text = articulo._id.descripcionArticulo
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
+            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + System.getProperty ("line.separator") +articulo.cantidad.toString()
             estadisticaArticuloCantidad.text = textTmp
             textTmp = itemView.context.getString(R.string.venta_total) + articulo.total.toString()
-            estadisticaArticuloTotal.text = textTmp
+            //estadisticaArticuloTotal.text = textTmp
             val urls = Urls()
             estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
@@ -78,7 +77,8 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
         }
 
         fun ImageView.loadUrl(url: String) {
-            Picasso.with(context).load(url).into(this)
+            try {Picasso.with(context).load(url).into(this)}
+            catch(e: Exception){}
         }
     }
 }

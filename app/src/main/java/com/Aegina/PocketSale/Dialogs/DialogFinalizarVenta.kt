@@ -1,5 +1,6 @@
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -21,19 +23,20 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
     lateinit var finalizarVenta: DialogFinalizarVenta
 
     fun crearDialog(context : Context, totalVenta : Float){
-        val dialog = Dialog(context)
+        val dialogFinalizarVenta = Dialog(context)
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_terminar_venta)
+        dialogFinalizarVenta.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogFinalizarVenta.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+        dialogFinalizarVenta.setCancelable(false)
+        dialogFinalizarVenta.setContentView(R.layout.dialog_terminar_venta)
 
         finalizarVenta = context as DialogFinalizarVenta
 
-        val dialogTotalVenta = dialog.findViewById<View>(R.id.dialogTotalVenta) as TextView
-        val dialogTotalPago = dialog.findViewById<View>(R.id.dialogTotalPago) as EditText
-        val dialogTotalCambio = dialog.findViewById<View>(R.id.dialogTotalCambio) as TextView
-        val dialogTerminarVentaCancelar = dialog.findViewById<View>(R.id.dialogTerminarVentaCancelar) as Button
-        val dialogTerminarVentaAceptar = dialog.findViewById<View>(R.id.dialogTerminarVentaAceptar) as Button
+        val dialogTotalVenta = dialogFinalizarVenta.findViewById<View>(R.id.dialogTotalVenta) as TextView
+        val dialogTotalPago = dialogFinalizarVenta.findViewById<View>(R.id.dialogTotalPago) as EditText
+        val dialogTotalCambio = dialogFinalizarVenta.findViewById<View>(R.id.dialogTotalCambio) as TextView
+        val dialogTerminarVentaCancelar = dialogFinalizarVenta.findViewById<View>(R.id.dialogTerminarVentaCancelar) as Button
+        val dialogTerminarVentaAceptar = dialogFinalizarVenta.findViewById<View>(R.id.dialogTerminarVentaAceptar) as Button
 
         dialogTotalVenta.text = totalVenta.toString()
 
@@ -55,19 +58,19 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
         dialogTerminarVentaCancelar.setOnClickListener {
             val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-            dialog.dismiss()
+            dialogFinalizarVenta.dismiss()
         }
 
         dialogTerminarVentaAceptar.setOnClickListener {
             if(dialogTotalPago.text.isNotEmpty()){
                 if(parseFloat(dialogTotalPago.text.toString()) >= totalVenta){
-                    dialog.dismiss()
+                    dialogFinalizarVenta.dismiss()
                     finalizarVenta.finalizarVenta(parseFloat(dialogTotalPago.text.toString()) - totalVenta)
                 }
             }
         }
 
-        dialog.show()
+        dialogFinalizarVenta.show()
     }
 
     interface DialogFinalizarVenta {

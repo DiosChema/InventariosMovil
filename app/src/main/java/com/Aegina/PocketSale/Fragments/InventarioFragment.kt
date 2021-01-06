@@ -160,10 +160,4 @@ class InventarioFragment : Fragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        dialogAgregarArticulos.buscarArticulos()
-    }
-
-
 }

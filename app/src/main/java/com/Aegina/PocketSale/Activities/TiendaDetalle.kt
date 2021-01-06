@@ -9,13 +9,11 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
@@ -23,8 +21,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.RespuestaLogin
+import com.Aegina.PocketSale.Objets.Respuesta
 import com.Aegina.PocketSale.Objets.TiendaObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
@@ -34,18 +36,19 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
+import java.lang.Exception
 import java.lang.Integer.parseInt
 import java.util.*
 
-class TiendaDetalle : AppCompatActivity() {
+class TiendaDetalle : AppCompatActivity(),
+    DialogSeleccionarFoto.DialogSeleccionarFoto {
 
     lateinit var globalVariable: GlobalClass
-    lateinit var context: Context
+    lateinit var context : Context
+    lateinit var activity: Activity
     private val urls: Urls = Urls()
 
     var image_uri: Uri? = null
-    private val PERMISSION_CODE = 1000
-    private val IMAGE_CAPTURE_CODE = 1001
     var cambioFoto : Boolean = false
 
     lateinit var tiendaDetalleNombre : EditText
@@ -55,7 +58,7 @@ class TiendaDetalle : AppCompatActivity() {
     lateinit var tiendaDetalleEditar : Button
     lateinit var tiendaDetalleCancelarEdicion : Button
     lateinit var tiendaObjeto : TiendaObjeto
-
+    var dialogSeleccionarFoto = DialogSeleccionarFoto()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class TiendaDetalle : AppCompatActivity() {
         globalVariable = this.applicationContext as GlobalClass
 
         context = this
+        activity = this
 
         val SDK_INT = Build.VERSION.SDK_INT
         if (SDK_INT > 8) {
@@ -82,12 +86,12 @@ class TiendaDetalle : AppCompatActivity() {
         habilitarEdicion(false)
 
         asignarFuncionBotones()
+        dialogSeleccionarFoto.crearDialog(this)
     }
 
     private fun obtenerDatosTienda() {
         val url = urls.url+urls.endPointUsers.endPointObtenerDatosTienda +
                 "?token=" + globalVariable.usuario!!.token
-
 
         val client = OkHttpClient()
 
@@ -103,18 +107,38 @@ class TiendaDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response) {
-                val json = response.body()!!.string()
-                val gson = GsonBuilder().create()
-
                 runOnUiThread()
                 {
-                    tiendaObjeto = gson.fromJson(json, TiendaObjeto::class.java)
-                    llenarCampos()
-                    progressDialog.dismiss()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    finish()
                 }
+            }
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body()!!.string()
 
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        tiendaObjeto = gson.fromJson(body, TiendaObjeto::class.java)
+
+                        if(tiendaObjeto.fechaLimiteSuscripcion == null)
+                        {
+                            throw Exception("")
+                        }
+                        runOnUiThread()
+                        {
+                            llenarCampos()
+                            progressDialog.dismiss()
+                        }
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarErrorCerrarVentana(context,body,activity)
+                    }
+                }
             }
         })
     }
@@ -176,18 +200,38 @@ class TiendaDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                val json = response.body()!!.string()
+                val body = response.body()!!.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+                        if(respuesta.status == 0)
+                        {
+                            if(cambioFoto)
+                            {
+                                darDeAltaFoto()
+                            }
+                            else
+                            {
+                                finish()
+                            }
+                        }
+
+                    }
+                    catch(e:Exception){}
+                }
+
                 progressDialog.dismiss()
-                if(cambioFoto)
-                {
-                    darDeAltaFoto()
-                }
-                else
-                {
-                    finish()
-                }
+
             }
         })
     }
@@ -198,33 +242,14 @@ class TiendaDetalle : AppCompatActivity() {
         tiendaDetalleNumeroTienda.setText(parseInt(tiendaObjeto.tienda).toString())
         tiendaDetalleSuscricion.setText(tiendaObjeto.fechaLimiteSuscripcion)
         cambioFoto = false
-        tiendaDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+tiendaObjeto.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&empleado=123")
+        tiendaDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
     }
 
     private fun asignarFuncionBotones()
     {
-        tiendaDetalleFoto.setOnClickListener{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_DENIED ||
-                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_DENIED
-                ) {
-                    //permission was not enabled
-                    val permission = arrayOf(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    //show popup to request permission
-                    requestPermissions(permission, PERMISSION_CODE)
-                } else {
-                    //permission already granted
-                    openCamera()
-                }
-            } else {
-                //system os is < marshmallow
-                openCamera()
-            }
+        tiendaDetalleFoto.setOnClickListener()
+        {
+            dialogSeleccionarFoto.mostrarDialogoFoto()
         }
 
         if(globalVariable.usuario!!.permisosAdministrador)
@@ -238,7 +263,8 @@ class TiendaDetalle : AppCompatActivity() {
         }
     }
 
-    fun darDeAltaFoto(){
+    fun darDeAltaFoto()
+    {
         val drawable = tiendaDetalleFoto.drawable
 
         val bitmap: Bitmap = (drawable as BitmapDrawable).bitmap
@@ -251,7 +277,7 @@ class TiendaDetalle : AppCompatActivity() {
                 globalVariable.usuario!!.token)
             .addFormDataPart(
                 "image",
-                "t"+tiendaObjeto.tienda+".jpeg",
+                "t"+globalVariable.usuario!!.tienda+".jpeg",
                 RequestBody.create(MEDIA_TYPE_JPEG, file)
             ).build()
         val request = Request.Builder()
@@ -262,6 +288,7 @@ class TiendaDetalle : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                finish()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -296,49 +323,67 @@ class TiendaDetalle : AppCompatActivity() {
         //camera intent
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+        startActivityForResult(cameraIntent, PERMISSION_CODE)
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (resultCode == Activity.RESULT_OK)
         {
             try
             {
+                val inputStream: InputStream? =
+                    if(requestCode == IMAGE_PICK_CODE)
+                    {
+                        data?.data?.let { contentResolver.openInputStream(it) }
+                    }
+                    else
+                    {
+                        image_uri?.let { contentResolver.openInputStream(it) }
+                    }
+
                 cambioFoto = true
-                val inputStream: InputStream? = image_uri?.let { contentResolver.openInputStream(it) }
                 val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
-                val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
-                val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
+
+                val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 200) / bitmap.height, 200, true)
                 tiendaDetalleFoto.setImageBitmap(resized)
 
             } catch (e: FileNotFoundException) { }
-            runOnUiThread { image_uri?.let { eliminarFoto(it) } }
+            //runOnUiThread { image_uri?.let { eliminarFoto(it) } }
         }
 
-    }
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE)
+        {
+            cambioFoto = true
 
-    fun eliminarFoto(uri : Uri){
-        val fdelete = File(getFilePath(uri))
+            val inputStream: InputStream? = data?.data?.let { contentResolver.openInputStream(it) }
+            val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
 
-        if (fdelete.exists()) {
-            if (fdelete.delete()) { return } else { return }
+            if(bitmap.width > (bitmap.height * 6))
+            {
+                return
+            }
+
+            val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 200) / bitmap.height, 200, true)
+
+            tiendaDetalleFoto.setImageBitmap(resized)
         }
-    }
 
-    fun getFilePath(uri : Uri): String{
-        val projection =
-            arrayOf(MediaStore.Images.Media.DATA)
-
-        val cursor: Cursor? = contentResolver.query(uri, projection, null, null, null)
-        if (cursor != null) {
-            cursor.moveToFirst()
-            val columnIndex: Int = cursor.getColumnIndex(projection[0])
-            val picturePath: String = cursor.getString(columnIndex) // returns null
-            cursor.close()
-            return picturePath
-        }
-        return ""
     }
 
     private fun asignarRecursos() {
@@ -357,8 +402,97 @@ class TiendaDetalle : AppCompatActivity() {
         tiendaDetalleCancelarEdicion.visibility = View.INVISIBLE
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,grantResults: IntArray) {
+        when(requestCode)
+        {
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    when(permissions[0])
+                    {
+                        "android.permission.READ_EXTERNAL_STORAGE" ->
+                        {
+                            pickImageFromGallery()
+                        }
+                        "android.permission.CAMERA" ->
+                        {
+                            openCamera()
+                        }
+                        "android.permission.WRITE_EXTERNAL_STORAGE" ->
+                        {
+                            openCamera()
+                        }
+                    }
+                }
+                else
+                {
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    override fun abrirGaleria()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_DENIED)
+            {
+                //permission denied
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                //show popup to request runtime permission
+                requestPermissions(permissions, PERMISSION_CODE)
+            }
+            else{
+                //permission already granted
+                pickImageFromGallery()
+            }
+        }
+        else
+        {
+            //system OS is < Marshmallow
+            pickImageFromGallery()
+        }
+    }
+
+    override fun abrirCamara() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED
+            )
+            {
+                //permission was not enabled
+                val permission = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                //show popup to request permission
+                requestPermissions(permission, PERMISSION_CODE)
+            }
+            else
+            {
+                //permission already granted
+                openCamera()
+            }
+        }
+        else
+        {
+            //system os is < marshmallow
+            openCamera()
+        }
+    }
+
     fun ImageView.loadUrl(url: String) {
-        Picasso.with(context).load(url).into(this)
+        try {Picasso.with(context).load(url).into(this)}
+        catch(e: Exception){}
     }
 }
 

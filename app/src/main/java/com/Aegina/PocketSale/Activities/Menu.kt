@@ -7,11 +7,15 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.Aegina.PocketSale.Objets.GlobalClass
+import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
+import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 class Menu : AppCompatActivity() {
 
     lateinit var globalVariable: GlobalClass
+    private val urls: Urls = Urls()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,11 @@ class Menu : AppCompatActivity() {
     }
 
     fun asignarBotones(){
+
+        val logoTienda = findViewById<ImageView>(R.id.Tienda)
+
+        logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
+
         val buttonVenta = findViewById<ImageView>(R.id.Venta)
         buttonVenta.setOnClickListener()
         {
@@ -102,5 +111,10 @@ class Menu : AppCompatActivity() {
                 Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    fun ImageView.loadUrl(url: String) {
+        try {Picasso.with(context).load(url).into(this)}
+        catch(e:Exception){}
     }
 }

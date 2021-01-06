@@ -18,31 +18,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.TiendaDetalle"></activity>
-        <activity android:name=".Activities.MenuPerfil" />
-        <activity android:name=".Activities.PerfilDetalle" />
-        <activity android:name=".Activities.Perfil" />
-        <activity android:name=".Activities.Suscripcion" />
-        <activity android:name=".Dialogs.DialogFecha" />
+        <activity android:name=".Activities.TiendaDetalle" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MenuPerfil" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.PerfilDetalle" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Perfil" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Suscripcion" android:screenOrientation="portrait"/>
         <activity
             android:name=".Fragments.EstadisticaVentaFragment"
+            android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
         <activity
             android:name=".Fragments.EstadisticaInventarioFragment"
+            android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
-        <activity android:name=".Activities.EstadisticasPager" />
-        <activity android:name=".Activities.Surtido" />
-        <activity android:name=".Activities.EstadisticaInventario" />
-        <activity android:name=".Activities.EstadisticasVentas" />
-        <activity android:name=".Activities.EstadisticaArticulo" />
-        <activity android:name=".Activities.CrearCuenta" />
-        <activity android:name=".Activities.Menu" />
-        <activity android:name=".Activities.VentaDetalle" />
-        <activity android:name=".Activities.Venta" />
-        <activity android:name=".Activities.InventarioDetalle" />
-        <activity android:name=".Activities.InventarioPager" />
-        <activity android:name=".Activities.SurtidoPager" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".Activities.EstadisticasPager" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.EstadisticaInventario" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.EstadisticaArticulo" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.CrearCuenta" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Menu" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.VentaDetalle" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Venta" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.InventarioDetalle" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.InventarioPager" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.SurtidoPager" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -16,6 +16,7 @@ import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 
 class RecyclerViewEmpleado : RecyclerView.Adapter<RecyclerViewEmpleado.ViewHolder>() {
@@ -78,11 +79,12 @@ class RecyclerViewEmpleado : RecyclerView.Adapter<RecyclerViewEmpleado.ViewHolde
             }
 
             //empleadoFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token)
-            empleadoFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&empleado=123")
+            empleadoFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
         }
 
         fun ImageView.loadUrl(url: String) {
-            Picasso.with(context).load(url).into(this)
+            try {Picasso.with(context).load(url).into(this)}
+            catch(e: Exception){}
         }
     }
 }

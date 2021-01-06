@@ -11,6 +11,7 @@ data class RespuestaLogin(
 data class datosUsuario(
     var token:String,
     var user:String,
+    var tienda:Int,
     var permisosAdministrador: Boolean,
     var permisosVenta: Boolean,
     var permisosModificarInventario: Boolean,

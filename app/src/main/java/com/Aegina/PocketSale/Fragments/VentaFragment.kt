@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
@@ -28,7 +30,7 @@ import kotlin.collections.ArrayList
 class VentaFragment : Fragment() {
 
     var listaTmp:MutableList<VentasObjeto> = ArrayList()
-    val context = activity;
+    val context = activity
 
     lateinit var mViewVentas : RecyclerViewVentas
     lateinit var mRecyclerView : RecyclerView
@@ -72,26 +74,13 @@ class VentaFragment : Fragment() {
     fun asignarBotones(){
         fechaInicialButton = fragmentBuscarPorFechaInicio
         fechaInicialButton.setOnClickListener {
-            showDialogFechaInicial()
+            dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
         }
 
         fechaFinalButton = fragmentBuscarPorFechaFinal
         fechaFinalButton.setOnClickListener {
-            showDialogFechaFinal()
+            dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
         }
-
-        /*val fragmentVentasBuscarHoy = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarHoy)
-        fragmentVentasBuscarHoy.setOnClickListener {
-            asignarFechaHoy()
-        }
-        val fragmentVentasBuscarSemana = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarSemana)
-        fragmentVentasBuscarSemana.setOnClickListener {
-            asignarFechaSemana()
-        }
-        val fragmentVentasBuscarMes = activity!!.findViewById<Button>(R.id.fragmentVentasBuscarMes)
-        fragmentVentasBuscarMes.setOnClickListener {
-            asignarFechaMes()
-        }*/
     }
 
     fun asignarFechaHoy(){
@@ -156,132 +145,39 @@ class VentaFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
                 var body = response.body()?.string()
 
                 if(body != null && body.isNotEmpty()) {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
 
-                    val gson = GsonBuilder().create()
-                    var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
-
-                    activity?.runOnUiThread {
-                        mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
-                        mViewVentas.notifyDataSetChanged()
-                        progressDialog.dismiss()
+                        activity?.runOnUiThread {
+                            mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
+                            mViewVentas.notifyDataSetChanged()
+                            progressDialog.dismiss()
+                        }
                     }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(activity!!.applicationContext,body,activity!!)
+                    }
+
+
                 }
 
                 progressDialog.dismiss()
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        obtenerVentas()
-    }
-
-    fun showDialogFechaInicial() {
-        dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
-        /*val dialog: AlertDialog = AlertDialog.Builder(activity).create()
-        val inflater = activity!!.layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
-        dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
-
-        var calendar = Calendar.getInstance()
-        calendar.time = fechaInicial
-        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
-
-        dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2020").time
-        dialogFechaDatePicker.maxDate = fechaFinal.time
-
-        dialogFechaTitulo.text = getString(R.string.dialog_fecha_inicial)
-
-        dialogFechaBotonAceptar.setOnClickListener {
-            val day: Int = dialogFechaDatePicker.dayOfMonth
-            val month: Int = dialogFechaDatePicker.month
-            val year: Int = dialogFechaDatePicker.year
-
-            var calendarTmp = Calendar.getInstance()
-            calendarTmp.set(year, month, day)
-            calendarTmp = asignarHoraCalendar(calendarTmp, 0, 0, 0)
-            calendarTmp.timeZone = Calendar.getInstance().timeZone;
-
-            fechaInicial = calendarTmp.time
-            asignarFechaInicial()
-            dialog.dismiss()
-
-            obtenerVentas()
-        }
-
-        dialogFechaBotonCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()*/
-    }
-
-    fun showDialogFechaFinal() {
-        dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
-        /*val dialog: AlertDialog = AlertDialog.Builder(activity).create()
-        val inflater = activity!!.layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
-        dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
-
-        var calendar = Calendar.getInstance()
-        calendar.time = fechaFinal
-        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
-
-        dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        var currentTime = Calendar.getInstance()
-
-        currentTime = asignarHoraCalendar(currentTime, 0, 0, 0)
-
-        dialogFechaDatePicker.minDate = fechaInicial.time
-        dialogFechaDatePicker.maxDate = currentTime.time.time
-
-
-        dialogFechaTitulo.text = getString(R.string.dialog_fecha_final)
-
-        dialogFechaBotonAceptar.setOnClickListener {
-
-            val day: Int = dialogFechaDatePicker.dayOfMonth
-            val month: Int = dialogFechaDatePicker.month
-            val year: Int = dialogFechaDatePicker.year
-
-            var calendarTmp = Calendar.getInstance()
-            calendarTmp.set(year, month, day)
-            calendarTmp.timeZone = Calendar.getInstance().timeZone;
-            calendarTmp = asignarHoraCalendar(calendarTmp, 23, 59, 59)
-
-            fechaFinal = calendarTmp.time
-
-            asignarFechaFinal()
-            dialog.dismiss()
-
-            obtenerVentas()
-        }
-
-        dialogFechaBotonCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()*/
     }
 
     fun asignarFechaInicial(){

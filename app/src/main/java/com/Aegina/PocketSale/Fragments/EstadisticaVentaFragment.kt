@@ -10,8 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.EstadisticaVentasObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -105,32 +107,46 @@ class EstadisticaVentaFragment() : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
 
                 val body = response.body()?.string()
-                val gson = GsonBuilder().create()
 
-                val model = gson.fromJson(body, EstadisticaVentasObject::class.java)
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val model = gson.fromJson(body, EstadisticaVentasObject::class.java)
 
-                activity?.runOnUiThread {
-                    estadisticaVentaTotalArticulosText.text = (model.totalVentas - model.totalCostos).toString()
-                    estadisticaVentaTotalCostosText.text = model.totalCostos.toString()
-                    estadisticaVentaTotalText.text = model.totalVentas.toString()
+                        activity?.runOnUiThread {
+                            estadisticaVentaTotalArticulosText.text = (model.totalVentas - model.totalCostos).toString()
+                            estadisticaVentaTotalCostosText.text = model.totalCostos.toString()
+                            estadisticaVentaTotalText.text = model.totalVentas.toString()
 
-                    pieChart.clearChart()
+                            pieChart.clearChart()
 
-                    pieChart.addPieSlice(PieModel(
-                            "Total Articulos", (model.totalVentas - model.totalCostos).toFloat(),
-                            Color.parseColor("#228B22")))
+                            pieChart.addPieSlice(PieModel(
+                                "Total Articulos", (model.totalVentas - model.totalCostos).toFloat(),
+                                Color.parseColor("#228B22")))
 
-                    pieChart.addPieSlice(PieModel(
-                            "Total Costo", model.totalCostos.toFloat(),
-                            Color.parseColor("#FF0000")))
+                            pieChart.addPieSlice(PieModel(
+                                "Total Costo", model.totalCostos.toFloat(),
+                                Color.parseColor("#FF0000")))
 
-                    pieChart.startAnimation()
+                            pieChart.startAnimation()
+                        }
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(activity!!.applicationContext,body,activity!!)
+                    }
                 }
             }
         })

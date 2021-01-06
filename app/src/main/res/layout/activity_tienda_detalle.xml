@@ -44,37 +44,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginTop="15dp">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_view"
                 android:layout_gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="400dp">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                card_view:cardCornerRadius="40dp">
 
                 <ImageView
                     android:id="@+id/tiendaDetalleFoto"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/logopockets"
                     app:srcCompat="@android:drawable/ic_menu_camera"
                     android:adjustViewBounds="true"
                     android:background= "@color/transparent"
                     android:contentDescription="@string/imagenArticulo"/>
 
             </androidx.cardview.widget.CardView>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
         </LinearLayout>
 

@@ -7,16 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
-import com.Aegina.PocketSale.Objets.ActualizarInventarioObject
-import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.InventarioObjeto
-import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtido
 import com.google.gson.GsonBuilder
@@ -66,7 +65,10 @@ class SurtidoFragment : Fragment() {
 
         val imgButtonSurtidoConfirmarArticulos = surtidoConfirmarArticulos
         imgButtonSurtidoConfirmarArticulos.setOnClickListener{
-            actualizarInventario()
+            if(listaArticulos.size > 0)
+            {
+                actualizarInventario()
+            }
         }
 
         val imgButtonSurtidoAgregarCodigo = surtidoAgregarArticulo
@@ -149,14 +151,40 @@ class SurtidoFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response)
             {
-                progressDialog.dismiss()
-                activity?.runOnUiThread {
-                    listaArticulos.clear()
-                    mViewEstadisticaArticulo.notifyDataSetChanged()
+                var body = response.body()?.string()
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+                        if(respuesta.status == 0)
+                        {
+                            activity?.runOnUiThread()
+                            {
+                                listaArticulos.clear()
+                                mViewEstadisticaArticulo.notifyDataSetChanged()
+                                actualizarCantidadCosto()
+                            }
+                        }
+                        else
+                        {
+
+                            val errores = Errores()
+                            errores.procesarError(activity!!.applicationContext,body,activity!!)
+                        }
+                    }
+                    catch(e:Exception){}
+
                 }
+                progressDialog.dismiss()
             }
         })
     }
@@ -185,26 +213,6 @@ class SurtidoFragment : Fragment() {
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
-        /*var articuloNuevo = true
-
-        for (i in 0 until listaArticulos.size)
-        {
-            if(listaArticulos[i].idArticulo == articulo.idArticulo)
-            {
-                listaArticulos[i].cantidadArticulo++
-                articuloNuevo = false
-            }
-        }
-
-        if(articuloNuevo)
-        {
-            listaArticulos.add(articulo)
-        }
-
-        activity?.runOnUiThread{
-            mViewEstadisticaArticulo.notifyDataSetChanged()
-            actualizarCantidadCosto()
-        }*/
     }
 
     fun obtenerNumero(numero : Int, posicion : Int) {
@@ -225,41 +233,10 @@ class SurtidoFragment : Fragment() {
                     listaArticulos.add(articulosCarrito[i])
                 }
             }
-
-            //listaArticulosVenta.addAll(articulosCarrito)
-
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
-
-        /*activity?.runOnUiThread{
-            listaArticulos.addAll(articulos)
-            mViewEstadisticaArticulo.notifyDataSetChanged()
-            actualizarCantidadCosto()
-        }*/
     }
-
-    /*override fun abrirCamara() {
-        val intentIntegrator = IntentIntegrator(context as Surtido)
-        intentIntegrator.setBeepEnabled(false)
-        intentIntegrator.setCameraId(0)
-        intentIntegrator.setPrompt("SCAN")
-        intentIntegrator.setBarcodeImageEnabled(false)
-        intentIntegrator.initiateScan()
-    }*/
-
-    /*override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
-        val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-        if (result != null) {
-            if (result.contents != null) {
-                runOnUiThread {
-                    dialogoAgregarArticulos.dialogAgregarArticuloCodigo.setText(java.lang.Long.parseLong(result.contents).toString())
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }*/
 
     fun buscarArticulo(codigo : Long){
         dialogoAgregarArticulos.buscarArticulo(codigo)

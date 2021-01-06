@@ -2,14 +2,18 @@
 
 package com.Aegina.PocketSale.Fragments
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.EstadisticaInventarioObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -30,12 +34,18 @@ class EstadisticaInventarioFragment : Fragment() {
     lateinit var estadisticaInventarioTotalCostosText : TextView
     lateinit var estadisticaInventarioTotalText : TextView
 
+    lateinit var contextTmp : Context
+    lateinit var activityTmp: Activity
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_estadistica_inventario_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         globalVariable = activity?.applicationContext as GlobalClass
+
+        contextTmp = activity!!.applicationContext
+
 
         asignarRecursos()
     }
@@ -66,39 +76,53 @@ class EstadisticaInventarioFragment : Fragment() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(contextTmp, contextTmp.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
                 progressDialog.dismiss()
 
                 val body = response.body()?.string()
-                val gson = GsonBuilder().create()
 
-                val modelTmp = gson.fromJson(body, Array<EstadisticaInventarioObject>::class.java)
-                val Model = modelTmp[0]
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
 
-                activity?.runOnUiThread {
+                        val modelTmp = gson.fromJson(body, Array<EstadisticaInventarioObject>::class.java)
+                        val Model = modelTmp[0]
 
-                    estadisticaInventarioTotalArticulosText.text = (Model.totalCostoVenta - Model.totalCostoProovedor).toString()
-                    estadisticaInventarioTotalCostosText.text = Model.totalCostoProovedor.toString()
-                    estadisticaInventarioTotalText.text = Model.totalCostoVenta.toString()
+                        activity?.runOnUiThread {
 
-                    pieChart.addPieSlice(
-                        PieModel(
-                            "Total Articulos", (Model.totalCostoVenta - Model.totalCostoProovedor).toFloat(),
-                            Color.parseColor("#228B22")
-                        )
-                    )
-                    pieChart.addPieSlice(
-                        PieModel(
-                            "Total Costo", Model.totalCostoProovedor.toFloat(),
-                            Color.parseColor("#FF0000")
-                        )
-                    )
+                            estadisticaInventarioTotalArticulosText.text = (Model.totalCostoVenta - Model.totalCostoProovedor).toString()
+                            estadisticaInventarioTotalCostosText.text = Model.totalCostoProovedor.toString()
+                            estadisticaInventarioTotalText.text = Model.totalCostoVenta.toString()
 
-                    pieChart.startAnimation()
+                            pieChart.addPieSlice(
+                                PieModel(
+                                    "Total Articulos", (Model.totalCostoVenta - Model.totalCostoProovedor).toFloat(),
+                                    Color.parseColor("#228B22")
+                                )
+                            )
+                            pieChart.addPieSlice(
+                                PieModel(
+                                    "Total Costo", Model.totalCostoProovedor.toFloat(),
+                                    Color.parseColor("#FF0000")
+                                )
+                            )
+
+                            pieChart.startAnimation()
+                        }
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarError(activity!!.applicationContext,body,activity!!)
+                    }
                 }
-
             }
         })
 

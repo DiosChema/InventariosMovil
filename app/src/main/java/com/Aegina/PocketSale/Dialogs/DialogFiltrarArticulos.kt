@@ -1,5 +1,6 @@
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -7,6 +8,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.Aegina.PocketSale.Objets.*
@@ -60,6 +62,7 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
         dialogFiltrarArticulos = Dialog(context)
 
         dialogFiltrarArticulos.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogFiltrarArticulos.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
         dialogFiltrarArticulos.setCancelable(false)
         dialogFiltrarArticulos.setContentView(R.layout.dialog_filtro_articulos)
 
@@ -130,8 +133,6 @@ class DialogFiltrarArticulos : AppCompatDialogFragment() {
                 maxPrecio = parseDouble(dialogFiltroPrecioMaximo.text.toString())
 
             buscarArticulos(familiaIdTmp,subFamiliaIdTmp,minCantidad,maxCantidad,minPrecio,maxPrecio,nombre)
-
-            //agregarFiltro.filtrosArticulos(familiaIdTmp,subFamiliaIdTmp,minCantidad,maxCantidad,minPrecio,maxPrecio,nombre)
 
             dialogFiltrarArticulos.dismiss()
 

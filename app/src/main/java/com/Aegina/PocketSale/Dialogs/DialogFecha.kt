@@ -1,9 +1,11 @@
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.ActionBar
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
@@ -45,6 +47,7 @@ class DialogFecha : AppCompatDialogFragment(){
         contextDialog = context
 
         dialogFecha.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogFecha.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
         dialogFecha.setCancelable(false)
         dialogFecha.setContentView(R.layout.dialog_fecha)
 

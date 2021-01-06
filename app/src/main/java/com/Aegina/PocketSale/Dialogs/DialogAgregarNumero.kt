@@ -1,11 +1,13 @@
 package com.Aegina.PocketSale.Dialogs
 
+import android.app.ActionBar
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -18,41 +20,39 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
     lateinit var agregarNumero: DialogAgregarNumero
 
     fun crearDialog(context : Context, posicion : Int){
-        val dialog = Dialog(context)
+        val dialogAgregarNumero = Dialog(context)
 
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCancelable(false)
-        dialog.setContentView(R.layout.dialog_numero)
+        dialogAgregarNumero.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogAgregarNumero.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+        dialogAgregarNumero.setCancelable(false)
+        dialogAgregarNumero.setContentView(R.layout.dialog_numero)
 
         agregarNumero = context as DialogAgregarNumero
 
-        val dialogNumeroTitulo = dialog.findViewById<View>(R.id.dialogNumeroTitulo) as TextView
-        val dialogNumeroText = dialog.findViewById<View>(R.id.dialogNumeroText) as EditText
-        val dialogNumeroAceptar = dialog.findViewById<View>(R.id.dialogNumeroAceptar) as Button
-        val dialogNumeroCancelar = dialog.findViewById<View>(R.id.dialogNumeroCancelar) as Button
+        val dialogNumeroTitulo = dialogAgregarNumero.findViewById<View>(R.id.dialogNumeroTitulo) as TextView
+        val dialogNumeroText = dialogAgregarNumero.findViewById<View>(R.id.dialogNumeroText) as EditText
+        val dialogNumeroAceptar = dialogAgregarNumero.findViewById<View>(R.id.dialogNumeroAceptar) as Button
+        val dialogNumeroCancelar = dialogAgregarNumero.findViewById<View>(R.id.dialogNumeroCancelar) as Button
 
         dialogNumeroTitulo.text = context.getString(R.string.dialog_numero_text_cantidad)
 
         dialogNumeroAceptar.setOnClickListener {
-            if(dialogNumeroText.length() > 0) {/*
-                listaArticulos[posicion].cantidadArticulo =
-                    Integer.parseInt(dialogNumeroText.text.toString())
-                mViewEstadisticaArticulo.notifyDataSetChanged()*/
+            if(dialogNumeroText.length() > 0) {
                 agregarNumero.obtenerNumero(Integer.parseInt(dialogNumeroText.text.toString()),posicion)
                 val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
                 imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
 
-                dialog.dismiss()
+                dialogAgregarNumero.dismiss()
             }
         }
 
         dialogNumeroCancelar.setOnClickListener {
             val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
             imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-            dialog.dismiss()
+            dialogAgregarNumero.dismiss()
         }
 
-        dialog.show()
+        dialogAgregarNumero.show()
     }
 
     interface DialogAgregarNumero {

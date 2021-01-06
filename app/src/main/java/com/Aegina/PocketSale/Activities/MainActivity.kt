@@ -2,6 +2,7 @@
 
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Respuesta
 import com.Aegina.PocketSale.Objets.RespuestaLogin
@@ -22,6 +24,8 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Error
+import java.lang.Exception
 import java.util.*
 
 
@@ -36,6 +40,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginTextNuevaCuenta : TextView
     lateinit var loginPasswordButton : ImageView
     lateinit var loginLayout : LinearLayout
+    lateinit var activity: Activity
 
     override fun onCreate(savedInstanceState: Bundle?)
     {
@@ -45,6 +50,8 @@ class MainActivity : AppCompatActivity() {
 
         asignarCampos()
         asignarBotones()
+
+        activity = this
     }
 
     fun asignarCampos()
@@ -149,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread()
                 {
                     habilitarBotones(true)
-                    Toast.makeText(context, e.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -158,25 +165,33 @@ class MainActivity : AppCompatActivity() {
                 val json = response.body()!!.string()
                 val gson = GsonBuilder().create()
 
-                val respuesta = gson.fromJson(json, RespuestaLogin::class.java)
-
-                if(respuesta.status != 0)
+                try
                 {
-                    runOnUiThread()
+                    val respuesta = gson.fromJson(json, RespuestaLogin::class.java)
+
+                    if(respuesta.status != 0)
                     {
-                        when (respuesta.status)
+                        runOnUiThread()
                         {
-                            -1 -> Toast.makeText(context, getString(R.string.login_usuario_credenciales_incorrectas), Toast.LENGTH_SHORT).show()
-                            -2 -> Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
+                            when (respuesta.status)
+                            {
+                                -1 -> Toast.makeText(context, getString(R.string.login_usuario_credenciales_incorrectas), Toast.LENGTH_SHORT).show()
+                                -2 -> Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
+                    else
+                    {
+                        val globalVariable = applicationContext as GlobalClass
+                        globalVariable.usuario = respuesta.usuario
+                        val intent = Intent(context, Menu::class.java)
+                        startActivity(intent)
+                    }
                 }
-                else
+                catch (e:Exception)
                 {
-                    val globalVariable = applicationContext as GlobalClass
-                    globalVariable.usuario = respuesta.usuario
-                    val intent = Intent(context, Menu::class.java)
-                    startActivity(intent)
+                    val errores = Errores()
+                    errores.procesarError(context,json,activity)
                 }
 
                 runOnUiThread()
@@ -184,6 +199,7 @@ class MainActivity : AppCompatActivity() {
                     progressDialog.dismiss()
                     habilitarBotones(true)
                 }
+
             }
         })
 

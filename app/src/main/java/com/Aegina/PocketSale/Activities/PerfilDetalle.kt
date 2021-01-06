@@ -26,13 +26,13 @@ import android.text.TextUtils
 import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.*
-import com.Aegina.PocketSale.Objets.EmpleadoObject
-import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.InventarioObjeto
-import com.Aegina.PocketSale.Objets.Urls
+import androidx.cardview.widget.CardView
+import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
+import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
+import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.google.gson.GsonBuilder
-import com.google.zxing.integration.android.IntentIntegrator
 import com.squareup.picasso.Picasso
 import okhttp3.*
 import org.json.JSONException
@@ -40,7 +40,8 @@ import org.json.JSONObject
 import java.io.*
 import java.util.*
 
-class PerfilDetalle : AppCompatActivity() {
+class PerfilDetalle : AppCompatActivity(),
+    DialogSeleccionarFoto.DialogSeleccionarFoto {
 
     lateinit var perfilDetalleNombre : EditText
     lateinit var perfilDetalleCorreo : EditText
@@ -53,13 +54,14 @@ class PerfilDetalle : AppCompatActivity() {
     lateinit var perfilDetalleDarDeAlta : Button
     lateinit var perfilDetalleCancelarEdicion : Button
     lateinit var perfilDetalleEliminarEmpleado : ImageButton
+    lateinit var perfilDetalleEliminarEmpleadoCardView : CardView
     lateinit var globalVariable: GlobalClass
-    lateinit var context: Context
+    lateinit var context : Context
+    lateinit var activity: Activity
     private val urls: Urls = Urls()
+    var dialogSeleccionarFoto = DialogSeleccionarFoto()
 
     var image_uri: Uri? = null
-    private val PERMISSION_CODE = 1000
-    private val IMAGE_CAPTURE_CODE = 1001
     var cambioFoto : Boolean = false
 
     lateinit var empleadoObject: EmpleadoObject
@@ -72,6 +74,7 @@ class PerfilDetalle : AppCompatActivity() {
         globalVariable = this.applicationContext as GlobalClass
 
         context = this
+        activity = this
 
         asignarRecursos()
 
@@ -100,32 +103,14 @@ class PerfilDetalle : AppCompatActivity() {
             }
         }
 
+        dialogSeleccionarFoto.crearDialog(this)
+
     }
 
     fun asignarFuncionBotones(esEditar : Boolean){
 
         perfilDetalleFoto.setOnClickListener{
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_DENIED ||
-                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_DENIED
-                ) {
-                    //permission was not enabled
-                    val permission = arrayOf(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    )
-                    //show popup to request permission
-                    requestPermissions(permission, PERMISSION_CODE)
-                } else {
-                    //permission already granted
-                    openCamera()
-                }
-            } else {
-                //system os is < marshmallow
-                openCamera()
-            }
+            dialogSeleccionarFoto.mostrarDialogoFoto()
         }
 
         perfilDetalleCancelarEdicion.setOnClickListener{
@@ -177,12 +162,38 @@ class PerfilDetalle : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
                 progressDialog.dismiss()
             }
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
-                if(cambioFoto) darDeAltaFoto()
-                else finish()
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            progressDialog.dismiss()
+                            if(cambioFoto) darDeAltaFoto()
+                            else finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
+
             }
         })
     }
@@ -211,6 +222,7 @@ class PerfilDetalle : AppCompatActivity() {
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
+                finish()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -237,35 +249,7 @@ class PerfilDetalle : AppCompatActivity() {
         return file
     }
 
-    private fun openCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        //camera intent
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK)
-        {
-            try
-            {
-                cambioFoto = true
-                val inputStream: InputStream? = image_uri?.let { contentResolver.openInputStream(it) }
-                val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
-                val bitmapCuadrado = Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
-                val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 250, 250, true)
-                perfilDetalleFoto.setImageBitmap(resized)
-
-            } catch (e: FileNotFoundException) { }
-            runOnUiThread { image_uri?.let { eliminarFoto(it) } }
-        }
-
-    }
 
     fun eliminarFoto(uri : Uri){
         val fdelete = File(getFilePath(uri))
@@ -293,8 +277,7 @@ class PerfilDetalle : AppCompatActivity() {
     fun llenarCampos(empleado : EmpleadoObject){
         perfilDetalleNombre.setText(empleado.nombre)
         perfilDetalleCorreo.setText(empleado.user)
-        //perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
-        perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&empleado=123")
+        perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
         perfilDetallePermisosVenta.isChecked = empleado.permisosVenta
         perfilDetallePermisosModificarInventario.isChecked = empleado.permisosModificarInventario
         perfilDetallePermisosCrearArticulos.isChecked = empleado.permisosAltaInventario
@@ -316,9 +299,10 @@ class PerfilDetalle : AppCompatActivity() {
         perfilDetalleDarDeAlta = findViewById(R.id.perfilDetalleDarDeAlta)
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
+        perfilDetalleEliminarEmpleadoCardView = findViewById(R.id.perfilDetalleEliminarEmpleadoCardView)
 
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
-        perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
+        perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -329,9 +313,9 @@ class PerfilDetalle : AppCompatActivity() {
 
         perfilDetalleDarDeAlta.isEnabled = true
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
-        perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
+        perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
 
-        if(globalVariable.usuario!!.permisosAdministrador)
+        if(globalVariable.usuario!!.user == empleadoObject.user)
         {
             perfilDetallePermisosVenta.isEnabled = false
             perfilDetallePermisosModificarInventario.isEnabled = false
@@ -348,11 +332,10 @@ class PerfilDetalle : AppCompatActivity() {
             perfilDetallePermisosProovedor.isEnabled = activar
         }
 
-
         if (activar) {
 
             perfilDetalleCancelarEdicion.visibility = View.VISIBLE
-            perfilDetalleEliminarEmpleado.visibility = View.VISIBLE
+            perfilDetalleEliminarEmpleadoCardView.visibility = View.VISIBLE
 
             perfilDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)
             perfilDetalleDarDeAlta.setOnClickListener{
@@ -411,10 +394,37 @@ class PerfilDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                if(cambioFoto) darDeAltaFoto()
-                else finish()
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            if(cambioFoto) darDeAltaFoto()
+                            else finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
+
+
             }
         })
     }
@@ -422,7 +432,6 @@ class PerfilDetalle : AppCompatActivity() {
     fun datosVacios() : Boolean {
 
         if(perfilDetalleNombre.text.toString() == ""){return moverCampo(perfilDetalleNombre)}
-        //if(perfilDetalleCorreo.text.toString() == ""){return moverCampo(perfilDetalleCorreo)}
         if(!perfilDetalleCorreo.text.toString().isEmailValid()){return moverCampo(perfilDetalleCorreo)}
 
 
@@ -505,9 +514,33 @@ class PerfilDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
-                finish()
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+                    }
+                    catch(e:Exception){}
+                }
             }
         })
     }
@@ -529,27 +562,186 @@ class PerfilDetalle : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
+                runOnUiThread()
+                {
+                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                }
             }
             override fun onResponse(call: Call, response: Response) {
 
                 val body = response.body()?.string()
 
-                val gson = GsonBuilder().create()
-                empleadoObject = gson.fromJson(body, EmpleadoObject::class.java)
-
-                runOnUiThread()
+                if(body != null && body.isNotEmpty())
                 {
-                    habilitarEdicion(false)
-                    llenarCampos(empleadoObject)
-                    asignarFuncionBotones(true)
-                    progressDialog.dismiss()
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        empleadoObject = gson.fromJson(body, EmpleadoObject::class.java)
+
+                        runOnUiThread()
+                        {
+                            habilitarEdicion(false)
+                            llenarCampos(empleadoObject)
+                            asignarFuncionBotones(true)
+                            progressDialog.dismiss()
+                        }
+                    }
+                    catch(e:Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarErrorCerrarVentana(context,body,activity)
+                    }
                 }
             }
         })
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK)
+        {
+            try
+            {
+                val inputStream: InputStream? =
+                    if(requestCode == IMAGE_PICK_CODE)
+                    {
+                        data?.data?.let { contentResolver.openInputStream(it) }
+                    }
+                    else
+                    {
+                        image_uri?.let { contentResolver.openInputStream(it) }
+                    }
+
+                cambioFoto = true
+                val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
+
+                val bitmapCuadrado =
+                    if(bitmap.height > bitmap.width)
+                    {
+                        Bitmap.createBitmap(bitmap,0,((bitmap.height - bitmap.width)/2),bitmap.width,bitmap.width)
+                    }
+                    else
+                    {
+                        Bitmap.createBitmap(bitmap,((bitmap.width - bitmap.height)/2),0,bitmap.height,bitmap.height)
+                    }
+
+                val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 150, 150, true)
+                perfilDetalleFoto.setImageBitmap(resized)
+
+            } catch (e: FileNotFoundException) { }
+            //runOnUiThread { image_uri?.let { eliminarFoto(it) } }
+        }
+    }
+
+    private fun pickImageFromGallery() {
+        //Intent to pick image
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, IMAGE_PICK_CODE)
+    }
+
     fun ImageView.loadUrl(url: String) {
         Picasso.with(context).load(url).into(this)
+    }
+
+    private fun openCamera() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New Picture")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        //camera intent
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+        startActivityForResult(cameraIntent, PERMISSION_CODE)
+    }
+
+    override fun abrirGaleria() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_DENIED){
+                //permission denied
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                //show popup to request runtime permission
+                requestPermissions(permissions, PERMISSION_CODE)
+            }
+            else{
+                //permission already granted
+                pickImageFromGallery()
+            }
+        }
+        else{
+            //system OS is < Marshmallow
+            pickImageFromGallery()
+        }
+    }
+
+    override fun abrirCamara() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (checkSelfPermission(Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED ||
+                checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_DENIED
+            )
+            {
+                //permission was not enabled
+                val permission = arrayOf(
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                //show popup to request permission
+                requestPermissions(permission, PERMISSION_CODE)
+            }
+            else
+            {
+                //permission already granted
+                openCamera()
+            }
+        }
+        else
+        {
+            //system os is < marshmallow
+            openCamera()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,grantResults: IntArray) {
+        when(requestCode){
+            PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] ==
+                    PackageManager.PERMISSION_GRANTED){
+                    //permission from popup granted
+                    when(permissions[0])
+                    {
+                        "android.permission.READ_EXTERNAL_STORAGE" ->
+                        {
+                            pickImageFromGallery()
+                        }
+                        "android.permission.CAMERA" ->
+                        {
+                            openCamera()
+                        }
+                        "android.permission.WRITE_EXTERNAL_STORAGE" ->
+                        {
+                            openCamera()
+                        }
+                    }
+                }
+                else{
+                    //permission from popup denied
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    companion object {
+        //image pick code
+        private val IMAGE_PICK_CODE = 1000;
+        //Permission code
+        private val PERMISSION_CODE = 1001;
     }
 
 }

@@ -15,6 +15,7 @@ import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import androidx.core.view.isVisible as isVisible1
 
@@ -126,7 +127,8 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         }
 
         fun ImageView.loadUrl(url: String) {
-            Picasso.with(context).load(url).into(this)
+            try {Picasso.with(context).load(url).into(this)}
+            catch(e: Exception){}
         }
     }
 }

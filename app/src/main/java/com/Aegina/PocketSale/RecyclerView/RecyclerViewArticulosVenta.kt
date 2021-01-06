@@ -12,6 +12,7 @@ import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import java.lang.Exception
 
 
 class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVenta.ViewHolder>() {
@@ -46,8 +47,6 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nombre = view.findViewById(R.id.ventaArticulosNombre) as TextView
-        /*val precio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
-        val precioText = view.findViewById(R.id.ventaArticulosPrecioText) as TextView*/
         val ventaArticulosPrecioTotalText = view.findViewById(R.id.itemArticuloVentaPrecioTotalText) as TextView
         val ventaArticulosPrecioTotal = view.findViewById(R.id.itemArticuloVentaPrecioTotal) as TextView
         val ventaArticulosDescipcion = view.findViewById(R.id.ventaArticulosDescipcion) as TextView
@@ -70,7 +69,8 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
         }
 
         fun ImageView.loadUrl(url: String) {
-            Picasso.with(context).load(url).into(this)
+            try {Picasso.with(context).load(url).into(this)}
+            catch(e: Exception){}
         }
     }
 }

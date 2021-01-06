@@ -6,6 +6,7 @@ import com.Aegina.PocketSale.Fragments.SurtidoFragment
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -13,7 +14,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
+import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.R
 import com.google.zxing.integration.android.IntentIntegrator
@@ -80,17 +83,6 @@ class SurtidoPager : AppCompatActivity(),
         (fragment as HistorialSurtidosFragment).obtenerFecha()
     }
 
-    /*override fun filtrosArticulos(familiaIdTmp:Int,subFamiliaIdTmp:Int,minCantidad:Int,maxCantidad:Int) {
-        val fragment: Fragment = adapter.getItem(0)
-        (fragment as InventarioFragment).filtroFamilia = familiaIdTmp
-        (fragment).filtroSubFamilia = subFamiliaIdTmp
-        (fragment).filtroMinCantidad = minCantidad
-        (fragment).filtroMaxCantidad = maxCantidad
-        (fragment).getInventarioObjecto()
-
-
-    }*/
-
     override fun numeroArticulo(articulo : InventarioObjeto) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as SurtidoFragment).numeroArticulo(articulo)
@@ -132,6 +124,20 @@ class SurtidoPager : AppCompatActivity(),
     override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
         val fragment: Fragment = adapter.getItem(0)
         (fragment as SurtidoFragment).dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
+    }
+
+    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+
+    override fun lanzarMensaje(mensaje: String) {
+        runOnUiThread()
+        {
+            Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun procesarError(json: String) {
+        val errores = Errores()
+        errores.procesarError(this,json,this)
     }
 
 }

@@ -2,18 +2,22 @@
 
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFecha
-import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
-import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewEstadisticaArticulo
 import com.google.gson.GsonBuilder
@@ -24,7 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class EstadisticaArticulo : AppCompatActivity(),
-    DialogFecha.DialogFecha {
+    DialogFecha.DialogFecha, DialogAgregarArticulos.DialogAgregarArticulo {
 
     var listaTmp:MutableList<EstadisticaArticuloObject> = ArrayList()
     lateinit var context : Context
@@ -32,13 +36,13 @@ class EstadisticaArticulo : AppCompatActivity(),
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
 
-    val formatoFecha = SimpleDateFormat("MM-dd-yyyy")
-    val formatoFechaCompleta = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
     lateinit var fechaInicial : Date
     lateinit var fechaFinal : Date
     lateinit var estadisticaArticuloFechaInicial : TextView
     lateinit var estadisticaArticuloFechaFinal : TextView
+    lateinit var estadisticaArticuloFiltro : ImageButton
 
+    var dialogoAgregarArticulos = DialogAgregarArticulos()
     val urls = Urls()
     var dialogFecha = DialogFecha()
 
@@ -52,7 +56,11 @@ class EstadisticaArticulo : AppCompatActivity(),
 
         asignarBotones()
         crearRecyclerView()
-        asignarFechaHoy()
+
+        dialogoAgregarArticulos.crearDialogInicial(this,globalVariable, Activity())
+        dialogoAgregarArticulos.crearDialogFiltrosArticulosMasVendidos()
+
+        asignarFechaMes()
     }
 
     fun crearRecyclerView(){
@@ -66,169 +74,22 @@ class EstadisticaArticulo : AppCompatActivity(),
 
     fun asignarBotones(){
         estadisticaArticuloFechaInicial = findViewById(R.id.estadisticaArticuloFechaInicial)
-        estadisticaArticuloFechaInicial.setOnClickListener {
-            showDialogFechaInicial()
+        estadisticaArticuloFechaInicial.setOnClickListener()
+        {
+            dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
         }
 
         estadisticaArticuloFechaFinal = findViewById(R.id.estadisticaArticuloFechaFinal)
-        estadisticaArticuloFechaFinal.setOnClickListener {
-            showDialogFechaFinal()
+        estadisticaArticuloFechaFinal.setOnClickListener()
+        {
+            dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
         }
 
-        /*val estadisticaArticuloBuscarHoy = findViewById<Button>(R.id.estadisticaArticuloBuscarHoy)
-        estadisticaArticuloBuscarHoy.setOnClickListener {
-            asignarFechaHoy()
+        estadisticaArticuloFiltro = findViewById(R.id.estadisticaArticuloFiltro)
+        estadisticaArticuloFiltro.setOnClickListener()
+        {
+            dialogoAgregarArticulos.mostrarDialogFiltros()
         }
-        val estadisticaArticuloBuscarSemana = findViewById<Button>(R.id.estadisticaArticuloBuscarSemana)
-        estadisticaArticuloBuscarSemana.setOnClickListener {
-            asignarFechaSemana()
-        }
-        val estadisticaArticuloBuscarMes = findViewById<Button>(R.id.estadisticaArticuloBuscarMes)
-        estadisticaArticuloBuscarMes.setOnClickListener {
-            asignarFechaMes()
-        }*/
-    }
-
-    fun obtenerArticulos(){
-        val url = urls.url+urls.endPointEstadisticas.endPointArticulosMasVendidos+
-                "?token="+ globalVariable.usuario!!.token +
-                "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
-                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        val client = OkHttpClient()
-
-        val progressDialog = ProgressDialog(context)
-        progressDialog.setMessage(getString(R.string.mensaje_espera))
-        progressDialog.show()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                progressDialog.dismiss()
-            }
-            override fun onResponse(call: Call, response: Response)
-            {
-                val body = response.body()?.string()
-
-                if(body != null && body.isNotEmpty()) {
-                    val gson = GsonBuilder().create()
-                    val Model = gson.fromJson(body, Array<EstadisticaArticuloObject>::class.java).toList()
-
-                    runOnUiThread {
-                        mViewEstadisticaArticulo.RecyclerAdapter(Model.toMutableList(), context)
-                        mViewEstadisticaArticulo.notifyDataSetChanged()
-                    }
-                }
-
-                progressDialog.dismiss()
-
-            }
-        })
-    }
-
-    fun showDialogFechaInicial() {
-        /*val dialog: AlertDialog = AlertDialog.Builder(context).create()
-        val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
-        dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
-
-        var calendar = Calendar.getInstance()
-        calendar.time = fechaInicial
-        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
-
-        dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2020").time
-        dialogFechaDatePicker.maxDate = fechaFinal.time
-
-        dialogFechaTitulo.text = getString(R.string.dialog_fecha_inicial)
-
-        dialogFechaBotonAceptar.setOnClickListener {
-            val day: Int = dialogFechaDatePicker.dayOfMonth
-            val month: Int = dialogFechaDatePicker.month
-            val year: Int = dialogFechaDatePicker.year
-
-            var calendar = Calendar.getInstance()
-            calendar.set(year, month, day)
-            calendar = asignarHoraCalendar(calendar, 0, 0, 0)
-            calendar.timeZone = Calendar.getInstance().timeZone;
-
-            fechaInicial = calendar.time
-            asignarFechaInicial()
-            dialog.dismiss()
-
-            obtenerArticulos()
-        }
-
-        dialogFechaBotonCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()*/
-        dialogFecha.abrirDialogFechaInicial(fechaInicial, fechaFinal)
-    }
-
-    fun showDialogFechaFinal() {
-        /*val dialog: AlertDialog = AlertDialog.Builder(context).create()
-        val inflater = layoutInflater
-        val alertDialogView: View = inflater.inflate(R.layout.dialog_fecha2, null)
-        dialog.setView(alertDialogView)
-        val dialogFechaTitulo = alertDialogView.findViewById<View>(R.id.dialogFechaTitulo2) as TextView
-        val dialogFechaBotonAceptar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonAceptar2) as Button
-        val dialogFechaBotonCancelar = alertDialogView.findViewById<View>(R.id.dialogFechaBotonCancelar2) as Button
-        val dialogFechaDatePicker = alertDialogView.findViewById<View>(R.id.dialogFechaDatePicker2) as DatePicker
-
-        var calendar = Calendar.getInstance()
-        calendar.time = fechaFinal
-        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        dialogFechaDatePicker.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-
-        var currentTime = Calendar.getInstance()
-
-        currentTime = asignarHoraCalendar(currentTime, 0, 0, 0)
-
-        dialogFechaDatePicker.minDate = fechaInicial.time
-        dialogFechaDatePicker.maxDate = currentTime.time.time
-
-
-        dialogFechaTitulo.text = getString(R.string.dialog_fecha_final)
-
-        dialogFechaBotonAceptar.setOnClickListener {
-
-            val day: Int = dialogFechaDatePicker.dayOfMonth
-            val month: Int = dialogFechaDatePicker.month
-            val year: Int = dialogFechaDatePicker.year
-
-            var calendarTmp = Calendar.getInstance()
-            calendarTmp.set(year, month, day)
-            calendarTmp.timeZone = Calendar.getInstance().timeZone;
-            calendarTmp = asignarHoraCalendar(calendarTmp, 23, 59, 59)
-
-            fechaFinal = calendarTmp.time
-
-            asignarFechaFinal()
-            dialog.dismiss()
-
-            obtenerArticulos()
-        }
-
-        dialogFechaBotonCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.show()*/
-        dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
     }
 
     fun asignarFechaInicial(){
@@ -291,7 +152,8 @@ class EstadisticaArticulo : AppCompatActivity(),
     fun buscarArticulo(){
         asignarFechaInicial()
         asignarFechaFinal()
-        obtenerArticulos()
+        dialogoAgregarArticulos.asignarFechas(fechaInicial, fechaFinal)
+        dialogoAgregarArticulos.buscarArticulosMasVendidos()
     }
 
     override fun obtenerFechaInicial() {
@@ -308,5 +170,33 @@ class EstadisticaArticulo : AppCompatActivity(),
         fechaInicial = dialogFecha.fechaInicial
         fechaFinal = dialogFecha.fechaFinal
         buscarArticulo()
+    }
+
+    override fun numeroArticulo(articulo: InventarioObjeto) {    }
+
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {    }
+
+    override fun abrirCamara() {    }
+
+    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {    }
+
+    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>)
+    {
+        runOnUiThread {
+            mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, context)
+            mViewEstadisticaArticulo.notifyDataSetChanged()
+        }
+    }
+
+    override fun lanzarMensaje(mensaje: String) {
+        runOnUiThread()
+        {
+            Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    override fun procesarError(json: String) {
+        val errores = Errores()
+        errores.procesarError(context,json,this)
     }
 }
