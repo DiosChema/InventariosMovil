@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
@@ -35,11 +34,19 @@ class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticul
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_lista_articulos,
+                R.layout.item_articulos_carrito,
                 parent,
                 false
             )
         )
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {
@@ -55,17 +62,7 @@ class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticul
 
         fun bind(articulo: ArticuloInventarioObjeto, context: Context) {
 
-            itemListaCantidad.text = articulo.cantidadArticulo.toString()
-
-            /*itemView.setOnClickListener {
-                if(globalVariable.usuario!!.permisosModificarInventario)
-                {
-                    val intent = Intent(context, InventarioDetalle::class.java).apply {
-                        putExtra("articulo", articulo)
-                    }
-                    context.startActivity(intent)
-                }
-            }*/
+            itemListaCantidad.text = articulo.cantidad.toString()
             itemListaFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 

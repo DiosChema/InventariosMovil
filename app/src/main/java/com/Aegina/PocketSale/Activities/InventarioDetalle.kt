@@ -25,6 +25,7 @@ import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.TranslateAnimation
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -181,6 +182,11 @@ class InventarioDetalle : AppCompatActivity(),
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
         invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
 
+        if(!globalVariable.usuario!!.permisosModificarInventario)
+        {
+            invDetalleDarDeAlta.visibility = View.GONE
+        }
+
         if (activar) {
 
             invDetalleCancelarEdicion.visibility = View.VISIBLE
@@ -209,28 +215,28 @@ class InventarioDetalle : AppCompatActivity(),
     fun llenarCampos(articulo : InventarioObjeto){
         invDetalleId.setText(articulo.idArticulo.toString())
         invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
-        invDetalleNombre.setText(articulo.nombreArticulo)
-        invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
-        invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
-        invDetallePrecio.setText(articulo.precioArticulo.toString())
-        invDetalleCosto.setText(articulo.costoArticulo.toString())
+        invDetalleNombre.setText(articulo.nombre)
+        invDetalleNombreDetalle.setText(articulo.descripcion)
+        invDetalleCantidad.setText(articulo.cantidad.toString())
+        invDetallePrecio.setText(articulo.precio.toString())
+        invDetalleCosto.setText(articulo.costo.toString())
         invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
 
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
         cambioFoto = false
         posicionPendiente = true
-        obtenerFamilias(this,parseInt(articulo.familiaArticulo))
+        obtenerFamilias(this,parseInt(articulo.subFamilia))
     }
 
     fun reLlenarCampos(articulo : InventarioObjeto){
         invDetalleId.setText(articulo.idArticulo.toString())
         invDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
-        invDetalleNombre.setText(articulo.nombreArticulo)
-        invDetalleNombreDetalle.setText(articulo.descripcionArticulo)
-        invDetalleCantidad.setText(articulo.cantidadArticulo.toString())
-        invDetallePrecio.setText(articulo.precioArticulo.toString())
-        invDetalleCosto.setText(articulo.costoArticulo.toString())
+        invDetalleNombre.setText(articulo.nombre)
+        invDetalleNombreDetalle.setText(articulo.descripcion)
+        invDetalleCantidad.setText(articulo.cantidad.toString())
+        invDetallePrecio.setText(articulo.precio.toString())
+        invDetalleCosto.setText(articulo.costo.toString())
         invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
 
         cambioFoto = false
@@ -258,7 +264,7 @@ class InventarioDetalle : AppCompatActivity(),
                 eliminarFamilia(this)
         }
         invBotonEliminarSubFamilia.setOnClickListener {
-            if (listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size > 0)
+            if (listaFamiliaCompleta.size > 0 && listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size > 0)
                 eliminarSubFamilia(this)
         }
         invBottonTomarCodigo.setOnClickListener{
@@ -288,24 +294,32 @@ class InventarioDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.dialog_agregar_familia)
 
         dialogAceptar.setOnClickListener {
+            ocultarTeclado()
             dialog.dismiss()
-            agregarFamilia(this,dialogText.text.toString())
+            if(dialogText.text.isNotEmpty())
+            {
+                agregarFamilia(this,dialogText.text.toString())
+            }
         }
 
         dialogCancelar.setOnClickListener {
+            ocultarTeclado()
             dialog.dismiss()
         }
 
         dialog.show()
 
+        dialogText.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
     private fun showDialogAgregarSubFamilia() {
@@ -314,22 +328,43 @@ class InventarioDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.dialog_agregar_subfamilia)
 
         dialogAceptar.setOnClickListener {
+            ocultarTeclado()
             dialog.dismiss()
-            agregarSubFamilia(this,dialogText.text.toString())
+            if(dialogText.text.isNotEmpty())
+            {
+                agregarSubFamilia(this,dialogText.text.toString())
+            }
         }
 
-        dialogCancelar.setOnClickListener {dialog.dismiss()}
+        dialogCancelar.setOnClickListener()
+        {
+            ocultarTeclado()
+            dialog.dismiss()
+        }
 
         dialog.show()
 
+        dialogText.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+
+    }
+
+    fun ocultarTeclado()
+    {
+        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isAcceptingText)
+        {
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+        }
     }
 
     private fun showDialogEliminarArticulo() {
@@ -338,10 +373,10 @@ class InventarioDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.dialog_eliminar_articulo)
         dialogText.visibility = View.INVISIBLE
@@ -381,6 +416,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -390,7 +426,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -405,6 +441,11 @@ class InventarioDetalle : AppCompatActivity(),
                     {
                         val gson = GsonBuilder().create()
                         val familia = gson.fromJson(body,FamiliaObjeto::class.java)
+
+                        if(familia.nombreFamilia == null)
+                        {
+                            throw Exception("")
+                        }
 
                         listaFamilia.add(familia.nombreFamilia)
                         listaFamiliaCompleta.add(FamiliasSubFamiliasObject(familia.familiaId, familia.nombreFamilia, ArrayList()))
@@ -460,6 +501,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -469,7 +511,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -482,6 +524,11 @@ class InventarioDetalle : AppCompatActivity(),
                     {
                         val gson = GsonBuilder().create()
                         val subFamilia = gson.fromJson(body,SubFamiliaObjeto::class.java)
+
+                        if(subFamilia.nombreSubFamilia == null)
+                        {
+                            throw Exception("")
+                        }
 
                         listaSubFamilia.add(subFamilia.nombreSubFamilia)
                         //listaSubFamiliaCompleta.add(subFamilia)
@@ -541,6 +588,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -550,7 +598,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -596,7 +644,6 @@ class InventarioDetalle : AppCompatActivity(),
                                     }
                                 }
                             }
-
                         }
                         else
                         {
@@ -639,6 +686,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -648,7 +696,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -675,20 +723,6 @@ class InventarioDetalle : AppCompatActivity(),
 
                                 if(listaSubFamilia.size > 0) {
                                     invDetalleSubFamiliaSpinner.setSelection(0)
-
-                                    invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
-                                        AdapterView.OnItemSelectedListener {
-                                        override fun onItemSelected(parent: AdapterView<*>,
-                                                                    view: View, position: Int, id: Long) {
-                                            if(listaSubFamilia.size > 0) {
-                                                subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
-                                            }
-                                        }
-
-                                        override fun onNothingSelected(parent: AdapterView<*>) {
-                                            // write code to perform some action
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -697,6 +731,21 @@ class InventarioDetalle : AppCompatActivity(),
                             val errores = Errores()
                             errores.procesarError(context,body,activity)
                         }
+
+                        invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
+                            AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(parent: AdapterView<*>,
+                                                        view: View, position: Int, id: Long) {
+                                if(listaSubFamilia.size > 0) {
+                                    subFamiliaId = listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia[position].subFamiliaId
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>) {
+                                // write code to perform some action
+                            }
+                        }
+
                     }
                     catch(e:Exception)
                     {
@@ -822,7 +871,7 @@ class InventarioDetalle : AppCompatActivity(),
                             Bitmap.createBitmap(bitmap,((bitmap.width - bitmap.height)/2),0,bitmap.height,bitmap.height)
                         }
 
-                    val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 100, 100, true)
+                    val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 150, 150, true)
 
                     invDetalleFoto.setImageBitmap(resized)
 
@@ -863,20 +912,75 @@ class InventarioDetalle : AppCompatActivity(),
 
     fun datosVacios() : Boolean {
 
-        if(invDetalleId.text.toString() == ""){return moverCampo(invDetalleId)}
-        if(invDetalleNombre.text.toString() == ""){return moverCampo(invDetalleNombre)}
-        if(invDetalleNombreDetalle.text.toString() == ""){return moverCampo(invDetalleNombreDetalle)}
-        if(invDetallePrecio.text.toString() == ""){return moverCampo(invDetallePrecio)}
-        if(invDetalleCosto.text.toString() == ""){return moverCampo(invDetalleCosto)}
-        if(invDetalleInventarioOptimo.text.toString() == ""){return moverCampo(invDetalleInventarioOptimo)}
-        if(invDetalleCantidad.text.toString() == ""){return moverCampo(invDetalleCantidad)}
-        if(listaFamiliaCompleta.size == 0){return moverCampoSpinner(invDetalleFamiliaSpinner)}
-        if(subFamiliaId == -1 || listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size == 0){return moverCampoSpinner(invDetalleSubFamiliaSpinner)}
+        var datoVacio = true
 
-        return false
+        if(invDetalleId.text.toString() == "")
+        {
+            mensajeLlenarDatos(1)
+            return datoVacio
+        }
+        if(invDetalleNombre.text.toString() == "")
+        {
+            mensajeLlenarDatos(2)
+            return datoVacio
+        }
+        //if(invDetalleNombreDetalle.text.toString() == ""){return moverCampo(invDetalleNombreDetalle)}
+        if(invDetallePrecio.text.toString() == "")
+        {
+            mensajeLlenarDatos(4)
+            return datoVacio
+        }
+        if(invDetalleCosto.text.toString() == "")
+        {
+            mensajeLlenarDatos(5)
+            return datoVacio
+        }
+        if(invDetalleCantidad.text.toString() == "")
+        {
+            mensajeLlenarDatos(6)
+            return datoVacio
+        }
+        if(listaFamiliaCompleta.size == 0)
+        {
+            mensajeLlenarDatos(7)
+            return datoVacio
+        }
+        if(subFamiliaId == -1 || listaFamiliaCompleta.size == 0 || listaFamiliaCompleta[invDetalleFamiliaSpinner.selectedItemPosition].SubFamilia.size == 0)
+        {
+            mensajeLlenarDatos(8)
+            return datoVacio
+        }
+
+        if(invDetalleInventarioOptimo.text.toString() == "")
+        {
+            mensajeLlenarDatos(9)
+            return datoVacio
+        }
+
+        datoVacio = false
+        return datoVacio
     }
 
-    fun moverCampo(editText : EditText) : Boolean{
+    fun mensajeLlenarDatos(idMensaje: Int)
+    {
+        var mensaje = ""
+
+        when(idMensaje)
+        {
+            1 -> mensaje = getString(R.string.mensaje_inventario_detalle_codigo)
+            2 -> mensaje = getString(R.string.mensaje_inventario_detalle_nombre)
+            4 -> mensaje = getString(R.string.mensaje_inventario_detalle_precio)
+            5 -> mensaje = getString(R.string.mensaje_inventario_detalle_costo)
+            6 -> mensaje = getString(R.string.mensaje_inventario_detalle_cantidad)
+            7 -> mensaje = getString(R.string.mensaje_inventario_detalle_grupo)
+            8 -> mensaje = getString(R.string.mensaje_inventario_detalle_subgrupo)
+            9 -> mensaje = getString(R.string.mensaje_inventario_detalle_optimo)
+        }
+
+        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
+    }
+
+    /*fun moverCampo(editText : EditText) : Boolean{
         val animation1 = TranslateAnimation(0.0f,
             editText.width.toFloat()/15,
             0.0f,
@@ -888,9 +992,9 @@ class InventarioDetalle : AppCompatActivity(),
         editText.startAnimation(animation1)
 
         return true
-    }
+    }*/
 
-    fun moverCampoSpinner(spinner : Spinner) : Boolean{
+    /*fun moverCampoSpinner(spinner : Spinner) : Boolean{
         val animation1 = TranslateAnimation(0.0f,
             spinner.width.toFloat()/15,
             0.0f,
@@ -902,7 +1006,7 @@ class InventarioDetalle : AppCompatActivity(),
         spinner.startAnimation(animation1)
 
         return true
-    }
+    }*/
 
     fun darDeAltaArticulo(){
 
@@ -912,13 +1016,13 @@ class InventarioDetalle : AppCompatActivity(),
         try {
             jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
-            jsonObject.put("nombreArticulo", invDetalleNombre.text)
-            jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
+            jsonObject.put("nombre", invDetalleNombre.text)
+            jsonObject.put("costo", parseDouble(invDetalleCosto.text.toString()))
             jsonObject.put("inventarioOptimo", parseInt(invDetalleInventarioOptimo.text.toString()))
-            jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
-            jsonObject.put("precioArticulo", parseDouble(invDetallePrecio.text.toString()))
-            jsonObject.put("familiaArticulo", subFamiliaId)
-            jsonObject.put("descripcionArticulo", invDetalleNombreDetalle.text)
+            jsonObject.put("cantidad", parseInt(invDetalleCantidad.text.toString()))
+            jsonObject.put("precio", parseDouble(invDetallePrecio.text.toString()))
+            jsonObject.put("familia", subFamiliaId)
+            jsonObject.put("descripcion", invDetalleNombreDetalle.text)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -934,6 +1038,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -941,7 +1046,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -957,6 +1062,7 @@ class InventarioDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
+                            globalVariable.actualizarVentana!!.actualizarInventario = true
                             progressDialog.dismiss()
                             if(cambioFoto) darDeAltaFoto()
                             else finish()
@@ -969,6 +1075,8 @@ class InventarioDetalle : AppCompatActivity(),
                     }
                     catch(e:Exception){}
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -980,13 +1088,13 @@ class InventarioDetalle : AppCompatActivity(),
         try {
             jsonObject.put("token", globalVariable.usuario!!.token)
             jsonObject.put("idArticulo", parseLong(invDetalleId.text.toString()))
-            jsonObject.put("nombreArticulo", invDetalleNombre.text)
-            jsonObject.put("costoArticulo", parseDouble(invDetalleCosto.text.toString()))
+            jsonObject.put("nombre", invDetalleNombre.text)
+            jsonObject.put("costo", parseDouble(invDetalleCosto.text.toString()))
             jsonObject.put("inventarioOptimo", parseInt(invDetalleInventarioOptimo.text.toString()))
-            jsonObject.put("cantidadArticulo", parseInt(invDetalleCantidad.text.toString()))
-            jsonObject.put("precioArticulo", parseDouble(invDetallePrecio.text.toString()))
-            jsonObject.put("familiaArticulo", subFamiliaId)
-            jsonObject.put("descripcionArticulo", invDetalleNombreDetalle.text)
+            jsonObject.put("cantidad", parseInt(invDetalleCantidad.text.toString()))
+            jsonObject.put("precio", parseDouble(invDetallePrecio.text.toString()))
+            jsonObject.put("familia", subFamiliaId)
+            jsonObject.put("descripcion", invDetalleNombreDetalle.text)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -1002,6 +1110,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -1009,7 +1118,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -1025,6 +1134,7 @@ class InventarioDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
+                            globalVariable.actualizarVentana!!.actualizarInventario = true
                             progressDialog.dismiss()
                             if(cambioFoto) darDeAltaFoto()
                             else finish()
@@ -1037,6 +1147,8 @@ class InventarioDetalle : AppCompatActivity(),
                     }
                     catch(e:Exception){}
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -1063,6 +1175,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -1070,7 +1183,7 @@ class InventarioDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -1114,11 +1227,17 @@ class InventarioDetalle : AppCompatActivity(),
 
         val client = OkHttpClient()
 
+        val progressDialog = ProgressDialog(this)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    progressDialog.dismiss()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                     finish()
                 }
             }
@@ -1172,6 +1291,7 @@ class InventarioDetalle : AppCompatActivity(),
                     }
                 }
 
+                progressDialog.dismiss()
 
             }
         })

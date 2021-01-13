@@ -6,16 +6,20 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.Aegina.PocketSale.Dialogs.DialogRecuperarContrasena
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Objets.ActualizarVentana
 import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.Respuesta
 import com.Aegina.PocketSale.Objets.RespuestaLogin
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
@@ -24,7 +28,6 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
-import java.lang.Error
 import java.lang.Exception
 import java.util.*
 
@@ -42,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginLayout : LinearLayout
     lateinit var activity: Activity
 
+    var dialogRecuperarContrasena = DialogRecuperarContrasena()
+    private val sharedPrefFile = "kotlinsharedpreference"
+    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -52,6 +59,18 @@ class MainActivity : AppCompatActivity() {
         asignarBotones()
 
         activity = this
+        dialogRecuperarContrasena.crearDialogRecuperarContrasena(context,activity)
+
+        val sharedPreferences = getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
+        val emailTmp = sharedPreferences.getString("email","defaultname")
+        if(emailTmp != "defaultname")
+        {
+            loginEmail.setText(emailTmp)
+            loginPassword.requestFocus()
+            // open the soft keyboard
+            //val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            //activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        }
     }
 
     fun asignarCampos()
@@ -65,8 +84,8 @@ class MainActivity : AppCompatActivity() {
         loginPasswordButton = findViewById(R.id.loginPasswordButton)
         loginLayout = findViewById(R.id.loginLayout)
 
-        loginEmail.setText("taco666@hotmail.com")
-        loginPassword.setText("perraco12")
+        //loginEmail.setText("taco666@hotmail.com")
+        //loginPassword.setText("perraco12")
 
         //Handler().postDelayed(Runnable { loginLayout.visibility = View.VISIBLE }, 500)
 
@@ -82,6 +101,11 @@ class MainActivity : AppCompatActivity() {
         loginTextNuevaCuenta.setOnClickListener()
         {
             pantallaCrearCuenta()
+        }
+
+        loginTextPasswordOlvidada.setOnClickListener()
+        {
+            dialogRecuperarContrasena.mostrarVentana()
         }
 
         loginPasswordButton.setOnClickListener()
@@ -102,7 +126,6 @@ class MainActivity : AppCompatActivity() {
 
     fun iniciarSesion()
     {
-        habilitarBotones(false)
 
         var email = loginEmail.text.toString()
         email = email.toLowerCase(Locale.ROOT)
@@ -119,6 +142,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.mensaje_contraseña_corta), Toast.LENGTH_SHORT).show()
             return
         }
+
+        habilitarBotones(false)
 
         val url = urls.url+urls.endPointUsers.endPointLoginUsuario
 
@@ -144,6 +169,7 @@ class MainActivity : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -156,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread()
                 {
                     habilitarBotones(true)
-                    Toast.makeText(context, getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -176,7 +202,21 @@ class MainActivity : AppCompatActivity() {
                             when (respuesta.status)
                             {
                                 -1 -> Toast.makeText(context, getString(R.string.login_usuario_credenciales_incorrectas), Toast.LENGTH_SHORT).show()
-                                -2 -> Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
+                                -2 ->
+                                {
+                                    val globalVariable = applicationContext as GlobalClass
+                                    globalVariable.tokenEspecial = respuesta.tokenEspecial
+
+                                    val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                                    if (imm.isAcceptingText)
+                                    {
+                                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                                    }
+
+                                    val intent = Intent(context, Suscripcion::class.java)
+                                    startActivity(intent)
+                                    Toast.makeText(context, getString(R.string.login_usuario_cuenta_expirada), Toast.LENGTH_SHORT).show()
+                                }
                             }
                         }
                     }
@@ -184,6 +224,23 @@ class MainActivity : AppCompatActivity() {
                     {
                         val globalVariable = applicationContext as GlobalClass
                         globalVariable.usuario = respuesta.usuario
+                        globalVariable.actualizarVentana = ActualizarVentana()
+                        globalVariable.tokenEspecial = respuesta.tokenEspecial
+
+                        val sharedPreferences = getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
+                        val editor =  sharedPreferences.edit()
+                        editor.putString("email",email)
+                        editor.apply()
+                        editor.commit()
+
+                        loginPassword.setText("")
+
+                        val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                        if (imm.isAcceptingText)
+                        {
+                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                        }
+
                         val intent = Intent(context, Menu::class.java)
                         startActivity(intent)
                     }
@@ -208,6 +265,7 @@ class MainActivity : AppCompatActivity() {
     fun habilitarBotones(habilitar: Boolean)
     {
         loginBotonIniciarSesion.isEnabled = habilitar
+        loginTextPasswordOlvidada.isEnabled = habilitar
         loginTextNuevaCuenta.isEnabled = habilitar
     }
 

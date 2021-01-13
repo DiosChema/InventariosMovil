@@ -3,6 +3,8 @@
     style="?android:attr/spinnerItemStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:fontFamily="@font/open_sans"
+    android:textColor="@color/black"
     android:minWidth="250dp"
     android:gravity="center_vertical"
     android:paddingLeft="5dp"

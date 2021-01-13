@@ -1,6 +1,7 @@
 package com.Aegina.PocketSale.Fragments
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Metodos.Meses
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
@@ -40,6 +42,9 @@ class HistorialSurtidosFragment : Fragment() {
     lateinit var mViewVentas : RecyclerViewSurtidos
     lateinit var mRecyclerView : RecyclerView
     var dialogFecha = DialogFecha()
+    val nombreMes = Meses()
+    lateinit var contextTmp : Context
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_historial_surtido, container, false)
@@ -49,11 +54,13 @@ class HistorialSurtidosFragment : Fragment() {
         dialogFecha.crearVentana(activity!!)
         globalVariable = activity?.applicationContext as GlobalClass
 
+        contextTmp = activity!!.applicationContext
+
         asignarFechas()
         asignarBotones()
         crearRecyclerView()
-        asignarFechaHoy()
-        obtenerVentas()
+        asignarFechaSemana()
+        obtenerSurtidos()
     }
 
     fun asignarFechas(){
@@ -99,27 +106,69 @@ class HistorialSurtidosFragment : Fragment() {
         buscarSurtidos()
     }
 
+    fun asignarFechaSemana(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarSurtidos()
+    }
+
+    fun asignarFechaMes(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarSurtidos()
+    }
+
     fun buscarSurtidos(){
         asignarFechaInicial()
         asignarFechaFinal()
-        obtenerVentas()
+        obtenerSurtidos()
     }
 
     fun asignarFechaInicial(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaInicial
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         fechaInicialButton.text = text
     }
 
     fun asignarFechaFinal(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaFinal
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         fechaFinalButton.text = text
     }
 
-    fun obtenerVentas(){
+    fun obtenerSurtidos(){
 
         val url = urls.url+urls.endPointSurtidos.endPointObtenerSurtidos+
                 "?token="+globalVariable.usuario!!.token +
@@ -135,6 +184,7 @@ class HistorialSurtidosFragment : Fragment() {
 
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -142,7 +192,7 @@ class HistorialSurtidosFragment : Fragment() {
                 progressDialog.dismiss()
                 activity?.runOnUiThread()
                 {
-                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -199,6 +249,18 @@ class HistorialSurtidosFragment : Fragment() {
         fechaInicial = dialogFecha.fechaInicial
         fechaFinal = dialogFecha.fechaFinal
         buscarSurtidos()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        globalVariable = activity?.applicationContext as GlobalClass
+
+        if(globalVariable.actualizarVentana!!.actualizarSurtido)
+        {
+            globalVariable.actualizarVentana!!.actualizarSurtido = false
+            obtenerSurtidos()
+        }
     }
 
 }

@@ -7,11 +7,12 @@ import android.content.Intent
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Dialogs.DialogFiltroEmpleados
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.EmpleadoObject
 import com.Aegina.PocketSale.Objets.GlobalClass
@@ -22,7 +23,7 @@ import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
 
-class Perfil : AppCompatActivity() {
+class Empleados : AppCompatActivity(), DialogFiltroEmpleados.DialogFiltroEmpleados {
 
     var listaTmp:MutableList<EmpleadoObject> = ArrayList()
     lateinit var mViewEmpleados : RecyclerViewEmpleado
@@ -31,6 +32,9 @@ class Perfil : AppCompatActivity() {
     lateinit var context : Context
     lateinit var activity: Activity
     lateinit var perfilAgregarEmpleado: ImageView
+    lateinit var perfilAgregarFiltro: ImageButton
+
+    var dialogFiltroEmpleados = DialogFiltroEmpleados()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +49,26 @@ class Perfil : AppCompatActivity() {
         asignarRecursos()
         asignarBotones()
         crearRecyclerView()
-        obtenerEmpleados()
+
+        dialogFiltroEmpleados.crearDialog(context,globalVariable,activity)
+        dialogFiltroEmpleados.obtenerEmpleados()
     }
 
     private fun asignarRecursos() {
         perfilAgregarEmpleado = findViewById(R.id.perfilAgregarEmpleado)
+        perfilAgregarFiltro = findViewById(R.id.perfilAgregarFiltro)
     }
 
     private fun asignarBotones() {
-        perfilAgregarEmpleado.setOnClickListener{
+        perfilAgregarEmpleado.setOnClickListener()
+        {
             val intent = Intent(this, PerfilDetalle::class.java)
             startActivity(intent)
+        }
+
+        perfilAgregarFiltro.setOnClickListener()
+        {
+            dialogFiltroEmpleados.mostrarVentana()
         }
     }
 
@@ -68,7 +81,7 @@ class Perfil : AppCompatActivity() {
         mRecyclerView.adapter = mViewEmpleados
     }
 
-    fun obtenerEmpleados(){
+    /*fun obtenerEmpleados(){
         val urls = Urls()
 
         val url = urls.url+urls.endPointUsers.endPointObtenerEmpleados+"?token="+globalVariable.usuario!!.token
@@ -82,6 +95,7 @@ class Perfil : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -89,7 +103,7 @@ class Perfil : AppCompatActivity() {
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -120,6 +134,25 @@ class Perfil : AppCompatActivity() {
             }
         })
 
+    }*/
+
+    override fun listaEmpleados(empleados: MutableList<EmpleadoObject>) {
+        runOnUiThread {
+            mViewEmpleados.RecyclerAdapter(empleados, context)
+            mViewEmpleados.notifyDataSetChanged()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        globalVariable = activity.applicationContext as GlobalClass
+
+        if(globalVariable.actualizarVentana!!.actualizarEmpleados)
+        {
+            globalVariable.actualizarVentana!!.actualizarEmpleados = false
+            dialogFiltroEmpleados.obtenerEmpleados()
+        }
     }
 
 }

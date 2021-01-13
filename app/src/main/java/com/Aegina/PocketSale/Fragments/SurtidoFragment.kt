@@ -17,6 +17,7 @@ import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
+import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtido
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_surtido.*
@@ -85,8 +86,8 @@ class SurtidoFragment : Fragment() {
 
 
         for(articulos in listaArticulos){
-            totalCantidad += articulos.cantidadArticulo
-            totalCosto += (articulos.costoArticulo * articulos.cantidadArticulo)
+            totalCantidad += articulos.cantidad
+            totalCosto += (articulos.costo * articulos.cantidad)
         }
 
         txtViewSurtidoTotalArticulos.text = totalCantidad.toString()
@@ -105,31 +106,39 @@ class SurtidoFragment : Fragment() {
 
         val dialogAgregarNumero = DialogAgregarNumero()
 
-        /*mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(activity, mRecyclerView, object :
+        mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(activity, mRecyclerView, object :
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int) {
                 dialogAgregarNumero.crearDialog(activity!!, position)
-                //eventoClick(position)
             }
 
             override fun onLongItemClick(view: View?, position: Int) {}
-        }))*/
+        }))
     }
 
     fun actualizarInventario(){
         val url = urls.url+urls.endPointSurtidos.endPointActualizarInventario
 
-        val listaArticulosTmp : MutableList<InventarioObjeto> = ArrayList()
+        val articulos: MutableList<ArticuloObjeto> = ArrayList()
 
         for (articuloTmp in listaArticulos) {
-            if(articuloTmp.cantidadArticulo > 0)
-                listaArticulosTmp.add(articuloTmp)
+
+            val articulo = ArticuloObjeto(
+                articuloTmp.idArticulo,
+                articuloTmp.cantidad,
+                articuloTmp.precio,
+                articuloTmp.nombre,
+                articuloTmp.costo)
+
+            if(articulo.cantidad > 0)
+                articulos.add(articulo)
+
         }
 
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
         val currentDate = sdf.format(Date())
 
-        val venta = ActualizarInventarioObject(globalVariable.usuario!!.token, currentDate.toString(), listaArticulosTmp)
+        val venta = VentaObjeto(globalVariable.usuario!!.token, currentDate.toString(), articulos)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(venta)
@@ -144,6 +153,7 @@ class SurtidoFragment : Fragment() {
 
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -153,7 +163,7 @@ class SurtidoFragment : Fragment() {
                 progressDialog.dismiss()
                 activity?.runOnUiThread()
                 {
-                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -167,6 +177,7 @@ class SurtidoFragment : Fragment() {
                         val respuesta = gson.fromJson(body, Respuesta::class.java)
                         if(respuesta.status == 0)
                         {
+                            globalVariable.actualizarVentana!!.actualizarSurtido = true
                             activity?.runOnUiThread()
                             {
                                 listaArticulos.clear()
@@ -195,7 +206,7 @@ class SurtidoFragment : Fragment() {
         {
             if(articuloTmp.idArticulo == listaArticulos[i].idArticulo)
             {
-                listaArticulos[i].cantidadArticulo += articuloTmp.cantidadArticulo
+                listaArticulos[i].cantidad += articuloTmp.cantidad
                 return true
             }
         }
@@ -217,7 +228,7 @@ class SurtidoFragment : Fragment() {
 
     fun obtenerNumero(numero : Int, posicion : Int) {
         activity?.runOnUiThread{
-            listaArticulos[posicion].cantidadArticulo = numero
+            listaArticulos[posicion].cantidad = numero
             mViewEstadisticaArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }

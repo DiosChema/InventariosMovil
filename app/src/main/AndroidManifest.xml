@@ -21,22 +21,15 @@
         <activity android:name=".Activities.TiendaDetalle" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.MenuPerfil" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.PerfilDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.Perfil" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.Empleados" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.Suscripcion" android:screenOrientation="portrait"/>
-        <activity
-            android:name=".Fragments.EstadisticaVentaFragment"
-            android:screenOrientation="portrait"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name=".Fragments.EstadisticaInventarioFragment"
-            android:screenOrientation="portrait"
-            tools:ignore="Instantiatable" />
         <activity android:name=".Activities.EstadisticasPager" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.EstadisticaInventario" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.EstadisticaArticulo" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.CrearCuenta" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.Menu" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.VentaDetalle" android:screenOrientation="portrait"/>
+        <activity android:name=".Activities.SurtidoDetalle" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.Venta" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.InventarioDetalle" android:screenOrientation="portrait"/>
         <activity android:name=".Activities.InventarioPager" android:screenOrientation="portrait"/>

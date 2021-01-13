@@ -24,7 +24,7 @@
                 android:id="@+id/menuPerfilTienda"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/logopockets"
+                android:src="@drawable/logopocketsale"
                 android:adjustViewBounds="true"
                 android:background= "@color/transparent"
                 android:contentDescription="@string/imagenArticulo"/>

@@ -5,7 +5,8 @@ import java.io.Serializable
 data class RespuestaLogin(
     var status:Int,
     var mensaje:String,
-    var usuario: datosUsuario
+    var usuario: datosUsuario,
+    var tokenEspecial: String
 ): Serializable
 
 data class datosUsuario(
@@ -15,7 +16,9 @@ data class datosUsuario(
     var permisosAdministrador: Boolean,
     var permisosVenta: Boolean,
     var permisosModificarInventario: Boolean,
+    var permisosModificarVenta: Boolean,
     var permisosAltaInventario: Boolean,
     var permisosEstadisticas: Boolean,
-    var permisosProovedor: Boolean
+    var permisosProovedor: Boolean,
+    var permisosModificarProovedor: Boolean
 )

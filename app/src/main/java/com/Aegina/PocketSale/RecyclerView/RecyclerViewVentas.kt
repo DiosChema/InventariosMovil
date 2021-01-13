@@ -11,11 +11,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.VentaDetalle
+import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import androidx.core.view.isVisible as isVisible1
 
@@ -45,12 +45,22 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         )
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun getItemCount(): Int {
         return ventas.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val urls = Urls()
+        var globalVariable = view.context.applicationContext as GlobalClass
+
         val ventasFragmentNumeroVenta = view.findViewById(R.id.ventasFragmentNumeroVenta) as TextView
         val ventasFragmentText = view.findViewById(R.id.ventasFragmentText) as TextView
         val ventasFragmentFecha = view.findViewById(R.id.ventasFragmentFecha) as TextView
@@ -71,10 +81,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             val mRecyclerView : RecyclerView = ventasFragmentRecyclerViewArticulos
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager = LinearLayoutManager(context)
-            if (context != null) {
-                mViewVentas.RecyclerAdapter(venta.articulos.toMutableList(), context)
-            }
-            mRecyclerView.adapter = mViewVentas
+            var llenarRecyclerView = true
 
             when (position % 2) {
                 1 -> ventasFragmentContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
@@ -84,25 +91,21 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             }
 
             itemView.setOnClickListener {
-                if(ventasFragmentRecyclerViewArticulos.isVisible1) {
-                    ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
-                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
-                    params.height = tamanoOriginal
-                    mRecyclerView.layoutParams = params
-                } else {
-                    if(tamanoOriginal == 0) tamanoOriginal = ventasFragmentRecyclerViewArticulos.layoutParams.height
+                if(llenarRecyclerView)
+                {
+                    if (context != null) {
+                        mViewVentas.RecyclerAdapter(venta.articulos.toMutableList(), context)
+                    }
+                    mRecyclerView.adapter = mViewVentas
+                    llenarRecyclerView = false
+                }
 
+                if(ventasFragmentRecyclerViewArticulos.isVisible1) {
+                    ventasFragmentRecyclerViewArticulos.visibility = View.GONE
+                } else {
                     ventasFragmentRecyclerViewArticulos.visibility = View.VISIBLE
-                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                    mRecyclerView.layoutParams = params
                 }
             }
-
-            val nuevoTamano: ViewGroup.LayoutParams = ventasFragmentRecyclerViewArticulos.layoutParams
-            nuevoTamano.height = 0
-            ventasFragmentRecyclerViewArticulos.layoutParams = nuevoTamano
-            ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
 
             ventasFragmentNumeroVenta.text = venta._id.toString()
             ventasFragmentText.text = itemView.context.getString(R.string.ventas_inventario_fecha)
@@ -115,20 +118,34 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.toString()
+            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp
 
-            ventasFragmentBotonEditar.setOnClickListener{
-                val intent = Intent(context, VentaDetalle::class.java).apply {
-                    putExtra("venta", venta)
+            if(globalVariable.usuario!!.permisosModificarVenta)
+            {
+                ventasFragmentBotonEditar.setOnClickListener{
+                    val intent = Intent(context, VentaDetalle::class.java).apply {
+                        putExtra("venta", venta)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
+            else
+            {
+                ventasFragmentBotonEditar.visibility = View.GONE
+            }
+
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

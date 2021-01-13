@@ -18,13 +18,11 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Metodos.Meses
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Respuesta
 import com.Aegina.PocketSale.Objets.TiendaObjeto
@@ -36,8 +34,8 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
-import java.lang.Exception
 import java.lang.Integer.parseInt
+import java.text.SimpleDateFormat
 import java.util.*
 
 class TiendaDetalle : AppCompatActivity(),
@@ -52,8 +50,8 @@ class TiendaDetalle : AppCompatActivity(),
     var cambioFoto : Boolean = false
 
     lateinit var tiendaDetalleNombre : EditText
-    lateinit var tiendaDetalleNumeroTienda : EditText
-    lateinit var tiendaDetalleSuscricion : EditText
+    lateinit var tiendaDetalleNumeroTienda : TextView
+    lateinit var tiendaDetalleSuscricion : TextView
     lateinit var tiendaDetalleFoto : ImageView
     lateinit var tiendaDetalleEditar : Button
     lateinit var tiendaDetalleCancelarEdicion : Button
@@ -102,6 +100,7 @@ class TiendaDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -109,7 +108,7 @@ class TiendaDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                     finish()
                 }
             }
@@ -130,7 +129,6 @@ class TiendaDetalle : AppCompatActivity(),
                         runOnUiThread()
                         {
                             llenarCampos()
-                            progressDialog.dismiss()
                         }
                     }
                     catch(e:Exception)
@@ -139,6 +137,8 @@ class TiendaDetalle : AppCompatActivity(),
                         errores.procesarErrorCerrarVentana(context,body,activity)
                     }
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -146,8 +146,6 @@ class TiendaDetalle : AppCompatActivity(),
     fun habilitarEdicion(activar : Boolean)
     {
         tiendaDetalleNombre.isEnabled = activar
-        tiendaDetalleNumeroTienda.isEnabled = false
-        tiendaDetalleSuscricion.isEnabled = false
         tiendaDetalleFoto.isEnabled = activar
 
         if (activar)
@@ -195,6 +193,7 @@ class TiendaDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -202,7 +201,7 @@ class TiendaDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -239,8 +238,24 @@ class TiendaDetalle : AppCompatActivity(),
     private fun llenarCampos()
     {
         tiendaDetalleNombre.setText(tiendaObjeto.nombre)
-        tiendaDetalleNumeroTienda.setText(parseInt(tiendaObjeto.tienda).toString())
-        tiendaDetalleSuscricion.setText(tiendaObjeto.fechaLimiteSuscripcion)
+        tiendaDetalleNumeroTienda.text = getString(R.string.tienda_detalle_tienda) + " #" + parseInt(tiendaObjeto.tienda).toString()
+
+        val nombreMes = Meses()
+        val calendar = Calendar.getInstance()
+        val formatoFecha = SimpleDateFormat("yyyy-MM-dd")
+
+        calendar.time = formatoFecha.parse(tiendaObjeto.fechaLimiteSuscripcion)// all done
+
+        val fechaTienda = if(parseInt(getString(R.string.numero_idioma))  > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + " " + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + " " + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + " " + calendar.get(Calendar.DAY_OF_MONTH) + " " + calendar.get(Calendar.YEAR)
+        }
+
+        tiendaDetalleSuscricion.text = fechaTienda
         cambioFoto = false
         tiendaDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
     }
@@ -360,7 +375,7 @@ class TiendaDetalle : AppCompatActivity(),
                 cambioFoto = true
                 val bitmap: Bitmap = (Drawable.createFromStream(inputStream, image_uri.toString()) as BitmapDrawable).bitmap
 
-                val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 200) / bitmap.height, 200, true)
+                val resized = Bitmap.createScaledBitmap(bitmap, (bitmap.width * 300) / bitmap.height, 300, true)
                 tiendaDetalleFoto.setImageBitmap(resized)
 
             } catch (e: FileNotFoundException) { }

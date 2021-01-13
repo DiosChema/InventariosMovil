@@ -26,8 +26,8 @@ android {
         applicationId "com.Aegina.PocketSale"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 19
-        versionName "1.19"
+        versionCode 22
+        versionName "1.22"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.release

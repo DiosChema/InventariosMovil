@@ -16,6 +16,7 @@ import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
 import java.lang.Exception
+import java.lang.Integer.parseInt
 
 
 class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewHolder>() {
@@ -44,6 +45,14 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         )
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun getItemCount(): Int {
         return articulosInventario.size
     }
@@ -55,7 +64,6 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
         val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
-        val itemArticuloInventarioPrecioText = view.findViewById(R.id.itemArticuloInventarioPrecioText) as TextView
         val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
@@ -70,24 +78,20 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
                 }
             }
 
-            itemArticuloInventarioNombre.text = articulo.nombreArticulo
-            itemArticuloInventarioDescipcion.text = articulo.descripcionArticulo
+            itemArticuloInventarioNombre.text = articulo.nombre
+            itemArticuloInventarioDescipcion.text = articulo.descripcion
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidadArticulo.toString()
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
 
-            itemArticuloInventarioPrecioText.text = itemView.context.getString(R.string.venta_precio_articulo)
-            textTmp = "$" + articulo.precioArticulo
+            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
             itemArticuloInventarioPrecio.text = textTmp
 
             itemView.setOnClickListener {
-                if(globalVariable.usuario!!.permisosModificarInventario)
-                {
-                    val intent = Intent(context, InventarioDetalle::class.java).apply {
-                        putExtra("articulo", articulo)
-                    }
-                    context.startActivity(intent)
+                val intent = Intent(context, InventarioDetalle::class.java).apply {
+                    putExtra("articulo", articulo)
                 }
+                context.startActivity(intent)
             }
             itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
@@ -95,6 +99,12 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

@@ -10,7 +10,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Activities.SurtidoDetalle
 import com.Aegina.PocketSale.Activities.VentaDetalle
+import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
 import com.Aegina.PocketSale.R
@@ -45,12 +47,22 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
         )
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun getItemCount(): Int {
         return ventas.size
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val urls = Urls()
+        var globalVariable = view.context.applicationContext as GlobalClass
+
         val ventasFragmentNumeroVenta = view.findViewById(R.id.ventasFragmentNumeroVenta) as TextView
         val ventasFragmentText = view.findViewById(R.id.ventasFragmentText) as TextView
         val ventasFragmentFecha = view.findViewById(R.id.ventasFragmentFecha) as TextView
@@ -64,17 +76,17 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
         var simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         var simpleDateHours: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
 
-        fun bind(venta: VentasObjeto, context: Context) {
-            var tamanoOriginal = 0
+        fun bind(surtido: VentasObjeto, context: Context) {
             var cantidadArticulos = 0
             val mViewVentas = RecyclerViewArticulosSurtido()
             val mRecyclerView : RecyclerView = ventasFragmentRecyclerViewArticulos
             mRecyclerView.setHasFixedSize(true)
             mRecyclerView.layoutManager = LinearLayoutManager(context)
             if (context != null) {
-                mViewVentas.RecyclerAdapter(venta.articulos.toMutableList(), context)
+                mViewVentas.RecyclerAdapter(surtido.articulos.toMutableList(), context)
             }
             mRecyclerView.adapter = mViewVentas
+            var llenarRecyclerView = true
 
             when (position % 2) {
                 1 -> ventasFragmentContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
@@ -84,51 +96,61 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
             }
 
             itemView.setOnClickListener {
-                if(ventasFragmentRecyclerViewArticulos.isVisible1) {
-                    ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
-                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
-                    params.height = tamanoOriginal
-                    mRecyclerView.layoutParams = params
-                } else {
-                    if(tamanoOriginal == 0) tamanoOriginal = ventasFragmentRecyclerViewArticulos.layoutParams.height
+                if(llenarRecyclerView)
+                {
+                    if (context != null) {
+                        mViewVentas.RecyclerAdapter(surtido.articulos.toMutableList(), context)
+                    }
+                    mRecyclerView.adapter = mViewVentas
+                    llenarRecyclerView = false
+                }
 
+                if(ventasFragmentRecyclerViewArticulos.isVisible1) {
+                    ventasFragmentRecyclerViewArticulos.visibility = View.GONE
+                } else {
                     ventasFragmentRecyclerViewArticulos.visibility = View.VISIBLE
-                    val params: ViewGroup.LayoutParams = mRecyclerView.layoutParams
-                    params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-                    mRecyclerView.layoutParams = params
                 }
             }
 
-            val nuevoTamano: ViewGroup.LayoutParams = ventasFragmentRecyclerViewArticulos.layoutParams
-            nuevoTamano.height = 0
-            ventasFragmentRecyclerViewArticulos.layoutParams = nuevoTamano
-            ventasFragmentRecyclerViewArticulos.visibility = View.INVISIBLE
-
-            ventasFragmentNumeroVenta.text = venta._id.toString()
+            ventasFragmentNumeroVenta.text = surtido._id.toString()
             ventasFragmentText.text = itemView.context.getString(R.string.ventas_inventario_fecha)
-            ventasFragmentFecha.text = simpleDate.format(venta.fecha)
-            ventasFragmentHora.text = simpleDateHours.format(venta.fecha)
+            ventasFragmentFecha.text = simpleDate.format(surtido.fecha)
+            ventasFragmentHora.text = simpleDateHours.format(surtido.fecha)
 
-            for(articulos in venta.articulos)
+            for(articulos in surtido.articulos)
                 cantidadArticulos += articulos.cantidad
 
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalCosto.toString()
+            textTmp = itemView.context.getString(R.string.venta_total) + " $" +surtido.totalCosto.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp
 
-            ventasFragmentBotonEditar.setOnClickListener{
-                val intent = Intent(context, VentaDetalle::class.java).apply {
-                    putExtra("venta", venta)
+            if(globalVariable.usuario!!.permisosModificarVenta)
+            {
+
+                ventasFragmentBotonEditar.setOnClickListener{
+                    val intent = Intent(context, SurtidoDetalle::class.java).apply {
+                        putExtra("surtido", surtido)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
+            }
+            else
+            {
+                ventasFragmentBotonEditar.visibility = View.GONE
             }
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

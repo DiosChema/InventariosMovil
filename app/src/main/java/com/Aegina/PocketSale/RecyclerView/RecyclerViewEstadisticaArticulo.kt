@@ -34,11 +34,19 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_estadistica_articulo,
+                R.layout.item_articulo_inventario,
                 parent,
                 false
             )
         )
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {
@@ -46,31 +54,28 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val estadisticaArticuloTitulo = view.findViewById(R.id.itemEstadisticaArticuloTitulo) as TextView
-        //val estadisticaArticuloPrecio = view.findViewById(R.id.itemEstadisticaArticuloPrecio) as TextView
-        val estadisticaArticuloDescripcion = view.findViewById(R.id.itemEstadisticaArticuloDescripcion) as TextView
-        val estadisticaArticuloCantidad = view.findViewById(R.id.itemEstadisticaArticuloCantidad) as TextView
-        //val estadisticaArticuloTotal = view.findViewById(R.id.itemEstadisticaArticuloTotal) as TextView
-        val estadisticaArticuloFoto = view.findViewById(R.id.itemEstadisticaArticuloFoto) as ImageView
-        val estadisticaArticuloContenedor = view.findViewById(R.id.estadisticaArticuloContenedor) as LinearLayout
+        val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
+        val itemArticuloInventarioNombre = view.findViewById(R.id.itemArticuloInventarioNombre) as TextView
+        val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
+        val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
+        val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
+        val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
         fun bind(articulo: EstadisticaArticuloObject) {
-            estadisticaArticuloTitulo.text = articulo._id.nombreArticulo
-            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + articulo._id.precioArticulo
-            //estadisticaArticuloPrecio.text = textTmp
-            estadisticaArticuloDescripcion.text = articulo._id.descripcionArticulo
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + System.getProperty ("line.separator") +articulo.cantidad.toString()
-            estadisticaArticuloCantidad.text = textTmp
-            textTmp = itemView.context.getString(R.string.venta_total) + articulo.total.toString()
-            //estadisticaArticuloTotal.text = textTmp
+            itemArticuloInventarioNombre.text = articulo.articulo[0].nombre
+            itemArticuloInventarioDescipcion.text = articulo.articulo[0].descripcion
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad.toString()
+            itemArticuloInventarioCantidad.text = textTmp
+            textTmp = itemView.context.getString(R.string.venta_total) + " " + articulo.total.round(2).toString()
+            itemArticuloInventarioPrecio.text = textTmp
             val urls = Urls()
-            estadisticaArticuloFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo._id.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.articulo[0].idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
             when (position % 2) {
-                1 -> estadisticaArticuloContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
-                0 -> estadisticaArticuloContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
+                1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                0 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
                 else -> {
                 }
             }
@@ -79,6 +84,12 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

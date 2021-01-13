@@ -39,26 +39,34 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
         dialogNumeroAceptar.setOnClickListener {
             if(dialogNumeroText.length() > 0) {
                 agregarNumero.obtenerNumero(Integer.parseInt(dialogNumeroText.text.toString()),posicion)
-                val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-                imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-
+                val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                if (imm.isAcceptingText)
+                {
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                }
                 dialogAgregarNumero.dismiss()
             }
         }
 
         dialogNumeroCancelar.setOnClickListener {
-            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (imm.isAcceptingText)
+            {
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
             dialogAgregarNumero.dismiss()
         }
 
         dialogAgregarNumero.show()
+        dialogNumeroText.requestFocus()
+        //val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        //activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+
     }
 
     interface DialogAgregarNumero {
         fun obtenerNumero(numero : Int, posicion : Int)
     }
-
-
-
 }

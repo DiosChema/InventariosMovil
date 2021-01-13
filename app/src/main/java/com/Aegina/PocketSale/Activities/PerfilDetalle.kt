@@ -27,7 +27,7 @@ import android.view.View
 import android.view.animation.TranslateAnimation
 import android.widget.*
 import androidx.cardview.widget.CardView
-import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
+import com.Aegina.PocketSale.Dialogs.DialogCambiarContrasena
 import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
@@ -38,6 +38,7 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.*
+import java.lang.Integer.parseInt
 import java.util.*
 
 class PerfilDetalle : AppCompatActivity(),
@@ -48,18 +49,23 @@ class PerfilDetalle : AppCompatActivity(),
     lateinit var perfilDetalleFoto : ImageView
     lateinit var perfilDetallePermisosVenta : CheckBox
     lateinit var perfilDetallePermisosModificarInventario : CheckBox
+    lateinit var perfilDetallePermisosModificarVenta : CheckBox
     lateinit var perfilDetallePermisosCrearArticulos : CheckBox
     lateinit var perfilDetallePermisosEstadisticas : CheckBox
     lateinit var perfilDetallePermisosProovedor : CheckBox
+    lateinit var perfilDetallePermisosMoodificarProovedor : CheckBox
     lateinit var perfilDetalleDarDeAlta : Button
     lateinit var perfilDetalleCancelarEdicion : Button
     lateinit var perfilDetalleEliminarEmpleado : ImageButton
+    lateinit var perfilDetalleCambiarContrasena : ImageButton
     lateinit var perfilDetalleEliminarEmpleadoCardView : CardView
+    lateinit var perfilDetalleCambiarContrasenaCardView : CardView
     lateinit var globalVariable: GlobalClass
     lateinit var context : Context
     lateinit var activity: Activity
     private val urls: Urls = Urls()
     var dialogSeleccionarFoto = DialogSeleccionarFoto()
+    var dialogContrasena = DialogCambiarContrasena()
 
     var image_uri: Uri? = null
     var cambioFoto : Boolean = false
@@ -104,6 +110,7 @@ class PerfilDetalle : AppCompatActivity(),
         }
 
         dialogSeleccionarFoto.crearDialog(this)
+        dialogContrasena.crearDialogContrasena(context,globalVariable,activity)
 
     }
 
@@ -138,9 +145,12 @@ class PerfilDetalle : AppCompatActivity(),
             jsonObject.put("password", "12345678")
             jsonObject.put("permisosVenta", perfilDetallePermisosVenta.isChecked)
             jsonObject.put("permisosModificarInventario", perfilDetallePermisosModificarInventario.isChecked)
+            jsonObject.put("permisosModificarVenta", perfilDetallePermisosModificarVenta.isChecked)
             jsonObject.put("permisosAltaInventario", perfilDetallePermisosCrearArticulos.isChecked)
             jsonObject.put("permisosEstadisticas", perfilDetallePermisosEstadisticas.isChecked)
             jsonObject.put("permisosProovedor", perfilDetallePermisosProovedor.isChecked)
+            jsonObject.put("permisosModificarProovedor", perfilDetallePermisosMoodificarProovedor.isChecked)
+            jsonObject.put("idioma", parseInt(getString(R.string.numero_idioma)))
         }
         catch (e: JSONException)
         {
@@ -158,13 +168,14 @@ class PerfilDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
                 progressDialog.dismiss()
             }
@@ -181,7 +192,7 @@ class PerfilDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
-                            progressDialog.dismiss()
+                            globalVariable.actualizarVentana!!.actualizarEmpleados = true
                             if(cambioFoto) darDeAltaFoto()
                             else finish()
                         }
@@ -193,6 +204,8 @@ class PerfilDetalle : AppCompatActivity(),
                     }
                     catch(e:Exception){}
                 }
+
+                progressDialog.dismiss()
 
             }
         })
@@ -280,9 +293,11 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+empleado.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
         perfilDetallePermisosVenta.isChecked = empleado.permisosVenta
         perfilDetallePermisosModificarInventario.isChecked = empleado.permisosModificarInventario
+        perfilDetallePermisosModificarVenta.isChecked = empleado.permisosModificarVenta
         perfilDetallePermisosCrearArticulos.isChecked = empleado.permisosAltaInventario
         perfilDetallePermisosEstadisticas.isChecked = empleado.permisosEstadisticas
         perfilDetallePermisosProovedor.isChecked = empleado.permisosProovedor
+        perfilDetallePermisosMoodificarProovedor.isChecked = empleado.permisosModificarProovedor
 
         cambioFoto = false
     }
@@ -293,16 +308,21 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleFoto = findViewById(R.id.perfilDetalleFoto)
         perfilDetallePermisosVenta = findViewById(R.id.perfilDetallePermisosVenta)
         perfilDetallePermisosModificarInventario = findViewById(R.id.perfilDetallePermisosModificarInventario)
+        perfilDetallePermisosModificarVenta = findViewById(R.id.perfilDetallePermisosModificarVenta)
         perfilDetallePermisosCrearArticulos = findViewById(R.id.perfilDetallePermisosCrearArticulos)
         perfilDetallePermisosEstadisticas = findViewById(R.id.perfilDetallePermisosEstadisticas)
         perfilDetallePermisosProovedor = findViewById(R.id.perfilDetallePermisosProovedor)
+        perfilDetallePermisosMoodificarProovedor = findViewById(R.id.perfilDetallePermisosMoodificarProovedor)
         perfilDetalleDarDeAlta = findViewById(R.id.perfilDetalleDarDeAlta)
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
+        perfilDetalleCambiarContrasena = findViewById(R.id.perfilDetalleCambiarContrasena)
         perfilDetalleEliminarEmpleadoCardView = findViewById(R.id.perfilDetalleEliminarEmpleadoCardView)
+        perfilDetalleCambiarContrasenaCardView = findViewById(R.id.perfilDetalleCambiarContrasenaCardView)
 
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
         perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
+        perfilDetalleCambiarContrasenaCardView.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -314,28 +334,38 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleDarDeAlta.isEnabled = true
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
         perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
+        perfilDetalleCambiarContrasenaCardView.visibility = View.INVISIBLE
 
         if(globalVariable.usuario!!.user == empleadoObject.user)
         {
             perfilDetallePermisosVenta.isEnabled = false
             perfilDetallePermisosModificarInventario.isEnabled = false
+            perfilDetallePermisosModificarVenta.isEnabled = false
             perfilDetallePermisosCrearArticulos.isEnabled = false
             perfilDetallePermisosEstadisticas.isEnabled = false
             perfilDetallePermisosProovedor.isEnabled = false
+            perfilDetallePermisosMoodificarProovedor.isEnabled = false
         }
         else
         {
             perfilDetallePermisosVenta.isEnabled = activar
             perfilDetallePermisosModificarInventario.isEnabled = activar
+            perfilDetallePermisosModificarVenta.isEnabled = activar
             perfilDetallePermisosCrearArticulos.isEnabled = activar
             perfilDetallePermisosEstadisticas.isEnabled = activar
             perfilDetallePermisosProovedor.isEnabled = activar
+            perfilDetallePermisosMoodificarProovedor.isEnabled = activar
         }
 
         if (activar) {
 
             perfilDetalleCancelarEdicion.visibility = View.VISIBLE
             perfilDetalleEliminarEmpleadoCardView.visibility = View.VISIBLE
+
+            if(empleadoObject.user == globalVariable.usuario!!.user)
+            {
+                perfilDetalleCambiarContrasenaCardView.visibility = View.VISIBLE
+            }
 
             perfilDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)
             perfilDetalleDarDeAlta.setOnClickListener{
@@ -347,6 +377,9 @@ class PerfilDetalle : AppCompatActivity(),
                 showDialogEliminarEmpleado()
             }
 
+            perfilDetalleCambiarContrasena.setOnClickListener{
+                dialogContrasena.mostrarVentana()
+            }
         }
         else {
             perfilDetalleDarDeAlta.text = getString(R.string.mensaje_editar)
@@ -369,9 +402,11 @@ class PerfilDetalle : AppCompatActivity(),
             jsonObject.put("permisosAdministrador", empleadoObject.permisosAdministrador)
             jsonObject.put("permisosVenta", perfilDetallePermisosVenta.isChecked)
             jsonObject.put("permisosModificarInventario", perfilDetallePermisosModificarInventario.isChecked)
+            jsonObject.put("permisosModificarVenta", perfilDetallePermisosModificarVenta.isChecked)
             jsonObject.put("permisosAltaInventario", perfilDetallePermisosCrearArticulos.isChecked)
             jsonObject.put("permisosEstadisticas", perfilDetallePermisosEstadisticas.isChecked)
             jsonObject.put("permisosProovedor", perfilDetallePermisosProovedor.isChecked)
+            jsonObject.put("permisosModificarProovedor", perfilDetallePermisosMoodificarProovedor.isChecked)
         }
         catch (e: JSONException)
         {
@@ -389,6 +424,7 @@ class PerfilDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -396,7 +432,7 @@ class PerfilDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -412,8 +448,19 @@ class PerfilDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
-                            if(cambioFoto) darDeAltaFoto()
-                            else finish()
+                            if(!empleadoObject.permisosAdministrador)
+                            {
+                                globalVariable.actualizarVentana!!.actualizarEmpleados = true
+                            }
+
+                            if(cambioFoto)
+                            {
+                                darDeAltaFoto()
+                            }
+                            else
+                            {
+                                finish()
+                            }
                         }
                         else
                         {
@@ -424,25 +471,49 @@ class PerfilDetalle : AppCompatActivity(),
                     catch(e:Exception){}
                 }
 
-
+                progressDialog.dismiss()
             }
         })
     }
 
     fun datosVacios() : Boolean {
 
-        if(perfilDetalleNombre.text.toString() == ""){return moverCampo(perfilDetalleNombre)}
-        if(!perfilDetalleCorreo.text.toString().isEmailValid()){return moverCampo(perfilDetalleCorreo)}
+        var datoVacio = true
 
+        if(perfilDetalleNombre.text.toString() == "")
+        {
+            mensajeLlenarDatos(1)
+            return datoVacio
+        }
 
-        return false
+        if(!perfilDetalleCorreo.text.toString().isEmailValid())
+        {
+            mensajeLlenarDatos(2)
+            return datoVacio
+        }
+
+        datoVacio = false
+        return datoVacio
     }
 
     fun String.isEmailValid(): Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
     }
 
-    fun moverCampo(editText : EditText) : Boolean{
+    fun mensajeLlenarDatos(idMensaje: Int)
+    {
+        var mensaje = ""
+
+        when(idMensaje)
+        {
+            1 -> mensaje = getString(R.string.mensaje_empleado_detalle_nombre)
+            2 -> mensaje = getString(R.string.mensaje_empleado_detalle_correo)
+        }
+
+        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
+    }
+
+    /*fun moverCampo(editText : EditText) : Boolean{
         val animation1 = TranslateAnimation(0.0f,
             editText.width.toFloat()/15,
             0.0f,
@@ -454,7 +525,7 @@ class PerfilDetalle : AppCompatActivity(),
         editText.startAnimation(animation1)
 
         return true
-    }
+    }*/
 
     private fun showDialogEliminarEmpleado() {
         val dialog = Dialog(this)
@@ -462,10 +533,10 @@ class PerfilDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.perfil_eliminar_articulo)
         dialogText.visibility = View.INVISIBLE
@@ -509,6 +580,7 @@ class PerfilDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -516,7 +588,7 @@ class PerfilDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -541,6 +613,8 @@ class PerfilDetalle : AppCompatActivity(),
                     }
                     catch(e:Exception){}
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -557,6 +631,7 @@ class PerfilDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -564,7 +639,8 @@ class PerfilDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
+                    finish()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -578,12 +654,16 @@ class PerfilDetalle : AppCompatActivity(),
                         val gson = GsonBuilder().create()
                         empleadoObject = gson.fromJson(body, EmpleadoObject::class.java)
 
+                        if(empleadoObject.nombre == null)
+                        {
+                            Exception("")
+                        }
+
                         runOnUiThread()
                         {
                             habilitarEdicion(false)
                             llenarCampos(empleadoObject)
                             asignarFuncionBotones(true)
-                            progressDialog.dismiss()
                         }
                     }
                     catch(e:Exception)
@@ -592,6 +672,8 @@ class PerfilDetalle : AppCompatActivity(),
                         errores.procesarErrorCerrarVentana(context,body,activity)
                     }
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -625,7 +707,7 @@ class PerfilDetalle : AppCompatActivity(),
                         Bitmap.createBitmap(bitmap,((bitmap.width - bitmap.height)/2),0,bitmap.height,bitmap.height)
                     }
 
-                val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 150, 150, true)
+                val resized = Bitmap.createScaledBitmap(bitmapCuadrado, 200, 200, true)
                 perfilDetalleFoto.setImageBitmap(resized)
 
             } catch (e: FileNotFoundException) { }

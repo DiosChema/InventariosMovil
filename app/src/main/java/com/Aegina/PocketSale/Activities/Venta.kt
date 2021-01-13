@@ -24,7 +24,7 @@ import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import okhttp3.*
 import java.io.IOException
-import java.lang.Float.parseFloat
+import java.lang.Double.parseDouble
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -79,7 +79,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
         ButtonTerminarVenta.setOnClickListener {
             if(listaArticulosVenta.size > 0)
-                dialogoFinalizarVenta.crearDialog(context,parseFloat(ventaTotalVenta.text.toString().substring(1,ventaTotalVenta.text.length)))
+                dialogoFinalizarVenta.crearDialog(context,parseDouble(ventaTotalVenta.text.toString().substring(1,ventaTotalVenta.text.length)))
         }
 
         actualizarCantidadPrecio()
@@ -91,12 +91,12 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         var totalPrecio = 0.0
 
         for(articulos in listaArticulosVenta){
-            totalCantidad += articulos.cantidadArticulo
-            totalPrecio += (articulos.precioArticulo * articulos.cantidadArticulo)
+            totalCantidad += articulos.cantidad
+            totalPrecio += (articulos.precio * articulos.cantidad).round(2)
         }
 
         ventaTotalArticulos.text = totalCantidad.toString()
-        val textTmp = "$$totalPrecio"
+        val textTmp = "$" + totalPrecio.round(2)
         ventaTotalVenta.text = textTmp
     }
 
@@ -129,10 +129,10 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
             val articulo = ArticuloObjeto(
                 articuloTmp.idArticulo,
-                articuloTmp.cantidadArticulo,
-                articuloTmp.precioArticulo,
-                articuloTmp.nombreArticulo,
-                articuloTmp.costoArticulo)
+                articuloTmp.cantidad,
+                articuloTmp.precio,
+                articuloTmp.nombre,
+                articuloTmp.costo)
 
             if(articulo.cantidad > 0)
                 articulos.add(articulo)
@@ -163,6 +163,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         val client = OkHttpClient()
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -170,7 +171,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -226,7 +227,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         {
             if(articuloTmp.idArticulo == listaArticulosVenta[i].idArticulo)
             {
-                listaArticulosVenta[i].cantidadArticulo += articuloTmp.cantidadArticulo
+                listaArticulosVenta[i].cantidad += articuloTmp.cantidad
                 return true
             }
         }
@@ -253,13 +254,13 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
 
     override fun obtenerNumero(numero : Int, posicion : Int) {
         runOnUiThread{
-            listaArticulosVenta[posicion].cantidadArticulo = numero
+            listaArticulosVenta[posicion].cantidad = numero
             mViewVenta.notifyDataSetChanged()
             actualizarCantidadPrecio()
         }
     }
 
-    override fun finalizarVenta(cambio : Float) {
+    override fun finalizarVenta(cambio : Double) {
         runOnUiThread{
             subirVenta()
         }
@@ -303,6 +304,12 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
     override fun procesarError(json: String) {
         val errores = Errores()
         errores.procesarError(this,json,this)
+    }
+
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
     }
 
 }

@@ -40,7 +40,9 @@ data class Urls(
             "imagenes/eliminarImagen"),
         UrlsSurtidos(
             "surtido/darAltaSurtido",
-            "surtido/buscarSurtido"),
+            "surtido/buscarSurtido",
+            "surtido/eliminarSurtido",
+            "surtido/actualizarSurtido"),
         UrlsUsers(
             "users/loginUsuario",
             "users/registrarNuevaTienda",
@@ -51,7 +53,10 @@ data class Urls(
             "users/actualizarEmpleado",
             "users/obtenerEmpleado",
             "users/obtenerDatosTienda",
-            "users/actualizarDatosTienda"),
+            "users/actualizarDatosTienda",
+            "users/cambiarContrasena",
+            "users/recuperarContrasena",
+            "users/obtenerDatosTiendaTokenEspecial"),
         UrlsVentas(
             "ventas/actualizarVenta",
             "ventas/buscarVentaPorFecha",
@@ -97,7 +102,9 @@ data class UrlsImagenes(
 
 data class UrlsSurtidos(
     var endPointActualizarInventario:String,
-    var endPointObtenerSurtidos:String
+    var endPointObtenerSurtidos:String,
+    var endPointEliminarSurtido:String,
+    var endPointActualizarSurtido:String
 )
 
 data class UrlsUsers(
@@ -110,7 +117,10 @@ data class UrlsUsers(
     var endPointActualizarEmpleado:String,
     var endPointObtenerEmpleado:String,
     var endPointObtenerDatosTienda:String,
-    var endPointActualizarDatosTienda:String
+    var endPointActualizarDatosTienda:String,
+    var endPointCambiarContrasena:String,
+    var endPointRecuperarContrasena:String,
+    var endPointObtenerDatosTiendaTokenEspecial:String
 )
 
 data class UrlsVentas(

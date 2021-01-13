@@ -3,6 +3,7 @@
 package com.Aegina.PocketSale.Fragments
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Metodos.Meses
 import com.Aegina.PocketSale.Objets.EstadisticaVentasObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -44,6 +46,8 @@ class EstadisticaVentaFragment() : Fragment() {
     lateinit var estadisticaVentaTotalText : TextView
 
     var dialogFecha = DialogFecha()
+    val nombreMes = Meses()
+    lateinit var contextTmp : Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_estadistica_venta_fragment, container, false)
@@ -54,9 +58,10 @@ class EstadisticaVentaFragment() : Fragment() {
         dialogFecha.crearVentana(activity!!)
         globalVariable = activity?.applicationContext as GlobalClass
 
+        contextTmp = activity!!.applicationContext
         asignarBotones()
         asignarRecursos()
-        asignarFechaHoy()
+        asignarFechaSemana()
         obtenerTotales()
     }
 
@@ -102,6 +107,7 @@ class EstadisticaVentaFragment() : Fragment() {
         val client = OkHttpClient()
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -109,11 +115,10 @@ class EstadisticaVentaFragment() : Fragment() {
                 progressDialog.dismiss()
                 activity?.runOnUiThread()
                 {
-                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
 
                 val body = response.body()?.string()
 
@@ -125,9 +130,9 @@ class EstadisticaVentaFragment() : Fragment() {
                         val model = gson.fromJson(body, EstadisticaVentasObject::class.java)
 
                         activity?.runOnUiThread {
-                            estadisticaVentaTotalArticulosText.text = (model.totalVentas - model.totalCostos).toString()
-                            estadisticaVentaTotalCostosText.text = model.totalCostos.toString()
-                            estadisticaVentaTotalText.text = model.totalVentas.toString()
+                            estadisticaVentaTotalArticulosText.text = (model.totalVentas - model.totalCostos).round(2).toString()
+                            estadisticaVentaTotalCostosText.text = model.totalCostos.round(2).toString()
+                            estadisticaVentaTotalText.text = model.totalVentas.round(2).toString()
 
                             pieChart.clearChart()
 
@@ -148,6 +153,8 @@ class EstadisticaVentaFragment() : Fragment() {
                         errores.procesarError(activity!!.applicationContext,body,activity!!)
                     }
                 }
+
+                progressDialog.dismiss()
             }
         })
 
@@ -172,17 +179,59 @@ class EstadisticaVentaFragment() : Fragment() {
         buscarEstadisticaVentas()
     }
 
+    fun asignarFechaSemana(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.add(Calendar.DAY_OF_MONTH, -6);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarEstadisticaVentas()
+    }
+
+    fun asignarFechaMes(){
+        var calendar = Calendar.getInstance()
+        calendar = asignarHoraCalendar(calendar, 23, 59, 59)
+        fechaFinal = calendar.time
+
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar = asignarHoraCalendar(calendar, 0, 0, 0)
+        fechaInicial = calendar.time
+
+        buscarEstadisticaVentas()
+    }
+
     fun asignarFechaInicial(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaInicial
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         estadisticaVentasFechaInicial.text = text
     }
 
     fun asignarFechaFinal(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaFinal
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         estadisticaVentasFechaFinal.text = text
     }
 
@@ -208,5 +257,10 @@ class EstadisticaVentaFragment() : Fragment() {
         buscarEstadisticaVentas()
     }
 
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
+    }
 
 }

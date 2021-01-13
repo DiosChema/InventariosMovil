@@ -14,7 +14,6 @@ import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
-
 class RecyclerViewArticulosSurtido : RecyclerView.Adapter<RecyclerViewArticulosSurtido.ViewHolder>() {
 
     var articulosInventario: MutableList<ArticuloVentaObject>  = ArrayList()
@@ -34,11 +33,19 @@ class RecyclerViewArticulosSurtido : RecyclerView.Adapter<RecyclerViewArticulosS
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                R.layout.item_articulos_en_venta,
+                R.layout.item_articulos_lista,
                 parent,
                 false
             )
         )
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {
@@ -46,31 +53,39 @@ class RecyclerViewArticulosSurtido : RecyclerView.Adapter<RecyclerViewArticulosS
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nombre = view.findViewById(R.id.ventaArticulosNombre) as TextView
-        val ventaArticulosPrecioTotalText = view.findViewById(R.id.itemArticuloVentaPrecioTotalText) as TextView
-        val ventaArticulosPrecioTotal = view.findViewById(R.id.itemArticuloVentaPrecioTotal) as TextView
-        val ventaArticulosDescipcion = view.findViewById(R.id.ventaArticulosDescipcion) as TextView
-        val ventaArticulosDescipcionText = view.findViewById(R.id.ventaArticulosDescipcionText) as TextView
-        val imagen = view.findViewById(R.id.ventaArticulosFoto) as ImageView
+        val itemArticulosListaFoto = view.findViewById(R.id.itemArticulosListaFoto) as ImageView
+
+        val itemArticulosListaNombre = view.findViewById(R.id.itemArticulosListaNombre) as TextView
+        val itemArticulosListaDescipcion = view.findViewById(R.id.itemArticulosListaDescipcion) as TextView
+        val itemArticulosListaCantidad = view.findViewById(R.id.itemArticulosListaCantidad) as TextView
+        val itemArticulosListaPrecio = view.findViewById(R.id.itemArticulosListaPrecio) as TextView
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
+        val urls = Urls()
 
         fun bind(articulo: ArticuloVentaObject) {
-            nombre.text = articulo.articulosDetalle[0].nombreArticulo
-            ventaArticulosDescipcion.text = articulo.articulosDetalle[0].descripcionArticulo
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad
-            ventaArticulosDescipcionText.text = textTmp
-            ventaArticulosPrecioTotalText.text = itemView.context.getText(R.string.venta_total)
-            textTmp = "$" + (articulo.costo * articulo.cantidad)
-            ventaArticulosPrecioTotal.text = textTmp
 
-            val urls = Urls()
-            imagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticulosListaNombre.text = articulo.articulosDetalle[0].nombre
+            itemArticulosListaDescipcion.text = articulo.articulosDetalle[0].descripcion
+
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad
+            itemArticulosListaCantidad.text = textTmp
+
+            textTmp = itemView.context.getString(R.string.venta_total) + " $" + (articulo.costo * articulo.cantidad).round(2)
+            itemArticulosListaPrecio.text = textTmp
+
+            itemArticulosListaFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

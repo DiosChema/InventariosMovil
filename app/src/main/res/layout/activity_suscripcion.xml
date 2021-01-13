@@ -4,14 +4,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.Suscripcion"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/suscripcionTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:text="@string/suscripcion_titulo"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:id="@+id/suscripcionNombreTienda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text=""
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            card_view:cardCornerRadius="40dp">
+
+            <ImageView
+                android:id="@+id/tiendaDetalleFoto"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@drawable/logopocketsale"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:adjustViewBounds="true"
+                android:background= "@color/transparent"
+                android:contentDescription="@string/imagenArticulo"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/suscripcionFechaLimiteTiendaText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:text="@string/suscripcion_titulo_valido"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/suscripcionFechaLimiteTienda"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:fontFamily="@font/open_sans"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:text=""
+        android:layout_marginTop="8dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/suscripcionRecyclerView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_marginTop="15dp"/>
 
 </LinearLayout>

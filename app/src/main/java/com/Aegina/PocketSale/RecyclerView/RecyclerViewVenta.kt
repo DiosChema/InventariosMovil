@@ -14,6 +14,7 @@ import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
 import java.lang.Exception
+import kotlin.math.round
 
 class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
 
@@ -32,7 +33,15 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ViewHolder(layoutInflater.inflate(R.layout.item_articulo_venta,parent,false))
+        return ViewHolder(layoutInflater.inflate(R.layout.item_articulo,parent,false))
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {return articulos.size}
@@ -41,43 +50,48 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val urls = Urls()
         var globalVariable = view.context.applicationContext as GlobalClass
 
-        val itemArticuloVentaImagen = view.findViewById(R.id.itemArticuloVentaImagen) as ImageView
-        val itemArticuloVentaNombre = view.findViewById(R.id.itemArticuloVentaNombre) as TextView
-        val itemArticuloVentaDescipcion = view.findViewById(R.id.itemArticuloVentaDescipcion) as TextView
-        val itemArticuloVentaPrecio = view.findViewById(R.id.ventaArticulosPrecio) as TextView
-        val itemArticuloVentaPrecioTotalText = view.findViewById(R.id.itemArticuloVentaPrecioTotalText) as TextView
-        val itemArticuloVentaPrecioTotal = view.findViewById(R.id.itemArticuloVentaPrecioTotal) as TextView
-        val itemArticuloVentaCantidad = view.findViewById(R.id.itemArticuloVentaCantidad) as TextView
-        val itemArticuloVentaContainer = view.findViewById(R.id.itemArticuloVentaContainer) as LinearLayout
+        val itemArticuloImagen = view.findViewById(R.id.itemArticuloImagen) as ImageView
+        val itemArticuloNombre = view.findViewById(R.id.itemArticuloNombre) as TextView
+        val itemArticuloDescipcion = view.findViewById(R.id.itemArticuloDescipcion) as TextView
+        val itemArticuloPrecio = view.findViewById(R.id.itemArticuloPrecio) as TextView
+        val itemArticuloPrecioTotalText = view.findViewById(R.id.itemArticuloPrecioTotalText) as TextView
+        val itemArticuloPrecioTotal = view.findViewById(R.id.itemArticuloPrecioTotal) as TextView
+        val itemArticuloCantidad = view.findViewById(R.id.itemArticuloCantidad) as TextView
+        val itemArticuloContainer = view.findViewById(R.id.itemArticuloContainer) as LinearLayout
 
         fun bind(venta: InventarioObjeto) {
-
             when (position % 2) {
-                1 -> itemArticuloVentaContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
-                0 -> itemArticuloVentaContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                1 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
+                0 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
                 else -> {
                 }
             }
 
-            itemArticuloVentaNombre.text = venta.nombreArticulo
-            itemArticuloVentaDescipcion.text = venta.descripcionArticulo
+            itemArticuloNombre.text = venta.nombre
+            itemArticuloDescipcion.text = venta.descripcion
 
-            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + venta.precioArticulo
-            itemArticuloVentaPrecio.text = textTmp
+            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + venta.precio.round(2)
+            itemArticuloPrecio.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidadArticulo
-            itemArticuloVentaCantidad.text = textTmp
+            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidad
+            itemArticuloCantidad.text = textTmp
 
-            itemArticuloVentaPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
-            textTmp = "$" + (venta.precioArticulo * venta.cantidadArticulo).toString()
-            itemArticuloVentaPrecioTotal.text =  textTmp
+            itemArticuloPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
+            textTmp = "$" + (venta.precio * venta.cantidad).round(2).toString()
+            itemArticuloPrecioTotal.text =  textTmp
 
-            itemArticuloVentaImagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticuloImagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return round(this * multiplier) / multiplier
         }
     }
 }

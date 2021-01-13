@@ -14,6 +14,17 @@
         android:orientation="vertical"
         android:layout_margin="25dp">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:text="@string/perfil_nombre_empleado"
+            android:layout_marginTop="15dp"/>
+
         <EditText
             android:id="@+id/tiendaDetalleNombre"
             android:layout_width="match_parent"
@@ -26,19 +37,19 @@
             android:inputType="text"
             android:maxLength="13"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/tiendaDetalleNumeroTienda"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:gravity="center_horizontal"
+            android:textSize="18sp"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
-            android:background="@drawable/round_button_white"
             android:importantForAutofill="no"
-            android:inputType="text"
             android:layout_marginTop="15dp"/>
 
         <LinearLayout
@@ -58,7 +69,7 @@
                     android:id="@+id/tiendaDetalleFoto"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:src="@drawable/logopockets"
+                    android:src="@drawable/logopocketsale"
                     app:srcCompat="@android:drawable/ic_menu_camera"
                     android:adjustViewBounds="true"
                     android:background= "@color/transparent"
@@ -68,17 +79,16 @@
 
         </LinearLayout>
 
-        <EditText
+        <TextView
             android:id="@+id/tiendaDetalleSuscricion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:gravity="center_horizontal"
+            android:textSize="18sp"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
-            android:background="@drawable/round_button_white"
             android:importantForAutofill="no"
-            android:inputType="text"
             android:layout_marginTop="15dp"/>
 
         <Button

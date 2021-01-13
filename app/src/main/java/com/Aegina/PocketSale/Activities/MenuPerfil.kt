@@ -5,12 +5,10 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.Toast
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.*
 import java.lang.Exception
 
 class MenuPerfil : AppCompatActivity() {
@@ -33,7 +31,7 @@ class MenuPerfil : AppCompatActivity() {
 
         val logoTienda = findViewById<ImageView>(R.id.menuPerfilTienda)
 
-        logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
+        logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+globalVariable.usuario!!.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
 
         val botonPerfilUsuario = findViewById<ImageView>(R.id.menuPerfilBotonPerfil)
         botonPerfilUsuario.setOnClickListener()
@@ -61,7 +59,7 @@ class MenuPerfil : AppCompatActivity() {
         val buttonEmpleados = findViewById<ImageView>(R.id.buttonEmpleados)
         buttonEmpleados.setOnClickListener()
         {
-            val intent = Intent(this, Perfil::class.java)
+            val intent = Intent(this, Empleados::class.java)
             startActivity(intent)
         }
 

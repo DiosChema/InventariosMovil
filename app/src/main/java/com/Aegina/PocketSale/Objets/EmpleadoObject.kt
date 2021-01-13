@@ -10,7 +10,9 @@ data class EmpleadoObject(
     var permisosAdministrador:Boolean,
     var permisosVenta:Boolean,
     var permisosModificarInventario:Boolean,
+    var permisosModificarVenta: Boolean,
     var permisosAltaInventario:Boolean,
     var permisosEstadisticas:Boolean,
-    var permisosProovedor:Boolean
+    var permisosProovedor:Boolean,
+    var permisosModificarProovedor: Boolean
 ):Serializable

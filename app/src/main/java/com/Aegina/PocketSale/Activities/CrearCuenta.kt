@@ -2,6 +2,7 @@
 
 package com.Aegina.PocketSale.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.ActivityInfo
@@ -11,6 +12,7 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.Respuesta
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
@@ -19,6 +21,7 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Integer.parseInt
 import java.util.*
 
 class CrearCuenta : AppCompatActivity() {
@@ -29,6 +32,7 @@ class CrearCuenta : AppCompatActivity() {
     lateinit var crearCuentaPassword : EditText
     lateinit var crearCuentaConfirmarPassword : EditText
     lateinit var crearCuentaBotonCrearCuenta : Button
+    lateinit var activity: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,8 @@ class CrearCuenta : AppCompatActivity() {
 
         asignarCampos()
         asignarBotones()
+
+        activity = this
     }
 
     fun asignarBotones(){
@@ -56,7 +62,6 @@ class CrearCuenta : AppCompatActivity() {
 
     fun crearCuenta(){
 
-        crearCuentaBotonCrearCuenta.isEnabled = false
         var email = crearCuentaEmail.text.toString()
         email = email.toLowerCase(Locale.ROOT)
         val password = crearCuentaPassword.text.toString()
@@ -83,6 +88,7 @@ class CrearCuenta : AppCompatActivity() {
         try {
             jsonObject.put("email", email)
             jsonObject.put("password", password)
+            jsonObject.put("idioma", parseInt(getString(R.string.numero_idioma)))
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -97,6 +103,7 @@ class CrearCuenta : AppCompatActivity() {
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         val client = OkHttpClient()
@@ -105,7 +112,6 @@ class CrearCuenta : AppCompatActivity() {
             override fun onFailure(call: Call, e: IOException) {
                 runOnUiThread()
                 {
-                    crearCuentaBotonCrearCuenta.isEnabled = true
                     progressDialog.dismiss()
                 }
             }
@@ -117,25 +123,20 @@ class CrearCuenta : AppCompatActivity() {
 
                 val respuesta = gson.fromJson(json, Respuesta::class.java)
 
-                mensajeRespuesta =
-                    if(respuesta.status != 0)
+                runOnUiThread {
+
+                    progressDialog.dismiss()
+
+                    if(respuesta.status == 0)
                     {
-                        respuesta.mensaje
+                        Toast.makeText(context, getString(R.string.mensaje_cuenta_creada), Toast.LENGTH_LONG).show()
+                        finish()
                     }
                     else
                     {
-                        getString(R.string.mensaje_cuenta_creada)
+                        val errores = Errores()
+                        errores.procesarError(context,json,activity)
                     }
-
-                runOnUiThread {
-                    Toast.makeText(context, mensajeRespuesta, Toast.LENGTH_SHORT).show()
-                    progressDialog.dismiss()
-                    crearCuentaBotonCrearCuenta.isEnabled = true
-                }
-
-                if(respuesta.status == 0)
-                {
-                    finish()
                 }
             }
         })

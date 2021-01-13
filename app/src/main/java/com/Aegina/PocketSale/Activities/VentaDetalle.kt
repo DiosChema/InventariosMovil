@@ -29,7 +29,6 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.text.SimpleDateFormat
-import kotlin.collections.ArrayList
 
 class VentaDetalle : AppCompatActivity(),
     DialogAgregarNumero.DialogAgregarNumero {
@@ -147,11 +146,11 @@ class VentaDetalle : AppCompatActivity(),
         for(articulos in venta.articulos){
             listatmp.add(
                 InventarioObjeto(articulos.idArticulo,
-                    articulos.articulosDetalle[0].nombreArticulo,
-                    articulos.articulosDetalle[0].descripcionArticulo,
+                    articulos.articulosDetalle[0].nombre,
+                    articulos.articulosDetalle[0].descripcion,
                     articulos.cantidad,
                     articulos.precio,
-                    articulos.articulosDetalle[0].familiaArticulo,
+                    articulos.articulosDetalle[0].subFamilia,
                     articulos.costo,
                     articulos.articulosDetalle[0].inventarioOptimo
                 )
@@ -184,6 +183,7 @@ class VentaDetalle : AppCompatActivity(),
 
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -191,7 +191,7 @@ class VentaDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -205,12 +205,13 @@ class VentaDetalle : AppCompatActivity(),
 
                         val gson = GsonBuilder().create()
                         val respuesta = gson.fromJson(body, Respuesta::class.java)
+                        globalVariable.actualizarVentana!!.actualizarVentas = true
 
                         if(respuesta.status == 0)
                         {
                             runOnUiThread()
                             {
-                                Toast.makeText(context, getString(R.string.mensaje_eliminacion_exitosa), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, getString(R.string.mensaje_venta_eliminacion_exitosa), Toast.LENGTH_SHORT).show()
                                 finish()
                             }
                         }
@@ -232,22 +233,21 @@ class VentaDetalle : AppCompatActivity(),
     private fun actualizarVenta(){
         val url = urls.url+urls.endPointVentas.endPointActualizarVenta
 
-        val listaArticulosTmp: MutableList<ActualizarArticuloObjeto> = ArrayList()
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+        val currentDate = sdf.format(venta.fecha)
 
-        for (articulo in listaArticulos) {
-            if ( articulo.cantidadArticulo > 0) {
-                listaArticulosTmp.add(ActualizarArticuloObjeto(
-                    venta._id,
-                    articulo.idArticulo,
-                    articulo.cantidadArticulo,
-                    articulo.precioArticulo,
-                    articulo.nombreArticulo,
-                    articulo.costoArticulo
-                ))
+
+        var listaArticulosTmp = mutableListOf<InventarioObjeto>()
+
+        for(i in 0 until listaArticulos.size )
+        {
+            if(listaArticulos[i].cantidad > 0)
+            {
+                listaArticulosTmp.add(listaArticulos[i])
             }
         }
 
-        val ventaActualizada = ActualizarVenta(globalVariable.usuario!!.token,venta._id,listaArticulosTmp)
+        val ventaActualizada = ActualizarVenta(globalVariable.usuario!!.token,venta._id,currentDate,listaArticulosTmp)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonVenta: String = gsonPretty.toJson(ventaActualizada)
@@ -263,6 +263,7 @@ class VentaDetalle : AppCompatActivity(),
         val client = OkHttpClient()
         val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -270,7 +271,7 @@ class VentaDetalle : AppCompatActivity(),
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
-                    Toast.makeText(context, context.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
@@ -286,6 +287,7 @@ class VentaDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
+                            globalVariable.actualizarVentana!!.actualizarVentas = true
                             runOnUiThread {
                                 progressDialog.dismiss()
                                 Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
@@ -300,6 +302,8 @@ class VentaDetalle : AppCompatActivity(),
                     }
                     catch(e:Exception){}
                 }
+
+                progressDialog.dismiss()
             }
         })
     }
@@ -310,10 +314,10 @@ class VentaDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.dialog_eliminar_articulo)
         dialogText.visibility = View.INVISIBLE
@@ -336,10 +340,10 @@ class VentaDetalle : AppCompatActivity(),
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.dialog_text)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        val dialogText = dialog.findViewById(R.id.dialogText) as EditText
-        val dialogAceptar = dialog.findViewById(R.id.dialogAceptar) as Button
-        val dialogCancelar = dialog.findViewById(R.id.dialogCancelar) as Button
-        val dialogTitulo = dialog.findViewById(R.id.dialogTitulo) as TextView
+        val dialogText = dialog.findViewById(R.id.dialogTextEntrada) as EditText
+        val dialogAceptar = dialog.findViewById(R.id.dialogTextAceptar) as Button
+        val dialogCancelar = dialog.findViewById(R.id.dialogTextCancelar) as Button
+        val dialogTitulo = dialog.findViewById(R.id.dialogTextTitulo) as TextView
 
         dialogTitulo.text = getString(R.string.dialog_confirmar_actualizacion_venta)
         dialogText.visibility = View.INVISIBLE
@@ -364,7 +368,7 @@ class VentaDetalle : AppCompatActivity(),
 
     override fun obtenerNumero(numero : Int, posicion : Int) {
         runOnUiThread{
-            listaArticulos[posicion].cantidadArticulo = numero
+            listaArticulos[posicion].cantidad = numero
             mViewArticulosVenta.RecyclerAdapter(listaArticulos, context)
             mRecyclerView.adapter = mViewArticulosVenta
         }

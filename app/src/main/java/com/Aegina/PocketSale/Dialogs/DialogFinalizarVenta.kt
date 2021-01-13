@@ -16,13 +16,14 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.Aegina.PocketSale.R
+import java.lang.Double.parseDouble
 import java.lang.Float.parseFloat
 
 class DialogFinalizarVenta : AppCompatDialogFragment() {
 
     lateinit var finalizarVenta: DialogFinalizarVenta
 
-    fun crearDialog(context : Context, totalVenta : Float){
+    fun crearDialog(context : Context, totalVenta : Double){
         val dialogFinalizarVenta = Dialog(context)
 
         dialogFinalizarVenta.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -46,7 +47,7 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isNotEmpty()/* && parseFloat(s.toString()) >= totalVenta*/) {
-                    dialogTotalCambio.text = (parseFloat(s.toString()) - totalVenta).toString()
+                    dialogTotalCambio.text = (parseDouble(s.toString()) - totalVenta).round(2).toString()
                 }
                 else
                 {
@@ -56,16 +57,19 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
         })
 
         dialogTerminarVentaCancelar.setOnClickListener {
-            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-            imm?.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (imm.isAcceptingText)
+            {
+                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            }
             dialogFinalizarVenta.dismiss()
         }
 
         dialogTerminarVentaAceptar.setOnClickListener {
             if(dialogTotalPago.text.isNotEmpty()){
-                if(parseFloat(dialogTotalPago.text.toString()) >= totalVenta){
+                if(parseDouble(dialogTotalPago.text.toString()) >= totalVenta){
                     dialogFinalizarVenta.dismiss()
-                    finalizarVenta.finalizarVenta(parseFloat(dialogTotalPago.text.toString()) - totalVenta)
+                    finalizarVenta.finalizarVenta((parseDouble(dialogTotalPago.text.toString()) - totalVenta).round(2))
                 }
             }
         }
@@ -74,6 +78,12 @@ class DialogFinalizarVenta : AppCompatDialogFragment() {
     }
 
     interface DialogFinalizarVenta {
-        fun finalizarVenta(cambio : Float)
+        fun finalizarVenta(cambio : Double)
+    }
+
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
     }
 }

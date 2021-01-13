@@ -1,0 +1,126 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/transparent"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/round_button_bluelight">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/dialog_filtro"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/dialog_filtro_Nombre" />
+
+        <EditText
+            android:id="@+id/dialogFiltroEmpleadoNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:hint="@string/perfil_nombre_empleado"
+            android:inputType="text"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/perfil_correo_empleado" />
+
+        <EditText
+            android:id="@+id/dialogFiltroEmpleadoCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button_white"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:hint="@string/perfil_correo_empleado"
+            android:inputType="text"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialogFiltroEmpleadosCancelar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:background="@drawable/round_button_white"
+                android:text="@string/dialog_cancelar" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/dialogFiltroEmpleadosAceptar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="6"
+                android:background="@drawable/round_button_white"
+                android:minWidth="120dp"
+                android:text="@string/dialog_aceptar" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</ScrollView>

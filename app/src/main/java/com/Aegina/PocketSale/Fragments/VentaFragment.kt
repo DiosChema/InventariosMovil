@@ -3,6 +3,7 @@
 package com.Aegina.PocketSale.Fragments
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Metodos.Meses
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.Objets.VentasObjeto
@@ -44,6 +46,8 @@ class VentaFragment : Fragment() {
     lateinit var fechaFinalButton : Button
 
     var dialogFecha = DialogFecha()
+    val nombreMes = Meses()
+    lateinit var contextTmp : Context
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)
@@ -53,10 +57,12 @@ class VentaFragment : Fragment() {
         dialogFecha.crearVentana(activity!!)
         globalVariable = activity?.applicationContext as GlobalClass
 
+        contextTmp = activity!!.applicationContext
+
         asignarFechas()
         asignarBotones()
         crearRecyclerView()
-        asignarFechaHoy()
+        asignarFechaSemana()
         //obtenerVentas()
     }
 
@@ -140,6 +146,7 @@ class VentaFragment : Fragment() {
 
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -147,7 +154,7 @@ class VentaFragment : Fragment() {
                 progressDialog.dismiss()
                 activity?.runOnUiThread()
                 {
-                    Toast.makeText(context, context!!.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, context!!.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response)
@@ -183,14 +190,32 @@ class VentaFragment : Fragment() {
     fun asignarFechaInicial(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaInicial
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         fechaInicialButton.text = text
     }
 
     fun asignarFechaFinal(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaFinal
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(Integer.parseInt(getString(R.string.numero_idioma)) > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),contextTmp) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         fechaFinalButton.text = text
     }
 
@@ -227,5 +252,16 @@ class VentaFragment : Fragment() {
         buscarEstadisticaVentas()
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        globalVariable = activity?.applicationContext as GlobalClass
+
+        if(globalVariable.actualizarVentana!!.actualizarVentas)
+        {
+            globalVariable.actualizarVentana!!.actualizarVentas = false
+            obtenerVentas()
+        }
+    }
 
 }

@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.GlobalClass
-import com.Aegina.PocketSale.Objets.InventarioObjeto
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
@@ -36,11 +35,19 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
         val layoutInflater = LayoutInflater.from(parent.context)
         return ViewHolder(
             layoutInflater.inflate(
-                com.Aegina.PocketSale.R.layout.item_articulo,
+                com.Aegina.PocketSale.R.layout.item_articulo_inventario,
                 parent,
                 false
             )
         )
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {
@@ -48,35 +55,46 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val urls = Urls()
+        val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
 
-        val itemArticuloContainer = view.findViewById(R.id.itemArticuloContainer) as LinearLayout
-        val articuloFoto = view.findViewById(R.id.itemArticuloFoto) as ImageView
-        val articuloNombre = view.findViewById(R.id.itemArticuloNombre) as TextView
-        val itemArticuloDescripcion = view.findViewById(R.id.itemArticuloDescripcion) as TextView
-        val itemArticuloPrecio = view.findViewById(R.id.itemArticuloPrecio) as TextView
+        val itemArticuloInventarioNombre = view.findViewById(R.id.itemArticuloInventarioNombre) as TextView
+        val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
+        val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
+        val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
+        val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
+        val urls = Urls()
 
         fun bind(articulo: ArticuloInventarioObjeto) {
 
             when (position % 2) {
-                1 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista1))
-                0 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista2))
+                1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista1))
+                0 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista2))
                 else -> {
                 }
             }
 
-            articuloNombre.text = articulo.nombreArticulo
-            itemArticuloDescripcion.text = articulo.descripcionArticulo
-            val textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + articulo.precioArticulo
-            itemArticuloPrecio.text = textTmp
-            articuloFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticuloInventarioNombre.text = articulo.nombre
+            itemArticuloInventarioDescipcion.text = articulo.descripcion
+
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
+            itemArticuloInventarioCantidad.text = textTmp
+
+            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
+            itemArticuloInventarioPrecio.text = textTmp
+            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

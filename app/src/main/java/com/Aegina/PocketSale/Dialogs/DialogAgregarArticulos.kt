@@ -15,7 +15,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
@@ -72,8 +71,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     lateinit var dialogArticulosFamiliaSpinner: Spinner
     lateinit var dialogArticulosSubFamiliaSpinner: Spinner
-    lateinit var dialogArticulosSalir: ImageButton
-    lateinit var dialogArticulosAceptar: ImageView
+    lateinit var dialogArticulosSalir: Button
+    lateinit var dialogArticulosAceptar: Button
     var subFamiliaId = -1
     var listaArticulos:MutableList<ArticuloInventarioObjeto> = ArrayList()
     var listaArticulosCarrito:MutableList<ArticuloInventarioObjeto> = ArrayList()
@@ -98,8 +97,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogArticulos.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogArticulos.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
 
-        dialogArticulosSalir = dialogArticulos.findViewById(R.id.dialogArticulosSalir) as ImageButton
-        dialogArticulosAceptar = dialogArticulos.findViewById(R.id.dialogArticulosAceptar) as ImageView
+        dialogArticulosSalir = dialogArticulos.findViewById(R.id.dialogArticulosSalir) as Button
+        dialogArticulosAceptar = dialogArticulos.findViewById(R.id.dialogArticulosAceptar) as Button
         dialogArticulosFiltro = dialogArticulos.findViewById(R.id.dialogArticulosFiltro) as ImageButton
         dialogArticulosCamara = dialogArticulos.findViewById(R.id.dialogArticulosCamara) as ImageButton
         mRecyclerViewArticulos = dialogArticulos.findViewById(R.id.dialogoArticulosRecyclerView) as RecyclerView
@@ -120,7 +119,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                     dialogArticulos.dismiss()
 
                     var articuloTmp = listaArticulos[position]
-                    articuloTmp.cantidadArticulo = 1
+                    articuloTmp.cantidad = 1
                     agregarArticulo.numeroArticulo(crearArticulos(articuloTmp))
                 }
                 else
@@ -129,7 +128,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
                     if(!comprobarArticuloEnCarrito(articuloTmp))
                     {
-                        articuloTmp.cantidadArticulo = 1
+                        articuloTmp.cantidad = 1
                         listaArticulosCarrito.add(articuloTmp)
                         mViewListaArticulos.RecyclerAdapter(listaArticulosCarrito, contextTmp)
                         mViewListaArticulos.notifyDataSetChanged()
@@ -143,7 +142,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
                 if(!comprobarArticuloEnCarrito(articuloTmp))
                 {
-                    articuloTmp.cantidadArticulo = 1
+                    articuloTmp.cantidad = 1
                     listaArticulosCarrito.add(articuloTmp)
                     mViewListaArticulos.RecyclerAdapter(listaArticulosCarrito, contextTmp)
                     mViewListaArticulos.notifyDataSetChanged()
@@ -178,9 +177,9 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int)
             {
-                listaArticulosCarrito[position].cantidadArticulo--
+                listaArticulosCarrito[position].cantidad--
 
-                if(listaArticulosCarrito[position].cantidadArticulo <= 0)
+                if(listaArticulosCarrito[position].cantidad <= 0)
                 {
                     listaArticulosCarrito.removeAt(position)
                 }
@@ -336,12 +335,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         if(checkBoxFamilia.isChecked) url += "&familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId
         if(checkBoxSubFamilia.isChecked) url += "&subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId
-        if(dialogFiltroInventarioOptimo.isChecked) url += "&inventarioOptimo=" + "true"
         if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + Integer.parseInt(dialogFiltroCantidadMinimo.text.toString())
         if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
         if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
         if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
-        if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombreArticulo=" + dialogFiltroNombre.text.toString()
+        if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombre=" + dialogFiltroNombre.text.toString()
 
         val request = Request.Builder()
             .url(url)
@@ -357,7 +355,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error))
+                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error_intentear_mas_tarde))
             }
             override fun onResponse(call: Call, response: Response)
             {
@@ -396,7 +394,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
         if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
         if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
-        if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombreArticulo=" + dialogFiltroNombre.text.toString()
+        if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombre=" + dialogFiltroNombre.text.toString()
 
         val request = Request.Builder()
             .url(url)
@@ -407,12 +405,13 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         val progressDialog = ProgressDialog(contextTmp)
         progressDialog.setMessage(contextTmp.getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error))
+                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error_intentear_mas_tarde))
             }
             override fun onResponse(call: Call, response: Response)
             {
@@ -455,12 +454,13 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         val progressDialog = ProgressDialog(contextTmp)
         progressDialog.setMessage(contextTmp.getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
-                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error))
+                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error_intentear_mas_tarde))
             }
             override fun onResponse(call: Call, response: Response)
             {
@@ -473,7 +473,12 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                         val gson = GsonBuilder().create()
                         val model = gson.fromJson(body, InventarioObjeto::class.java)
 
-                        model.cantidadArticulo = 1
+                        if(model.nombre == null)
+                        {
+                            Exception("")
+                        }
+
+                        model.cantidad = 1
 
                         agregarArticulo.numeroArticulo(model)
                     }
@@ -525,11 +530,12 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         val progressDialog = ProgressDialog(contextTmp)
         progressDialog.setMessage(contextTmp.getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error))
+                agregarArticulo.lanzarMensaje(contextTmp.getString(R.string.mensaje_error_intentear_mas_tarde))
                 progressDialog.dismiss()
             }
             override fun onResponse(call: Call, response: Response)
@@ -610,7 +616,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         {
             if(articuloTmp.idArticulo == listaArticulosCarrito[i].idArticulo)
             {
-                listaArticulosCarrito[i].cantidadArticulo++
+                listaArticulosCarrito[i].cantidad++
                 mViewListaArticulos.notifyDataSetChanged()
                 return true
             }
@@ -644,12 +650,12 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
             listaTmp.add(
                 InventarioObjeto(
                     articuloInventarioObjeto[i].idArticulo,
-                    articuloInventarioObjeto[i].nombreArticulo,
-                    articuloInventarioObjeto[i].descripcionArticulo,
-                    articuloInventarioObjeto[i].cantidadArticulo,
-                    articuloInventarioObjeto[i].precioArticulo,
-                    articuloInventarioObjeto[i].familiaArticulo,
-                    articuloInventarioObjeto[i].costoArticulo,
+                    articuloInventarioObjeto[i].nombre,
+                    articuloInventarioObjeto[i].descripcion,
+                    articuloInventarioObjeto[i].cantidad,
+                    articuloInventarioObjeto[i].precio,
+                    articuloInventarioObjeto[i].familia,
+                    articuloInventarioObjeto[i].costo,
                     articuloInventarioObjeto[i].inventarioOptimo)
             )
         }
@@ -661,12 +667,12 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     {
         return InventarioObjeto(
             articuloInventarioObjeto.idArticulo,
-            articuloInventarioObjeto.nombreArticulo,
-            articuloInventarioObjeto.descripcionArticulo,
-            articuloInventarioObjeto.cantidadArticulo,
-            articuloInventarioObjeto.precioArticulo,
-            articuloInventarioObjeto.familiaArticulo,
-            articuloInventarioObjeto.costoArticulo,
+            articuloInventarioObjeto.nombre,
+            articuloInventarioObjeto.descripcion,
+            articuloInventarioObjeto.cantidad,
+            articuloInventarioObjeto.precio,
+            articuloInventarioObjeto.familia,
+            articuloInventarioObjeto.costo,
             articuloInventarioObjeto.inventarioOptimo)
     }
 

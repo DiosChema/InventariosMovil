@@ -7,7 +7,7 @@
     <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
     <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
     <string name="mensaje_venta_exitosa">Venta exitosa</string>
-    <string name="mensaje_eliminacion_exitosa">Venta eliminada</string>
+    <string name="mensaje_venta_eliminacion_exitosa">Venta eliminada</string>
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
     <string name="mensaje_numero_venta">Venta: </string>
 
@@ -18,7 +18,7 @@
     <string name="mensaje_cuenta_creada">Envio de registro exitoso! revisa tu correo para terminar el registro</string>
     <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres</string>
     <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
-    <string name="mensaje_contraseña_diferente">La contraseña debe de ser la misma</string>
+    <string name="mensaje_contraseña_diferente">La contraseña no coincide</string>
     <string name="mensaje_correo_repetir_contrasenia">Repetir contraseña</string>
     <string name="mensaje_correo_contrasenia">Contraseña</string>
     <string name="mensaje_crear_cuenta">Crear cuenta</string>
@@ -73,7 +73,7 @@
     <string name="estadistica_inventario_total_costos">Costo Total</string>
     <string name="estadistica_inventario_leyenda_total">Capital Total</string>
     <string name="estadistica_inventario_total">Total</string>
-    <string name="estadistica_inventario_titulo">Capital</string>
+    <string name="estadistica_inventario_titulo">dialog_agregar_familia</string>
 
     <!-- Surtido -->
     <string name="surtido_texto_titulo">Ingresar Articulo</string>
@@ -98,8 +98,8 @@
 
     <!-- Dialog Texto -->
     <string name="dialog_texto">Ingrese texto</string>
-    <string name="dialog_agregar_familia">Añadir Familia</string>
-    <string name="dialog_agregar_subfamilia">Añadir SubFamilia</string>
+    <string name="dialog_agregar_familia">Añadir grupo</string>
+    <string name="dialog_agregar_subfamilia">Añadir Subgrupo</string>
     <string name="dialog_cancelar">Cancelar</string>
     <string name="dialog_aceptar">Aceptar</string>
 
@@ -141,7 +141,7 @@
     <string name="perfil_correo_empleado">Correo</string>
     <string name="perfil_permisos_leyenda">Permisos</string>
     <string name="perfil_permisos_venta">Venta</string>
-    <string name="perfil_permisos_modificas_articulos">Modificar Inventario</string>
+    <string name="perfil_permisos_modificar_articulos">Modificar Inventario</string>
     <string name="perfil_permisos_crear_articulos">Crear Articulos</string>
     <string name="perfil_permisos_estadisticas">Ver estadisticas</string>
     <string name="perfil_permisos_proovedoor">Proovedor</string>
@@ -170,8 +170,49 @@
     <!-- Descripcion de imagenes -->
     <string name="permisos_denegado">Necesita permiso para obtener acceso a esta opción.</string>
     <string name="dialog_foto_titulo">Selecionar método</string>
-    <string name="mensaje_venta_exitos2a">Venta exitosa</string>
-    <string name="mensaje_error">Ha ocurrido un error. Por favor intente de nuevo</string>
-    <string name="mensaje_sesion_expirada">La sesión expiró, inicia sesión de nuevo</string>
+    <string name="mensaje_error_intentear_mas_tarde">Ha ocurrido un error. Por favor intente de nuevo</string>
+    <string name="mensaje_error_sesion_expirada">La sesión expiró, inicia sesión de nuevo</string>
     <string name="numero_idioma">2</string>
+    <string name="mensaje_error_suscripcion">Se produjo un error, contacte con PocketSale.</string>
+    <string name="suscripcion_titulo">Suscripción</string>
+    <string name="suscripcion_titulo_valido">"Suscripción válida hasta "</string>
+    <string name="mes_enero">Enero</string>
+    <string name="mes_febrero">Febrero</string>
+    <string name="mes_marzo">Marzo</string>
+    <string name="mes_abril">Abril</string>
+    <string name="mes_mayo">Mayo</string>
+    <string name="mes_junio">Junio</string>
+    <string name="mes_julio">Julio</string>
+    <string name="mes_agosto">Agosto</string>
+    <string name="mes_septiempre">Septiembre</string>
+    <string name="mes_octubre">Octubre</string>
+    <string name="mes_noviembre">Noviembre</string>
+    <string name="mes_diciembre">Diciembre</string>
+    <string name="mensaje_error_subfamilia_existe">El nombre del subgrupo ya existe</string>
+    <string name="mensaje_error_familia_existe">El nombre del grupo ya existe</string>
+    <string name="mensaje_surtido_eliminacion_exitosa">Registro exitoso.</string>
+    <string name="dialog_contrasena_titulo">Cambiar contraseña</string>
+    <string name="dialog_contrasena_password">Contraseña</string>
+    <string name="dialog_contrasena_password_new">Nueva contraseña</string>
+    <string name="mensaje_contrasena_cambiar">Contraseña actualizada.</string>
+    <string name="mensaje_error_contrasena">"Contraseña incorrecta "</string>
+    <string name="mensaje_cuenta_ya_registrado">El usuario ya esta registrado.</string>
+    <string name="mensaje_cuenta_registro_pendiente">Este correo electrónico ya tiene un registro pendiente .</string>
+    <string name="mensaje_dialog_recuperar_contrasena">Consulta tu correo electronico para recuperar tu contraseña.</string>
+    <string name="mensaje_usuario_invalido">Usuario inválido.</string>
+    <string name="empleados_titulo">Empleados</string>
+    <string name="perfil_permisos_modificar_venta">Modificar venta</string>
+    <string name="perfil_permisos_modificar_proovedor">Modificar suministros</string>
+    <string name="mensaje_inventario_detalle_codigo">Los artículos necesitan un código.</string>
+    <string name="mensaje_inventario_detalle_nombre">Los artículos necesitan un nombre.</string>
+    <string name="mensaje_inventario_detalle_precio">Los artículos necesitan un precio.</string>
+    <string name="mensaje_inventario_detalle_costo">Los artículos necesitan un costo.</string>
+    <string name="mensaje_inventario_detalle_cantidad">Los artículos necesitan una cantidad.</string>
+    <string name="mensaje_inventario_detalle_grupo">Los artículos necesitan un grupo.</string>
+    <string name="mensaje_inventario_detalle_subgrupo">Los elementos necesitan un subgrupo.</string>
+    <string name="mensaje_inventario_detalle_optimo">Los artículos necesitan un inventario óptimo.</string>
+    <string name="mensaje_empleado_detalle_correo">Los empleados necesitan un correo electrónico válido.</string>
+    <string name="mensaje_empleado_detalle_nombre">Los empleados necesitan un nombre.</string>
+    <string name="tienda_detalle_tienda">Tienda</string>
+    <string name="mensaje_iniciar_sesion">Se actualizo correctamente tu suscripción, inicia sesión de nuevo para tener acceso a PocketSale</string>
 </resources>

@@ -51,7 +51,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/icono_filtro"
+                android:background="@drawable/icon_filtro"
                 android:contentDescription="@string/botonCancelar"
                 android:layout_gravity="center_horizontal"/>
 

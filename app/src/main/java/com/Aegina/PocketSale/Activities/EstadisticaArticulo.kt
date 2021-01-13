@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
+import com.Aegina.PocketSale.Metodos.Meses
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewEstadisticaArticulo
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
+import java.lang.Integer.parseInt
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -42,6 +44,8 @@ class EstadisticaArticulo : AppCompatActivity(),
     lateinit var estadisticaArticuloFechaFinal : TextView
     lateinit var estadisticaArticuloFiltro : ImageButton
 
+    val nombreMes = Meses()
+
     var dialogoAgregarArticulos = DialogAgregarArticulos()
     val urls = Urls()
     var dialogFecha = DialogFecha()
@@ -60,7 +64,7 @@ class EstadisticaArticulo : AppCompatActivity(),
         dialogoAgregarArticulos.crearDialogInicial(this,globalVariable, Activity())
         dialogoAgregarArticulos.crearDialogFiltrosArticulosMasVendidos()
 
-        asignarFechaMes()
+        asignarFechaSemana()
     }
 
     fun crearRecyclerView(){
@@ -95,14 +99,32 @@ class EstadisticaArticulo : AppCompatActivity(),
     fun asignarFechaInicial(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaInicial
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(parseInt(getString(R.string.numero_idioma))  > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         estadisticaArticuloFechaInicial.text = text
     }
 
     fun asignarFechaFinal(){
         val calendar = Calendar.getInstance()
         calendar.time = fechaFinal
-        val text = "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + (calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR)
+
+        val text = if(parseInt(getString(R.string.numero_idioma))  > 1)
+        {
+            "" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + "-" + calendar.get(Calendar.YEAR)
+        }
+        else
+        {
+            "" + nombreMes.obtenerMesCorto((calendar.get(Calendar.MONTH) + 1),context) + "-" + calendar.get(Calendar.DAY_OF_MONTH) + "-" + calendar.get(Calendar.YEAR)
+        }
+
         estadisticaArticuloFechaFinal.text = text
     }
 

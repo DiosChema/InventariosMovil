@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFecha
-import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Fragments.InventarioFragment
 import com.Aegina.PocketSale.Fragments.VentaFragment
 import com.Aegina.PocketSale.Metodos.Errores

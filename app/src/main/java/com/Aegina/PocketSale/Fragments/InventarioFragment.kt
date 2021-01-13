@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.InventarioDetalle
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
-import com.Aegina.PocketSale.Dialogs.DialogFiltrarArticulos
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
@@ -102,12 +101,12 @@ class InventarioFragment : Fragment() {
             listaTmp.add(
                 InventarioObjeto(
                     listaArticulos[i].idArticulo,
-                    listaArticulos[i].nombreArticulo,
-                    listaArticulos[i].descripcionArticulo,
-                    listaArticulos[i].cantidadArticulo,
-                    listaArticulos[i].precioArticulo,
-                    listaArticulos[i].familiaArticulo,
-                    listaArticulos[i].costoArticulo,
+                    listaArticulos[i].nombre,
+                    listaArticulos[i].descripcion,
+                    listaArticulos[i].cantidad,
+                    listaArticulos[i].precio,
+                    listaArticulos[i].familia,
+                    listaArticulos[i].costo,
                     listaArticulos[i].inventarioOptimo))
         }
 
@@ -133,6 +132,7 @@ class InventarioFragment : Fragment() {
 
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -158,6 +158,18 @@ class InventarioFragment : Fragment() {
             }
         })
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        globalVariable = activity?.applicationContext as GlobalClass
+
+        if(globalVariable.actualizarVentana!!.actualizarInventario)
+        {
+            globalVariable.actualizarVentana!!.actualizarInventario = false
+            dialogAgregarArticulos.buscarArticulos()
+        }
     }
 
 }

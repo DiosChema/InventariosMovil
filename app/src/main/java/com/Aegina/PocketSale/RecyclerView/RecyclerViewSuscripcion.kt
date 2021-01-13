@@ -1,6 +1,8 @@
 package com.Aegina.PocketSale.RecyclerView
 
 import android.content.Context
+import android.text.SpannableString
+import android.text.style.StrikethroughSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +37,14 @@ class RecyclerViewSuscripcion : RecyclerView.Adapter<RecyclerViewSuscripcion.Vie
         return ViewHolder(layoutInflater.inflate(R.layout.item_suscripcion,parent,false))
     }
 
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun getItemCount(): Int {return suscripcion.size}
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -42,51 +52,61 @@ class RecyclerViewSuscripcion : RecyclerView.Adapter<RecyclerViewSuscripcion.Vie
         var globalVariable = view.context.applicationContext as GlobalClass
 
         val itemSuscripcionMeses = view.findViewById(R.id.itemSuscripcionMeses) as TextView
-        val itemSuscripcionMesesText = view.findViewById(R.id.itemSuscripcionMesesText) as TextView
-        val itemSuscripcionPrecioMeses = view.findViewById(R.id.itemSuscripcionPrecioMeses) as TextView
-        val itemSuscripcionPrecioMesesText = view.findViewById(R.id.itemSuscripcionPrecioMesesText) as TextView
+        val itemSuscripcionPrecio = view.findViewById(R.id.itemSuscripcionPrecio) as TextView
+        val itemSuscripcionPorcentajeDescuento = view.findViewById(R.id.itemSuscripcionPorcentajeDescuento) as TextView
         val itemSuscripcionPrecioTotal = view.findViewById(R.id.itemSuscripcionPrecioTotal) as TextView
-        val itemSuscripcionPrecioTotalText = view.findViewById(R.id.itemSuscripcionPrecioTotalText) as TextView
 
         fun bind(suscripcion: SuscripcionObject) {
             var textTmp = ""
-            itemSuscripcionMeses.text = suscripcion.numeroMeses.toString()
 
-            textTmp =
+
+            textTmp = suscripcion.numeroMeses.toString() + " "
+
+            textTmp +=
                 if(suscripcion.numeroMeses > 1)
                     itemView.context.getString(R.string.suscripcion_meses)
                 else
                     itemView.context.getString(R.string.suscripcion_mes)
 
-            itemSuscripcionMesesText.text = textTmp
+
+            itemSuscripcionMeses.text = textTmp
 
             if(suscripcion.numeroMeses > 1) {
+                textTmp = "$" + (suscripcion.precioMes * suscripcion.numeroMeses).toString()
+                itemSuscripcionPrecioTotal.text = textTmp
+
+                val spannableString2 = SpannableString(textTmp)
+                spannableString2.setSpan(StrikethroughSpan(),1,textTmp.length,0)
+                itemSuscripcionPrecioTotal.text = spannableString2
+
                 val precioSuscripcion = parseDouble(suscripcion.precioSuscripcion.substring(1,suscripcion.precioSuscripcion.length))
-                textTmp = (precioSuscripcion / suscripcion.numeroMeses).toString().substring(0,5) + "/" + itemView.context.getString(R.string.suscripcion_meses_diminutivo)
-                itemSuscripcionPrecioMeses.text = textTmp
+                var porcentajeDescuento = precioSuscripcion * 100 / (suscripcion.precioMes * suscripcion.numeroMeses)
+                val porcentajeAhorro = (porcentajeDescuento.toInt() - 100) * -1
 
-                var porcensajeDescuento = (precioSuscripcion * 100) / (suscripcion.precioMes * suscripcion.numeroMeses)
-
-                var porcentajeAhorro = (porcensajeDescuento.toInt() - 100) * -1
-                textTmp = itemView.context.getString(R.string.suscripcion_meses_descuento) + ": " + porcentajeAhorro + "%"
-                itemSuscripcionPrecioMesesText.text = textTmp
+                itemSuscripcionPorcentajeDescuento.text = itemView.context.getString(R.string.suscripcion_meses_descuento) + " " + porcentajeAhorro + "%"
             }
             else{
-                itemSuscripcionPrecioMeses.text = ""
-                itemSuscripcionPrecioMesesText.text = ""
+                itemSuscripcionPorcentajeDescuento.text = ""
+                itemSuscripcionPrecioTotal.text = ""
             }
 
 
             textTmp = suscripcion.precioSuscripcion
-            itemSuscripcionPrecioTotal.text = textTmp
+            itemSuscripcionPrecio.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.suscripcion_meses_total)
-            itemSuscripcionPrecioTotalText.text = textTmp
+            /*textTmp = itemView.context.getString(R.string.suscripcion_meses_total)
+            itemSuscripcionPrecioTotal.text = textTmp*/
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

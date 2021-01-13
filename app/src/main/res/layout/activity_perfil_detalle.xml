@@ -43,6 +43,8 @@
             android:inputType="text"
             android:layout_marginTop="15dp"/>
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,42 +106,52 @@
             android:importantForAutofill="no"
             android:textSize="23sp"/>
 
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-                <CheckBox
-                    android:id="@+id/perfilDetallePermisosVenta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perfil_permisos_venta" />
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosVenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_venta" />
 
-                <CheckBox
-                    android:id="@+id/perfilDetallePermisosModificarInventario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perfil_permisos_modificas_articulos" />
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosModificarInventario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_modificar_articulos" />
 
-                <CheckBox
-                    android:id="@+id/perfilDetallePermisosCrearArticulos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perfil_permisos_crear_articulos" />
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosModificarVenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_modificar_venta" />
 
-                <CheckBox
-                    android:id="@+id/perfilDetallePermisosEstadisticas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perfil_permisos_estadisticas" />
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosCrearArticulos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_crear_articulos" />
 
-                <CheckBox
-                    android:id="@+id/perfilDetallePermisosProovedor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/perfil_permisos_proovedoor" />
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosEstadisticas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_estadisticas" />
+
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosProovedor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_proovedoor" />
+
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosMoodificarProovedor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_modificar_proovedor" />
 
         </LinearLayout>
 
@@ -161,10 +173,28 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/perfilDetalleCambiarContrasenaCardView"
+                android:layout_gravity="center"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                card_view:cardCornerRadius="64dp">
+
+                <ImageButton
+                    android:id="@+id/perfilDetalleCambiarContrasena"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/icon_password"
+                    android:scaleType="centerCrop"
+                    android:background="@color/transparent"
+                    android:layout_gravity="center_horizontal"/>
+
+            </androidx.cardview.widget.CardView>
+
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="7" />
+                android:layout_weight="4" />
 
             <Button
                 android:id="@+id/perfilDetalleCancelarEdicion"

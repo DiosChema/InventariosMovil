@@ -71,6 +71,7 @@ class EstadisticaInventarioFragment : Fragment() {
         val client = OkHttpClient()
         val progressDialog = ProgressDialog(activity)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
         progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
@@ -78,11 +79,10 @@ class EstadisticaInventarioFragment : Fragment() {
                 progressDialog.dismiss()
                 activity?.runOnUiThread()
                 {
-                    Toast.makeText(contextTmp, contextTmp.getString(R.string.mensaje_error), Toast.LENGTH_LONG).show()
+                    Toast.makeText(contextTmp, contextTmp.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
                 }
             }
             override fun onResponse(call: Call, response: Response) {
-                progressDialog.dismiss()
 
                 val body = response.body()?.string()
 
@@ -97,9 +97,9 @@ class EstadisticaInventarioFragment : Fragment() {
 
                         activity?.runOnUiThread {
 
-                            estadisticaInventarioTotalArticulosText.text = (Model.totalCostoVenta - Model.totalCostoProovedor).toString()
-                            estadisticaInventarioTotalCostosText.text = Model.totalCostoProovedor.toString()
-                            estadisticaInventarioTotalText.text = Model.totalCostoVenta.toString()
+                            estadisticaInventarioTotalArticulosText.text = (Model.totalCostoVenta - Model.totalCostoProovedor).round(2).toString()
+                            estadisticaInventarioTotalCostosText.text = Model.totalCostoProovedor.round(2).toString()
+                            estadisticaInventarioTotalText.text = Model.totalCostoVenta.round(2).toString()
 
                             pieChart.addPieSlice(
                                 PieModel(
@@ -123,9 +123,17 @@ class EstadisticaInventarioFragment : Fragment() {
                         errores.procesarError(activity!!.applicationContext,body,activity!!)
                     }
                 }
+
+                progressDialog.dismiss()
             }
         })
 
+    }
+
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
     }
 
 }

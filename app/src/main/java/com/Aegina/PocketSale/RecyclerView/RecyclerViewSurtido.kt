@@ -32,7 +32,15 @@ class RecyclerViewSurtido : RecyclerView.Adapter<RecyclerViewSurtido.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return ViewHolder(layoutInflater.inflate(R.layout.item_articulo_surtido,parent,false))
+        return ViewHolder(layoutInflater.inflate(R.layout.item_articulo,parent,false))
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {return articulos.size}
@@ -41,42 +49,48 @@ class RecyclerViewSurtido : RecyclerView.Adapter<RecyclerViewSurtido.ViewHolder>
         val urls = Urls()
         var globalVariable = view.context.applicationContext as GlobalClass
 
-        val itemSurtidoImagen = view.findViewById(R.id.itemSurtidoImagen) as ImageView
-        val itemSurtidoNombre = view.findViewById(R.id.itemSurtidoNombre) as TextView
-        val itemSurtidoDescipcion = view.findViewById(R.id.itemSurtidoDescipcion) as TextView
-        val itemSurtidoPrecio = view.findViewById(R.id.itemSurtidoPrecio) as TextView
-        val itemSurtidoPrecioTotalText = view.findViewById(R.id.itemSurtidoPrecioTotalText) as TextView
-        val itemSurtidoPrecioTotal = view.findViewById(R.id.itemSurtidoPrecioTotal) as TextView
-        val itemSurtidoCantidad = view.findViewById(R.id.itemSurtidoCantidad) as TextView
-        val itemSurtidoContainer = view.findViewById(R.id.itemSurtidoContainer) as LinearLayout
+        val itemArticuloImagen = view.findViewById(R.id.itemArticuloImagen) as ImageView
+        val itemArticuloNombre = view.findViewById(R.id.itemArticuloNombre) as TextView
+        val itemArticuloDescipcion = view.findViewById(R.id.itemArticuloDescipcion) as TextView
+        val itemArticuloPrecio = view.findViewById(R.id.itemArticuloPrecio) as TextView
+        val itemArticuloPrecioTotalText = view.findViewById(R.id.itemArticuloPrecioTotalText) as TextView
+        val itemArticuloPrecioTotal = view.findViewById(R.id.itemArticuloPrecioTotal) as TextView
+        val itemArticuloCantidad = view.findViewById(R.id.itemArticuloCantidad) as TextView
+        val itemArticuloContainer = view.findViewById(R.id.itemArticuloContainer) as LinearLayout
 
         fun bind(venta: InventarioObjeto) {
             when (position % 2) {
-                1 -> itemSurtidoContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
-                0 -> itemSurtidoContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
+                1 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
+                0 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
                 else -> {
                 }
             }
 
-            itemSurtidoNombre.text = venta.nombreArticulo
-            itemSurtidoDescipcion.text = venta.descripcionArticulo
+            itemArticuloNombre.text = venta.nombre
+            itemArticuloDescipcion.text = venta.descripcion
 
-            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + "$" + venta.costoArticulo
-            itemSurtidoPrecio.text = textTmp
+            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + venta.costo.round(2)
+            itemArticuloPrecio.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidadArticulo
-            itemSurtidoCantidad.text = textTmp
+            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidad
+            itemArticuloCantidad.text = textTmp
 
-            itemSurtidoPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
-            textTmp = "$" + (venta.costoArticulo * venta.cantidadArticulo).toString()
-            itemSurtidoPrecioTotal.text =  textTmp
+            itemArticuloPrecioTotalText.text = itemView.context.getString(R.string.venta_total)
+            textTmp = "$" + (venta.costo * venta.cantidad).toString()
+            itemArticuloPrecioTotal.text =  textTmp
 
-            itemSurtidoImagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticuloImagen.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+venta.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }
 
         fun ImageView.loadUrl(url: String) {
             try {Picasso.with(context).load(url).into(this)}
             catch(e: Exception){}
+        }
+
+        fun Double.round(decimals: Int): Double {
+            var multiplier = 1.0
+            repeat(decimals) { multiplier *= 10 }
+            return kotlin.math.round(this * multiplier) / multiplier
         }
     }
 }

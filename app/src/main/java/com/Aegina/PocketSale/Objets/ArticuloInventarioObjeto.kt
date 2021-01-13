@@ -4,11 +4,11 @@ import java.io.Serializable
 
 data class ArticuloInventarioObjeto(
     var idArticulo:Long,
-    var nombreArticulo:String,
-    var descripcionArticulo:String,
-    var cantidadArticulo:Int,
-    var precioArticulo:Double,
-    var familiaArticulo:String,
-    var costoArticulo:Double,
+    var nombre:String,
+    var descripcion:String,
+    var cantidad:Int,
+    var precio:Double,
+    var familia:String,
+    var costo:Double,
     var inventarioOptimo:Int
 ):Serializable
