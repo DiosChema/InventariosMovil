@@ -114,6 +114,7 @@ class Errores()
             32 -> mensaje = context.getString(R.string.mensaje_error_familia_existe)
             33 -> mensaje = context.getString(R.string.mensaje_error_subfamilia_existe)
             55 -> mensaje = context.getString(R.string.mensaje_iniciar_sesion)
+            56 -> mensaje = context.getString(R.string.mensaje_token_erroneo)
             else -> mensaje = context.getString(R.string.mensaje_error_intentear_mas_tarde)
         }
 

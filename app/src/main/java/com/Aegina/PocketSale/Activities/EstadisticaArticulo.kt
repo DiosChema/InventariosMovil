@@ -1,15 +1,12 @@
-@file:Suppress("DEPRECATION")
-
 package com.Aegina.PocketSale.Activities
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,14 +15,14 @@ import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Metodos.Meses
+import com.Aegina.PocketSale.Metodos.Paginado
 import com.Aegina.PocketSale.Objets.*
+import com.Aegina.PocketSale.Objets.Inventory.ListEstadisticaArticuloObject
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryNoSells
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewEstadisticaArticulo
-import com.google.gson.GsonBuilder
-import okhttp3.*
-import java.io.IOException
 import java.lang.Integer.parseInt
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,12 +40,15 @@ class EstadisticaArticulo : AppCompatActivity(),
     lateinit var estadisticaArticuloFechaInicial : TextView
     lateinit var estadisticaArticuloFechaFinal : TextView
     lateinit var estadisticaArticuloFiltro : ImageButton
+    lateinit var estadisticaArticuloLeft : ImageButton
+    lateinit var estadisticaArticuloRight : ImageButton
 
     val nombreMes = Meses()
 
     var dialogoAgregarArticulos = DialogAgregarArticulos()
     val urls = Urls()
     var dialogFecha = DialogFecha()
+    val paginado = Paginado()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,8 @@ class EstadisticaArticulo : AppCompatActivity(),
         crearRecyclerView()
 
         dialogoAgregarArticulos.crearDialogInicial(this,globalVariable, Activity())
-        dialogoAgregarArticulos.crearDialogFiltrosArticulosMasVendidos()
+        dialogoAgregarArticulos.crearDialogArticulos(0)
+        dialogoAgregarArticulos.crearDialogFiltrosArticulosMasVendidos(1)
 
         asignarFechaSemana()
     }
@@ -93,6 +94,27 @@ class EstadisticaArticulo : AppCompatActivity(),
         estadisticaArticuloFiltro.setOnClickListener()
         {
             dialogoAgregarArticulos.mostrarDialogFiltros()
+        }
+
+        estadisticaArticuloLeft = findViewById(R.id.estadisticaArticuloLeft)
+        estadisticaArticuloLeft.setOnClickListener()
+        {
+            if(dialogoAgregarArticulos.totalArticulos > dialogoAgregarArticulos.limiteArticulos && dialogoAgregarArticulos.pagina > 0)
+            {
+                dialogoAgregarArticulos.pagina--
+                dialogoAgregarArticulos.buscarArticulosMasVendidos()
+            }
+        }
+        estadisticaArticuloRight = findViewById(R.id.estadisticaArticuloRight)
+        estadisticaArticuloRight.setOnClickListener()
+        {
+            val maximoPaginas = paginado.obtenerPaginadoMaximo(dialogoAgregarArticulos.totalArticulos, dialogoAgregarArticulos.limiteArticulos)
+
+            if(dialogoAgregarArticulos.totalArticulos > dialogoAgregarArticulos.limiteArticulos && dialogoAgregarArticulos.pagina < maximoPaginas)
+            {
+                dialogoAgregarArticulos.pagina++
+                dialogoAgregarArticulos.buscarArticulosMasVendidos()
+            }
         }
     }
 
@@ -174,6 +196,7 @@ class EstadisticaArticulo : AppCompatActivity(),
     fun buscarArticulo(){
         asignarFechaInicial()
         asignarFechaFinal()
+        dialogoAgregarArticulos.pagina = 0
         dialogoAgregarArticulos.asignarFechas(fechaInicial, fechaFinal)
         dialogoAgregarArticulos.buscarArticulosMasVendidos()
     }
@@ -194,18 +217,29 @@ class EstadisticaArticulo : AppCompatActivity(),
         buscarArticulo()
     }
 
-    override fun numeroArticulo(articulo: InventarioObjeto) {    }
+    override fun numeroArticulo(articulo: InventarioObjeto) {}
 
-    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {    }
+    override fun agregarArticulos(articulosCarrito: MutableList<InventarioObjeto>) {}
 
-    override fun abrirCamara() {    }
+    override fun abrirCamara() {}
 
-    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {    }
+    override fun listaArticulos(listInventoryObject: ListInventoryObject) {}
+    override fun listaArticulosNoVendidos(listInventoryObject: ListInventoryNoSells) {}
 
-    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>)
+    override fun listaArticulosMasVendidos(listaArticulos: ListEstadisticaArticuloObject)
     {
         runOnUiThread {
-            mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, context)
+            if(listaArticulos.count > dialogoAgregarArticulos.limiteArticulos)
+            {
+                estadisticaArticuloLeft.visibility = View.VISIBLE
+                estadisticaArticuloRight.visibility = View.VISIBLE
+            }
+            else
+            {
+                estadisticaArticuloLeft.visibility = View.GONE
+                estadisticaArticuloRight.visibility = View.GONE
+            }
+            mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos.inventory.toMutableList(), context)
             mViewEstadisticaArticulo.notifyDataSetChanged()
         }
     }

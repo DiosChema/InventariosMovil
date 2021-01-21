@@ -20,10 +20,16 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
 
     var articulosVenta: MutableList<ArticuloInventarioObjeto>  = ArrayList()
     lateinit var context: Context
+    var tipoArticulos = 0
 
     fun RecyclerAdapter(articulos : MutableList<ArticuloInventarioObjeto>, context: Context){
         this.articulosVenta = articulos
         this.context = context
+    }
+
+    fun tipoArticulos(tipoArticulo: Int)
+    {
+        tipoArticulos = tipoArticulo
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -38,7 +44,7 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
                 com.Aegina.PocketSale.R.layout.item_articulo_inventario,
                 parent,
                 false
-            )
+            ), tipoArticulos
         )
     }
 
@@ -54,7 +60,7 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
         return articulosVenta.size
     }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View, tipoArticulos: Int) : RecyclerView.ViewHolder(view) {
         val itemArticuloInventarioFoto = view.findViewById(R.id.itemArticuloInventarioFoto) as ImageView
 
         val itemArticuloInventarioNombre = view.findViewById(R.id.itemArticuloInventarioNombre) as TextView
@@ -62,6 +68,8 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
         val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
         val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
+
+        val tipoArticulo = tipoArticulos
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
@@ -81,7 +89,15 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
+            textTmp = if(tipoArticulo == 0)
+                {
+                    itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.precio.round(2)
+                }
+                else
+                {
+                    itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
+                }
+
             itemArticuloInventarioPrecio.text = textTmp
             itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
         }

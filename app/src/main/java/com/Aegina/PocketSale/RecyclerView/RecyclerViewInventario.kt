@@ -81,10 +81,10 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
             itemArticuloInventarioNombre.text = articulo.nombre
             itemArticuloInventarioDescipcion.text = articulo.descripcion
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
+            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
+            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.precio.round(2)
             itemArticuloInventarioPrecio.text = textTmp
 
             itemView.setOnClickListener {

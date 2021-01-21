@@ -20,5 +20,7 @@ data class datosUsuario(
     var permisosAltaInventario: Boolean,
     var permisosEstadisticas: Boolean,
     var permisosProovedor: Boolean,
-    var permisosModificarProovedor: Boolean
+    var permisosModificarProovedor: Boolean,
+    var permisosPerdidas: Boolean,
+    var permisosModificarPerdidas: Boolean
 )

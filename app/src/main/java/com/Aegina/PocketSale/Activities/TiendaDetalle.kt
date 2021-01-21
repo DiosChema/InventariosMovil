@@ -331,14 +331,18 @@ class TiendaDetalle : AppCompatActivity(),
     }
 
     private fun openCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        //camera intent
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, PERMISSION_CODE)
+        try
+        {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "New Picture")
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+            image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            //camera intent
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+            startActivityForResult(cameraIntent, PERMISSION_CODE)
+        }
+        catch(e:Exception){}
     }
 
     private fun pickImageFromGallery() {

@@ -153,6 +153,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/perfil_permisos_modificar_proovedor" />
 
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosPerdidas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_proovedoor" />
+
+            <CheckBox
+                android:id="@+id/perfilDetallePermisosMoodificarPerdidas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/perfil_permisos_modificar_proovedor" />
+
         </LinearLayout>
 
         <Button

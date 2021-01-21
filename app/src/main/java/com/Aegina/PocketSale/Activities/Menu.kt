@@ -34,7 +34,7 @@ class Menu : AppCompatActivity() {
 
         logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
 
-        val buttonVenta = findViewById<ImageView>(R.id.Venta)
+        val buttonVenta = findViewById<ImageView>(R.id.menuSales)
         buttonVenta.setOnClickListener()
         {
             if(globalVariable.usuario!!.permisosVenta)
@@ -48,15 +48,29 @@ class Menu : AppCompatActivity() {
             }
         }
 
-        val buttonInventario = findViewById<ImageView>(R.id.Inventario)
-        buttonInventario.setOnClickListener()
+        val buttonMenuSales = findViewById<ImageView>(R.id.menuInventory)
+        buttonMenuSales.setOnClickListener()
         {
             val intent = Intent(this, InventarioPager::class.java)
             startActivity(intent)
         }
 
-        val buttonEstadistica = findViewById<ImageView>(R.id.estadistica)
-        buttonEstadistica.setOnClickListener()
+        val buttonMenuStatistics = findViewById<ImageView>(R.id.menuStatistics)
+        buttonMenuStatistics.setOnClickListener()
+        {
+            if(globalVariable.usuario!!.permisosEstadisticas)
+            {
+                val intent = Intent(this, MenuStatistics::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
+            }
+        }
+
+        /*val buttonMenuStatistics = findViewById<ImageView>(R.id.menuStatistics)
+        buttonMenuStatistics.setOnClickListener()
         {
             if(globalVariable.usuario!!.permisosEstadisticas)
             {
@@ -67,9 +81,9 @@ class Menu : AppCompatActivity() {
             {
                 Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
             }
-        }
+        }*/
 
-        val estadistica2 = findViewById<ImageView>(R.id.estadistica2)
+        /*val estadistica2 = findViewById<ImageView>(R.id.estadistica2)
         estadistica2.setOnClickListener()
         {
             if(globalVariable.usuario!!.permisosEstadisticas)
@@ -81,35 +95,29 @@ class Menu : AppCompatActivity() {
             {
                 Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
             }
+        }*/
+
+        val buttonMenuAssortment = findViewById<ImageView>(R.id.menuAssortment)
+        buttonMenuAssortment.setOnClickListener()
+        {
+
+            val intent = Intent(this, SurtidoPager::class.java)
+            startActivity(intent)
         }
 
-        val estadistica3 = findViewById<ImageView>(R.id.estadistica3)
-        estadistica3.setOnClickListener()
+        val buttonMenuProfile = findViewById<ImageView>(R.id.menuProfile)
+        buttonMenuProfile.setOnClickListener()
         {
-            //val intent = Intent(this, Suscripcion::class.java)
-            if(globalVariable.usuario!!.permisosAdministrador)
-            {
-                val intent = Intent(this, MenuPerfil::class.java)
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
-            }
+
+            val intent = Intent(this, MenuPerfil::class.java)
+            startActivity(intent)
         }
 
-        val estadistica4 = findViewById<ImageView>(R.id.estadistica4)
-        estadistica4.setOnClickListener()
+        val buttonMenuLoss = findViewById<ImageView>(R.id.menuLoss)
+        buttonMenuLoss.setOnClickListener()
         {
-            if(globalVariable.usuario!!.permisosProovedor)
-            {
-                val intent = Intent(this, SurtidoPager::class.java)
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
-            }
+            val intent = Intent(this, LossPager::class.java)
+            startActivity(intent)
         }
     }
 

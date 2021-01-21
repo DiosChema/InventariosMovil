@@ -24,7 +24,6 @@ import android.os.StrictMode
 import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.TranslateAnimation
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -44,6 +43,7 @@ import java.lang.Double.parseDouble
 import java.lang.Exception
 import java.lang.Integer.parseInt
 import java.lang.Long.parseLong
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -69,6 +69,7 @@ class InventarioDetalle : AppCompatActivity(),
     lateinit var invBottonTomarCodigo : ImageButton
     lateinit var invDetalleCancelarEdicion : Button
     lateinit var invDetalleEliminarArticulo : ImageButton
+    lateinit var inventarioDetalleModificarInventario : CheckBox
     lateinit var invDetalleEliminarArticuloCardView : CardView
     var posicionFamilia = 0
     var posicionSubFamilia = 0
@@ -130,6 +131,8 @@ class InventarioDetalle : AppCompatActivity(),
         {
             obtenerFamilias(this,-1)
             asignarFuncionBotones(false)
+            inventarioDetalleModificarInventario.isEnabled = true
+
         }
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
@@ -157,6 +160,7 @@ class InventarioDetalle : AppCompatActivity(),
         invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
         invDetalleEliminarArticulo = findViewById(R.id.invDetalleEliminarArticulo)
         invDetalleEliminarArticuloCardView = findViewById(R.id.invDetalleEliminarArticuloCardView)
+        inventarioDetalleModificarInventario = findViewById(R.id.inventarioDetalleModificarInventario)
 
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
         invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
@@ -179,6 +183,7 @@ class InventarioDetalle : AppCompatActivity(),
         invBotonEliminarSubFamilia.isEnabled = activar
         invBotonAgregarSubFamilia.isEnabled = activar
         invBottonTomarCodigo.isEnabled = false
+        inventarioDetalleModificarInventario.isEnabled = activar
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
         invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
 
@@ -221,12 +226,13 @@ class InventarioDetalle : AppCompatActivity(),
         invDetallePrecio.setText(articulo.precio.toString())
         invDetalleCosto.setText(articulo.costo.toString())
         invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
+        inventarioDetalleModificarInventario.isChecked = articulo.modificaInventario
 
         listaFamiliaCompleta.clear()
         listaFamilia.clear()
         cambioFoto = false
         posicionPendiente = true
-        obtenerFamilias(this,parseInt(articulo.subFamilia))
+        obtenerFamilias(this,parseInt(articulo.familia))
     }
 
     fun reLlenarCampos(articulo : InventarioObjeto){
@@ -238,6 +244,7 @@ class InventarioDetalle : AppCompatActivity(),
         invDetallePrecio.setText(articulo.precio.toString())
         invDetalleCosto.setText(articulo.costo.toString())
         invDetalleInventarioOptimo.setText(articulo.inventarioOptimo.toString())
+        inventarioDetalleModificarInventario.isChecked = articulo.modificaInventario
 
         cambioFoto = false
         posicionPendiente = true
@@ -286,6 +293,23 @@ class InventarioDetalle : AppCompatActivity(),
                     darDeAltaArticulo()
             }
         }
+
+        inventarioDetalleModificarInventario.setOnClickListener()
+        {
+            if(!inventarioDetalleModificarInventario.isChecked)
+            {
+                invDetalleCantidad.setText("0")
+                invDetalleCantidad.isEnabled = false
+            }
+            else
+            {
+                if(this::inventarioObjeto.isInitialized)
+                {
+                    invDetalleCantidad.setText(inventarioObjeto.cantidad.toString())
+                }
+                invDetalleCantidad.isEnabled = true
+            }
+        }
     }
 
     private fun showDialogAgregarFamilia() {
@@ -302,7 +326,7 @@ class InventarioDetalle : AppCompatActivity(),
         dialogTitulo.text = getString(R.string.dialog_agregar_familia)
 
         dialogAceptar.setOnClickListener {
-            ocultarTeclado()
+            //ocultarTeclado()
             dialog.dismiss()
             if(dialogText.text.isNotEmpty())
             {
@@ -311,15 +335,15 @@ class InventarioDetalle : AppCompatActivity(),
         }
 
         dialogCancelar.setOnClickListener {
-            ocultarTeclado()
+            //ocultarTeclado()
             dialog.dismiss()
         }
 
         dialog.show()
 
-        dialogText.requestFocus()
+        /*dialogText.requestFocus()
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)*/
     }
 
     private fun showDialogAgregarSubFamilia() {
@@ -336,7 +360,6 @@ class InventarioDetalle : AppCompatActivity(),
         dialogTitulo.text = getString(R.string.dialog_agregar_subfamilia)
 
         dialogAceptar.setOnClickListener {
-            ocultarTeclado()
             dialog.dismiss()
             if(dialogText.text.isNotEmpty())
             {
@@ -346,15 +369,19 @@ class InventarioDetalle : AppCompatActivity(),
 
         dialogCancelar.setOnClickListener()
         {
-            ocultarTeclado()
+            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (imm.isAcceptingText)
+            {
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            }
             dialog.dismiss()
         }
 
         dialog.show()
 
-        dialogText.requestFocus()
+        /*dialogText.requestFocus()
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)*/
 
     }
 
@@ -363,7 +390,7 @@ class InventarioDetalle : AppCompatActivity(),
         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         if (imm.isAcceptingText)
         {
-            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
         }
     }
 
@@ -809,14 +836,19 @@ class InventarioDetalle : AppCompatActivity(),
     }
 
     private fun openCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        //camera intent
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+        try
+        {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "New Picture")
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+            image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            //camera intent
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+            startActivityForResult(cameraIntent, IMAGE_CAPTURE_CODE)
+        }
+        catch (e:Exception){}
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -980,34 +1012,6 @@ class InventarioDetalle : AppCompatActivity(),
         Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
     }
 
-    /*fun moverCampo(editText : EditText) : Boolean{
-        val animation1 = TranslateAnimation(0.0f,
-            editText.width.toFloat()/15,
-            0.0f,
-            0.0f)
-
-        animation1.duration = 150 // animation duration
-        animation1.repeatCount = 2
-        animation1.repeatMode = 2
-        editText.startAnimation(animation1)
-
-        return true
-    }*/
-
-    /*fun moverCampoSpinner(spinner : Spinner) : Boolean{
-        val animation1 = TranslateAnimation(0.0f,
-            spinner.width.toFloat()/15,
-            0.0f,
-            0.0f)
-
-        animation1.duration = 150 // animation duration
-        animation1.repeatCount = 2
-        animation1.repeatMode = 2
-        spinner.startAnimation(animation1)
-
-        return true
-    }*/
-
     fun darDeAltaArticulo(){
 
         val url = urls.url+urls.endPointsInventario.endpointDarAltaArticulo
@@ -1023,6 +1027,11 @@ class InventarioDetalle : AppCompatActivity(),
             jsonObject.put("precio", parseDouble(invDetallePrecio.text.toString()))
             jsonObject.put("familia", subFamiliaId)
             jsonObject.put("descripcion", invDetalleNombreDetalle.text)
+            jsonObject.put("modificaInventario", inventarioDetalleModificarInventario.isChecked)
+
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+            val currentDate = sdf.format(Date())
+            jsonObject.put("fecha", currentDate.toString())
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -1095,6 +1104,7 @@ class InventarioDetalle : AppCompatActivity(),
             jsonObject.put("precio", parseDouble(invDetallePrecio.text.toString()))
             jsonObject.put("familia", subFamiliaId)
             jsonObject.put("descripcion", invDetalleNombreDetalle.text)
+            jsonObject.put("modificaInventario", inventarioDetalleModificarInventario.isChecked)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
@@ -1200,7 +1210,12 @@ class InventarioDetalle : AppCompatActivity(),
 
                         if(respuesta.status == 0)
                         {
-                            finish()
+                            globalVariable.actualizarVentana!!.actualizarInventario = true
+                            runOnUiThread()
+                            {
+                                Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
+                                finish()
+                            }
                         }
                         else
                         {

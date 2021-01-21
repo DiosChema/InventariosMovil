@@ -10,5 +10,6 @@ data class ArticuloInventarioObjeto(
     var precio:Double,
     var familia:String,
     var costo:Double,
-    var inventarioOptimo:Int
+    var inventarioOptimo:Int,
+    var modificaInventario:Boolean
 ):Serializable

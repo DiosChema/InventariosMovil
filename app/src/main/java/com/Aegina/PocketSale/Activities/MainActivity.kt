@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
                                     val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                                     if (imm.isAcceptingText)
                                     {
-                                        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                                        imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
                                     }
 
                                     val intent = Intent(context, Suscripcion::class.java)
@@ -238,7 +238,7 @@ class MainActivity : AppCompatActivity() {
                         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                         if (imm.isAcceptingText)
                         {
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                            imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
                         }
 
                         val intent = Intent(context, Menu::class.java)

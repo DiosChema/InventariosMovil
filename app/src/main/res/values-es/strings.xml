@@ -5,38 +5,36 @@
 
     <!-- Editar Venta -->
     <string name="dialog_eliminar_venta">¿Estas seguro que deseas eliminar esta venta?</string>
-    <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualizacion?</string>
+    <string name="dialog_confirmar_actualizacion_venta">¿Confirmas esta actualización?</string>
     <string name="mensaje_venta_exitosa">Venta exitosa</string>
     <string name="mensaje_venta_eliminacion_exitosa">Venta eliminada</string>
     <string name="mensaje_actualizacion_exitosa">Venta actualizada</string>
     <string name="mensaje_numero_venta">Venta: </string>
 
     <!-- Mensaje de espera-->
-    <string name="mensaje_espera">Esta accion puede tomar unos segundos</string>
+    <string name="mensaje_espera">Esto puede tardar unos segundos.</string>
 
     <!-- Crear cuenta Usuario-->
-    <string name="mensaje_cuenta_creada">Envio de registro exitoso! revisa tu correo para terminar el registro</string>
-    <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres</string>
-    <string name="mensaje_titulo_crear_cuenta">Crear cuenta</string>
+    <string name="mensaje_cuenta_creada">Revise su correo electrónico para finalizar el registro.</string>
+    <string name="mensaje_contraseña_corta">La contraseña debe contar con al menos 8 caracteres.</string>
     <string name="mensaje_contraseña_diferente">La contraseña no coincide</string>
     <string name="mensaje_correo_repetir_contrasenia">Repetir contraseña</string>
     <string name="mensaje_correo_contrasenia">Contraseña</string>
     <string name="mensaje_crear_cuenta">Crear cuenta</string>
 
     <!-- Login Usuario-->
-    <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida</string>
-    <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada</string>
-    <string name="mensaje_email_invalido">Ingrese un correo electronico valido</string>
+    <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida.</string>
+    <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada.</string>
+    <string name="mensaje_email_invalido">Ingrese un correo electronico valido.</string>
     <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
-    <string name="boton_crear_cuenta">¿No eres miembro? Unete ahora</string>
+    <string name="boton_crear_cuenta">¿Nuevo en PocketSale? Únete ahora.</string>
     <string name="boton_iniciar_sesion">Iniciar Sesión</string>
     <string name="mensaje_correo_electronico">Correo</string>
     <string name="mensaje_crear_correo">Ingrese correo</string>
 
     <!-- venta/surtido-->
-    <string name="venta_total_articulos">Total Artículos:</string>
-    <string name="venta_total_venta">Total Venta:</string>
-    <string name="surtido_total_costo">Total Costo:</string>
+    <string name="venta_total_payment">Pago</string>
+    <string name="venta_total_venta">Venta:</string>
     <string name="mensaje_venta_sin_articulos">No hay artículos</string>
     <string name="mensaje_venta_no_se_encontro_articulo">No se encontro artículo</string>
     <string name="mensaje_venta_pago">Pago:</string>
@@ -44,15 +42,12 @@
 
 
     <!-- RecyclerView venta/surtido-->
-    <string name="surtido_costo">Costo: </string>
     <string name="venta_total">Total: </string>
-    <string name="venta_precio_articulo">Precio: </string>
     <string name="venta_precio_por_articulo">C/U: </string>
 
     <!-- Ventas Inventario -->
     <string name="ventas_inventario_fecha">Fecha:</string>
     <string name="ventas_inventario_cantidad">Cant:</string>
-    <string name="ventas_inventario_cantidad_chico">#</string>
     <string name="fragment_ventas">Ventas</string>
     <string name="fragment_inventario">Inventario</string>
     <string name="mensaje_anadir_articulo">NUEVO ARTICULO</string>
@@ -65,15 +60,13 @@
 
     <!-- Estadistica Ventas -->
     <string name="estadistica_ventas_total_venta">Ventas</string>
-    <string name="estadistica_ventas_total_costo">Costos</string>
-    <string name="estadistica_ventas_total_ganancia">Ganancia</string>
 
     <!-- Estadistica Inventario -->
-    <string name="estadistica_inventario_total_articulos">Ganancia Total</string>
-    <string name="estadistica_inventario_total_costos">Costo Total</string>
-    <string name="estadistica_inventario_leyenda_total">Capital Total</string>
+    <string name="estadistica_inventario_total_articulos">Coste-beneficio</string>
+    <string name="estadistica_inventario_total_costos">Costo</string>
+    <string name="estadistica_inventario_leyenda_total">Capital</string>
     <string name="estadistica_inventario_total">Total</string>
-    <string name="estadistica_inventario_titulo">dialog_agregar_familia</string>
+    <string name="estadistica_inventario_titulo">Capital</string>
 
     <!-- Surtido -->
     <string name="surtido_texto_titulo">Ingresar Articulo</string>
@@ -89,9 +82,7 @@
     <!-- Suscripcion -->
     <string name="suscripcion_mes">Mes</string>
     <string name="suscripcion_meses">Meses</string>
-    <string name="suscripcion_meses_diminutivo">Mes</string>
     <string name="suscripcion_meses_descuento">Ahorra</string>
-    <string name="suscripcion_meses_total">Precio Total</string>
 
     <!-- Dialog numero -->
     <string name="dialog_numero_text_cantidad">Cantidad</string>
@@ -104,14 +95,14 @@
     <string name="dialog_aceptar">Aceptar</string>
 
     <!-- Dialog filtros -->
-    <string name="dialog_filtro_cantidad">Cantidad en inventario</string>
+    <string name="dialog_filtro_cantidad">inventario</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
     <string name="dialog_filtro">Filtros</string>
-    <string name="dialog_filtro_inventario_optimo">Existencia no optima</string>
-    <string name="dialog_filtro_Nombre">Buscar por Nombre</string>
+    <string name="dialog_filtro_inventario_optimo">Existencia baja</string>
+    <string name="dialog_filtro_Nombre">Buscar por nombre</string>
     <string name="dialog_filtro_Nombre_diminutivo">Nombre</string>
-    <string name="dialog_filtro_precio">Precio en inventario</string>
+    <string name="dialog_filtro_precio">Precio</string>
 
     <!-- Dialog articulos -->
     <string name="dialog_lista_articulos">Articulos</string>
@@ -119,8 +110,7 @@
 
     <!-- Articulo detalle -->
     <string name="editar_articulo_venta">Precio Venta</string>
-    <string name="editar_articulo_costo">Precio Costo</string>
-    <string name="editar_articulo_proveedor">Precio Proveedor</string>
+    <string name="editar_articulo_proveedor">Costo</string>
     <string name="editar_articulo_inventario_optimo">Inventario Optimo</string>
     <string name="editar_articulo_precio">Precio</string>
     <string name="editar_articulo_cancelar">Cancelar</string>
@@ -144,7 +134,7 @@
     <string name="perfil_permisos_modificar_articulos">Modificar Inventario</string>
     <string name="perfil_permisos_crear_articulos">Crear Articulos</string>
     <string name="perfil_permisos_estadisticas">Ver estadisticas</string>
-    <string name="perfil_permisos_proovedoor">Proovedor</string>
+    <string name="perfil_permisos_proovedoor">Realizar surtido</string>
     <string name="perfil_eliminar_articulo">¿Estas seguro que deseas eliminar este empleado?</string>
 
     <!-- Descripcion de imagenes -->
@@ -169,7 +159,7 @@
 
     <!-- Descripcion de imagenes -->
     <string name="permisos_denegado">Necesita permiso para obtener acceso a esta opción.</string>
-    <string name="dialog_foto_titulo">Selecionar método</string>
+    <string name="dialog_foto_titulo">Método captura</string>
     <string name="mensaje_error_intentear_mas_tarde">Ha ocurrido un error. Por favor intente de nuevo</string>
     <string name="mensaje_error_sesion_expirada">La sesión expiró, inicia sesión de nuevo</string>
     <string name="numero_idioma">2</string>
@@ -190,7 +180,6 @@
     <string name="mes_diciembre">Diciembre</string>
     <string name="mensaje_error_subfamilia_existe">El nombre del subgrupo ya existe</string>
     <string name="mensaje_error_familia_existe">El nombre del grupo ya existe</string>
-    <string name="mensaje_surtido_eliminacion_exitosa">Registro exitoso.</string>
     <string name="dialog_contrasena_titulo">Cambiar contraseña</string>
     <string name="dialog_contrasena_password">Contraseña</string>
     <string name="dialog_contrasena_password_new">Nueva contraseña</string>
@@ -202,7 +191,7 @@
     <string name="mensaje_usuario_invalido">Usuario inválido.</string>
     <string name="empleados_titulo">Empleados</string>
     <string name="perfil_permisos_modificar_venta">Modificar venta</string>
-    <string name="perfil_permisos_modificar_proovedor">Modificar suministros</string>
+    <string name="perfil_permisos_modificar_proovedor">Modificar surtido</string>
     <string name="mensaje_inventario_detalle_codigo">Los artículos necesitan un código.</string>
     <string name="mensaje_inventario_detalle_nombre">Los artículos necesitan un nombre.</string>
     <string name="mensaje_inventario_detalle_precio">Los artículos necesitan un precio.</string>
@@ -215,4 +204,15 @@
     <string name="mensaje_empleado_detalle_nombre">Los empleados necesitan un nombre.</string>
     <string name="tienda_detalle_tienda">Tienda</string>
     <string name="mensaje_iniciar_sesion">Se actualizo correctamente tu suscripción, inicia sesión de nuevo para tener acceso a PocketSale</string>
+    <string name="mensaje_token_erroneo">Se produjo un error al validar su compra, intente nuevamente.</string>
+    <string name="inventario_detalle_modificar_inventario">Modificar inventario</string>
+    <string name="loss_title">Pérdidas</string>
+    <string name="loss_details_update_successful">Perdidas actualizada.</string>
+    <string name="supply_details_update_successful">Surtido actualizado.</string>
+    <string name="loss_details_delete_successful">Perdida eliminada.</string>
+    <string name="supply_details_delete_successful">Surtido eliminado.</string>
+    <string name="perfil_permisos_perdidas">Hacer pérdidas</string>
+    <string name="perfil_permisos_modificar_perdidas">Modificar pérdidas</string>
+    <string name="surtido_detalle_titulo">Surtido</string>
+    <string name="loss_details_title">Pérdida</string>
 </resources>

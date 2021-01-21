@@ -7,5 +7,6 @@ data class ArticuloObjeto(
     var cantidad:Int,
     var precio:Double,
     var nombre:String,
-    var costo:Double
+    var costo:Double,
+    var modificaInventario:Boolean
 ): Serializable

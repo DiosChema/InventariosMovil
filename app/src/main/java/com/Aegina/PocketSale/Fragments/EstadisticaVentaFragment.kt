@@ -43,6 +43,7 @@ class EstadisticaVentaFragment() : Fragment() {
     lateinit var pieChart : PieChart
     lateinit var estadisticaVentaTotalArticulosText : TextView
     lateinit var estadisticaVentaTotalCostosText : TextView
+    lateinit var estadisticaVentaLossText : TextView
     lateinit var estadisticaVentaTotalText : TextView
 
     var dialogFecha = DialogFecha()
@@ -70,6 +71,7 @@ class EstadisticaVentaFragment() : Fragment() {
         estadisticaVentaTotalArticulosText = estadisticaVentaTotalArticulos
         estadisticaVentaTotalCostosText = estadisticaVentaTotalCostos
         estadisticaVentaTotalText = estadisticaVentaTotal
+        estadisticaVentaLossText = estadisticaVentaLoss
     }
 
     fun asignarBotones(){
@@ -130,18 +132,23 @@ class EstadisticaVentaFragment() : Fragment() {
                         val model = gson.fromJson(body, EstadisticaVentasObject::class.java)
 
                         activity?.runOnUiThread {
-                            estadisticaVentaTotalArticulosText.text = (model.totalVentas - model.totalCostos).round(2).toString()
-                            estadisticaVentaTotalCostosText.text = model.totalCostos.round(2).toString()
-                            estadisticaVentaTotalText.text = model.totalVentas.round(2).toString()
+                            estadisticaVentaTotalArticulosText.text = (model.totalCostoVenta - model.totalCostoProovedor).round(2).toString()
+                            estadisticaVentaTotalCostosText.text = model.totalCostoProovedor.round(2).toString()
+                            estadisticaVentaLossText.text = model.totalLoss.round(2).toString()
+                            estadisticaVentaTotalText.text = (model.totalCostoVenta - model.totalLoss).round(2).toString()
 
                             pieChart.clearChart()
 
                             pieChart.addPieSlice(PieModel(
-                                "Total Articulos", (model.totalVentas - model.totalCostos).toFloat(),
+                                "Total Articulos", (model.totalCostoVenta - model.totalCostoProovedor - model.totalLoss).toFloat(),
                                 Color.parseColor("#228B22")))
 
                             pieChart.addPieSlice(PieModel(
-                                "Total Costo", model.totalCostos.toFloat(),
+                                "Loss", model.totalLoss.toFloat(),
+                                Color.parseColor("#add8e6")))
+
+                            pieChart.addPieSlice(PieModel(
+                                "Total Costo", model.totalCostoProovedor.toFloat(),
                                 Color.parseColor("#FF0000")))
 
                             pieChart.startAnimation()

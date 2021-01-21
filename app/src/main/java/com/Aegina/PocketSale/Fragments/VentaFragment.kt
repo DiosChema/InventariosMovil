@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Metodos.Meses
+import com.Aegina.PocketSale.Metodos.Paginado
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.Objets.Ventas.ListVentasObject
 import com.Aegina.PocketSale.Objets.VentasObjeto
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewVentas
@@ -44,10 +47,17 @@ class VentaFragment : Fragment() {
     lateinit var fechaFinal : Date
     lateinit var fechaInicialButton : Button
     lateinit var fechaFinalButton : Button
+    lateinit var fragmentVentaLeftButton : ImageButton
+    lateinit var fragmentVentaRightButton : ImageButton
 
     var dialogFecha = DialogFecha()
     val nombreMes = Meses()
     lateinit var contextTmp : Context
+    val paginado = Paginado()
+
+    var pagina = 0
+    var limiteArticulos = 10
+    var totalArticulos = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_venta, container, false)
@@ -87,6 +97,29 @@ class VentaFragment : Fragment() {
         fechaFinalButton.setOnClickListener {
             dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
         }
+
+        fragmentVentaLeftButton = fragmentVentaLeft
+        fragmentVentaLeftButton.setOnClickListener()
+        {
+            if(totalArticulos > limiteArticulos && pagina > 0)
+            {
+                pagina--
+                obtenerVentas()
+            }
+        }
+
+        fragmentVentaRightButton = fragmentVentaRight
+        fragmentVentaRightButton.setOnClickListener()
+        {
+            val maximoPaginas = paginado.obtenerPaginadoMaximo(totalArticulos,limiteArticulos)
+
+            if(totalArticulos > limiteArticulos && pagina < maximoPaginas)
+            {
+                pagina++
+                obtenerVentas()
+            }
+        }
+
     }
 
     fun asignarFechaHoy(){
@@ -127,6 +160,7 @@ class VentaFragment : Fragment() {
     fun buscarEstadisticaVentas(){
         asignarFechaInicial()
         asignarFechaFinal()
+        pagina = 0
         obtenerVentas()
     }
 
@@ -135,7 +169,9 @@ class VentaFragment : Fragment() {
         val url = urls.url+urls.endPointVentas.endPointBuscarVentaPorFecha+
                 "?token="+globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
-                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
+                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal) +
+                "&pagina="+ pagina +
+                "&limit="+ limiteArticulos
 
         val request = Request.Builder()
             .url(url)
@@ -165,12 +201,24 @@ class VentaFragment : Fragment() {
                     try
                     {
                         val gson = GsonBuilder().create()
-                        var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
+                        var model = gson.fromJson(body, ListVentasObject::class.java)
 
+                        totalArticulos = model.count
                         activity?.runOnUiThread {
-                            mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
-                            mViewVentas.notifyDataSetChanged()
+                            mViewVentas.RecyclerAdapter(model.sales.toMutableList(), activity!!)
+                            resetAdapterState()
                             progressDialog.dismiss()
+
+                            if(totalArticulos > limiteArticulos)
+                            {
+                                fragmentVentaLeftButton.visibility = View.VISIBLE
+                                fragmentVentaRightButton.visibility = View.VISIBLE
+                            }
+                            else
+                            {
+                                fragmentVentaLeftButton.visibility = View.GONE
+                                fragmentVentaRightButton.visibility = View.GONE
+                            }
                         }
                     }
                     catch(e:Exception)
@@ -178,13 +226,16 @@ class VentaFragment : Fragment() {
                         val errores = Errores()
                         errores.procesarError(activity!!.applicationContext,body,activity!!)
                     }
-
-
                 }
 
                 progressDialog.dismiss()
             }
         })
+    }
+
+    private fun resetAdapterState() {
+        val myAdapter = mRecyclerView.adapter
+        mRecyclerView.adapter = myAdapter
     }
 
     fun asignarFechaInicial(){

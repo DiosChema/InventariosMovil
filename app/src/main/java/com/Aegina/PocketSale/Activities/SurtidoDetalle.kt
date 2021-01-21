@@ -76,7 +76,7 @@ class SurtidoDetalle : AppCompatActivity(),
 
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
 
-        var textTmp = getString(R.string.mensaje_numero_venta) + System.getProperty ("line.separator") +  surtido._id
+        var textTmp = getString(R.string.surtido_detalle_titulo) + System.getProperty ("line.separator") +  surtido._id
         VentaDetalleNumero.text = textTmp
         textTmp = simpleDate.format(surtido.fecha) + System.getProperty ("line.separator") + simpleDateHours.format(surtido.fecha)
         VentaDetalleFecha.text = textTmp
@@ -109,7 +109,7 @@ class SurtidoDetalle : AppCompatActivity(),
                 mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
                     RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
-                        if(editar) dialogAgregarNumero.crearDialog(context, position)
+                        if(editar) dialogAgregarNumero.crearDialogNumero(context, position)
                     }
 
                     override fun onLongItemClick(view: View?, position: Int) {}
@@ -142,17 +142,35 @@ class SurtidoDetalle : AppCompatActivity(),
         val listatmp : MutableList<InventarioObjeto> = arrayListOf()
 
         for(articulos in surtido.articulos){
-            listatmp.add(
-                InventarioObjeto(articulos.idArticulo,
-                    articulos.articulosDetalle[0].nombre,
-                    articulos.articulosDetalle[0].descripcion,
-                    articulos.cantidad,
-                    articulos.precio,
-                    articulos.articulosDetalle[0].subFamilia,
-                    articulos.costo,
-                    articulos.articulosDetalle[0].inventarioOptimo
+            if(articulos.articulosDetalle.isNotEmpty())
+            {
+                listatmp.add(
+                    InventarioObjeto(articulos.idArticulo,
+                        articulos.articulosDetalle[0].nombre,
+                        articulos.articulosDetalle[0].descripcion,
+                        articulos.cantidad,
+                        articulos.precio,
+                        articulos.articulosDetalle[0].familia,
+                        articulos.costo,
+                        articulos.articulosDetalle[0].inventarioOptimo,
+                        articulos.articulosDetalle[0].modificaInventario
+                    )
                 )
-            )
+            }
+            else
+            {
+                listatmp.add(
+                    InventarioObjeto(articulos.idArticulo,
+                        articulos.nombre,
+                        "",
+                        articulos.cantidad,
+                        articulos.precio,
+                        "0",
+                        articulos.costo,
+                        0,
+                        false)
+                )
+            }
         }
 
         return listatmp
@@ -208,7 +226,7 @@ class SurtidoDetalle : AppCompatActivity(),
                             globalVariable.actualizarVentana!!.actualizarSurtido = true
                             runOnUiThread()
                             {
-                                Toast.makeText(context, getString(R.string.mensaje_venta_eliminacion_exitosa), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, getString(R.string.supply_details_delete_successful), Toast.LENGTH_SHORT).show()
                                 finish()
                             }
                         }
@@ -233,7 +251,23 @@ class SurtidoDetalle : AppCompatActivity(),
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
         val currentDate = sdf.format(surtido.fecha)
 
-        val surtidoActualizada = ActualizarSurtido(globalVariable.usuario!!.token,surtido._id,currentDate,listaArticulos)
+        var listaArticulosTmp = mutableListOf<InventarioObjeto>()
+
+        for(i in 0 until listaArticulos.size )
+        {
+            if(listaArticulos[i].cantidad > 0)
+            {
+                listaArticulosTmp.add(listaArticulos[i])
+            }
+        }
+
+        if(listaArticulosTmp.size == 0)
+        {
+            eliminarSurtido()
+            return
+        }
+
+        val surtidoActualizada = ActualizarSurtido(globalVariable.usuario!!.token,surtido._id,currentDate,listaArticulosTmp)
 
         val gsonPretty = GsonBuilder().setPrettyPrinting().create()
         val jsonSurtido: String = gsonPretty.toJson(surtidoActualizada)
@@ -276,7 +310,7 @@ class SurtidoDetalle : AppCompatActivity(),
                             globalVariable.actualizarVentana!!.actualizarSurtido = true
                             runOnUiThread {
                                 progressDialog.dismiss()
-                                Toast.makeText(context, getString(R.string.mensaje_actualizacion_exitosa), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, getString(R.string.supply_details_update_successful), Toast.LENGTH_SHORT).show()
                                 finish()
                             }
                         }

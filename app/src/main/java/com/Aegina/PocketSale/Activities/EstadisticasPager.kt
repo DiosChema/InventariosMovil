@@ -19,7 +19,7 @@ class EstadisticasPager : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_estadisticas_pager)
+        setContentView(R.layout.activity_inventario)
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         asignarFragments()

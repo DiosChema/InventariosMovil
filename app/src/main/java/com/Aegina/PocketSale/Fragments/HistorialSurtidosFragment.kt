@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogFecha
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Metodos.Meses
+import com.Aegina.PocketSale.Metodos.Paginado
 import com.Aegina.PocketSale.Objets.GlobalClass
+import com.Aegina.PocketSale.Objets.Surtido.ListSurtidosObject
 import com.Aegina.PocketSale.Objets.Urls
+import com.Aegina.PocketSale.Objets.Ventas.ListVentasObject
 import com.Aegina.PocketSale.Objets.VentasObjeto
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtidos
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_historial_surtido.*
+import kotlinx.android.synthetic.main.fragment_venta.*
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -45,6 +50,13 @@ class HistorialSurtidosFragment : Fragment() {
     val nombreMes = Meses()
     lateinit var contextTmp : Context
 
+    var pagina = 0
+    var limiteArticulos = 10
+    var totalArticulos = 0
+    var paginado = Paginado()
+
+    lateinit var fragmentHistorialSurtidoLeftButton : ImageButton
+    lateinit var fragmentHistorialSurtidoRightButton : ImageButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_historial_surtido, container, false)
@@ -81,6 +93,28 @@ class HistorialSurtidosFragment : Fragment() {
         fechaFinalButton = fragmentHistorialSurtidoBuscarPorFechaFinal
         fechaFinalButton.setOnClickListener {
             dialogFecha.abrirDialogFechaFinal(fechaInicial, fechaFinal)
+        }
+
+        fragmentHistorialSurtidoLeftButton = fragmentHistorialSurtidoLeft
+        fragmentHistorialSurtidoLeftButton.setOnClickListener()
+        {
+            if(totalArticulos > limiteArticulos && pagina > 0)
+            {
+                pagina--
+                obtenerSurtidos()
+            }
+        }
+
+        fragmentHistorialSurtidoRightButton = fragmentHistorialSurtidoRight
+        fragmentHistorialSurtidoRightButton.setOnClickListener()
+        {
+            val maximoPaginas = paginado.obtenerPaginadoMaximo(totalArticulos,limiteArticulos)
+
+            if(totalArticulos > limiteArticulos && pagina < maximoPaginas)
+            {
+                pagina++
+                obtenerSurtidos()
+            }
         }
     }
 
@@ -133,6 +167,7 @@ class HistorialSurtidosFragment : Fragment() {
     fun buscarSurtidos(){
         asignarFechaInicial()
         asignarFechaFinal()
+        pagina = 0
         obtenerSurtidos()
     }
 
@@ -173,7 +208,9 @@ class HistorialSurtidosFragment : Fragment() {
         val url = urls.url+urls.endPointSurtidos.endPointObtenerSurtidos+
                 "?token="+globalVariable.usuario!!.token +
                 "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
-                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal)
+                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal) +
+                "&pagina="+ pagina +
+                "&limit="+ limiteArticulos
 
         val request = Request.Builder()
             .url(url)
@@ -204,12 +241,25 @@ class HistorialSurtidosFragment : Fragment() {
                     try
                     {
                         val gson = GsonBuilder().create()
-                        var model = gson.fromJson(body, Array<VentasObjeto>::class.java).toList()
+                        var model = gson.fromJson(body, ListSurtidosObject::class.java)
 
                         activity?.runOnUiThread {
-                            mViewVentas.RecyclerAdapter(model.reversed().toMutableList(), activity!!)
-                            mViewVentas.notifyDataSetChanged()
+                            mViewVentas.RecyclerAdapter(model.supplies.toMutableList(), activity!!)
+                            resetAdapterState()
                             progressDialog.dismiss()
+
+                            totalArticulos = model.count
+
+                            if(totalArticulos > limiteArticulos)
+                            {
+                                fragmentHistorialSurtidoLeftButton.visibility = View.VISIBLE
+                                fragmentHistorialSurtidoRightButton.visibility = View.VISIBLE
+                            }
+                            else
+                            {
+                                fragmentHistorialSurtidoLeftButton.visibility = View.GONE
+                                fragmentHistorialSurtidoRightButton.visibility = View.GONE
+                            }
                         }
                     }
                     catch(e:Exception)
@@ -225,7 +275,10 @@ class HistorialSurtidosFragment : Fragment() {
         })
     }
 
-
+    private fun resetAdapterState() {
+        val myAdapter = mRecyclerView.adapter
+        mRecyclerView.adapter = myAdapter
+    }
 
     fun asignarHoraCalendar(calendar : Calendar, hora : Int, minuto : Int, segundo : Int) : Calendar{
         calendar.set(Calendar.HOUR_OF_DAY, hora)

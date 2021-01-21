@@ -62,7 +62,7 @@ class DialogFiltroEmpleados : AppCompatDialogFragment()
             val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             if (imm.isAcceptingText)
             {
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
             }
             dialogFiltrarEmpleados.dismiss()
         }
@@ -76,7 +76,7 @@ class DialogFiltroEmpleados : AppCompatDialogFragment()
     fun obtenerEmpleados(){
         val urls = Urls()
 
-        var url = urls.url+urls.endPointUsers.endPointObtenerEmpleados+"?token="+globalVariable.usuario!!.token
+        var url = urls.url+urls.endPointEmpleados.endPointObtenerEmpleados+"?token="+globalVariable.usuario!!.token
 
         if(dialogFiltroEmpleadoCorreo.text.toString().isNotEmpty())
         {
@@ -123,7 +123,7 @@ class DialogFiltroEmpleados : AppCompatDialogFragment()
                         val imm = contextTmp.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                         if (imm.isAcceptingText)
                         {
-                            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                            imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
                         }
                         dialogFiltrarEmpleados.dismiss()
                     }

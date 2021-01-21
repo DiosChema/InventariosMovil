@@ -18,23 +18,67 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.TiendaDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.MenuPerfil" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.PerfilDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.Empleados" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.Suscripcion" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.EstadisticasPager" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.EstadisticaInventario" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.EstadisticaArticulo" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.CrearCuenta" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.Menu" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.VentaDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.SurtidoDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.Venta" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.InventarioDetalle" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.InventarioPager" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.SurtidoPager" android:screenOrientation="portrait"/>
-        <activity android:name=".Activities.MainActivity" android:screenOrientation="portrait">
+        <activity android:name=".Activities.LossDetails"></activity>
+        <activity
+            android:name=".Activities.bar_chart"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.TiendaDetalle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.EstadisticaArticulosNoVendidos"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.MenuPerfil"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.MenuStatistics"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.PerfilDetalle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Empleados"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Suscripcion"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.EstadisticasPager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.EstadisticaArticulo"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.CrearCuenta"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Menu"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.VentaDetalle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.SurtidoDetalle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.Venta"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InventarioDetalle"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.InventarioPager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.SurtidoPager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.LossPager"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Activities.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

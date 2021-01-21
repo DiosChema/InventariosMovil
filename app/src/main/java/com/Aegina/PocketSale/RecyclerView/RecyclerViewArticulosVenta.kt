@@ -66,8 +66,17 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
 
         fun bind(articulo: ArticuloVentaObject) {
 
-            itemArticulosListaNombre.text = articulo.articulosDetalle[0].nombre
-            itemArticulosListaDescipcion.text = articulo.articulosDetalle[0].descripcion
+            if(articulo.articulosDetalle.isNotEmpty())
+            {
+                itemArticulosListaNombre.text = articulo.articulosDetalle[0].nombre
+                itemArticulosListaDescipcion.text = articulo.articulosDetalle[0].descripcion
+            }
+            else
+            {
+                itemArticulosListaNombre.text = articulo.nombre
+                itemArticulosListaDescipcion.text = ""
+            }
+
 
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad
             itemArticulosListaCantidad.text = textTmp

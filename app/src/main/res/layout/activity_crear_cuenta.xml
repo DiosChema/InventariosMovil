@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
-            android:text="@string/mensaje_titulo_crear_cuenta"
+            android:text="@string/mensaje_crear_cuenta"
             android:textSize="35sp"
             android:textColor="@color/black"
             android:layout_gravity="center"/>
@@ -38,7 +38,7 @@
                 android:drawableLeft="@drawable/mailicon"
                 android:drawablePadding="5dp"
                 android:fontFamily="@font/open_sans"
-                android:hint="@string/mensaje_crear_correo"
+                android:hint="@string/mensaje_correo_electronico"
                 android:importantForAutofill="no"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/black"

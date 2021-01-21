@@ -5,6 +5,7 @@ import android.content.pm.ActivityInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.Toast
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
@@ -59,8 +60,16 @@ class MenuPerfil : AppCompatActivity() {
         val buttonEmpleados = findViewById<ImageView>(R.id.buttonEmpleados)
         buttonEmpleados.setOnClickListener()
         {
-            val intent = Intent(this, Empleados::class.java)
-            startActivity(intent)
+            //val intent = Intent(this, Suscripcion::class.java)
+            if(globalVariable.usuario!!.permisosAdministrador)
+            {
+                val intent = Intent(this, Empleados::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(this,getString(R.string.permisos_denegado), Toast.LENGTH_LONG).show()
+            }
         }
 
     }

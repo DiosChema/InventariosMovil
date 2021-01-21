@@ -66,7 +66,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         val ventasFragmentFecha = view.findViewById(R.id.ventasFragmentFecha) as TextView
         val ventasFragmentHora = view.findViewById(R.id.ventasFragmentHora) as TextView
         val ventasFragmentTotalVenta = view.findViewById(R.id.ventasFragmentTotalVenta) as TextView
-        val ventasFragmentTotalCantidad = view.findViewById(R.id.ventasFragmentTotalCantidad) as TextView
+        //val ventasFragmentTotalCantidad = view.findViewById(R.id.ventasFragmentTotalCantidad) as TextView
         val ventasFragmentRecyclerViewArticulos = view.findViewById(R.id.ventasFragmentRecyclerViewArticulos) as RecyclerView
         val ventasFragmentBotonEditar = view.findViewById(R.id.ventasFragmentBotonEditar) as ImageView
         val ventasFragmentContenedor = view.findViewById(R.id.ventasFragmentContenedor) as LinearLayout
@@ -116,7 +116,7 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
                 cantidadArticulos += articulos.cantidad
 
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
-            ventasFragmentTotalCantidad.text = textTmp
+            //ventasFragmentTotalCantidad.text = textTmp
 
             textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp

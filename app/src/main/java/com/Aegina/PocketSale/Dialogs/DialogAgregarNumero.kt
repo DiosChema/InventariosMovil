@@ -19,7 +19,7 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
 
     lateinit var agregarNumero: DialogAgregarNumero
 
-    fun crearDialog(context : Context, posicion : Int){
+    fun crearDialogNumero(context : Context, posicion : Int){
         val dialogAgregarNumero = Dialog(context)
 
         dialogAgregarNumero.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -42,7 +42,7 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
                 val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                 if (imm.isAcceptingText)
                 {
-                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
                 }
                 dialogAgregarNumero.dismiss()
             }
@@ -52,18 +52,12 @@ class DialogAgregarNumero : AppCompatDialogFragment() {
             val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             if (imm.isAcceptingText)
             {
-                imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
             }
             dialogAgregarNumero.dismiss()
         }
 
         dialogAgregarNumero.show()
-        dialogNumeroText.requestFocus()
-        //val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        //activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-
     }
 
     interface DialogAgregarNumero {

@@ -8,7 +8,8 @@ data class InventarioObjeto(
     var descripcion:String,
     var cantidad:Int,
     var precio:Double,
-    var subFamilia:String,
+    var familia:String,
     var costo:Double,
-    var inventarioOptimo:Int
+    var inventarioOptimo:Int,
+    var modificaInventario:Boolean
 ):Serializable

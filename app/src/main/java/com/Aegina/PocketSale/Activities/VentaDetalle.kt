@@ -111,7 +111,7 @@ class VentaDetalle : AppCompatActivity(),
                 mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
                     RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
-                        if(editar) dialogAgregarNumero.crearDialog(context, position)
+                        if(editar) dialogAgregarNumero.crearDialogNumero(context, position)
                     }
 
                     override fun onLongItemClick(view: View?, position: Int) {}
@@ -144,17 +144,37 @@ class VentaDetalle : AppCompatActivity(),
         val listatmp : MutableList<InventarioObjeto> = arrayListOf()
 
         for(articulos in venta.articulos){
-            listatmp.add(
-                InventarioObjeto(articulos.idArticulo,
-                    articulos.articulosDetalle[0].nombre,
-                    articulos.articulosDetalle[0].descripcion,
-                    articulos.cantidad,
-                    articulos.precio,
-                    articulos.articulosDetalle[0].subFamilia,
-                    articulos.costo,
-                    articulos.articulosDetalle[0].inventarioOptimo
+            if(articulos.articulosDetalle.isNotEmpty())
+            {
+                listatmp.add(
+                    InventarioObjeto(articulos.idArticulo,
+                        articulos.articulosDetalle[0].nombre,
+                        articulos.articulosDetalle[0].descripcion,
+                        articulos.cantidad,
+                        articulos.precio,
+                        articulos.articulosDetalle[0].familia,
+                        articulos.costo,
+                        articulos.articulosDetalle[0].inventarioOptimo,
+                        articulos.articulosDetalle[0].modificaInventario
+                    )
                 )
-            )
+            }
+            else
+            {
+                listatmp.add(
+                    InventarioObjeto(articulos.idArticulo,
+                        articulos.nombre,
+                        "",
+                        articulos.cantidad,
+                        articulos.precio,
+                        "0",
+                        articulos.costo,
+                        0,
+                        false)
+                )
+            }
+
+
         }
 
         return listatmp
@@ -245,6 +265,12 @@ class VentaDetalle : AppCompatActivity(),
             {
                 listaArticulosTmp.add(listaArticulos[i])
             }
+        }
+
+        if(listaArticulosTmp.size == 0)
+        {
+            eliminarVenta()
+            return
         }
 
         val ventaActualizada = ActualizarVenta(globalVariable.usuario!!.token,venta._id,currentDate,listaArticulosTmp)

@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -16,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Activities.InventarioDetalle
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
+import com.Aegina.PocketSale.Metodos.Paginado
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.InventarioObjeto
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewInventario
@@ -35,8 +38,7 @@ class InventarioFragment : Fragment() {
     lateinit var mViewInventario : RecyclerViewInventario
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
-
-    lateinit var fragmentInventarioContenedorRecyclerView : LinearLayout
+    val paginado = Paginado()
 
     var dialogAgregarArticulos = DialogAgregarArticulos()
 
@@ -55,6 +57,7 @@ class InventarioFragment : Fragment() {
 
     private fun crearDialog() {
         dialogAgregarArticulos.crearDialogInicial(activity!!,globalVariable, Activity())
+        dialogAgregarArticulos.crearDialogArticulos(0)
         dialogAgregarArticulos.crearDialogFiltros()
     }
 
@@ -90,24 +93,49 @@ class InventarioFragment : Fragment() {
         {
             dialogAgregarArticulos.mostrarDialogFiltros()
         }
+
+        val fragmentInventarioLeft = fragmentInventarioLeft
+        fragmentInventarioLeft.setOnClickListener()
+        {
+            if(dialogAgregarArticulos.totalArticulos > dialogAgregarArticulos.limiteArticulos && dialogAgregarArticulos.pagina > 0)
+            {
+                dialogAgregarArticulos.pagina--
+                dialogAgregarArticulos.buscarArticulos()
+            }
+        }
+
+        val fragmentInventarioRight = fragmentInventarioRight
+        fragmentInventarioRight.setOnClickListener()
+        {
+            val maximoPaginas = paginado.obtenerPaginadoMaximo(dialogAgregarArticulos.totalArticulos, dialogAgregarArticulos.limiteArticulos)
+
+            if(dialogAgregarArticulos.totalArticulos > dialogAgregarArticulos.limiteArticulos && dialogAgregarArticulos.pagina < maximoPaginas)
+            {
+                dialogAgregarArticulos.pagina++
+                dialogAgregarArticulos.buscarArticulos()
+            }
+        }
+
     }
 
-    fun obtenerListaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>)
+    fun obtenerListaArticulos(listInventoryObject: ListInventoryObject)
     {
+
         listaTmp.clear()
 
-        for(i in 0 until listaArticulos.size)
+        for(i in listInventoryObject.Inventory.indices)
         {
             listaTmp.add(
                 InventarioObjeto(
-                    listaArticulos[i].idArticulo,
-                    listaArticulos[i].nombre,
-                    listaArticulos[i].descripcion,
-                    listaArticulos[i].cantidad,
-                    listaArticulos[i].precio,
-                    listaArticulos[i].familia,
-                    listaArticulos[i].costo,
-                    listaArticulos[i].inventarioOptimo))
+                    listInventoryObject.Inventory[i].idArticulo,
+                    listInventoryObject.Inventory[i].nombre,
+                    listInventoryObject.Inventory[i].descripcion,
+                    listInventoryObject.Inventory[i].cantidad,
+                    listInventoryObject.Inventory[i].precio,
+                    listInventoryObject.Inventory[i].familia,
+                    listInventoryObject.Inventory[i].costo,
+                    listInventoryObject.Inventory[i].inventarioOptimo,
+                    listInventoryObject.Inventory[i].modificaInventario))
         }
 
 
@@ -115,6 +143,17 @@ class InventarioFragment : Fragment() {
         {
             mViewInventario.RecyclerAdapter(listaTmp, activity!!)
             mViewInventario.notifyDataSetChanged()
+
+            if(listInventoryObject.count > dialogAgregarArticulos.limiteArticulos)
+            {
+                fragmentInventarioLeft.visibility = View.VISIBLE
+                fragmentInventarioRight.visibility = View.VISIBLE
+            }
+            else
+            {
+                fragmentInventarioLeft.visibility = View.INVISIBLE
+                fragmentInventarioRight.visibility = View.INVISIBLE
+            }
         }
 
     }

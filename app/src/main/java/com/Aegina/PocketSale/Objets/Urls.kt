@@ -8,7 +8,9 @@ data class Urls(
     var endPointImagenes: UrlsImagenes,
     var endPointSurtidos: UrlsSurtidos,
     var endPointUsers: UrlsUsers,
-    var endPointVentas: UrlsVentas
+    var endPointEmpleados: UrlsEmpleados,
+    var endPointVentas: UrlsVentas,
+    var endPointLoss: UrlsLoss
 )
 {
     constructor(): this(
@@ -21,7 +23,8 @@ data class Urls(
             "inventario/obtenerInventario",
             "inventario/obtenerArticuloInventario",
             "inventario/buscarArticulosPorFamilia",
-            "inventario/buscarArticulosPorSubFamilia"),
+            "inventario/buscarArticulosPorSubFamilia",
+            "inventario/obtenerArticuloNoVendidos"),
         UrlsEstadisticas(
             "estadisticas/buscarArticulosMasVendidos",
             "estadisticas/obtenerTotalInventario"),
@@ -47,23 +50,30 @@ data class Urls(
             "users/loginUsuario",
             "users/registrarNuevaTienda",
             "users/actualizarFecha",
-            "users/obtenerEmpleados",
-            "users/darAltaEmpleado",
-            "users/eliminarEmpleado",
-            "users/actualizarEmpleado",
-            "users/obtenerEmpleado",
             "users/obtenerDatosTienda",
             "users/actualizarDatosTienda",
             "users/cambiarContrasena",
             "users/recuperarContrasena",
-            "users/obtenerDatosTiendaTokenEspecial"),
+            "users/obtenerDatosTiendaTokenEspecial",
+            "users/obtenerTokenCompra"),
+        UrlsEmpleados(
+            "empleados/obtenerEmpleados",
+            "empleados/darAltaEmpleado",
+            "empleados/eliminarEmpleado",
+            "empleados/actualizarEmpleado",
+            "empleados/obtenerEmpleado"),
         UrlsVentas(
             "ventas/actualizarVenta",
             "ventas/buscarVentaPorFecha",
             "ventas/darAltaVenta",
             "ventas/eliminarVenta",
             "ventas/obtenerVentas",
-            "ventas/estadisticasPorFecha"
+            "ventas/estadisticasPorFecha"),
+        UrlsLoss(
+            "loss/createLoss",
+            "loss/getLoss",
+            "loss/removeLoss",
+            "loss/updateLoss"
         )
     )
 }
@@ -75,7 +85,8 @@ data class UrlsInventario(
     var endPointInventario:String,
     var endPointArticulo:String,
     var endPointArticulosPorFamilia:String,
-    var endPointArticulosPorSubFamilia:String
+    var endPointArticulosPorSubFamilia:String,
+    var endPointArticulosNoVendidos:String
 )
 
 data class UrlsEstadisticas(
@@ -111,16 +122,20 @@ data class UrlsUsers(
     var endPointLoginUsuario:String,
     var endPointRegistrarNuevaTienda:String,
     var endPointActualizarFechaCompra:String,
-    var endPointObtenerEmpleados:String,
-    var endPointAltaEmpleado:String,
-    var endPointEliminarEmpleado:String,
-    var endPointActualizarEmpleado:String,
-    var endPointObtenerEmpleado:String,
     var endPointObtenerDatosTienda:String,
     var endPointActualizarDatosTienda:String,
     var endPointCambiarContrasena:String,
     var endPointRecuperarContrasena:String,
-    var endPointObtenerDatosTiendaTokenEspecial:String
+    var endPointObtenerDatosTiendaTokenEspecial:String,
+    var endPointObtenerTokenCompra:String
+)
+
+data class UrlsEmpleados(
+    var endPointObtenerEmpleados:String,
+    var endPointAltaEmpleado:String,
+    var endPointEliminarEmpleado:String,
+    var endPointActualizarEmpleado:String,
+    var endPointObtenerEmpleado:String
 )
 
 data class UrlsVentas(
@@ -130,4 +145,11 @@ data class UrlsVentas(
     var endPointEliminarVenta:String,
     var endPointObtenerVentas:String,
     var endPointEstadisticasPorFecha:String
+)
+
+data class UrlsLoss(
+    var endPointLossItems:String,
+    var endPointGetLoss:String,
+    var endPointRemoveLoss:String,
+    var endPointUpdateLoss:String
 )

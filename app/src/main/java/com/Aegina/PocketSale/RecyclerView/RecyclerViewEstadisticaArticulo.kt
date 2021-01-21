@@ -1,6 +1,7 @@
 package com.Aegina.PocketSale.RecyclerView
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.Aegina.PocketSale.Activities.PerfilDetalle
+import com.Aegina.PocketSale.Activities.bar_chart
 import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
@@ -27,7 +30,7 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = articulos.get(position)
-        holder.bind(item)
+        holder.bind(item, context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,15 +66,15 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
-        fun bind(articulo: EstadisticaArticuloObject) {
-            itemArticuloInventarioNombre.text = articulo.articulo[0].nombre
-            itemArticuloInventarioDescipcion.text = articulo.articulo[0].descripcion
+        fun bind(articulo: EstadisticaArticuloObject, context: Context) {
+            itemArticuloInventarioNombre.text = articulo.articulo.nombre
+            itemArticuloInventarioDescipcion.text = articulo.articulo.descripcion
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
             textTmp = itemView.context.getString(R.string.venta_total) + " " + articulo.total.round(2).toString()
             itemArticuloInventarioPrecio.text = textTmp
             val urls = Urls()
-            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.articulo[0].idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
+            itemArticuloInventarioFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
             when (position % 2) {
                 1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
@@ -79,6 +82,12 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
                 else -> {
                 }
             }
+
+            /*itemView.setOnClickListener()
+            {
+                val intent = Intent(context, bar_chart::class.java)
+                context.startActivity(intent)
+            }*/
         }
 
         fun ImageView.loadUrl(url: String) {

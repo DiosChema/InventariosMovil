@@ -14,10 +14,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Dialogs.DialogModificarArticulo
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.InventarioObjeto
+import com.Aegina.PocketSale.Objets.Inventory.ListEstadisticaArticuloObject
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryNoSells
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.R
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.activity_inventario.*
@@ -26,7 +30,8 @@ import kotlinx.android.synthetic.main.activity_inventario.*
 class SurtidoPager : AppCompatActivity(),
     DialogFecha.DialogFecha,
     DialogAgregarArticulos.DialogAgregarArticulo,
-    DialogAgregarNumero.DialogAgregarNumero {
+    DialogAgregarNumero.DialogAgregarNumero,
+    DialogModificarArticulo.ModificarArticulo{
 
     lateinit var adapter : MyViewPagerAdapter
 
@@ -121,12 +126,14 @@ class SurtidoPager : AppCompatActivity(),
         }
     }
 
-    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
+    override fun listaArticulos(listaArticulos: ListInventoryObject) {
         val fragment: Fragment = adapter.getItem(0)
-        (fragment as SurtidoFragment).dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
+        (fragment as SurtidoFragment).dialogoAgregarArticulos.llenarListaArticulos(listaArticulos.Inventory.toMutableList())
     }
 
-    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+    override fun listaArticulosNoVendidos(listInventoryObject: ListInventoryNoSells) {}
+
+    override fun listaArticulosMasVendidos(listaArticulos: ListEstadisticaArticuloObject) {    }
 
     override fun lanzarMensaje(mensaje: String) {
         runOnUiThread()
@@ -138,6 +145,11 @@ class SurtidoPager : AppCompatActivity(),
     override fun procesarError(json: String) {
         val errores = Errores()
         errores.procesarError(this,json,this)
+    }
+
+    override fun cambiarPrecioCosto(precio: Double, costo: Double, posicion: Int) {
+        val fragment: Fragment = adapter.getItem(0)
+        (fragment as SurtidoFragment).cambiarPrecioCosto(precio,costo,posicion)
     }
 
 }

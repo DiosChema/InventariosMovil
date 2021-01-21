@@ -15,6 +15,9 @@ import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.ArticuloInventarioObjeto
 import com.Aegina.PocketSale.Objets.EstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.InventarioObjeto
+import com.Aegina.PocketSale.Objets.Inventory.ListEstadisticaArticuloObject
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryNoSells
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.R
 import kotlinx.android.synthetic.main.activity_inventario.*
 
@@ -83,12 +86,14 @@ class InventarioPager : AppCompatActivity(),
 
     override fun abrirCamara() {}
 
-    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
+    override fun listaArticulos(listInventoryObject: ListInventoryObject) {
         val fragment: Fragment = adapter.getItem(0)
-        (fragment as InventarioFragment).obtenerListaArticulos(listaArticulos)
+        (fragment as InventarioFragment).obtenerListaArticulos(listInventoryObject)
     }
 
-    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+    override fun listaArticulosNoVendidos(listInventoryObject: ListInventoryNoSells) {}
+
+    override fun listaArticulosMasVendidos(listaArticulos: ListEstadisticaArticuloObject) {}
 
     override fun lanzarMensaje(mensaje: String) {
         runOnUiThread()

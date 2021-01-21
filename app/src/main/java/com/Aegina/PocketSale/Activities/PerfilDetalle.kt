@@ -54,6 +54,8 @@ class PerfilDetalle : AppCompatActivity(),
     lateinit var perfilDetallePermisosEstadisticas : CheckBox
     lateinit var perfilDetallePermisosProovedor : CheckBox
     lateinit var perfilDetallePermisosMoodificarProovedor : CheckBox
+    lateinit var perfilDetallePermisosPerdidas : CheckBox
+    lateinit var perfilDetallePermisosMoodificarPerdidas : CheckBox
     lateinit var perfilDetalleDarDeAlta : Button
     lateinit var perfilDetalleCancelarEdicion : Button
     lateinit var perfilDetalleEliminarEmpleado : ImageButton
@@ -134,7 +136,7 @@ class PerfilDetalle : AppCompatActivity(),
     }
 
     private fun darDeAltaEmpleado() {
-        val url = urls.url+urls.endPointUsers.endPointAltaEmpleado
+        val url = urls.url+urls.endPointEmpleados.endPointAltaEmpleado
 
         val jsonObject = JSONObject()
         try
@@ -150,6 +152,8 @@ class PerfilDetalle : AppCompatActivity(),
             jsonObject.put("permisosEstadisticas", perfilDetallePermisosEstadisticas.isChecked)
             jsonObject.put("permisosProovedor", perfilDetallePermisosProovedor.isChecked)
             jsonObject.put("permisosModificarProovedor", perfilDetallePermisosMoodificarProovedor.isChecked)
+            jsonObject.put("permisosPerdidas", perfilDetallePermisosPerdidas.isChecked)
+            jsonObject.put("permisosModificarPerdidas", perfilDetallePermisosMoodificarPerdidas.isChecked)
             jsonObject.put("idioma", parseInt(getString(R.string.numero_idioma)))
         }
         catch (e: JSONException)
@@ -298,6 +302,8 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetallePermisosEstadisticas.isChecked = empleado.permisosEstadisticas
         perfilDetallePermisosProovedor.isChecked = empleado.permisosProovedor
         perfilDetallePermisosMoodificarProovedor.isChecked = empleado.permisosModificarProovedor
+        perfilDetallePermisosPerdidas.isChecked = empleado.permisosPerdidas
+        perfilDetallePermisosMoodificarPerdidas.isChecked = empleado.permisosModificarPerdidas
 
         cambioFoto = false
     }
@@ -313,6 +319,8 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetallePermisosEstadisticas = findViewById(R.id.perfilDetallePermisosEstadisticas)
         perfilDetallePermisosProovedor = findViewById(R.id.perfilDetallePermisosProovedor)
         perfilDetallePermisosMoodificarProovedor = findViewById(R.id.perfilDetallePermisosMoodificarProovedor)
+        perfilDetallePermisosPerdidas = findViewById(R.id.perfilDetallePermisosPerdidas)
+        perfilDetallePermisosMoodificarPerdidas = findViewById(R.id.perfilDetallePermisosMoodificarPerdidas)
         perfilDetalleDarDeAlta = findViewById(R.id.perfilDetalleDarDeAlta)
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
@@ -345,6 +353,8 @@ class PerfilDetalle : AppCompatActivity(),
             perfilDetallePermisosEstadisticas.isEnabled = false
             perfilDetallePermisosProovedor.isEnabled = false
             perfilDetallePermisosMoodificarProovedor.isEnabled = false
+            perfilDetallePermisosPerdidas.isEnabled = false
+            perfilDetallePermisosMoodificarPerdidas.isEnabled = false
         }
         else
         {
@@ -355,6 +365,8 @@ class PerfilDetalle : AppCompatActivity(),
             perfilDetallePermisosEstadisticas.isEnabled = activar
             perfilDetallePermisosProovedor.isEnabled = activar
             perfilDetallePermisosMoodificarProovedor.isEnabled = activar
+            perfilDetallePermisosPerdidas.isEnabled = activar
+            perfilDetallePermisosMoodificarPerdidas.isEnabled = activar
         }
 
         if (activar) {
@@ -391,7 +403,7 @@ class PerfilDetalle : AppCompatActivity(),
     }
 
     private fun actualizarEmpleado() {
-        val url = urls.url+urls.endPointUsers.endPointActualizarEmpleado
+        val url = urls.url+urls.endPointEmpleados.endPointActualizarEmpleado
 
         val jsonObject = JSONObject()
         try
@@ -407,6 +419,8 @@ class PerfilDetalle : AppCompatActivity(),
             jsonObject.put("permisosEstadisticas", perfilDetallePermisosEstadisticas.isChecked)
             jsonObject.put("permisosProovedor", perfilDetallePermisosProovedor.isChecked)
             jsonObject.put("permisosModificarProovedor", perfilDetallePermisosMoodificarProovedor.isChecked)
+            jsonObject.put("permisosPerdidas", perfilDetallePermisosPerdidas.isChecked)
+            jsonObject.put("permisosModificarPerdidas", perfilDetallePermisosMoodificarPerdidas.isChecked)
         }
         catch (e: JSONException)
         {
@@ -555,7 +569,7 @@ class PerfilDetalle : AppCompatActivity(),
     }
 
     private fun eliminarEmpleado() {
-        val url = urls.url+urls.endPointUsers.endPointEliminarEmpleado
+        val url = urls.url+urls.endPointEmpleados.endPointEliminarEmpleado
 
         val jsonObject = JSONObject()
         try
@@ -620,7 +634,7 @@ class PerfilDetalle : AppCompatActivity(),
     }
 
     private fun buscarEmpleado() {
-        val url = urls.url + urls.endPointUsers.endPointObtenerEmpleado + "?user=" + globalVariable.usuario!!.user
+        val url = urls.url + urls.endPointEmpleados.endPointObtenerEmpleado + "?user=" + globalVariable.usuario!!.user
 
         val request = Request.Builder()
             .url(url)
@@ -727,14 +741,18 @@ class PerfilDetalle : AppCompatActivity(),
     }
 
     private fun openCamera() {
-        val values = ContentValues()
-        values.put(MediaStore.Images.Media.TITLE, "New Picture")
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
-        image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-        //camera intent
-        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
-        startActivityForResult(cameraIntent, PERMISSION_CODE)
+        try
+        {
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.TITLE, "New Picture")
+            values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+            image_uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            //camera intent
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri)
+            startActivityForResult(cameraIntent, PERMISSION_CODE)
+        }
+        catch (e:Exception){}
     }
 
     override fun abrirGaleria() {

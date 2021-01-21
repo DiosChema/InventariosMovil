@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFecha
+import com.Aegina.PocketSale.Dialogs.DialogModificarArticulo
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
@@ -28,7 +29,7 @@ import java.util.*
 
 class SurtidoFragment : Fragment() {
 
-    lateinit var mViewEstadisticaArticulo : RecyclerViewSurtido
+    lateinit var mViewArticulo : RecyclerViewSurtido
     lateinit var mRecyclerView : RecyclerView
     lateinit var globalVariable: GlobalClass
 
@@ -52,7 +53,8 @@ class SurtidoFragment : Fragment() {
         globalVariable = activity?.applicationContext as GlobalClass
 
         dialogoAgregarArticulos.crearDialogInicial(activity!!,globalVariable, Activity())
-        dialogoAgregarArticulos.crearDialogArticulos()
+        dialogoAgregarArticulos.dialogSurtido()
+        dialogoAgregarArticulos.crearDialogArticulos(1)
         dialogoAgregarArticulos.crearDialogFiltros()
 
         asignarRecursos()
@@ -66,15 +68,35 @@ class SurtidoFragment : Fragment() {
 
         val imgButtonSurtidoConfirmarArticulos = surtidoConfirmarArticulos
         imgButtonSurtidoConfirmarArticulos.setOnClickListener{
-            if(listaArticulos.size > 0)
+            if(globalVariable.usuario!!.permisosProovedor)
             {
-                actualizarInventario()
+                if(listaArticulos.size > 0)
+                {
+                    actualizarInventario()
+                }
+            }
+            else
+            {
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(activity,getString(R.string.permisos_denegado),Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
         val imgButtonSurtidoAgregarCodigo = surtidoAgregarArticulo
         imgButtonSurtidoAgregarCodigo.setOnClickListener{
-            dialogoAgregarArticulos.mostrarDialogArticulos()
+            if(globalVariable.usuario!!.permisosProovedor)
+            {
+                dialogoAgregarArticulos.mostrarDialogArticulos()
+            }
+            else
+            {
+                activity?.runOnUiThread()
+                {
+                    Toast.makeText(activity,getString(R.string.permisos_denegado),Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         actualizarCantidadCosto()
@@ -97,22 +119,27 @@ class SurtidoFragment : Fragment() {
     }
 
     fun crearRecyclerView(){
-        mViewEstadisticaArticulo = RecyclerViewSurtido()
+        mViewArticulo = RecyclerViewSurtido()
         mRecyclerView = surtidoRecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(activity)
-        mViewEstadisticaArticulo.RecyclerAdapter(listaArticulos, activity!!)
-        mRecyclerView.adapter = mViewEstadisticaArticulo
+        mViewArticulo.RecyclerAdapter(listaArticulos, activity!!)
+        mRecyclerView.adapter = mViewArticulo
 
         val dialogAgregarNumero = DialogAgregarNumero()
+        val dialogModificarArticulo = DialogModificarArticulo()
 
         mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(activity, mRecyclerView, object :
             RecyclerItemClickListener.OnItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                dialogAgregarNumero.crearDialog(activity!!, position)
+            override fun onItemClick(view: View?, position: Int)
+            {
+                dialogAgregarNumero.crearDialogNumero(activity!!, position)
             }
 
-            override fun onLongItemClick(view: View?, position: Int) {}
+            override fun onLongItemClick(view: View?, position: Int)
+            {
+                dialogModificarArticulo.crearDialogModificarArticulo(activity!!, position, listaArticulos[position].precio, listaArticulos[position].costo, 1)
+            }
         }))
     }
 
@@ -128,7 +155,8 @@ class SurtidoFragment : Fragment() {
                 articuloTmp.cantidad,
                 articuloTmp.precio,
                 articuloTmp.nombre,
-                articuloTmp.costo)
+                articuloTmp.costo,
+                articuloTmp.modificaInventario)
 
             if(articulo.cantidad > 0)
                 articulos.add(articulo)
@@ -181,7 +209,7 @@ class SurtidoFragment : Fragment() {
                             activity?.runOnUiThread()
                             {
                                 listaArticulos.clear()
-                                mViewEstadisticaArticulo.notifyDataSetChanged()
+                                mViewArticulo.notifyDataSetChanged()
                                 actualizarCantidadCosto()
                             }
                         }
@@ -221,7 +249,7 @@ class SurtidoFragment : Fragment() {
                 listaArticulos.add(articuloCarrito)
             }
 
-            mViewEstadisticaArticulo.notifyDataSetChanged()
+            mViewArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
     }
@@ -229,7 +257,7 @@ class SurtidoFragment : Fragment() {
     fun obtenerNumero(numero : Int, posicion : Int) {
         activity?.runOnUiThread{
             listaArticulos[posicion].cantidad = numero
-            mViewEstadisticaArticulo.notifyDataSetChanged()
+            mViewArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
     }
@@ -244,13 +272,22 @@ class SurtidoFragment : Fragment() {
                     listaArticulos.add(articulosCarrito[i])
                 }
             }
-            mViewEstadisticaArticulo.notifyDataSetChanged()
+            mViewArticulo.notifyDataSetChanged()
             actualizarCantidadCosto()
         }
     }
 
     fun buscarArticulo(codigo : Long){
         dialogoAgregarArticulos.buscarArticulo(codigo)
+    }
+
+    fun cambiarPrecioCosto(precio: Double, costo: Double, posicion: Int) {
+        activity?.runOnUiThread{
+            listaArticulos[posicion].precio = precio
+            listaArticulos[posicion].costo = costo
+            mViewArticulo.notifyDataSetChanged()
+            actualizarCantidadCosto()
+        }
     }
 
 }

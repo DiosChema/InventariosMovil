@@ -6,9 +6,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +20,8 @@ import com.android.billingclient.api.*
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
 import okhttp3.*
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.lang.Double.parseDouble
 import java.lang.Integer.parseInt
@@ -45,6 +45,8 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
     lateinit var suscripcionFechaLimiteTienda : TextView
     lateinit var tiendaDetalleFoto : ImageView
 
+    lateinit var progressDialog : ProgressDialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_suscripcion)
@@ -53,6 +55,10 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         context = this
         activity = this
         globalVariable = context.applicationContext as GlobalClass
+
+        progressDialog = ProgressDialog(context)
+        progressDialog.setMessage(getString(R.string.mensaje_espera))
+        progressDialog.setCancelable(false)
 
         asignarRecursos()
         setupBillingClient()
@@ -175,19 +181,25 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                 .setPurchaseToken(purchase.purchaseToken)
                 .build()
 
+        progressDialog.show()
+
         billingClient.consumeAsync(consumeParams)
         { billingResult, outToken ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
 
                 when (purchase.sku) {
-                    "pocketsale_ms00000001" -> actualizarSuscripcion(1)
-                    "pocketsale_ms00000002" -> actualizarSuscripcion(2)
-                    "pocketsale_ms00000004" -> actualizarSuscripcion(4)
+                    "pocketsale_ms00000001" -> obtenerTokenCompra(1, outToken)
+                    "pocketsale_ms00000002" -> obtenerTokenCompra(2, outToken)
+                    "pocketsale_ms00000004" -> obtenerTokenCompra(4, outToken)
                     else -> {
                     }
                 }
 
                 //Toast.makeText(this@Suscripcion,"Se compro " + purchase.sku + " " + purchase.purchaseToken,Toast.LENGTH_LONG).show()
+            }
+            else
+            {
+                progressDialog.dismiss()
             }
         }
     }
@@ -244,10 +256,10 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         })
     }
 
-    fun actualizarSuscripcion(tipoCompra: Int){
-        val url = urls.url+urls.endPointUsers.endPointActualizarFechaCompra+
-                "?token="+globalVariable.tokenEspecial +
-                "&tipoCompra=" + tipoCompra
+    fun obtenerTokenCompra(tipoCompra: Int, outToken: String)
+    {
+        val url = urls.url+urls.endPointUsers.endPointObtenerTokenCompra+
+                "?token="+globalVariable.tokenEspecial
 
         val request = Request.Builder()
             .url(url)
@@ -256,7 +268,79 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
 
         val client = OkHttpClient()
 
-        val progressDialog = ProgressDialog(context)
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread()
+                {
+                    progressDialog.dismiss()
+                    Toast.makeText(context, context.getString(R.string.mensaje_error_intentear_mas_tarde), Toast.LENGTH_LONG).show()
+                }
+            }
+            override fun onResponse(call: Call, response: Response)
+            {
+
+                val body = response.body()?.string()
+
+                if(body != null && body.isNotEmpty())
+                {
+                    try
+                    {
+                        val gson = GsonBuilder().create()
+                        val respuesta = gson.fromJson(body, Respuesta::class.java)
+
+                        if(respuesta.status == 0)
+                        {
+                            runOnUiThread()
+                            {
+                                actualizarSuscripcion(tipoCompra,respuesta.respuesta, outToken)
+                            }
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
+
+                    }
+                    catch(e: java.lang.Exception)
+                    {
+                        val errores = Errores()
+                        errores.procesarErrorCerrarVentana(context,body,activity)
+                    }
+                }
+            }
+        })
+    }
+
+    fun actualizarSuscripcion(tipoCompra: Int, tokenCompra: String, outToken: String){
+        val url = urls.url+urls.endPointUsers.endPointActualizarFechaCompra
+
+        val jsonObject = JSONObject()
+        try
+        {
+            var verificador = (globalVariable.usuario!!.tienda * 9) + tipoCompra
+
+            jsonObject.put("token", globalVariable.tokenEspecial)
+            jsonObject.put("tipoCompra", tipoCompra)
+            jsonObject.put("tokenCompra", tokenCompra)
+            jsonObject.put("outToken", outToken)
+            jsonObject.put("verificador", verificador)
+        }
+        catch (e: JSONException)
+        {
+            e.printStackTrace()
+        }
+
+        val client = OkHttpClient()
+        val JSON = MediaType.parse("application/json; charset=utf-8")
+        val body = RequestBody.create(JSON, jsonObject.toString())
+
+        val request = Request.Builder()
+            .url(url)
+            .put(body)
+            .build()
+
+        /*val progressDialog = ProgressDialog(context)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.setCancelable(false)
         try
@@ -266,13 +350,16 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         catch (e:Exception)
         {
 
-        }
+        }*/
+
+        //progressDialog.show()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 progressDialog.dismiss()
                 runOnUiThread()
                 {
+                    progressDialog.dismiss()
                     Toast.makeText(context, context.getString(R.string.mensaje_error_suscripcion), Toast.LENGTH_LONG).show()
                 }
             }
@@ -307,13 +394,16 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                         {
                             val errores = Errores()
                             errores.procesarError(context,body,activity)
+                            progressDialog.dismiss()
                         }
 
                     }
-                    catch(e:Exception){}
+                    catch(e:Exception)
+                    {
+                        progressDialog.dismiss()
+                    }
                 }
 
-                progressDialog.dismiss()
 
             }
         })
@@ -330,7 +420,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
             .get()
             .build()
 
-        val progressDialog = ProgressDialog(this)
+        /*val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(getString(R.string.mensaje_espera))
         progressDialog.setCancelable(false)
 
@@ -341,6 +431,11 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         catch(e: Exception)
         {
 
+        }*/
+
+        if(!progressDialog.isShowing)
+        {
+            progressDialog.show()
         }
 
         client.newCall(request).enqueue(object : Callback {

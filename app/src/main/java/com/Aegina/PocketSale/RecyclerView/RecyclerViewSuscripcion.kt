@@ -93,9 +93,6 @@ class RecyclerViewSuscripcion : RecyclerView.Adapter<RecyclerViewSuscripcion.Vie
 
             textTmp = suscripcion.precioSuscripcion
             itemSuscripcionPrecio.text = textTmp
-
-            /*textTmp = itemView.context.getString(R.string.suscripcion_meses_total)
-            itemSuscripcionPrecioTotal.text = textTmp*/
         }
 
         fun ImageView.loadUrl(url: String) {

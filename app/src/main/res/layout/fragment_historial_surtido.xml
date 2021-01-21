@@ -51,7 +51,47 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragmentHistorialSurtidoRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.0001"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp">
+
+            <ImageButton
+                android:id="@+id/fragmentHistorialSurtidoLeft"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/icon_left"
+                android:contentDescription="@string/botonCancelar"
+                android:visibility="gone"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:id="@+id/fragmentHistorialSurtidoRight"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/icon_right"
+                android:contentDescription="@string/botonCancelar"
+                android:visibility="gone" />
+
+        </LinearLayout>
 
 
     </LinearLayout>

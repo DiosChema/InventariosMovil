@@ -16,8 +16,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarArticulos
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
 import com.Aegina.PocketSale.Dialogs.DialogFinalizarVenta
+import com.Aegina.PocketSale.Dialogs.DialogModificarArticulo
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
+import com.Aegina.PocketSale.Objets.Inventory.ListEstadisticaArticuloObject
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryNoSells
+import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
 import com.google.gson.GsonBuilder
@@ -31,7 +35,8 @@ import kotlin.collections.ArrayList
 
 
 class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
-    DialogAgregarNumero.DialogAgregarNumero, DialogFinalizarVenta.DialogFinalizarVenta {
+    DialogAgregarNumero.DialogAgregarNumero, DialogFinalizarVenta.DialogFinalizarVenta,
+    DialogModificarArticulo.ModificarArticulo{
 
     lateinit var context : Context
     lateinit var activity: Activity
@@ -59,7 +64,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         dialogoAgregarArticulos.crearDialogInicial(context,globalVariable, Activity())
-        dialogoAgregarArticulos.crearDialogArticulos()
+        dialogoAgregarArticulos.crearDialogArticulos(0)
         dialogoAgregarArticulos.crearDialogFiltros()
         crearRecyclerView()
 
@@ -109,14 +114,19 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         mRecyclerView.adapter = mViewVenta
 
         val dialogAgregarNumero = DialogAgregarNumero()
+        val dialogModificarArticulo = DialogModificarArticulo()
 
         mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
             RecyclerItemClickListener.OnItemClickListener {
-            override fun onItemClick(view: View?, position: Int) {
-                dialogAgregarNumero.crearDialog(context, position)
+            override fun onItemClick(view: View?, position: Int)
+            {
+                dialogAgregarNumero.crearDialogNumero(context, position)
             }
 
-            override fun onLongItemClick(view: View?, position: Int) {}
+            override fun onLongItemClick(view: View?, position: Int)
+            {
+                dialogModificarArticulo.crearDialogModificarArticulo(context, position, listaArticulosVenta[position].precio, listaArticulosVenta[position].costo, 0)
+            }
         }))
     }
 
@@ -132,7 +142,8 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
                 articuloTmp.cantidad,
                 articuloTmp.precio,
                 articuloTmp.nombre,
-                articuloTmp.costo)
+                articuloTmp.costo,
+                articuloTmp.modificaInventario)
 
             if(articulo.cantidad > 0)
                 articulos.add(articulo)
@@ -288,11 +299,13 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         }
     }
 
-    override fun listaArticulos(listaArticulos: MutableList<ArticuloInventarioObjeto>) {
-        dialogoAgregarArticulos.llenarListaArticulos(listaArticulos)
+    override fun listaArticulos(listaArticulos: ListInventoryObject) {
+        dialogoAgregarArticulos.llenarListaArticulos(listaArticulos.Inventory.toMutableList())
     }
 
-    override fun listaArticulosMasVendidos(listaArticulos: MutableList<EstadisticaArticuloObject>) {    }
+    override fun listaArticulosNoVendidos(listInventoryObject: ListInventoryNoSells) {}
+
+    override fun listaArticulosMasVendidos(listaArticulos: ListEstadisticaArticuloObject) {    }
 
     override fun lanzarMensaje(mensaje: String) {
         runOnUiThread()
@@ -310,6 +323,15 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         var multiplier = 1.0
         repeat(decimals) { multiplier *= 10 }
         return kotlin.math.round(this * multiplier) / multiplier
+    }
+
+    override fun cambiarPrecioCosto(precio: Double, costo: Double, posicion: Int) {
+        runOnUiThread{
+            listaArticulosVenta[posicion].precio = precio
+            listaArticulosVenta[posicion].costo = costo
+            mViewVenta.notifyDataSetChanged()
+            actualizarCantidadPrecio()
+        }
     }
 
 }
