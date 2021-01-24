@@ -151,8 +151,8 @@ class InventarioFragment : Fragment() {
             }
             else
             {
-                fragmentInventarioLeft.visibility = View.INVISIBLE
-                fragmentInventarioRight.visibility = View.INVISIBLE
+                fragmentInventarioLeft.visibility = View.GONE
+                fragmentInventarioRight.visibility = View.GONE
             }
         }
 

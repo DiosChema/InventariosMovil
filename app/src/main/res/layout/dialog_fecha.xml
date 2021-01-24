@@ -21,11 +21,12 @@
 
         <TextView
             android:id="@+id/dialogFechaTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
+            android:gravity="center"
             android:hint="@string/app_name"
             android:textSize="25sp"/>
 
@@ -111,7 +112,7 @@
 -->
         <DatePicker
             android:id="@+id/dialogFechaDatePicker"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:calendarViewShown="false"

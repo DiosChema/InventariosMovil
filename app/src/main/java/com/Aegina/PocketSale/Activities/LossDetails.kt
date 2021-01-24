@@ -23,6 +23,7 @@ import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewVenta
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.item_ventas.*
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -84,6 +85,7 @@ class LossDetails : AppCompatActivity(),
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
         VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
+        VentaDetalleCancelar.visibility = View.INVISIBLE
         editar = false
 
         mViewArticulosLoss = RecyclerViewVenta()
@@ -104,13 +106,14 @@ class LossDetails : AppCompatActivity(),
                 VentaDetalleEditar.text = getString(R.string.mensaje_actualizar_articulo)
                 VentaDetalleEliminarVenta.visibility = View.VISIBLE
                 VentaDetalleEliminarVentaCardView.visibility = View.VISIBLE
+                VentaDetalleCancelar.visibility = View.VISIBLE
                 editar = true
                 habilitarEdicion()
 
                 mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
                     RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View?, position: Int) {
-                        if(editar) dialogAgregarNumero.crearDialogNumero(context, position)
+                        if(editar) dialogAgregarNumero.crearDialogNumero(context, position, listaArticulos[position].cantidad)
                     }
 
                     override fun onLongItemClick(view: View?, position: Int) {}
@@ -130,11 +133,10 @@ class LossDetails : AppCompatActivity(),
             VentaDetalleEditar.text = getString(R.string.mensaje_editar)
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
             VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
+            VentaDetalleCancelar.visibility = View.INVISIBLE
             editar = false
             habilitarEdicion()
         }
-
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
     }
 

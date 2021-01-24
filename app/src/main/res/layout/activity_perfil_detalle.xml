@@ -157,7 +157,7 @@
                 android:id="@+id/perfilDetallePermisosPerdidas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_proovedoor" />
+                android:text="@string/perfil_permisos_perdidas" />
 
             <CheckBox
                 android:id="@+id/perfilDetallePermisosMoodificarPerdidas"
@@ -183,7 +183,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginBottom="35dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/perfilDetalleCambiarContrasenaCardView"

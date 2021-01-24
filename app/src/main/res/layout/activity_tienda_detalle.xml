@@ -58,12 +58,6 @@
             android:orientation="vertical"
             android:layout_marginTop="15dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_view"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                card_view:cardCornerRadius="40dp">
 
                 <ImageView
                     android:id="@+id/tiendaDetalleFoto"
@@ -75,7 +69,6 @@
                     android:background= "@color/transparent"
                     android:contentDescription="@string/imagenArticulo"/>
 
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 

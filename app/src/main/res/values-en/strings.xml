@@ -172,4 +172,5 @@
     <string name="perfil_permisos_modificar_perdidas">Manage losses</string>
     <string name="surtido_detalle_titulo">Supply</string>
     <string name="loss_details_title">Loss</string>
+    <string name="suscripcion_actualizacion">Your subscription has been updated.</string>
 </resources>

@@ -102,7 +102,7 @@
             android:minLines="2"
             android:text=""
             android:hint="@string/venta_total_payment"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
             android:textSize="18sp"

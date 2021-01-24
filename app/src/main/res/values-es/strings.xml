@@ -215,4 +215,5 @@
     <string name="perfil_permisos_modificar_perdidas">Modificar pérdidas</string>
     <string name="surtido_detalle_titulo">Surtido</string>
     <string name="loss_details_title">Pérdida</string>
+    <string name="suscripcion_actualizacion">Se ha actualizado tu suscripcion.</string>
 </resources>

@@ -21,7 +21,7 @@ import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewSurtido
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.activity_surtido.*
+import kotlinx.android.synthetic.main.fragment_surtido.*
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -45,7 +45,7 @@ class SurtidoFragment : Fragment() {
     var listaArticulos: MutableList<InventarioObjeto> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.activity_surtido, container, false)
+        return inflater.inflate(R.layout.fragment_surtido, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,7 +133,7 @@ class SurtidoFragment : Fragment() {
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int)
             {
-                dialogAgregarNumero.crearDialogNumero(activity!!, position)
+                dialogAgregarNumero.crearDialogNumero(activity!!, position, listaArticulos[position].cantidad)
             }
 
             override fun onLongItemClick(view: View?, position: Int)

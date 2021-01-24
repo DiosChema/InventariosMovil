@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Metodos.Errores
@@ -87,14 +88,14 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         var precioMes = 0.0
 
         for(skuTmp in skuDetailsList!!){
-            if(parseInt(skuTmp.sku.substring(skuTmp.sku.length - 2, skuTmp.sku.length)) == 1) {
-                precioMes = parseDouble(skuTmp.price.substring(1, skuTmp.price.length))
+            if(parseInt(obtenerNumeros(skuTmp.sku)) == 1) {
+                precioMes = parseDouble(obtenerNumeros(skuTmp.price))
             }
         }
 
         for(skuTmp in skuDetailsList!!){
             listaArticulos.add(SuscripcionObject(
-                skuTmp.sku, parseInt(skuTmp.sku.substring(skuTmp.sku.length - 2, skuTmp.sku.length)),
+                skuTmp.sku, parseInt(obtenerNumeros(skuTmp.sku)),
                 skuTmp.price,
                 precioMes
             ))
@@ -108,7 +109,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                 val billingFlowParams = BillingFlowParams.newBuilder()
                     .setSkuDetails(skuDetailsList[position])
                     .build()
-
+                progressDialog.show()
                 billingClient.launchBillingFlow(context as Activity,billingFlowParams).responseCode
             }
 
@@ -116,10 +117,32 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                 val billingFlowParams = BillingFlowParams.newBuilder()
                     .setSkuDetails(skuDetailsList[position])
                     .build()
-
+                progressDialog.show()
                 billingClient.launchBillingFlow(context as Activity,billingFlowParams).responseCode
             }
         }))
+    }
+
+    fun obtenerNumeros(cadena: String) : String
+    {
+        var cadenaRecortada = ""
+
+        for (i in cadena.indices)
+        {
+            if(cadena[i].isDigit())
+            {
+                cadenaRecortada = cadena.substring(i)
+                break
+            }
+        }
+
+        return cadenaRecortada
+    }
+
+    fun obtenerNumerosPunto(cadena: String) : Int
+    {
+        val num = parseInt(cadena.replace(Regex("[^0-9.]"), ""))
+        return num
     }
 
     fun llenarCampos(tiendaObjeto: TiendaObjeto)
@@ -163,8 +186,10 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                 handlePurchase(purchase)
             }
         } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+            progressDialog.dismiss()
             // Handle an error caused by a user cancelling the purchase flow.
         } else {
+            progressDialog.dismiss()
             // Handle any other error codes.
         }
     }
@@ -180,8 +205,6 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
             ConsumeParams.newBuilder()
                 .setPurchaseToken(purchase.purchaseToken)
                 .build()
-
-        progressDialog.show()
 
         billingClient.consumeAsync(consumeParams)
         { billingResult, outToken ->
@@ -378,7 +401,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
                         {
                             runOnUiThread()
                             {
-                                Toast.makeText(this@Suscripcion,"Se ha actualizado tu suscripcion",Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@Suscripcion,context.getString(R.string.suscripcion_actualizacion),Toast.LENGTH_LONG).show()
                                 if(globalVariable.usuario == null)
                                 {
                                     val errores = Errores()

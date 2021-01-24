@@ -481,8 +481,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         var url = urls.url+urls.endPointsInventario.endPointArticulosNoVendidos+
                 "?token="+globalVariable.usuario!!.token+
-                "&fechaInicial=" + formatoFechaCompleta.format(fechaInicial) +
-                "&fechaFinal="+formatoFechaCompleta.format(fechaFinal) +
                 "&pagina="+pagina +
                 "&limit="+limiteArticulos
 
@@ -668,6 +666,9 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
         dialogFiltroCantidadMinimo.setText("")
         dialogFiltroCantidadMaximo.setText("")
+        dialogFiltroPrecioMinimo.setText("")
+        dialogFiltroPrecioMaximo.setText("")
+        dialogFiltroNombre.setText("")
 
         checkBoxFamilia.isChecked = false
         checkBoxSubFamilia.isChecked = false

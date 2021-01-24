@@ -90,7 +90,8 @@
             android:text="@string/mensaje_editar"
             android:textColor="@color/black"
             android:drawableRight="@drawable/editicon"
-            android:drawableEnd="@drawable/editicon" />
+            android:drawableEnd="@drawable/editicon"
+            android:layout_marginBottom="12dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -106,7 +107,6 @@
                 android:id="@+id/VentaDetalleCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:text="@string/editar_articulo_cancelar"
                 android:fontFamily="@font/open_sans"
                 android:background="@drawable/round_button_red"

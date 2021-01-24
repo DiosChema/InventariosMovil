@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.HideReturnsTransformationMethod
@@ -29,6 +30,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.Exception
+import java.lang.Integer.parseInt
 import java.util.*
 
 
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginPasswordButton : ImageView
     lateinit var loginLayout : LinearLayout
     lateinit var activity: Activity
+    lateinit var loginHelp: ImageButton
 
     var dialogRecuperarContrasena = DialogRecuperarContrasena()
     private val sharedPrefFile = "kotlinsharedpreference"
@@ -83,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         loginTextNuevaCuenta = findViewById(R.id.loginTextNuevaCuenta)
         loginPasswordButton = findViewById(R.id.loginPasswordButton)
         loginLayout = findViewById(R.id.loginLayout)
+        loginHelp = findViewById(R.id.loginHelp)
 
         //loginEmail.setText("taco666@hotmail.com")
         //loginPassword.setText("perraco12")
@@ -121,6 +125,15 @@ class MainActivity : AppCompatActivity() {
                     PasswordTransformationMethod.getInstance()
                 }
         }
+
+        loginHelp.setOnClickListener()
+        {
+            val idioma = when(parseInt(context.getString(R.string.numero_idioma))) {
+                2 -> "es"
+                else -> "en"
+            }
+            openNewTabWindow("https://pocketsale.herokuapp.com/pocketsale/$idioma", context)
+        }
     }
 
 
@@ -153,6 +166,7 @@ class MainActivity : AppCompatActivity() {
         {
             jsonObject.put("user", email)
             jsonObject.put("password", password)
+            loginPassword.setText("")
         }
         catch (e: JSONException)
         {
@@ -233,8 +247,6 @@ class MainActivity : AppCompatActivity() {
                         editor.apply()
                         editor.commit()
 
-                        loginPassword.setText("")
-
                         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                         if (imm.isAcceptingText)
                         {
@@ -260,6 +272,15 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    fun openNewTabWindow(urls: String, context: Context) {
+        val uris = Uri.parse(urls)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        context.startActivity(intents)
     }
 
     fun habilitarBotones(habilitar: Boolean)

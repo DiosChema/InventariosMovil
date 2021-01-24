@@ -66,7 +66,7 @@
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:maxLines="1"
-            android:maxLength="15"
+            android:maxLength="25"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
             android:hint="@string/mensaje_nombre_articulo"

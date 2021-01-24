@@ -21,6 +21,7 @@ import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.lang.Exception
 import java.lang.Integer.parseInt
 import java.util.*
 
@@ -117,26 +118,34 @@ class CrearCuenta : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response)
             {
-                val json = response.body()!!.string()
+                val body = response.body()!!.string()
                 val gson = GsonBuilder().create()
                 var mensajeRespuesta : String
 
-                val respuesta = gson.fromJson(json, Respuesta::class.java)
+                try
+                {
+                    val respuesta = gson.fromJson(body, Respuesta::class.java)
 
-                runOnUiThread {
+                    runOnUiThread {
 
-                    progressDialog.dismiss()
+                        progressDialog.dismiss()
 
-                    if(respuesta.status == 0)
-                    {
-                        Toast.makeText(context, getString(R.string.mensaje_cuenta_creada), Toast.LENGTH_LONG).show()
-                        finish()
+                        if(respuesta.status == 0)
+                        {
+                            Toast.makeText(context, getString(R.string.mensaje_cuenta_creada), Toast.LENGTH_LONG).show()
+                            finish()
+                        }
+                        else
+                        {
+                            val errores = Errores()
+                            errores.procesarError(context,body,activity)
+                        }
                     }
-                    else
-                    {
-                        val errores = Errores()
-                        errores.procesarError(context,json,activity)
-                    }
+                }
+                catch(e: Exception)
+                {
+                    val errores = Errores()
+                    errores.procesarErrorCerrarVentana(context,body,activity)
                 }
             }
         })

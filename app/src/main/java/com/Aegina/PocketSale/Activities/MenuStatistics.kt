@@ -31,7 +31,7 @@ class MenuStatistics : AppCompatActivity() {
 
         val logoTienda = findViewById<ImageView>(R.id.menuStatisticsStore)
 
-        logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+globalVariable.usuario!!.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
+        logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+"t"+globalVariable.usuario!!.tienda+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=2")
 
         val buttonMenuStatisticsItems = findViewById<ImageView>(R.id.menuStatisticsItems)
         buttonMenuStatisticsItems.setOnClickListener()

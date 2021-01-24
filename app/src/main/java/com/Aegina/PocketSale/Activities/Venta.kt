@@ -120,7 +120,7 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
             RecyclerItemClickListener.OnItemClickListener {
             override fun onItemClick(view: View?, position: Int)
             {
-                dialogAgregarNumero.crearDialogNumero(context, position)
+                dialogAgregarNumero.crearDialogNumero(context, position, listaArticulosVenta[position].cantidad)
             }
 
             override fun onLongItemClick(view: View?, position: Int)

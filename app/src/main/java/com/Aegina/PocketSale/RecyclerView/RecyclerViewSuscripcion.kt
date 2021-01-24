@@ -79,7 +79,7 @@ class RecyclerViewSuscripcion : RecyclerView.Adapter<RecyclerViewSuscripcion.Vie
                 spannableString2.setSpan(StrikethroughSpan(),1,textTmp.length,0)
                 itemSuscripcionPrecioTotal.text = spannableString2
 
-                val precioSuscripcion = parseDouble(suscripcion.precioSuscripcion.substring(1,suscripcion.precioSuscripcion.length))
+                val precioSuscripcion = parseDouble(obtenerNumeros(suscripcion.precioSuscripcion))
                 var porcentajeDescuento = precioSuscripcion * 100 / (suscripcion.precioMes * suscripcion.numeroMeses)
                 val porcentajeAhorro = (porcentajeDescuento.toInt() - 100) * -1
 
@@ -104,6 +104,22 @@ class RecyclerViewSuscripcion : RecyclerView.Adapter<RecyclerViewSuscripcion.Vie
             var multiplier = 1.0
             repeat(decimals) { multiplier *= 10 }
             return kotlin.math.round(this * multiplier) / multiplier
+        }
+
+        fun obtenerNumeros(cadena: String) : String
+        {
+            var cadenaRecortada = ""
+
+            for (i in cadena.indices)
+            {
+                if(cadena[i].isDigit())
+                {
+                    cadenaRecortada = cadena.substring(i)
+                    break
+                }
+            }
+
+            return cadenaRecortada
         }
     }
 }

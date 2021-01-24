@@ -135,8 +135,6 @@ class InventarioDetalle : AppCompatActivity(),
 
         }
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-
         dialogSeleccionarFoto.crearDialog(this)
     }
 
@@ -326,7 +324,7 @@ class InventarioDetalle : AppCompatActivity(),
         dialogTitulo.text = getString(R.string.dialog_agregar_familia)
 
         dialogAceptar.setOnClickListener {
-            //ocultarTeclado()
+            ocultarTeclado()
             dialog.dismiss()
             if(dialogText.text.isNotEmpty())
             {
@@ -335,7 +333,7 @@ class InventarioDetalle : AppCompatActivity(),
         }
 
         dialogCancelar.setOnClickListener {
-            //ocultarTeclado()
+            ocultarTeclado()
             dialog.dismiss()
         }
 
@@ -360,6 +358,7 @@ class InventarioDetalle : AppCompatActivity(),
         dialogTitulo.text = getString(R.string.dialog_agregar_subfamilia)
 
         dialogAceptar.setOnClickListener {
+            ocultarTeclado()
             dialog.dismiss()
             if(dialogText.text.isNotEmpty())
             {
@@ -369,11 +368,7 @@ class InventarioDetalle : AppCompatActivity(),
 
         dialogCancelar.setOnClickListener()
         {
-            val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-            if (imm.isAcceptingText)
-            {
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
-            }
+            ocultarTeclado()
             dialog.dismiss()
         }
 

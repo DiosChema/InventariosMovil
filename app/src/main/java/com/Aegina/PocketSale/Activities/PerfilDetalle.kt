@@ -372,7 +372,10 @@ class PerfilDetalle : AppCompatActivity(),
         if (activar) {
 
             perfilDetalleCancelarEdicion.visibility = View.VISIBLE
-            perfilDetalleEliminarEmpleadoCardView.visibility = View.VISIBLE
+            if(empleadoObject.permisosAdministrador == false)
+            {
+                perfilDetalleEliminarEmpleadoCardView.visibility = View.VISIBLE
+            }
 
             if(empleadoObject.user == globalVariable.usuario!!.user)
             {
