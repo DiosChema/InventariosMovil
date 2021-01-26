@@ -23,69 +23,55 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:layout_gravity="center"
             android:layout_marginTop="12dp"
             android:text="@string/dialog_filtro" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="15dp">
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginTop="3dp"
+            android:text="@string/mensaje_grupo_articulo"/>
 
-            <CheckBox
-                android:id="@+id/checkBoxFamilia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <Spinner
-                android:id="@+id/dialogFiltroArticulosFamiliaSpinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="34dp"
-                android:theme="@style/mySpinnerItemStyle"
-                android:spinnerMode="dropdown"
-                android:fontFamily="@font/open_sans"
-                android:background="@drawable/round_button_white"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_gravity="center_vertical"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialogFiltroRecyclerViewFamilia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/round_border_white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="15dp">
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_marginTop="5dp"
+            android:text="@string/mensaje_subgrupo_articulo"/>
 
-            <CheckBox
-                android:id="@+id/checkBoxSubFamilia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_gravity="center_vertical"/>
 
-            <Spinner
-                android:id="@+id/dialogFiltroArticulosSubFamiliaSpinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="34dp"
-                android:spinnerMode="dropdown"
-                android:theme="@style/mySpinnerItemStyle"
-                android:fontFamily="@font/open_sans"
-                android:background="@drawable/round_button_white"
-                android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"/>
-
-        </LinearLayout>
-
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialogFiltroRecyclerViewSubFamilia"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_border_white"/>
 
         <TextView
             android:id="@+id/dialogFiltroNombreText"

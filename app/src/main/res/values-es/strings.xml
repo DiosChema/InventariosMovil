@@ -95,7 +95,7 @@
     <string name="dialog_aceptar">Aceptar</string>
 
     <!-- Dialog filtros -->
-    <string name="dialog_filtro_cantidad">inventario</string>
+    <string name="dialog_filtro_cantidad">Inventario</string>
     <string name="dialog_filtro_minimo_diminutivo">Min</string>
     <string name="dialog_filtro_maximo_diminutivo">Max</string>
     <string name="dialog_filtro">Filtros</string>

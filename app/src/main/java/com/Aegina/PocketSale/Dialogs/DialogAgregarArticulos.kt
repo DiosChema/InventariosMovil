@@ -22,9 +22,7 @@ import com.Aegina.PocketSale.Objets.Inventory.ListEstadisticaArticuloObject
 import com.Aegina.PocketSale.Objets.Inventory.ListInventoryNoSells
 import com.Aegina.PocketSale.Objets.Inventory.ListInventoryObject
 import com.Aegina.PocketSale.R
-import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
-import com.Aegina.PocketSale.RecyclerView.RecyclerViewArticulos
-import com.Aegina.PocketSale.RecyclerView.RecyclerViewListaArticulos
+import com.Aegina.PocketSale.RecyclerView.*
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
@@ -46,15 +44,16 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     lateinit var globalVariable: GlobalClass
 
     lateinit var mViewArticulos : RecyclerViewArticulos
+    lateinit var mViewFamilias : RecyclerViewFamilias
+    lateinit var mViewSubFamilias : RecyclerViewSubFamilias
     lateinit var mRecyclerViewArticulos : RecyclerView
+    lateinit var mRecyclerViewFamilias : RecyclerView
+    lateinit var mRecyclerViewSubFamilias : RecyclerView
 
     lateinit var mViewListaArticulos : RecyclerViewListaArticulos
     lateinit var mRecyclerViewListaArticulos : RecyclerView
 
-    var listaFamilia:MutableList<String> = ArrayList()
     var listaFamiliaCompleta:MutableList<FamiliasSubFamiliasObject> = ArrayList()
-    var listaSubFamilia:MutableList<String> = ArrayList()
-    var listaSubFamiliaCompleta:MutableList<SubFamiliaObjeto> = ArrayList()
 
     lateinit var dialogFiltrarArticulos:Dialog
 
@@ -62,8 +61,6 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     lateinit var dialogFiltroArticulosCancelar: Button
 
     lateinit var dialogFiltroArticulosAceptar: Button
-    lateinit var checkBoxFamilia: CheckBox
-    lateinit var checkBoxSubFamilia: CheckBox
     lateinit var dialogFiltroInventarioOptimo: CheckBox
     lateinit var dialogFiltroNombre: EditText
     lateinit var dialogFiltroCantidadMinimo: EditText
@@ -78,11 +75,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     lateinit var dialogArticulos : Dialog
 
-    lateinit var dialogArticulosFamiliaSpinner: Spinner
-    lateinit var dialogArticulosSubFamiliaSpinner: Spinner
     lateinit var dialogArticulosSalir: Button
     lateinit var dialogArticulosAceptar: Button
-    var subFamiliaId = -1
     var listaArticulos:MutableList<ArticuloInventarioObjeto> = ArrayList()
     var listaArticulosCarrito:MutableList<ArticuloInventarioObjeto> = ArrayList()
     var pagina = 0
@@ -93,6 +87,10 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     lateinit var fechaFinal : Date
     val formatoFechaCompleta = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
     val paginado = Paginado()
+
+    var selectedFamily = -1
+    var selectedSubFamily = -1
+    var selectedFamilyPos = 0
 
     fun crearDialogInicial(context: Context, globalVariableTmp: GlobalClass, activity : Activity)
     {
@@ -134,13 +132,13 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 {
                     dialogArticulos.dismiss()
 
-                    var articuloTmp = listaArticulos[position]
+                    val articuloTmp = listaArticulos[position]
                     articuloTmp.cantidad = 1
                     agregarArticulo.numeroArticulo(crearArticulos(articuloTmp))
                 }
                 else
                 {
-                    var articuloTmp = listaArticulos[position]
+                    val articuloTmp = listaArticulos[position]
 
                     if(!comprobarArticuloEnCarrito(articuloTmp))
                     {
@@ -154,7 +152,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
             override fun onLongItemClick(view: View?, position: Int)
             {
-                var articuloTmp = listaArticulos[position]
+                val articuloTmp = listaArticulos[position]
 
                 if(!comprobarArticuloEnCarrito(articuloTmp))
                 {
@@ -265,7 +263,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     fun crearDialogFiltros(){
 
         if(listaFamiliaCompleta.size == 0)
-            obtenerFamilias(contextTmp)
+            obtenerFamilias()
 
         dialogFiltrarArticulos = Dialog(this.contextTmp)
 
@@ -276,12 +274,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogFiltrarArticulos.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogFiltrarArticulos.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
 
-        dialogArticulosFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosFamiliaSpinner) as Spinner
-        dialogArticulosSubFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosSubFamiliaSpinner) as Spinner
         dialogFiltroArticulosCancelar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosCancelar) as Button
         dialogFiltroArticulosAceptar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosAceptar) as Button
-        checkBoxFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxFamilia) as CheckBox
-        checkBoxSubFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxSubFamilia) as CheckBox
         dialogFiltroInventarioOptimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroInventarioOptimo) as CheckBox
         dialogFiltroNombre = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroNombre) as EditText
         dialogFiltroCantidadMinimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroCantidadMinimo) as EditText
@@ -290,16 +284,10 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogFiltroPrecioMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMaximo) as EditText
         dialogFiltroReestablecerCampos = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroReestablecerCampos) as ImageButton
 
-        dialogArticulosFamiliaSpinner.isEnabled = false
-        dialogArticulosSubFamiliaSpinner.isEnabled = false
+        mRecyclerViewFamilias = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroRecyclerViewFamilia) as RecyclerView
+        mRecyclerViewSubFamilias = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroRecyclerViewSubFamilia) as RecyclerView
 
-        checkBoxFamilia.setOnClickListener{
-            dialogArticulosFamiliaSpinner.isEnabled = checkBoxFamilia.isChecked
-        }
-
-        checkBoxSubFamilia.setOnClickListener{
-            dialogArticulosSubFamiliaSpinner.isEnabled = checkBoxSubFamilia.isChecked
-        }
+        asignarFuncionFamilias()
 
         dialogFiltroReestablecerCampos.setOnClickListener{
             reestablecerFiltros()
@@ -318,10 +306,85 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     }
 
+    fun asignarFuncionFamilias()
+    {
+        mViewFamilias = RecyclerViewFamilias()
+        mRecyclerViewFamilias.layoutManager = LinearLayoutManager(this.contextTmp, LinearLayoutManager.HORIZONTAL ,false)
+
+        mViewSubFamilias = RecyclerViewSubFamilias()
+        mRecyclerViewSubFamilias.layoutManager = LinearLayoutManager(this.contextTmp, LinearLayoutManager.HORIZONTAL ,false)
+
+        mRecyclerViewFamilias.addOnItemTouchListener(RecyclerItemClickListener(contextTmp, mRecyclerViewFamilias, object :
+            RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int)
+            {
+                if(selectedFamily != position)
+                {
+                    selectedFamilyPos = position
+                    selectedFamily = position
+                    mViewFamilias.positionSelected(position)
+                    val adapter = mRecyclerViewFamilias.adapter
+                    mRecyclerViewFamilias.adapter = adapter
+                    mViewFamilias.notifyDataSetChanged()
+
+                    if(listaFamiliaCompleta[position].SubFamilia.isNotEmpty())
+                    {
+                        selectedSubFamily = -1
+                        mViewSubFamilias.positionSelected(selectedSubFamily)
+                        mViewSubFamilias.RecyclerAdapter(listaFamiliaCompleta[position].SubFamilia, contextTmp)
+                        mRecyclerViewSubFamilias.adapter = mViewSubFamilias
+                        mViewSubFamilias.notifyDataSetChanged()
+                    }
+                }
+                else
+                {
+                    selectedFamily = -1
+                    mViewFamilias.positionSelected(selectedFamily)
+                    val adapter = mRecyclerViewFamilias.adapter
+                    mRecyclerViewFamilias.adapter = adapter
+                    mViewFamilias.notifyDataSetChanged()
+                }
+
+            }
+
+            override fun onLongItemClick(view: View?, position: Int){}
+        }))
+
+        mRecyclerViewSubFamilias.addOnItemTouchListener(RecyclerItemClickListener(contextTmp, mRecyclerViewSubFamilias, object :
+            RecyclerItemClickListener.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int)
+            {
+                val positionTmp =
+                    if(selectedSubFamily != position)
+                    {
+                        position
+                    }
+                    else
+                    {
+                        -1
+                    }
+
+                selectedSubFamily = positionTmp
+                mViewSubFamilias.positionSelected(positionTmp)
+                val adapter = mRecyclerViewSubFamilias.adapter
+                mRecyclerViewSubFamilias.adapter = adapter
+                mViewSubFamilias.notifyDataSetChanged()
+
+                selectedFamily = -1
+                mViewFamilias.positionSelected(selectedFamily)
+                val adapter2 = mRecyclerViewFamilias.adapter
+                mRecyclerViewFamilias.adapter = adapter2
+                mViewFamilias.notifyDataSetChanged()
+            }
+
+            override fun onLongItemClick(view: View?, position: Int){}
+        }))
+    }
+
     fun crearDialogFiltrosArticulosMasVendidos(tipoArticulos: Int){
 
         if(listaFamiliaCompleta.size == 0)
-            obtenerFamilias(contextTmp)
+            obtenerFamilias()
 
         dialogFiltrarArticulos = Dialog(this.contextTmp)
 
@@ -332,12 +395,8 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogFiltrarArticulos.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialogFiltrarArticulos.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
 
-        dialogArticulosFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosFamiliaSpinner) as Spinner
-        dialogArticulosSubFamiliaSpinner = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosSubFamiliaSpinner) as Spinner
         dialogFiltroArticulosCancelar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosCancelar) as Button
         dialogFiltroArticulosAceptar = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroArticulosAceptar) as Button
-        checkBoxFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxFamilia) as CheckBox
-        checkBoxSubFamilia = dialogFiltrarArticulos.findViewById(R.id.checkBoxSubFamilia) as CheckBox
         dialogFiltroInventarioOptimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroInventarioOptimo) as CheckBox
         dialogFiltroNombre = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroNombre) as EditText
         dialogFiltroCantidadMinimo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroCantidadMinimo) as EditText
@@ -346,17 +405,12 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogFiltroPrecioMaximo = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroPrecioMaximo) as EditText
         dialogFiltroReestablecerCampos = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroReestablecerCampos) as ImageButton
 
-        dialogArticulosFamiliaSpinner.isEnabled = false
-        dialogArticulosSubFamiliaSpinner.isEnabled = false
+        mRecyclerViewFamilias = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroRecyclerViewFamilia) as RecyclerView
+        mRecyclerViewSubFamilias = dialogFiltrarArticulos.findViewById(R.id.dialogFiltroRecyclerViewSubFamilia) as RecyclerView
+
+        asignarFuncionFamilias()
+
         dialogFiltroInventarioOptimo.visibility = View.GONE
-
-        checkBoxFamilia.setOnClickListener{
-            dialogArticulosFamiliaSpinner.isEnabled = checkBoxFamilia.isChecked
-        }
-
-        checkBoxSubFamilia.setOnClickListener{
-            dialogArticulosSubFamiliaSpinner.isEnabled = checkBoxSubFamilia.isChecked
-        }
 
         dialogFiltroReestablecerCampos.setOnClickListener{
             reestablecerFiltros()
@@ -426,10 +480,10 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 "&pagina="+pagina +
                 "&limit="+limiteArticulos
 
-        if(checkBoxFamilia.isChecked) url += "&familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId
-        if(checkBoxSubFamilia.isChecked) url += "&subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId
-        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + Integer.parseInt(dialogFiltroCantidadMinimo.text.toString())
-        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
+        if(selectedFamily != -1) url += "&familiaId=" + listaFamiliaCompleta[selectedFamily].familiaId
+        if(selectedSubFamily != -1) url += "&subFamiliaId=" + listaFamiliaCompleta[selectedFamilyPos].SubFamilia[selectedSubFamily].subFamiliaId
+        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + parseInt(dialogFiltroCantidadMinimo.text.toString())
+        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + parseInt(dialogFiltroCantidadMaximo.text.toString())
         if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
         if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
         if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombre=" + dialogFiltroNombre.text.toString()
@@ -484,10 +538,10 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 "&pagina="+pagina +
                 "&limit="+limiteArticulos
 
-        if(checkBoxFamilia.isChecked) url += "&familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId
-        if(checkBoxSubFamilia.isChecked) url += "&subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId
-        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + Integer.parseInt(dialogFiltroCantidadMinimo.text.toString())
-        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
+        if(selectedFamily != -1) url += "&familiaId=" + listaFamiliaCompleta[selectedFamily].familiaId
+        if(selectedSubFamily != -1) url += "&subFamiliaId=" + listaFamiliaCompleta[selectedFamilyPos].SubFamilia[selectedSubFamily].subFamiliaId
+        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + parseInt(dialogFiltroCantidadMinimo.text.toString())
+        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + parseInt(dialogFiltroCantidadMaximo.text.toString())
         if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
         if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
         if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombre=" + dialogFiltroNombre.text.toString()
@@ -541,11 +595,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                 "&pagina="+pagina +
                 "&limit="+limiteArticulos
 
-        if(checkBoxFamilia.isChecked) url += "&familiaId=" + listaFamiliaCompleta[dialogArticulosFamiliaSpinner.selectedItemPosition].familiaId
-        if(checkBoxSubFamilia.isChecked) url += "&subFamiliaId=" + listaSubFamiliaCompleta[dialogArticulosSubFamiliaSpinner.selectedItemPosition].subFamiliaId
+        if(selectedFamily != -1) url += "&familiaId=" + listaFamiliaCompleta[selectedFamily].familiaId
+        if(selectedSubFamily != -1) url += "&subFamiliaId=" + listaFamiliaCompleta[selectedFamilyPos].SubFamilia[selectedSubFamily].subFamiliaId
         if(dialogFiltroInventarioOptimo.isChecked) url += "&inventarioOptimo=" + "true"
-        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + Integer.parseInt(dialogFiltroCantidadMinimo.text.toString())
-        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + Integer.parseInt(dialogFiltroCantidadMaximo.text.toString())
+        if(dialogFiltroCantidadMinimo.text.isNotEmpty()) url += "&minimoCantidad=" + parseInt(dialogFiltroCantidadMinimo.text.toString())
+        if(dialogFiltroCantidadMaximo.text.isNotEmpty()) url += "&maximoCantidad=" + parseInt(dialogFiltroCantidadMaximo.text.toString())
         if(dialogFiltroPrecioMinimo.text.isNotEmpty()) url += "&minimoPrecio=" + Double.parseDouble(dialogFiltroPrecioMinimo.text.toString())
         if(dialogFiltroPrecioMaximo.text.isNotEmpty()) url += "&maximoPrecio=" + Double.parseDouble(dialogFiltroPrecioMaximo.text.toString())
         if(dialogFiltroNombre.text.trim().isNotEmpty()) url += "&nombre=" + dialogFiltroNombre.text.toString()
@@ -600,7 +654,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     {
         val urls = Urls()
 
-        var url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
+        val url = urls.url+urls.endPointsInventario.endPointArticulo+"?token="+globalVariable.usuario!!.token+"&idArticulo="+idArticulo
 
         val request = Request.Builder()
             .url(url)
@@ -661,8 +715,20 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
     }
 
     fun reestablecerFiltros() {
-        if(listaFamilia.size > 0)
-            dialogArticulosFamiliaSpinner.setSelection(0)
+        if(listaFamiliaCompleta.size > 0)
+        {
+            selectedSubFamily = -1
+            mViewSubFamilias.positionSelected(selectedSubFamily)
+            val adapter = mRecyclerViewSubFamilias.adapter
+            mRecyclerViewSubFamilias.adapter = adapter
+            mViewSubFamilias.notifyDataSetChanged()
+
+            selectedFamily = -1
+            mViewFamilias.positionSelected(selectedFamily)
+            val adapter2 = mRecyclerViewFamilias.adapter
+            mRecyclerViewFamilias.adapter = adapter2
+            mViewFamilias.notifyDataSetChanged()
+        }
 
         dialogFiltroCantidadMinimo.setText("")
         dialogFiltroCantidadMaximo.setText("")
@@ -670,13 +736,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
         dialogFiltroPrecioMaximo.setText("")
         dialogFiltroNombre.setText("")
 
-        checkBoxFamilia.isChecked = false
-        checkBoxSubFamilia.isChecked = false
         dialogFiltroInventarioOptimo.isChecked = false
 
     }
 
-    fun obtenerFamilias(context: Context){
+    fun obtenerFamilias(){
 
         val url = urls.url+urls.endPointFamilias.endPointConsultarFamiliasSubFamilias+"?token="+globalVariable.usuario!!.token
 
@@ -708,7 +772,21 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                         val gson = GsonBuilder().create()
                         listaFamiliaCompleta = gson.fromJson(body,Array<FamiliasSubFamiliasObject>::class.java).toMutableList()
 
-                        for (familias in listaFamiliaCompleta)
+                        if(listaFamiliaCompleta.isNotEmpty())
+                        {
+                            mViewFamilias.RecyclerAdapter(listaFamiliaCompleta, contextTmp)
+                            mRecyclerViewFamilias.adapter = mViewFamilias
+                            mViewFamilias.notifyDataSetChanged()
+
+                            if(listaFamiliaCompleta[0].SubFamilia.isNotEmpty())
+                            {
+                                mViewSubFamilias.RecyclerAdapter(listaFamiliaCompleta[0].SubFamilia, contextTmp)
+                                mRecyclerViewSubFamilias.adapter = mViewSubFamilias
+                                mViewSubFamilias.notifyDataSetChanged()
+                            }
+                        }
+
+                        /*for (familias in listaFamiliaCompleta)
                         {
                             listaFamilia.add(familias.nombreFamilia)
                         }
@@ -728,7 +806,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
                                 override fun onNothingSelected(parent: AdapterView<*>) {}
                             }
-                        }
+                        }*/
                     }
                     catch(e:Exception)
                     {
@@ -742,7 +820,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     }
 
-    fun obtenerSubFamilias(context: Context, familiaId: Int){
+    /*fun obtenerSubFamilias(context: Context, familiaId: Int){
         listaSubFamilia.clear()
         listaSubFamiliaCompleta = listaFamiliaCompleta[familiaId].SubFamilia.toMutableList()
 
@@ -768,7 +846,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-    }
+    }*/
 
     fun comprobarArticuloEnCarrito(articuloTmp: ArticuloInventarioObjeto) : Boolean
     {
@@ -803,7 +881,7 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
 
     fun crearListaArticulos(articuloInventarioObjeto: MutableList<ArticuloInventarioObjeto>): MutableList<InventarioObjeto>
     {
-        var listaTmp:MutableList<InventarioObjeto> = ArrayList()
+        val listaTmp:MutableList<InventarioObjeto> = ArrayList()
 
         for(i in 0 until articuloInventarioObjeto.size)
         {

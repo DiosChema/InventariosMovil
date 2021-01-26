@@ -1,12 +1,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:innerRadius="1dp"
+    android:innerRadius="0dp"
+    android:shape="ring"
+    android:thicknessRatio="2"
     android:useLevel="false" >
     <solid android:color="@android:color/transparent" />
 
     <stroke
-        android:width="2dp"
-        android:color="#000000" />
-
-    <corners
-        android:radius="10dp"/>
+        android:width="5dp"
+        android:color="#ebece7" />
 </shape>
