@@ -34,6 +34,7 @@ import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
 import com.google.gson.GsonBuilder
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -46,7 +47,7 @@ class PerfilDetalle : AppCompatActivity(),
 
     lateinit var perfilDetalleNombre : EditText
     lateinit var perfilDetalleCorreo : EditText
-    lateinit var perfilDetalleFoto : ImageView
+    lateinit var perfilDetalleFoto : CircleImageView
     lateinit var perfilDetallePermisosVenta : CheckBox
     lateinit var perfilDetallePermisosModificarInventario : CheckBox
     lateinit var perfilDetallePermisosModificarVenta : CheckBox
@@ -58,10 +59,8 @@ class PerfilDetalle : AppCompatActivity(),
     lateinit var perfilDetallePermisosMoodificarPerdidas : CheckBox
     lateinit var perfilDetalleDarDeAlta : Button
     lateinit var perfilDetalleCancelarEdicion : Button
-    lateinit var perfilDetalleEliminarEmpleado : ImageButton
-    lateinit var perfilDetalleCambiarContrasena : ImageButton
-    lateinit var perfilDetalleEliminarEmpleadoCardView : CardView
-    lateinit var perfilDetalleCambiarContrasenaCardView : CardView
+    lateinit var perfilDetalleEliminarEmpleado : CircleImageView
+    lateinit var perfilDetalleCambiarContrasena : CircleImageView
     lateinit var globalVariable: GlobalClass
     lateinit var context : Context
     lateinit var activity: Activity
@@ -325,12 +324,10 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
         perfilDetalleCambiarContrasena = findViewById(R.id.perfilDetalleCambiarContrasena)
-        perfilDetalleEliminarEmpleadoCardView = findViewById(R.id.perfilDetalleEliminarEmpleadoCardView)
-        perfilDetalleCambiarContrasenaCardView = findViewById(R.id.perfilDetalleCambiarContrasenaCardView)
 
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
-        perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
-        perfilDetalleCambiarContrasenaCardView.visibility = View.INVISIBLE
+        perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
+        perfilDetalleCambiarContrasena.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -341,8 +338,8 @@ class PerfilDetalle : AppCompatActivity(),
 
         perfilDetalleDarDeAlta.isEnabled = true
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
-        perfilDetalleEliminarEmpleadoCardView.visibility = View.INVISIBLE
-        perfilDetalleCambiarContrasenaCardView.visibility = View.INVISIBLE
+        perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE
+        perfilDetalleCambiarContrasena.visibility = View.INVISIBLE
 
         if(globalVariable.usuario!!.user == empleadoObject.user)
         {
@@ -372,14 +369,14 @@ class PerfilDetalle : AppCompatActivity(),
         if (activar) {
 
             perfilDetalleCancelarEdicion.visibility = View.VISIBLE
-            if(empleadoObject.permisosAdministrador == false)
+            if(!empleadoObject.permisosAdministrador)
             {
-                perfilDetalleEliminarEmpleadoCardView.visibility = View.VISIBLE
+                perfilDetalleEliminarEmpleado.visibility = View.VISIBLE
             }
 
             if(empleadoObject.user == globalVariable.usuario!!.user)
             {
-                perfilDetalleCambiarContrasenaCardView.visibility = View.VISIBLE
+                perfilDetalleCambiarContrasena.visibility = View.VISIBLE
             }
 
             perfilDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)

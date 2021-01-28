@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.TiendaDetalle"
     android:background="@color/white">
 
@@ -52,25 +51,16 @@
             android:importantForAutofill="no"
             android:layout_marginTop="15dp"/>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/tiendaDetalleFoto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="15dp">
-
-
-                <ImageView
-                    android:id="@+id/tiendaDetalleFoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@drawable/logopocketsale"
-                    app:srcCompat="@android:drawable/ic_menu_camera"
-                    android:adjustViewBounds="true"
-                    android:background= "@color/transparent"
-                    android:contentDescription="@string/imagenArticulo"/>
-
-
-        </LinearLayout>
+            android:layout_height="200dp"
+            android:src="@drawable/logopocketsale"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            android:adjustViewBounds="true"
+            android:background= "@color/transparent"
+            android:layout_marginTop="15dp"
+            android:contentDescription="@string/imagenArticulo"/>
 
         <TextView
             android:id="@+id/tiendaDetalleSuscricion"

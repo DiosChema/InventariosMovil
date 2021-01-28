@@ -93,7 +93,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
-        for(skuTmp in skuDetailsList!!){
+        for(skuTmp in skuDetailsList){
             listaArticulos.add(SuscripcionObject(
                 skuTmp.sku, parseInt(obtenerNumeros(skuTmp.sku)),
                 skuTmp.price,

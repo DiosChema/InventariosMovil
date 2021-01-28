@@ -10,6 +10,7 @@ import com.Aegina.PocketSale.Objets.GlobalClass
 import com.Aegina.PocketSale.Objets.Urls
 import com.Aegina.PocketSale.R
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import java.lang.Exception
 
 class MenuPerfil : AppCompatActivity() {
@@ -30,7 +31,7 @@ class MenuPerfil : AppCompatActivity() {
 
     fun asignarBotones(){
 
-        val logoTienda = findViewById<ImageView>(R.id.menuPerfilTienda)
+        val logoTienda = findViewById<CircleImageView>(R.id.menuPerfilTienda)
 
         logoTienda.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+globalVariable.usuario!!.user+".jpeg"+"&token="+globalVariable.usuario!!.token+"&tipoImagen=1")
 

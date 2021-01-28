@@ -216,4 +216,6 @@
     <string name="surtido_detalle_titulo">Surtido</string>
     <string name="loss_details_title">Pérdida</string>
     <string name="suscripcion_actualizacion">Se ha actualizado tu suscripcion.</string>
+    <string name="articulos_no_vendidos_titulo">Artículos con más tiempo sin venderse</string>
+    <string name="estadistica_articulos_titulo">Artículos mas vendidos</string>
 </resources>

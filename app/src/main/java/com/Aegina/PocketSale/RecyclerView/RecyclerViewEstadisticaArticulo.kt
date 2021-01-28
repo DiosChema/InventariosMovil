@@ -30,7 +30,7 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = articulos.get(position)
-        holder.bind(item, context)
+        holder.bind(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -66,7 +66,7 @@ class RecyclerViewEstadisticaArticulo : RecyclerView.Adapter<RecyclerViewEstadis
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
 
-        fun bind(articulo: EstadisticaArticuloObject, context: Context) {
+        fun bind(articulo: EstadisticaArticuloObject) {
             itemArticuloInventarioNombre.text = articulo.articulo.nombre
             itemArticuloInventarioDescipcion.text = articulo.articulo.descripcion
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad.toString()

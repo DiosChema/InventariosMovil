@@ -24,6 +24,7 @@ import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.RecyclerItemClickListener
 import com.Aegina.PocketSale.RecyclerView.RecyclerViewVenta
 import com.google.gson.GsonBuilder
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -39,9 +40,8 @@ class VentaDetalle : AppCompatActivity(),
 
     lateinit var VentaDetalleNumero : TextView
     lateinit var VentaDetalleFecha : TextView
-    lateinit var VentaDetalleEliminarVenta : ImageButton
+    lateinit var VentaDetalleEliminarVenta : CircleImageView
     lateinit var VentaDetalleCancelar : Button
-    lateinit var VentaDetalleEliminarVentaCardView : CardView
     lateinit var VentaDetalleEditar : Button
     var editar = false
 
@@ -73,7 +73,6 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleFecha = findViewById(R.id.VentaDetalleFecha)
         VentaDetalleEliminarVenta = findViewById(R.id.VentaDetalleEliminarVenta)
         VentaDetalleCancelar = findViewById(R.id.VentaDetalleCancelar)
-        VentaDetalleEliminarVentaCardView = findViewById(R.id.VentaDetalleEliminarVentaCardView)
         VentaDetalleEditar = findViewById(R.id.VentaDetalleEditar)
 
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
@@ -84,7 +83,6 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleFecha.text = textTmp
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
-        VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
         VentaDetalleCancelar.visibility = View.INVISIBLE
         editar = false
 
@@ -105,7 +103,6 @@ class VentaDetalle : AppCompatActivity(),
             if(!editar) {
                 VentaDetalleEditar.text = getString(R.string.mensaje_actualizar_articulo)
                 VentaDetalleEliminarVenta.visibility = View.VISIBLE
-                VentaDetalleEliminarVentaCardView.visibility = View.VISIBLE
                 VentaDetalleCancelar.visibility = View.VISIBLE
                 editar = true
                 habilitarEdicion()
@@ -132,7 +129,6 @@ class VentaDetalle : AppCompatActivity(),
         VentaDetalleCancelar.setOnClickListener{
             VentaDetalleEditar.text = getString(R.string.mensaje_editar)
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
-            VentaDetalleEliminarVentaCardView.visibility = View.INVISIBLE
             VentaDetalleCancelar.visibility = View.INVISIBLE
             editar = false
             habilitarEdicion()

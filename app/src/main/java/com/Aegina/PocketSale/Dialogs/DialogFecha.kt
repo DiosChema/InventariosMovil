@@ -150,7 +150,7 @@ class DialogFecha : AppCompatDialogFragment(){
         fechaInicial = fechaInicialTmp
         fechaFinal = fechaFinalTmp
 
-        dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2020").time
+        dialogFechaDatePicker.minDate = formatoFecha.parse("01-01-2021").time
         dialogFechaDatePicker.maxDate = fechaFinal.time
 
         val calendar = Calendar.getInstance()

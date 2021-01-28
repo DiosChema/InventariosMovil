@@ -14,7 +14,7 @@ data class Urls(
 )
 {
     constructor(): this(
-        "https://pocketsale.herokuapp.com/",
+        "https://pocketsale.us-3.evennode.com/",
         /*"http://pvgestordeinventario-env.eba-p2bc44jy.us-east-1.elasticbeanstalk.com/",*/
         UrlsInventario(
             "inventario/darAltaArticulo",

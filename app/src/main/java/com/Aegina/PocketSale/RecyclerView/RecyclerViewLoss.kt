@@ -119,10 +119,10 @@ class RecyclerViewLoss : RecyclerView.Adapter<RecyclerViewLoss.ViewHolder>() {
             for(articulos in loss.articulos)
                 cantidadArticulos += articulos.cantidad
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
+            //var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             //ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +loss.totalCosto.round(2).toString()
+            var textTmp = itemView.context.getString(R.string.venta_total) + " $" +loss.totalCosto.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp
 
             if(globalVariable.usuario!!.permisosModificarPerdidas)

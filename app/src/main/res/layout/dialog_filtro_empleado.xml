@@ -97,9 +97,8 @@
 
             <Button
                 android:id="@+id/dialogFiltroEmpleadosCancelar"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:background="@drawable/round_button_white"
                 android:text="@string/dialog_cancelar" />
 
@@ -110,10 +109,9 @@
 
             <Button
                 android:id="@+id/dialogFiltroEmpleadosAceptar"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_weight="6"
                 android:background="@drawable/round_button_white"
                 android:minWidth="120dp"
                 android:text="@string/dialog_aceptar" />

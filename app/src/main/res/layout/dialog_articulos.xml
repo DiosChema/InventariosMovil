@@ -171,7 +171,7 @@
 
             <Button
                 android:id="@+id/dialogArticulosSalir"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_button_white"
                 android:fontFamily="@font/open_sans"
@@ -185,7 +185,7 @@
 
             <Button
                 android:id="@+id/dialogArticulosAceptar"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/open_sans"
                 android:textColor="@color/black"

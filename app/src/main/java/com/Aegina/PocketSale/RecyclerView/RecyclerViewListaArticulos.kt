@@ -27,7 +27,7 @@ class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticul
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = articulosInventario[position]
-        holder.bind(item, context)
+        holder.bind(item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -60,7 +60,7 @@ class RecyclerViewListaArticulos : RecyclerView.Adapter<RecyclerViewListaArticul
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
-        fun bind(articulo: ArticuloInventarioObjeto, context: Context) {
+        fun bind(articulo: ArticuloInventarioObjeto) {
 
             itemListaCantidad.text = articulo.cantidad.toString()
             itemListaFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)

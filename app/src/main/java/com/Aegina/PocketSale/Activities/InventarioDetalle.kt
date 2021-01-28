@@ -35,6 +35,7 @@ import com.Aegina.PocketSale.R
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -52,7 +53,7 @@ class InventarioDetalle : AppCompatActivity(),
     DialogSeleccionarFoto.DialogSeleccionarFoto {
 
     lateinit var invDetalleId : EditText
-    lateinit var invDetalleFoto: ImageView
+    lateinit var invDetalleFoto: CircleImageView
     lateinit var invDetalleNombre : EditText
     lateinit var invDetalleNombreDetalle : EditText
     lateinit var invDetalleCantidad : EditText
@@ -68,9 +69,8 @@ class InventarioDetalle : AppCompatActivity(),
     lateinit var invBotonAgregarSubFamilia : ImageButton
     lateinit var invBottonTomarCodigo : ImageButton
     lateinit var invDetalleCancelarEdicion : Button
-    lateinit var invDetalleEliminarArticulo : ImageButton
+    lateinit var invDetalleEliminarArticulo : CircleImageView
     lateinit var inventarioDetalleModificarInventario : CheckBox
-    lateinit var invDetalleEliminarArticuloCardView : CardView
     var posicionFamilia = 0
     var posicionSubFamilia = 0
     var dialogSeleccionarFoto = DialogSeleccionarFoto()
@@ -157,11 +157,10 @@ class InventarioDetalle : AppCompatActivity(),
         invBottonTomarCodigo = findViewById(R.id.dialogFiltroReestablecerCampos)
         invDetalleCancelarEdicion = findViewById(R.id.invDetalleCancelarEdicion)
         invDetalleEliminarArticulo = findViewById(R.id.invDetalleEliminarArticulo)
-        invDetalleEliminarArticuloCardView = findViewById(R.id.invDetalleEliminarArticuloCardView)
         inventarioDetalleModificarInventario = findViewById(R.id.inventarioDetalleModificarInventario)
 
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
-        invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
+        invDetalleEliminarArticulo.visibility = View.INVISIBLE
     }
 
     fun habilitarEdicion(activar : Boolean) {
@@ -183,7 +182,7 @@ class InventarioDetalle : AppCompatActivity(),
         invBottonTomarCodigo.isEnabled = false
         inventarioDetalleModificarInventario.isEnabled = activar
         invDetalleCancelarEdicion.visibility = View.INVISIBLE
-        invDetalleEliminarArticuloCardView.visibility = View.INVISIBLE
+        invDetalleEliminarArticulo.visibility = View.INVISIBLE
 
         if(!globalVariable.usuario!!.permisosModificarInventario)
         {
@@ -193,7 +192,7 @@ class InventarioDetalle : AppCompatActivity(),
         if (activar) {
 
             invDetalleCancelarEdicion.visibility = View.VISIBLE
-            invDetalleEliminarArticuloCardView.visibility = View.VISIBLE
+            invDetalleEliminarArticulo.visibility = View.VISIBLE
 
             invDetalleDarDeAlta.text = getString(R.string.mensaje_actualizar_articulo)
             invDetalleDarDeAlta.setOnClickListener{
@@ -933,7 +932,7 @@ class InventarioDetalle : AppCompatActivity(),
     }*/
 
     fun ImageView.loadUrl(url: String) {
-        try {Picasso.with(context).load(url).into(this)}
+        try {Picasso.with(context).load(url).noFade().into(this)}
         catch(e:Exception){}
     }
 

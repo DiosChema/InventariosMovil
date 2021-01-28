@@ -173,4 +173,6 @@
     <string name="surtido_detalle_titulo">Supply</string>
     <string name="loss_details_title">Loss</string>
     <string name="suscripcion_actualizacion">Your subscription has been updated.</string>
+    <string name="articulos_no_vendidos_titulo">Items with more time without being sold</string>
+    <string name="estadistica_articulos_titulo">Best selling items</string>
 </resources>

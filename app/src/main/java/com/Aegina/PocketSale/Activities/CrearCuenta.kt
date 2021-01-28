@@ -120,7 +120,6 @@ class CrearCuenta : AppCompatActivity() {
             {
                 val body = response.body()!!.string()
                 val gson = GsonBuilder().create()
-                var mensajeRespuesta : String
 
                 try
                 {

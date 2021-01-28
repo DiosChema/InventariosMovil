@@ -48,7 +48,7 @@ class EstadisticaArticulosNoVendidos : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_estadistica_articulo)
+        setContentView(R.layout.activity_articulos_no_vendidos)
         context = this
         globalVariable = context.applicationContext as GlobalClass
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -65,7 +65,7 @@ class EstadisticaArticulosNoVendidos : AppCompatActivity(),
 
     fun crearRecyclerView(){
         mViewEstadisticaArticulo = RecyclerViewArticulosNoVendidos()
-        mRecyclerView = findViewById(R.id.estadisticaArticuloRecyclerView)
+        mRecyclerView = findViewById(R.id.articuloNoVendidosRecyclerView)
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mViewEstadisticaArticulo.RecyclerAdapter(listaTmp, context)
@@ -73,19 +73,14 @@ class EstadisticaArticulosNoVendidos : AppCompatActivity(),
     }
 
     fun asignarBotones(){
-        val estadisticaArticuloFechaInicial = findViewById<TextView>(R.id.estadisticaArticuloFechaInicial)
-        estadisticaArticuloFechaInicial.visibility = View.INVISIBLE
 
-        val estadisticaArticuloFechaFinal = findViewById<TextView>(R.id.estadisticaArticuloFechaFinal)
-        estadisticaArticuloFechaFinal.visibility = View.INVISIBLE
-
-        estadisticaArticuloFiltro = findViewById(R.id.estadisticaArticuloFiltro)
+        estadisticaArticuloFiltro = findViewById(R.id.articuloNoVendidosFiltro)
         estadisticaArticuloFiltro.setOnClickListener()
         {
             dialogoAgregarArticulos.mostrarDialogFiltros()
         }
 
-        estadisticaArticuloLeft = findViewById(R.id.estadisticaArticuloLeft)
+        estadisticaArticuloLeft = findViewById(R.id.articuloNoVendidosLeft)
         estadisticaArticuloLeft.setOnClickListener()
         {
             if(dialogoAgregarArticulos.totalArticulos > dialogoAgregarArticulos.limiteArticulos && dialogoAgregarArticulos.pagina > 0)
@@ -94,7 +89,7 @@ class EstadisticaArticulosNoVendidos : AppCompatActivity(),
                 dialogoAgregarArticulos.buscarArticulosNoVendidos()
             }
         }
-        estadisticaArticuloRight = findViewById(R.id.estadisticaArticuloRight)
+        estadisticaArticuloRight = findViewById(R.id.articuloNoVendidosRight)
         estadisticaArticuloRight.setOnClickListener()
         {
             val maximoPaginas = paginado.obtenerPaginadoMaximo(dialogoAgregarArticulos.totalArticulos, dialogoAgregarArticulos.limiteArticulos)

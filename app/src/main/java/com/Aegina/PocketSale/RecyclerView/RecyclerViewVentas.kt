@@ -75,7 +75,6 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
         var simpleDateHours: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
 
         fun bind(venta: VentasObjeto, context: Context) {
-            var tamanoOriginal = 0
             var cantidadArticulos = 0
             val mViewVentas = RecyclerViewArticulosVenta()
             val mRecyclerView : RecyclerView = ventasFragmentRecyclerViewArticulos
@@ -115,10 +114,10 @@ class RecyclerViewVentas : RecyclerView.Adapter<RecyclerViewVentas.ViewHolder>()
             for(articulos in venta.articulos)
                 cantidadArticulos += articulos.cantidad
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
+            //var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             //ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.round(2).toString()
+            val textTmp = itemView.context.getString(R.string.venta_total) + " $" +venta.totalVenta.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp
 
             if(globalVariable.usuario!!.permisosModificarVenta)

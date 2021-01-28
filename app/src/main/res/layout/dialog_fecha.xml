@@ -132,9 +132,8 @@
 
             <Button
                 android:id="@+id/dialogFechaBotonCancelar"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:minWidth="1200dp"
                 android:background="@drawable/round_button_white"
                 android:text="@string/dialog_cancelar" />
@@ -146,9 +145,8 @@
 
             <Button
                 android:id="@+id/dialogFechaBotonAceptar"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:minWidth="120dp"
                 android:background="@drawable/round_button_white"
                 android:text="@string/dialog_aceptar"

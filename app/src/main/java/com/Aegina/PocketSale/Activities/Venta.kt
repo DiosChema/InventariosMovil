@@ -26,6 +26,7 @@ import com.Aegina.PocketSale.R
 import com.Aegina.PocketSale.RecyclerView.*
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
+import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.*
 import java.io.IOException
 import java.lang.Double.parseDouble
@@ -76,12 +77,12 @@ class Venta : AppCompatActivity(), DialogAgregarArticulos.DialogAgregarArticulo,
         ventaTotalArticulos = findViewById(R.id.ventaTotalArticulos)
         ventaTotalVenta = findViewById(R.id.ventaTotalVenta)
 
-        val ButtonNuevoArticulo = findViewById<ImageButton>(R.id.ventaNuevoArticulo)
+        val ButtonNuevoArticulo = findViewById<CircleImageView>(R.id.ventaNuevoArticulo)
         ButtonNuevoArticulo.setOnClickListener {
             dialogoAgregarArticulos.mostrarDialogArticulos()
         }
 
-        val ButtonTerminarVenta = findViewById<ImageButton>(R.id.ventaTerminarVenta)
+        val ButtonTerminarVenta = findViewById<CircleImageView>(R.id.ventaTerminarVenta)
         ButtonTerminarVenta.setOnClickListener {
             if(listaArticulosVenta.size > 0)
                 dialogoFinalizarVenta.crearDialog(context,parseDouble(ventaTotalVenta.text.toString().substring(1,ventaTotalVenta.text.length)))
