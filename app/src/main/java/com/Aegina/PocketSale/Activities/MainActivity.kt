@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var loginPasswordButton : ImageView
     lateinit var loginLayout : LinearLayout
     lateinit var activity: Activity
-    lateinit var loginHelp: ImageButton
 
     var dialogRecuperarContrasena = DialogRecuperarContrasena()
     private val sharedPrefFile = "kotlinsharedpreference"
@@ -86,7 +85,6 @@ class MainActivity : AppCompatActivity() {
         loginTextNuevaCuenta = findViewById(R.id.loginTextNuevaCuenta)
         loginPasswordButton = findViewById(R.id.loginPasswordButton)
         loginLayout = findViewById(R.id.loginLayout)
-        loginHelp = findViewById(R.id.loginHelp)
 
         //loginEmail.setText("taco666@hotmail.com")
         //loginPassword.setText("perraco12")
@@ -126,20 +124,11 @@ class MainActivity : AppCompatActivity() {
                 }
         }
 
-        loginHelp.setOnClickListener()
-        {
-            val idioma = when(parseInt(context.getString(R.string.numero_idioma))) {
-                2 -> "es"
-                else -> "en"
-            }
-            openNewTabWindow("https://pocketsale.herokuapp.com/pocketsale/$idioma", context)
-        }
     }
 
 
     fun iniciarSesion()
     {
-
         var email = loginEmail.text.toString()
         email = email.toLowerCase(Locale.ROOT)
         val password = loginPassword.text.toString()
@@ -272,15 +261,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-    }
-
-    fun openNewTabWindow(urls: String, context: Context) {
-        val uris = Uri.parse(urls)
-        val intents = Intent(Intent.ACTION_VIEW, uris)
-        val b = Bundle()
-        b.putBoolean("new_window", true)
-        intents.putExtras(b)
-        context.startActivity(intents)
     }
 
     fun habilitarBotones(habilitar: Boolean)

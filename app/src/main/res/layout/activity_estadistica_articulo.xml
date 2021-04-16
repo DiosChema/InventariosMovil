@@ -1,34 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.EstadisticaArticulo"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_blue">
+
+        <ImageButton
+            android:id="@+id/estadisticaArticuloBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/abc_vector_test"
+            android:background="@color/transparent"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:text="@string/estadistica_articulos_titulo"/>
+
+        <ImageView
+            android:id="@+id/estadisticaArticuloFiltro"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_search"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:text="@string/estadistica_articulos_titulo"/>
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp">
+            android:layout_marginStart="25dp"
+            android:layout_marginRight="25dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="3dp">
 
             <Button
                 android:id="@+id/estadisticaArticuloFechaInicial"
@@ -55,15 +84,6 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
                 android:text="@string/hello_blank_fragment"/>
-
-            <ImageButton
-                android:id="@+id/estadisticaArticuloFiltro"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/icon_filtro"
-                android:contentDescription="@string/botonCancelar"
-                android:layout_gravity="center_horizontal"/>
 
         </LinearLayout>
 

@@ -32,7 +32,8 @@ class Empleados : AppCompatActivity(), DialogFiltroEmpleados.DialogFiltroEmplead
     lateinit var context : Context
     lateinit var activity: Activity
     lateinit var perfilAgregarEmpleado: ImageView
-    lateinit var perfilAgregarFiltro: ImageButton
+    lateinit var perfilAgregarFiltro: ImageView
+    lateinit var perfilAgregarBack: ImageButton
 
     var dialogFiltroEmpleados = DialogFiltroEmpleados()
 
@@ -57,6 +58,7 @@ class Empleados : AppCompatActivity(), DialogFiltroEmpleados.DialogFiltroEmplead
     private fun asignarRecursos() {
         perfilAgregarEmpleado = findViewById(R.id.perfilAgregarEmpleado)
         perfilAgregarFiltro = findViewById(R.id.perfilAgregarFiltro)
+        perfilAgregarBack = findViewById(R.id.perfilAgregarBack)
     }
 
     private fun asignarBotones() {
@@ -69,6 +71,11 @@ class Empleados : AppCompatActivity(), DialogFiltroEmpleados.DialogFiltroEmplead
         perfilAgregarFiltro.setOnClickListener()
         {
             dialogFiltroEmpleados.mostrarVentana()
+        }
+
+        perfilAgregarBack.setOnClickListener()
+        {
+            finish()
         }
     }
 

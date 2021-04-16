@@ -1,209 +1,254 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.PerfilDetalle"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="25dp">
+        android:background="@color/light_blue">
 
-        <EditText
-            android:id="@+id/perfilDetalleNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/round_button_white"
-            android:fontFamily="@font/open_sans"
-            android:hint="@string/perfil_nombre_empleado"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:maxLength="13"
-            android:textAlignment="center"
-            android:textColor="@color/black" />
-
-        <EditText
-            android:id="@+id/perfilDetalleCorreo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:hint="@string/perfil_correo_empleado"
-            android:background="@drawable/round_button_white"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:layout_marginTop="15dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/perfilDetalleFoto"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@android:drawable/ic_menu_camera"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#ebece7"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/perfilDetalleBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/abc_vector_test"
+            android:background="@color/transparent"/>
 
         <TextView
-            android:id="@+id/invDetalleNombreDetalle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:maxLines="1"
             android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="@string/perfil_permisos_leyenda"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:importantForAutofill="no"
-            android:textSize="23sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosVenta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_venta" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosModificarInventario"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_modificar_articulos" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosModificarVenta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_modificar_venta" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosCrearArticulos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_crear_articulos" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosEstadisticas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_estadisticas" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosProovedor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_proovedoor" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosMoodificarProovedor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_modificar_proovedor" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosPerdidas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_perdidas" />
-
-            <CheckBox
-                android:id="@+id/perfilDetallePermisosMoodificarPerdidas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/perfil_permisos_modificar_proovedor" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/perfilDetalleDarDeAlta"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/round_button_bluelight"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/mensaje_agregar_articulo"
-            android:textSize="20sp"
             android:textColor="@color/white"
-            android:drawableRight="@drawable/editicon"
-            android:drawableEnd="@drawable/editicon" />
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:text="@string/empleado_titulo"
+            android:layout_marginRight="45dp"
+            android:layout_marginEnd="45dp"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="35dp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/perfilDetalleCambiarContrasena"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/icon_password"
-                android:layout_gravity="bottom"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#ebece7"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
-
-            <Button
-                android:id="@+id/perfilDetalleCancelarEdicion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/editar_articulo_cancelar"
-                android:fontFamily="@font/open_sans"
-                android:textSize="20sp"
-                android:background="@drawable/round_button_red"
-                android:layout_weight="8"
-                android:textColor="@color/white"
-                app:srcCompat="@android:drawable/btn_dialog" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/perfilDetalleEliminarEmpleado"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/icon_trash"
-                android:layout_gravity="bottom"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#ebece7"/>
-
-        </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="25dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/perfil_nombre_empleado">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/perfilDetalleNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:maxLength="25"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:importantForAutofill="no"
+                    android:inputType="text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/perfil_correo_empleado">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/perfilDetalleCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:maxLength="25"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:importantForAutofill="no"
+                    android:inputType="text"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/perfilDetalleFoto"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#ebece7"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/invDetalleNombreDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:text="@string/perfil_permisos_leyenda"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:importantForAutofill="no"
+                android:textSize="23sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosVenta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_venta" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosModificarInventario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_modificar_articulos" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosModificarVenta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_modificar_venta" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosCrearArticulos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_crear_articulos" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosEstadisticas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_estadisticas" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosProovedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_proovedoor" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosMoodificarProovedor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_modificar_proovedor" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosPerdidas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_perdidas" />
+
+                <CheckBox
+                    android:id="@+id/perfilDetallePermisosMoodificarPerdidas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/perfil_permisos_modificar_proovedor" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/perfilDetalleDarDeAlta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/round_button_bluelight"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/mensaje_agregar_articulo"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:drawableRight="@drawable/editicon"
+                android:drawableEnd="@drawable/editicon" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="35dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/perfilDetalleCambiarContrasena"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_password"
+                    android:layout_gravity="bottom"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#ebece7"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="4" />
+
+                <Button
+                    android:id="@+id/perfilDetalleCancelarEdicion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/editar_articulo_cancelar"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="20sp"
+                    android:background="@drawable/round_button_red"
+                    android:layout_weight="8"
+                    android:textColor="@color/white"
+                    app:srcCompat="@android:drawable/btn_dialog" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="4" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/perfilDetalleEliminarEmpleado"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/icon_trash"
+                    android:layout_gravity="bottom"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#ebece7"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+</LinearLayout>

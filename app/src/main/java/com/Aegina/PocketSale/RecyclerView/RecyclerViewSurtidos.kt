@@ -1,5 +1,7 @@
 package com.Aegina.PocketSale.RecyclerView
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -64,14 +66,12 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
         var globalVariable = view.context.applicationContext as GlobalClass
 
         val ventasFragmentNumeroVenta = view.findViewById(R.id.ventasFragmentNumeroVenta) as TextView
-        val ventasFragmentText = view.findViewById(R.id.ventasFragmentText) as TextView
         val ventasFragmentFecha = view.findViewById(R.id.ventasFragmentFecha) as TextView
-        val ventasFragmentHora = view.findViewById(R.id.ventasFragmentHora) as TextView
+        val ventasFragmentTotalArticulos = view.findViewById(R.id.ventasFragmentTotalArticulos) as TextView
         val ventasFragmentTotalVenta = view.findViewById(R.id.ventasFragmentTotalVenta) as TextView
         //val ventasFragmentTotalCantidad = view.findViewById(R.id.ventasFragmentTotalCantidad) as TextView
         val ventasFragmentRecyclerViewArticulos = view.findViewById(R.id.ventasFragmentRecyclerViewArticulos) as RecyclerView
-        val ventasFragmentBotonEditar = view.findViewById(R.id.ventasFragmentBotonEditar) as ImageView
-        val ventasFragmentContenedor = view.findViewById(R.id.ventasFragmentContenedor) as LinearLayout
+        val ventasFragmentRecyclerViewItemsContainer = view.findViewById(R.id.ventasFragmentRecyclerViewItemsContainer) as LinearLayout
 
         var simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         var simpleDateHours: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
@@ -88,13 +88,6 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
             mRecyclerView.adapter = mViewVentas
             var llenarRecyclerView = true
 
-            when (position % 2) {
-                1 -> ventasFragmentContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
-                0 -> ventasFragmentContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
-                else -> {
-                }
-            }
-
             itemView.setOnClickListener {
                 if(llenarRecyclerView)
                 {
@@ -105,41 +98,58 @@ class RecyclerViewSurtidos : RecyclerView.Adapter<RecyclerViewSurtidos.ViewHolde
                     llenarRecyclerView = false
                 }
 
-                if(ventasFragmentRecyclerViewArticulos.isVisible1) {
-                    ventasFragmentRecyclerViewArticulos.visibility = View.GONE
+                if(ventasFragmentRecyclerViewItemsContainer.isVisible1) {
+                    hideMenu()
                 } else {
-                    ventasFragmentRecyclerViewArticulos.visibility = View.VISIBLE
+                    showMenu()
                 }
             }
 
-            ventasFragmentNumeroVenta.text = surtido._id.toString()
-            ventasFragmentText.text = itemView.context.getString(R.string.ventas_inventario_fecha)
-            ventasFragmentFecha.text = simpleDate.format(surtido.fecha)
-            ventasFragmentHora.text = simpleDateHours.format(surtido.fecha)
+            ventasFragmentNumeroVenta.text = "# " + surtido._id
+            ventasFragmentFecha.text = simpleDate.format(surtido.fecha) + " " + simpleDateHours.format(surtido.fecha)
 
             for(articulos in surtido.articulos)
                 cantidadArticulos += articulos.cantidad
 
+            ventasFragmentTotalArticulos.text = cantidadArticulos.toString()
+
             var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + cantidadArticulos.toString()
             //ventasFragmentTotalCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_total) + " $" +surtido.totalCosto.round(2).toString()
+            textTmp = surtido.totalCosto.round(2).toString()
             ventasFragmentTotalVenta.text = textTmp
 
             if(globalVariable.usuario!!.permisosModificarProovedor)
             {
 
-                ventasFragmentBotonEditar.setOnClickListener{
+                itemView.setOnLongClickListener{
                     val intent = Intent(context, SurtidoDetalle::class.java).apply {
                         putExtra("surtido", surtido)
                     }
                     context.startActivity(intent)
+                    true
                 }
             }
-            else
-            {
-                ventasFragmentBotonEditar.visibility = View.GONE
-            }
+        }
+
+        fun showMenu() {
+            ventasFragmentRecyclerViewItemsContainer.visibility = View.VISIBLE
+            ventasFragmentRecyclerViewItemsContainer.animate()
+                .alpha(1f)
+                .setDuration(200)
+                .setListener(null)
+        }
+
+        private fun hideMenu() {
+            ventasFragmentRecyclerViewItemsContainer.animate()
+                .alpha(0f)
+                .setDuration(200)
+                .setListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        ventasFragmentRecyclerViewItemsContainer.visibility = View.GONE
+                    }
+                })
+            //ventasFragmentRecyclerViewItemsContainer.visibility = View.GONE
         }
 
         fun ImageView.loadUrl(url: String) {

@@ -13,18 +13,521 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-            <ImageView
-                android:id="@+id/Tienda"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:src="@drawable/logopocketsale"
-                android:adjustViewBounds="true"
-                android:background= "@color/transparent"
-                android:contentDescription="@string/imagenArticulo"/>
-
+        <ImageView
+            android:id="@+id/Tienda"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:src="@drawable/logopocketsale"
+            android:adjustViewBounds="true"
+            android:background= "@color/transparent"
+            android:contentDescription="@string/imagenArticulo"
+            android:layout_marginTop="10dp"/>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="15dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/border_menu"
+                android:layout_marginTop="1dp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuSales"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/img_bolsa_compra"
+                        app:tint="#FF6961"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fragment_ventas"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuInventory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/inventario"
+                        app:tint="#957DAD"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fragment_inventario"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuAssortment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/repartidor"
+                        app:tint="#7FB5B5"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/surtido_proveedor"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/border_menu"
+                android:layout_marginTop="1dp">
+            </TextView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuStatisticsInventory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_menu_statistics"
+                        app:tint="#8D9E75"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_statistics"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/statisticsItems"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/ganador"
+                        app:tint="#AFD4A7"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_best_sell"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuLoss"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_trash"
+                        app:tint="#4E82C2"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/loss_title"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/border_menu"
+                android:layout_marginTop="1dp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuPerfilBotonPerfil"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_profile"
+                        app:tint="#9E8A75"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_profile"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/buttonEmployees"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginRight="25dp"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_employees"
+                        app:tint="#9E757D" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/empleados_titulo"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/buttonMenuShop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_shop"
+                        app:tint="#8E92AB"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/menu_organization"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/border_menu"
+                android:layout_marginTop="1dp">
+            </TextView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuSubscription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_paid_suscription"
+                        app:tint="#FFABAB"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/suscripcion_titulo"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/border_menu"
+                        android:layout_marginTop="1dp">
+                    </TextView>
+
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/menuTutorial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/ventanaVenta"
+                        android:src="@drawable/icon_tutorial"
+                        app:tint="#7FB5B5"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginRight="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:layout_marginTop="10dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/menu_tutorial"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:maxLines="1"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@drawable/border_menu"
+                        android:layout_marginTop="1dp">
+                    </TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_menu"
+                    android:layout_marginTop="1dp">
+                </TextView>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -120,7 +623,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 
 </ScrollView>

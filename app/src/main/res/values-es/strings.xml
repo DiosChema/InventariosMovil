@@ -26,8 +26,8 @@
     <string name="login_usuario_credenciales_incorrectas">Usuario / Contraseña invalida.</string>
     <string name="login_usuario_cuenta_expirada">Su cuenta se encuentra expirada.</string>
     <string name="mensaje_email_invalido">Ingrese un correo electronico valido.</string>
-    <string name="boton_olvidaste_contraseña">¿Olvidaste tu contraseña?</string>
-    <string name="boton_crear_cuenta">¿Nuevo en PocketSale? Únete ahora.</string>
+    <string name="boton_olvidaste_contraseña">¿Olvidaste tu \ncontraseña?</string>
+    <string name="boton_crear_cuenta">Crear \ncuenta</string>
     <string name="boton_iniciar_sesion">Iniciar Sesión</string>
     <string name="mensaje_correo_electronico">Correo</string>
     <string name="mensaje_crear_correo">Ingrese correo</string>
@@ -218,4 +218,17 @@
     <string name="suscripcion_actualizacion">Se ha actualizado tu suscripcion.</string>
     <string name="articulos_no_vendidos_titulo">Artículos con más tiempo sin venderse</string>
     <string name="estadistica_articulos_titulo">Artículos mas vendidos</string>
+    <string name="fragment_inventario_add">NUEVO</string>
+    <string name="item_sales_item">Artículo</string>
+    <string name="item_sales_items">Artículos</string>
+    <string name="menu_statistics">Estadísticas</string>
+    <string name="menu_best_sell">Más vendido</string>
+    <string name="menu_profile">Perfil</string>
+    <string name="menu_organization">Organización</string>
+    <string name="venta_detalle_sale">Venta</string>
+    <string name="venta_detalle_assortment">Surtido</string>
+    <string name="venta_detalle_losses">Pérdidas</string>
+    <string name="menu_tutorial">Tutorial</string>
+    <string name="empleado_titulo">Empleado</string>
+    <string name="employee_create">Se creó la cuenta de empleado, verifique su correo electrónico para confirmar el registro.</string>
 </resources>

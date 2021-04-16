@@ -55,6 +55,7 @@ class TiendaDetalle : AppCompatActivity(),
     lateinit var tiendaDetalleFoto : ImageView
     lateinit var tiendaDetalleEditar : Button
     lateinit var tiendaDetalleCancelarEdicion : Button
+    lateinit var tiendaDetalleBack : ImageButton
     lateinit var tiendaObjeto : TiendaObjeto
     var dialogSeleccionarFoto = DialogSeleccionarFoto()
 
@@ -276,6 +277,11 @@ class TiendaDetalle : AppCompatActivity(),
             llenarCampos()
             habilitarEdicion(false)
         }
+
+        tiendaDetalleBack.setOnClickListener()
+        {
+            finish()
+        }
     }
 
     fun darDeAltaFoto()
@@ -412,6 +418,7 @@ class TiendaDetalle : AppCompatActivity(),
         tiendaDetalleFoto = findViewById(R.id.tiendaDetalleFoto)
         tiendaDetalleEditar = findViewById(R.id.tiendaDetalleEditar)
         tiendaDetalleCancelarEdicion = findViewById(R.id.tiendaDetalleCancelarEdicion)
+        tiendaDetalleBack = findViewById(R.id.tiendaDetalleBack)
 
         if(!globalVariable.usuario!!.permisosAdministrador)
         {

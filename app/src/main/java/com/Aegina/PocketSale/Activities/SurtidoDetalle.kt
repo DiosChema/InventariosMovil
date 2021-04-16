@@ -13,6 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Dialogs.DialogAgregarNumero
@@ -38,10 +39,14 @@ class SurtidoDetalle : AppCompatActivity(),
 
     lateinit var VentaDetalleNumero : TextView
     lateinit var VentaDetalleFecha : TextView
+    lateinit var VentaDetalleTotalArticulos : TextView
+    lateinit var VentaDetalleTotalVenta : TextView
+    lateinit var ventaDetalleTitulo : TextView
     lateinit var VentaDetalleEliminarVenta : CircleImageView
-    lateinit var VentaDetalleCancelar : Button
-    lateinit var VentaDetalleEditar : Button
-    var editar = false
+    lateinit var VentaDetalleCancelar : ImageButton
+    lateinit var VentaDetalleEditar : ImageButton
+    lateinit var ventaDetalleBack : ImageButton
+    lateinit var VentaDetalleConfirmar : Button
 
     val dialogAgregarNumero = DialogAgregarNumero()
 
@@ -72,17 +77,24 @@ class SurtidoDetalle : AppCompatActivity(),
         VentaDetalleEliminarVenta = findViewById(R.id.VentaDetalleEliminarVenta)
         VentaDetalleCancelar = findViewById(R.id.VentaDetalleCancelar)
         VentaDetalleEditar = findViewById(R.id.VentaDetalleEditar)
+        VentaDetalleTotalArticulos = findViewById(R.id.VentaDetalleTotalArticulos)
+        VentaDetalleTotalVenta = findViewById(R.id.VentaDetalleTotalVenta)
+        ventaDetalleTitulo = findViewById(R.id.ventaDetalleTitulo)
+        VentaDetalleConfirmar = findViewById(R.id.VentaDetalleConfirmar)
+        ventaDetalleBack = findViewById(R.id.ventaDetalleBack)
 
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
 
         var textTmp = getString(R.string.surtido_detalle_titulo) + System.getProperty ("line.separator") +  surtido._id
         VentaDetalleNumero.text = textTmp
-        textTmp = simpleDate.format(surtido.fecha) + System.getProperty ("line.separator") + simpleDateHours.format(surtido.fecha)
+        textTmp = simpleDate.format(surtido.fecha) /*+ System.getProperty ("line.separator")*/ + " " + simpleDateHours.format(surtido.fecha)
         VentaDetalleFecha.text = textTmp
 
         VentaDetalleEliminarVenta.visibility = View.INVISIBLE
         VentaDetalleCancelar.visibility = View.INVISIBLE
-        editar = false
+        VentaDetalleConfirmar.visibility = View.INVISIBLE
+
+        ventaDetalleTitulo.text = getString(R.string.venta_detalle_assortment)
 
         mViewArticulosSurtido = RecyclerViewVenta()
         mRecyclerView = findViewById(R.id.ventasFragmentRecyclerViewArticulos)
@@ -98,39 +110,47 @@ class SurtidoDetalle : AppCompatActivity(),
         }
 
         VentaDetalleEditar.setOnClickListener{
-            if(!editar) {
-                VentaDetalleEditar.text = getString(R.string.mensaje_actualizar_articulo)
-                VentaDetalleEliminarVenta.visibility = View.VISIBLE
-                VentaDetalleCancelar.visibility = View.VISIBLE
-                editar = true
-                habilitarEdicion()
+            VentaDetalleEliminarVenta.visibility = View.VISIBLE
+            VentaDetalleCancelar.visibility = View.VISIBLE
+            VentaDetalleConfirmar.visibility = View.VISIBLE
+            habilitarEdicion()
 
-                mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
-                    RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View?, position: Int) {
-                        if(editar) dialogAgregarNumero.crearDialogNumero(context, position, listaArticulos[position].cantidad)
+            mRecyclerView.addOnItemTouchListener(RecyclerItemClickListener(context, mRecyclerView, object :
+                RecyclerItemClickListener.OnItemClickListener {
+                override fun onItemClick(view: View?, position: Int) {
+                    if(VentaDetalleConfirmar.isVisible)
+                    {
+                        dialogAgregarNumero.crearDialogNumero(context, position, listaArticulos[position].cantidad)
                     }
+                }
 
-                    override fun onLongItemClick(view: View?, position: Int) {}
-                }))
-            }
-            else
-            {
-                showDialogActualizarSurtido()
-            }
+                override fun onLongItemClick(view: View?, position: Int) {}
+            }))
+        }
+
+        VentaDetalleConfirmar.setOnClickListener()
+        {
+            showDialogActualizarSurtido()
         }
 
         /*VentaDetalleConfirmar.setOnClickListener{
             showDialogActualizarVenta()
         }*/
 
+        ventaDetalleBack.setOnClickListener()
+        {
+            finish()
+        }
+
         VentaDetalleCancelar.setOnClickListener{
-            VentaDetalleEditar.text = getString(R.string.mensaje_editar)
             VentaDetalleEliminarVenta.visibility = View.INVISIBLE
             VentaDetalleCancelar.visibility = View.INVISIBLE
-            editar = false
+            VentaDetalleConfirmar.visibility = View.INVISIBLE
             habilitarEdicion()
+            actualizarCantidadPrecio()
         }
+
+        actualizarCantidadPrecio()
     }
 
     fun listaInventarioObjeto(surtido: VentasObjeto): MutableList<InventarioObjeto> {
@@ -382,11 +402,33 @@ class SurtidoDetalle : AppCompatActivity(),
         mRecyclerView.adapter = mViewArticulosSurtido
     }
 
+    fun actualizarCantidadPrecio(){
+
+        var totalCantidad = 0
+        var totalPrecio = 0.0
+
+        for(articulos in listaArticulos){
+            totalCantidad += articulos.cantidad
+            totalPrecio += (articulos.precio * articulos.cantidad).round(2)
+        }
+
+        VentaDetalleTotalArticulos.text = totalCantidad.toString()
+        val textTmp = "$" + totalPrecio.round(2)
+        VentaDetalleTotalVenta.text = textTmp
+    }
+
+    fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
+    }
+
     override fun obtenerNumero(numero : Int, posicion : Int) {
         runOnUiThread{
             listaArticulos[posicion].cantidad = numero
             mViewArticulosSurtido.RecyclerAdapter(listaArticulos, context)
             mRecyclerView.adapter = mViewArticulosSurtido
+            actualizarCantidadPrecio()
         }
     }
 

@@ -1,122 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activities.TiendaDetalle"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="25dp">
+        android:background="@color/light_blue">
+
+        <ImageButton
+            android:id="@+id/tiendaDetalleBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/abc_vector_test"
+            android:background="@color/transparent"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:text="@string/perfil_nombre_empleado"
-            android:layout_marginTop="15dp"/>
-
-        <EditText
-            android:id="@+id/tiendaDetalleNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/round_button_white"
-            android:fontFamily="@font/open_sans"
-            android:hint="@string/perfil_nombre_empleado"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:maxLength="13"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:maxLines="1"
             android:textAlignment="center"
-            android:textColor="@color/black"
-            android:layout_marginTop="15dp"/>
-
-        <TextView
-            android:id="@+id/tiendaDetalleNumeroTienda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:textSize="18sp"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:importantForAutofill="no"
-            android:layout_marginTop="15dp"/>
-
-        <ImageView
-            android:id="@+id/tiendaDetalleFoto"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/logopocketsale"
-            app:srcCompat="@android:drawable/ic_menu_camera"
-            android:adjustViewBounds="true"
-            android:background= "@color/transparent"
-            android:layout_marginTop="15dp"
-            android:contentDescription="@string/imagenArticulo"/>
-
-        <TextView
-            android:id="@+id/tiendaDetalleSuscricion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:textSize="18sp"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:importantForAutofill="no"
-            android:layout_marginTop="15dp"/>
-
-        <Button
-            android:id="@+id/tiendaDetalleEditar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/round_button_bluelight"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/mensaje_agregar_articulo"
-            android:textSize="20sp"
             android:textColor="@color/white"
-            android:drawableRight="@drawable/editicon"
-            android:drawableEnd="@drawable/editicon" />
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"
+            android:text="@string/menu_organization"
+            android:layout_marginRight="45dp"
+            android:layout_marginEnd="45dp"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_margin="25dp">
 
-            <View
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/perfil_nombre_empleado">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiendaDetalleNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/open_sans"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLength="13"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tiendaDetalleNumeroTienda"
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="7" />
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:importantForAutofill="no"
+                android:layout_marginTop="15dp"/>
+
+            <ImageView
+                android:id="@+id/tiendaDetalleFoto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:src="@drawable/logopocketsale"
+                app:srcCompat="@android:drawable/ic_menu_camera"
+                android:adjustViewBounds="true"
+                android:background= "@color/transparent"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/imagenArticulo"/>
+
+            <TextView
+                android:id="@+id/tiendaDetalleSuscricion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:importantForAutofill="no"
+                android:layout_marginTop="15dp"/>
 
             <Button
-                android:id="@+id/tiendaDetalleCancelarEdicion"
-                android:layout_width="wrap_content"
+                android:id="@+id/tiendaDetalleEditar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="@string/editar_articulo_cancelar"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/round_button_bluelight"
                 android:fontFamily="@font/open_sans"
+                android:text="@string/mensaje_agregar_articulo"
                 android:textSize="20sp"
-                android:background="@drawable/round_button_red"
-                android:layout_weight="8"
                 android:textColor="@color/white"
-                app:srcCompat="@android:drawable/btn_dialog" />
+                android:drawableRight="@drawable/editicon"
+                android:drawableEnd="@drawable/editicon" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="7" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="7" />
+
+                <Button
+                    android:id="@+id/tiendaDetalleCancelarEdicion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/editar_articulo_cancelar"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="20sp"
+                    android:background="@drawable/round_button_red"
+                    android:layout_weight="8"
+                    android:textColor="@color/white"
+                    app:srcCompat="@android:drawable/btn_dialog" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="7" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+
+
+</LinearLayout>

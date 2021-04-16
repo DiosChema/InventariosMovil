@@ -29,50 +29,71 @@
             android:orientation="vertical"
             android:layout_margin="40dp">
 
-            <EditText
-                android:id="@+id/crearCuentaEmail"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:drawableStart="@drawable/mailicon"
-                android:drawableLeft="@drawable/mailicon"
-                android:drawablePadding="5dp"
-                android:fontFamily="@font/open_sans"
-                android:hint="@string/mensaje_correo_electronico"
-                android:importantForAutofill="no"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:layout_weight="1"
+                android:hint="@string/mensaje_correo_electronico">
 
-            <EditText
-                android:id="@+id/crearCuentaPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:layout_marginTop="25dp"
-                android:drawableLeft="@drawable/padlockicon"
-                android:drawableStart="@drawable/padlockicon"
-                android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:fontFamily="@font/open_sans"
-                android:textSize="25sp"
-                android:hint="@string/mensaje_correo_contrasenia"
-                android:importantForAutofill="no" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/crearCuentaEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:drawableStart="@drawable/mailicon"
+                    android:drawableLeft="@drawable/mailicon"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/open_sans"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    android:textSize="25sp" />
 
-            <EditText
-                android:id="@+id/crearCuentaConfirmarPassword"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:layout_marginTop="25dp"
-                android:drawableLeft="@drawable/padlockicon"
-                android:drawableStart="@drawable/padlockicon"
-                android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:fontFamily="@font/open_sans"
-                android:textSize="25sp"
-                android:hint="@string/mensaje_correo_repetir_contrasenia"
-                android:importantForAutofill="no" />
+                android:layout_weight="1"
+                android:hint="@string/mensaje_correo_contrasenia">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/crearCuentaPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:layout_marginTop="25dp"
+                    android:drawableLeft="@drawable/padlockicon"
+                    android:drawableStart="@drawable/padlockicon"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="25sp"
+                    android:importantForAutofill="no"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/mensaje_correo_repetir_contrasenia">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/crearCuentaConfirmarPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:layout_marginTop="25dp"
+                    android:drawableLeft="@drawable/padlockicon"
+                    android:drawableStart="@drawable/padlockicon"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="25sp"
+                    android:importantForAutofill="no" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

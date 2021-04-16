@@ -11,46 +11,55 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp">
+        android:background="@color/light_blue">
+
+        <ImageButton
+            android:id="@+id/perfilAgregarBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/abc_vector_test"
+            android:background="@color/transparent"/>
 
         <TextView
+            android:id="@+id/ventaDetalleTitulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:textSize="22sp"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
             android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:layout_gravity="center"
             android:text="@string/empleados_titulo"/>
 
-        <ImageButton
+        <ImageView
+            android:id="@+id/perfilAgregarEmpleado"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_new_user"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ebece7"
+            app:tint="#FFFFFF"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"/>
+
+        <ImageView
             android:id="@+id/perfilAgregarFiltro"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/icon_filtro"
-            android:contentDescription="@string/botonCancelar"/>
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_search"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            app:tint="@color/white"/>
 
     </LinearLayout>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/perfilAgregarEmpleado"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/icon_newuser"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#ebece7"
-        android:layout_marginTop="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewEmpleados"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"/>
 
 
 

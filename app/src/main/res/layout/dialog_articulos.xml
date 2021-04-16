@@ -18,20 +18,24 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="@drawable/round_button_bluelight">
+        android:background="@drawable/round_button_bluelight"
+        android:layout_marginTop="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@drawable/round_border_white"
+            android:paddingTop="2dp">
 
             <ImageButton
                 android:id="@+id/dialogArticulosCamara"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
                 android:background="@drawable/codigo_de_barras"
-                android:contentDescription="@string/botonCancelar" />
+                android:contentDescription="@string/botonCancelar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"/>
 
             <TextView
                 android:id="@+id/textView2"
@@ -44,22 +48,24 @@
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:gravity="center"
-                android:layout_marginTop="3dp"/>
+                android:layout_marginTop="4dp"/>
 
             <ImageButton
                 android:id="@+id/dialogArticulosFiltro"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/icon_filtro"
-                android:contentDescription="@string/botonCancelar" />
+                android:background="@drawable/icon_search"
+                android:contentDescription="@string/botonCancelar"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"/>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialogoArticulosRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:layout_marginTop="3dp"/>
 
         <View
             android:layout_width="0dp"

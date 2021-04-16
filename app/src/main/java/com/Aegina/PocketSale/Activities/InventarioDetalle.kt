@@ -32,6 +32,7 @@ import com.Aegina.PocketSale.Dialogs.DialogSeleccionarFoto
 import com.Aegina.PocketSale.Metodos.Errores
 import com.Aegina.PocketSale.Objets.*
 import com.Aegina.PocketSale.R
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.GsonBuilder
 import com.google.zxing.integration.android.IntentIntegrator
 import com.squareup.picasso.Picasso
@@ -52,7 +53,7 @@ import kotlin.collections.ArrayList
 class InventarioDetalle : AppCompatActivity(),
     DialogSeleccionarFoto.DialogSeleccionarFoto {
 
-    lateinit var invDetalleId : EditText
+    lateinit var invDetalleId : TextInputEditText
     lateinit var invDetalleFoto: CircleImageView
     lateinit var invDetalleNombre : EditText
     lateinit var invDetalleNombreDetalle : EditText
@@ -132,6 +133,7 @@ class InventarioDetalle : AppCompatActivity(),
             obtenerFamilias(this,-1)
             asignarFuncionBotones(false)
             inventarioDetalleModificarInventario.isEnabled = true
+            inventarioDetalleModificarInventario.isChecked = true
 
         }
 
@@ -1316,11 +1318,20 @@ class InventarioDetalle : AppCompatActivity(),
                 listaSubFamilia.add(familias.nombreSubFamilia)
             }
 
+
+
+
             val adapter = ArrayAdapter(context,
                 android.R.layout.simple_spinner_item, listaSubFamilia)
             invDetalleSubFamiliaSpinner.adapter = adapter
             if(listaSubFamilia.size > 0)
-                invDetalleSubFamiliaSpinner.setSelection(posicion)
+            {
+                if(listaSubFamiliaCompleta.size >= posicion)
+                    invDetalleSubFamiliaSpinner.setSelection(0)
+                else
+                    invDetalleSubFamiliaSpinner.setSelection(posicion)
+            }
+
 
             invDetalleSubFamiliaSpinner.onItemSelectedListener = object :
                 AdapterView.OnItemSelectedListener {

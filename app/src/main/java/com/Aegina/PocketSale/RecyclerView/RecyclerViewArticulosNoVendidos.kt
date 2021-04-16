@@ -59,7 +59,7 @@ class RecyclerViewArticulosNoVendidos : RecyclerView.Adapter<RecyclerViewArticul
         val itemArticuloNoVendidosNombre = view.findViewById(R.id.itemArticuloNoVendidosNombre) as TextView
         val itemArticuloNoVendidosDescipcion = view.findViewById(R.id.itemArticuloNoVendidosDescipcion) as TextView
         val itemArticuloNoVendidosFecha = view.findViewById(R.id.itemArticuloNoVendidosFecha) as TextView
-        val itemArticuloNoVendidosContainer = view.findViewById(R.id.itemArticuloNoVendidosContainer) as LinearLayout
+        //val itemArticuloNoVendidosContainer = view.findViewById(R.id.itemArticuloNoVendidosContainer) as LinearLayout
 
         var simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
         var simpleDateHours: SimpleDateFormat = SimpleDateFormat("HH:mm:ss")
@@ -74,12 +74,12 @@ class RecyclerViewArticulosNoVendidos : RecyclerView.Adapter<RecyclerViewArticul
             val urls = Urls()
             itemArticuloNoVendidosFoto.loadUrl(urls.url+urls.endPointImagenes.endPointImagenes+articulo.idArticulo+".jpeg"+"&token="+globalVariable.usuario!!.token)
 
-            when (position % 2) {
+            /*when (position % 2) {
                 1 -> itemArticuloNoVendidosContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
                 0 -> itemArticuloNoVendidosContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
                 else -> {
                 }
-            }
+            }*/
 
             /*itemView.setOnClickListener()
             {

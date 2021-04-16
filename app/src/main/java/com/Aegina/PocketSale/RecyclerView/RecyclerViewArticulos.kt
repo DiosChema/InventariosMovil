@@ -67,7 +67,6 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
         val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
         val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
-        val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         val tipoArticulo = tipoArticulos
 
@@ -76,26 +75,19 @@ class RecyclerViewArticulos : RecyclerView.Adapter<RecyclerViewArticulos.ViewHol
 
         fun bind(articulo: ArticuloInventarioObjeto) {
 
-            when (position % 2) {
-                1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista1))
-                0 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.background_item_lista2))
-                else -> {
-                }
-            }
-
             itemArticuloInventarioNombre.text = articulo.nombre
             itemArticuloInventarioDescipcion.text = articulo.descripcion
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + articulo.cantidad.toString()
+            var textTmp = articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
 
             textTmp = if(tipoArticulo == 0)
                 {
-                    itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.precio.round(2)
+                    articulo.precio.round(2).toString()
                 }
                 else
                 {
-                    itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.costo.round(2)
+                    articulo.costo.round(2).toString()
                 }
 
             itemArticuloInventarioPrecio.text = textTmp

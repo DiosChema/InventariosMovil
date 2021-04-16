@@ -4,142 +4,153 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="5dp"
     android:layout_marginStart="5dp"
-    android:background="@drawable/backgroundventa1"
     android:layout_marginTop="3dp"
     android:layout_marginBottom="3dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/itemArticuloImagen"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@android:drawable/ic_menu_camera"
-        app:civ_border_width="2dp"
-        app:civ_border_color="#ebece7"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"/>
-
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="4.5"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/itemArticuloImagen"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@android:drawable/ic_menu_camera"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#ebece7"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/itemArticuloNombre"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:maxLines="1"
-                tools:text= "dadawdawdwd"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight=".2"/>
-
-            <TextView
-                android:id="@+id/itemArticuloDescipcion"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.8"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:maxLines="1"
-                tools:text= "dadawdawdwd"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"/>
+            android:layout_weight="4.5"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="0dp"
-                android:orientation="horizontal">
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/itemArticuloCantidad"
-                    android:layout_width="0dp"
+                    android:id="@+id/itemArticuloNombre"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:maxLines="1"
-                    tools:text= "Cantidad"/>
+                    tools:text= "dadawdawdwd"/>
 
                 <TextView
-                    android:id="@+id/itemArticuloPrecio"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/itemArticuloDescipcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
-                    android:textStyle="bold"
                     android:textSize="14sp"
-                    android:maxLines="1"
-                    tools:text="$$$" />
+                    android:maxLines="2"
+                    tools:text= "dadawdawdwd"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/itemArticuloCantidad"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:maxLines="1"
+                        tools:text= "Cantidad"
+                        android:drawablePadding="3dp"
+                        app:drawableStartCompat="@drawable/icon_item_number"/>
+
+                    <TextView
+                        android:id="@+id/itemArticuloPrecio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:maxLines="1"
+                        tools:text="$$$"
+                        android:drawablePadding="3dp"
+                        app:drawableStartCompat="@drawable/icon_paid" />
+
+                </LinearLayout>
+
+
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginLeft="3dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginRight="3dp"
+                android:layout_marginEnd="3dp"
+                android:gravity="center"
+                android:layout_marginBottom="5dp">
 
+                <TextView
+                    android:id="@+id/itemArticuloPrecioTotalText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/venta_total"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
 
+                <TextView
+                    android:id="@+id/itemArticuloPrecioTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:maxEms="5"
+                    tools:text = ""/>
+
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight=".8"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="3dp"
-            android:layout_marginStart="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginEnd="3dp"
-            android:gravity="center"
-            android:layout_marginBottom="5dp">
-
-            <TextView
-                android:id="@+id/itemArticuloPrecioTotalText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/venta_total"
-                android:textStyle="bold"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/itemArticuloPrecioTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:maxEms="6"
-                tools:text = "$$$"/>
-
-        </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height=".5dp"
+        android:background="@drawable/borderbottom"
+        android:layout_marginTop="1dp">
+    </TextView>
+
 </LinearLayout>

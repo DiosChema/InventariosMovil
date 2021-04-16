@@ -17,8 +17,8 @@
     <string name="login_usuario_credenciales_incorrectas">Invalid username / password.</string>
     <string name="login_usuario_cuenta_expirada">Your account is expired.</string>
     <string name="mensaje_email_invalido">Enter a valid email address.</string>
-    <string name="boton_olvidaste_contraseña">Forgot your password?</string>
-    <string name="boton_crear_cuenta">New in PocketSale? Join now.</string>
+    <string name="boton_olvidaste_contraseña">Forgot your \npassword?</string>
+    <string name="boton_crear_cuenta">Create \naccount</string>
     <string name="boton_iniciar_sesion">Login</string>
     <string name="mensaje_correo_electronico">Email</string>
     <string name="mensaje_crear_correo">Enter email</string>
@@ -174,5 +174,18 @@
     <string name="suscripcion_actualizacion">Your subscription has been updated.</string>
     <string name="articulos_no_vendidos_titulo">Items with more time without being sold</string>
     <string name="estadistica_articulos_titulo">Best selling items</string>
+    <string name="fragment_inventario_add">ADD</string>
+    <string name="item_sales_item">Item</string>
+    <string name="item_sales_items">Items</string>
+    <string name="menu_statistics">Statistics</string>
+    <string name="menu_best_sell">Best selling</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_organization">Organization</string>
+    <string name="venta_detalle_sale">Sale</string>
+    <string name="venta_detalle_assortment">Assortment</string>
+    <string name="venta_detalle_losses">Losses</string>
+    <string name="menu_tutorial">Tutorial</string>
+    <string name="empleado_titulo">Employee</string>
+    <string name="employee_create">Employee account created, check your email to confirm registration.</string>
 
 </resources>

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,9 +40,10 @@ class EstadisticaArticulo : AppCompatActivity(),
     lateinit var fechaFinal : Date
     lateinit var estadisticaArticuloFechaInicial : TextView
     lateinit var estadisticaArticuloFechaFinal : TextView
-    lateinit var estadisticaArticuloFiltro : ImageButton
+    lateinit var estadisticaArticuloFiltro : ImageView
     lateinit var estadisticaArticuloLeft : ImageButton
     lateinit var estadisticaArticuloRight : ImageButton
+    lateinit var estadisticaArticuloBack : ImageButton
 
     val nombreMes = Meses()
 
@@ -115,6 +117,12 @@ class EstadisticaArticulo : AppCompatActivity(),
                 dialogoAgregarArticulos.pagina++
                 dialogoAgregarArticulos.buscarArticulosMasVendidos()
             }
+        }
+
+        estadisticaArticuloBack = findViewById(R.id.estadisticaArticuloBack)
+        estadisticaArticuloBack.setOnClickListener()
+        {
+            finish()
         }
     }
 

@@ -11,42 +11,152 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/light_blue">
+
+        <ImageButton
+            android:id="@+id/ventaDetalleBack"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/abc_vector_test"
+            android:background="@color/transparent"/>
+        
+        <TextView
+            android:id="@+id/ventaDetalleTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="22sp"
+            android:maxLines="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:fontFamily="@font/open_sans"
+            android:layout_gravity="center"/>
+
+        <ImageButton
+            android:id="@+id/VentaDetalleEditar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/editicon"
+            android:background="@color/transparent"
+            app:tint="#FFFFFF"
+            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"/>
+
+        <ImageButton
+            android:id="@+id/VentaDetalleCancelar"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@color/transparent"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="15dp">
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/icon_carrito"
+                android:layout_gravity="center_horizontal"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#ebece7"/>
+
+            <TextView
+                android:id="@+id/VentaDetalleTotalArticulos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/icon_money"
+                android:layout_gravity="center_horizontal"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#ebece7"/>
+
+            <TextView
+                android:id="@+id/VentaDetalleTotalVenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"
+        android:layout_marginTop="4dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/VentaDetalleNumero"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:textSize="22sp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
             android:layout_gravity="center"
             android:minLines="2"
-            android:text="@string/mensaje_numero_venta"
-            android:layout_marginLeft="35dp"
-            android:layout_marginStart="35dp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:text="@string/mensaje_numero_venta" />
 
         <TextView
             android:id="@+id/VentaDetalleFecha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="25dp"
-            android:layout_marginEnd="25dp"
             android:textSize="22sp"
-            android:minLines="2"
+            android:maxLines="1"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/open_sans"
             android:layout_gravity="center"
             android:text="@string/mensaje_numero_venta"
-            tools:ignore="RelativeOverlap" />
+            tools:ignore="RelativeOverlap"
+            android:gravity="center"/>
 
     </LinearLayout>
 
@@ -77,46 +187,25 @@
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginEnd="25dp">
-
-        <Button
-            android:id="@+id/VentaDetalleEditar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/round_button_bluelight"
-            android:fontFamily="@font/open_sans"
-            android:text="@string/mensaje_editar"
-            android:textColor="@color/black"
-            android:drawableRight="@drawable/editicon"
-            android:drawableEnd="@drawable/editicon"
-            android:layout_marginBottom="12dp"/>
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="7" />
-
             <Button
-                android:id="@+id/VentaDetalleCancelar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/editar_articulo_cancelar"
-                android:fontFamily="@font/open_sans"
-                android:background="@drawable/round_button_red"
-                android:layout_weight="8"
-                android:textColor="@color/white"
-                app:srcCompat="@android:drawable/btn_dialog" />
-
-            <View
+                android:id="@+id/VentaDetalleConfirmar"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="4" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/round_button_bluelight"
+                android:fontFamily="@font/open_sans"
+                android:text="@string/surtido_confirmar"
+                android:textColor="@color/black"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/VentaDetalleEliminarVenta"

@@ -9,8 +9,7 @@
     android:layout_marginLeft="5dp"
     android:layout_marginStart="5dp"
     android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:background="@drawable/backgroundventa1">
+    android:layout_marginBottom="5dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/empleadoFoto"

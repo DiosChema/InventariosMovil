@@ -61,6 +61,7 @@ class PerfilDetalle : AppCompatActivity(),
     lateinit var perfilDetalleCancelarEdicion : Button
     lateinit var perfilDetalleEliminarEmpleado : CircleImageView
     lateinit var perfilDetalleCambiarContrasena : CircleImageView
+    lateinit var perfilDetalleBack : ImageButton
     lateinit var globalVariable: GlobalClass
     lateinit var context : Context
     lateinit var activity: Activity
@@ -124,6 +125,11 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleCancelarEdicion.setOnClickListener{
             llenarCampos(empleadoObject)
             habilitarEdicion(false)
+        }
+
+        perfilDetalleBack.setOnClickListener()
+        {
+            finish()
         }
 
         if(!esEditar){
@@ -196,8 +202,20 @@ class PerfilDetalle : AppCompatActivity(),
                         if(respuesta.status == 0)
                         {
                             globalVariable.actualizarVentana!!.actualizarEmpleados = true
-                            if(cambioFoto) darDeAltaFoto()
-                            else finish()
+                            runOnUiThread()
+                            {
+                                Toast.makeText(context, context.getString(R.string.employee_create), Toast.LENGTH_LONG).show()
+                            }
+                            if(cambioFoto)
+                            {
+                                darDeAltaFoto()
+
+                            }
+                            else
+                            {
+                                finish()
+                            }
+
                         }
                         else
                         {
@@ -324,6 +342,7 @@ class PerfilDetalle : AppCompatActivity(),
         perfilDetalleCancelarEdicion = findViewById(R.id.perfilDetalleCancelarEdicion)
         perfilDetalleEliminarEmpleado = findViewById(R.id.perfilDetalleEliminarEmpleado)
         perfilDetalleCambiarContrasena = findViewById(R.id.perfilDetalleCambiarContrasena)
+        perfilDetalleBack = findViewById(R.id.perfilDetalleBack)
 
         perfilDetalleCancelarEdicion.visibility = View.INVISIBLE
         perfilDetalleEliminarEmpleado.visibility = View.INVISIBLE

@@ -16,27 +16,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="15dp">
 
             <View
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
-            <EditText
-                android:id="@+id/invDetalleId"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/invDetalleFoto"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@android:drawable/ic_menu_camera"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#ebece7"/>
+
+            <View
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:hint="@string/mensaje_codigo_articulo"
-                android:maxLength="13"
-                android:inputType="numberSigned"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/black"
-                android:background="@drawable/round_button_white"
-                android:layout_gravity="center"
-                android:textAlignment="center"
-                android:importantForAutofill="no" />
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/mensaje_codigo_articulo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/invDetalleId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:textColor="@color/black"
+                    android:maxLength="13"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="center"
+                    android:layout_gravity="center"
+                    android:importantForAutofill="no"
+                    android:layout_marginTop="1dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
                 android:id="@+id/dialogFiltroReestablecerCampos"
@@ -51,74 +77,44 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/capturarCodigoBarras"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/invDetalleNombre"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:maxLines="1"
-            android:maxLength="25"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:hint="@string/mensaje_nombre_articulo"
-            android:background="@drawable/round_button_white"
-            android:importantForAutofill="no"
-            android:inputType="text"
-            android:layout_marginTop="15dp"/>
+            android:hint="@string/mensaje_nombre_articulo">
 
-        <LinearLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/invDetalleNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:maxLength="25"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:importantForAutofill="no"
+                android:inputType="text"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp">
+            android:hint="@string/mensaje_detalle_articulo">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/invDetalleNombreDetalle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="2"
+                android:maxLines="3"
+                android:maxLength="60"
+                android:fontFamily="@font/open_sans"
+                android:textColor="@color/black"
+                android:importantForAutofill="no"
+                android:inputType="text"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/invDetalleFoto"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:src="@android:drawable/ic_menu_camera"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#ebece7"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <EditText
-            android:id="@+id/invDetalleNombreDetalle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textAlignment="center"
-            android:gravity="center_horizontal"
-            android:minLines="2"
-            android:maxLines="3"
-            android:layout_marginBottom="10dp"
-            android:maxLength="60"
-            android:hint="@string/mensaje_detalle_articulo"
-            android:fontFamily="@font/open_sans"
-            android:textColor="@color/black"
-            android:background="@drawable/round_button_white"
-            android:importantForAutofill="no"
-            android:inputType="text"/>
-
-
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -131,110 +127,85 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/invDetallePrecioText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/editar_articulo_venta"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLines="1"
-                    android:layout_gravity="center"/>
-
-                <EditText
-                    android:id="@+id/invDetallePrecio"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/editar_articulo_precio"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLength="8"
-                    android:inputType="numberDecimal"
-                    android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no"
-                    android:layout_marginTop="1dp"/>
+                    android:hint="@string/editar_articulo_precio">
 
-                <TextView
-                    android:id="@+id/invDetalleCostoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/editar_articulo_proveedor"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="7dp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/invDetallePrecio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:maxLength="8"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:importantForAutofill="no"
+                        android:layout_marginTop="1dp"/>
 
-                <EditText
-                    android:id="@+id/invDetalleCosto"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/mensaje_costo_articulo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLength="8"
-                    android:inputType="numberDecimal"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="1dp"/>
+                    android:hint="@string/editar_articulo_proveedor">
 
-                <TextView
-                    android:id="@+id/invDetalleCantidadText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mensaje_cantidad_articulo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="7dp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/invDetalleCosto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:maxLength="8"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:importantForAutofill="no"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"/>
 
-                <EditText
-                    android:id="@+id/invDetalleCantidad"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:maxLength="4"
-                    android:hint="@string/mensaje_cantidad_articulo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:inputType="number"
-                    android:textAlignment="center"
-                    android:gravity="center_horizontal"
-                    android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="1dp"/>
+                    android:hint="@string/mensaje_cantidad_articulo">
 
-                <TextView
-                    android:id="@+id/invDetalleInventarioOptimoText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/editar_articulo_inventario_optimo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="5dp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/invDetalleCantidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:importantForAutofill="no"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="1dp"/>
 
-                <EditText
-                    android:id="@+id/invDetalleInventarioOptimo"
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/editar_articulo_inventario_optimo"
-                    android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"
-                    android:maxLength="8"
-                    android:inputType="numberSigned"
-                    android:textAlignment="center"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/round_button_white"
-                    android:importantForAutofill="no"
-                    android:layout_marginTop="1dp"/>
+                    android:hint="@string/editar_articulo_inventario_optimo">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/invDetalleInventarioOptimo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/open_sans"
+                        android:textColor="@color/black"
+                        android:maxLength="8"
+                        android:inputType="numberSigned"
+                        android:textAlignment="center"
+                        android:layout_gravity="center_horizontal"
+                        android:importantForAutofill="no"
+                        android:layout_marginTop="1dp"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -250,7 +221,6 @@
                     android:id="@+id/invTextGrupo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:text="@string/mensaje_grupo_articulo" />
@@ -261,11 +231,13 @@
                     android:layout_height="wrap_content"
                     android:minHeight="34dp"
                     android:minWidth="100dp"
-                    android:background="@drawable/round_button_white"
                     android:layout_gravity="center"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:background="@drawable/spinner_bg"
+                    android:popupBackground="#bce2fd"
+                    android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -324,13 +296,10 @@
                     android:layout_gravity="center"
                     android:contentDescription="@string/botonEliminar"/>-->
 
-
-
                 <TextView
                     android:id="@+id/invTextSubGrupo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:text="@string/mensaje_subgrupo_articulo"/>
@@ -341,11 +310,13 @@
                     android:layout_height="wrap_content"
                     android:minHeight="34dp"
                     android:minWidth="100dp"
-                    android:textAlignment="center"
-                    android:background="@drawable/round_button_white"
-                    android:gravity="center_horizontal"
+                    android:layout_gravity="center"
                     android:fontFamily="@font/open_sans"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:textAlignment="center"
+                    android:background="@drawable/spinner_bg"
+                    android:popupBackground="#bce2fd"
+                    android:dropDownVerticalOffset="?attr/dropdownListPreferredItemHeight"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -393,7 +364,7 @@
                     android:fontFamily="@font/open_sans"
                     android:textColor="@color/black"
                     android:text="@string/inventario_detalle_modificar_inventario"
-                    android:layout_marginTop="25dp"/>
+                    android:layout_marginTop="12dp"/>
 
 
 

@@ -8,147 +8,180 @@
     android:paddingLeft="3dp"
     android:paddingStart="3dp"
     android:paddingRight="3dp"
-    android:paddingTop="3dp">
+    android:paddingTop="8dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:id="@+id/fragmentInventarioBotones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:text="@string/mensaje_anadir_articulo"
-                android:gravity="center_vertical|end"
-                android:background="@drawable/round_button_green"
-                android:layout_alignTop="@+id/fragmentInventarioNuevoArticulo"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_toStartOf="@+id/fragmentInventarioFiltroArticulo"
-                android:layout_toLeftOf="@+id/fragmentInventarioFiltroArticulo"
-                android:paddingRight="15dp"
-                android:paddingEnd="15dp" />
-
-            <ImageView
-                android:id="@+id/fragmentInventarioNuevoArticulo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/ventanaVenta"
-                android:src="@drawable/moreiconinventorywhite" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:fontFamily="@font/open_sans"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:text="@string/ventas_inventario_buscar_articulo"
-                android:gravity="center_vertical"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginStart="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginTop="75dp"
-                android:layout_marginEnd="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_toEndOf="@+id/fragmentInventarioNuevoArticulo"
-                android:layout_toRightOf="@+id/fragmentInventarioNuevoArticulo"
-                android:background="@drawable/round_button_blue_search"
-                android:paddingStart="15dp"
-                android:paddingLeft="15dp"/>
-
-            <ImageView
-                android:id="@+id/fragmentInventarioFiltroArticulo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="-1dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginRight="0dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/ventanaVenta"
-                android:src="@drawable/searchiconinventorywhite" />
-
-        </RelativeLayout>
-
-        <!--<ImageView
-            android:id="@+id/fragmentInventarioMostrarVentana"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/ventanaVenta"
-            android:layout_gravity="right"
-            android:src="@drawable/dropicon" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#000000"/>-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragmentInventarioRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginTop="5dp"/>
+        android:orientation="horizontal">
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_weight="0.0001"/>
+            android:layout_weight=".2"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
+        <ImageView
+            android:id="@+id/fragmentInventarioNuevoArticulo"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/icon_add_item"
             android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp">
+            android:layout_marginEnd="5dp"/>
 
-            <ImageButton
-                android:id="@+id/fragmentInventarioLeft"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/icon_left"
-                android:contentDescription="@string/botonCancelar"
-                android:visibility="gone"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/fragmentInventarioFiltroArticulo"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/icon_search_circle"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"/>
 
-            <ImageButton
-                android:id="@+id/fragmentInventarioRight"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/icon_right"
-                android:contentDescription="@string/botonCancelar"
-                android:visibility="gone" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight=".2"/>
 
-        </LinearLayout>
+    </LinearLayout>
+
+    <!--<RelativeLayout
+        android:id="@+id/fragmentInventarioBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="@string/mensaje_anadir_articulo"
+            android:gravity="center_vertical|end"
+            android:background="@drawable/round_button_green"
+            android:layout_alignTop="@+id/fragmentInventarioNuevoArticulo"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_toStartOf="@+id/fragmentInventarioFiltroArticulo"
+            android:layout_toLeftOf="@+id/fragmentInventarioFiltroArticulo"
+            android:paddingRight="15dp"
+            android:paddingEnd="15dp" />
+
+        <ImageView
+            android:id="@+id/fragmentInventarioNuevoArticulo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/ventanaVenta"
+            android:src="@drawable/moreiconinventorywhite" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:fontFamily="@font/open_sans"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:text="@string/ventas_inventario_buscar_articulo"
+            android:gravity="center_vertical"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_toEndOf="@+id/fragmentInventarioNuevoArticulo"
+            android:layout_toRightOf="@+id/fragmentInventarioNuevoArticulo"
+            android:background="@drawable/round_button_blue_search"
+            android:paddingStart="15dp"
+            android:paddingLeft="15dp"/>
+
+        <ImageView
+            android:id="@+id/fragmentInventarioFiltroArticulo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/ventanaVenta"
+            android:src="@drawable/searchiconinventorywhite" />
+
+    </RelativeLayout>-->
+
+    <!--<ImageView
+        android:id="@+id/fragmentInventarioMostrarVentana"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/ventanaVenta"
+        android:layout_gravity="right"
+        android:src="@drawable/dropicon" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragmentInventarioRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="0.0001"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp">
+
+        <ImageButton
+            android:id="@+id/fragmentInventarioLeft"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_left"
+            android:contentDescription="@string/botonCancelar"
+            android:visibility="gone"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/fragmentInventarioRight"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/icon_right"
+            android:contentDescription="@string/botonCancelar"
+            android:visibility="gone" />
+
     </LinearLayout>
 </LinearLayout>

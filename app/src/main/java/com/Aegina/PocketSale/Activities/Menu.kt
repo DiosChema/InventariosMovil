@@ -1,7 +1,9 @@
 package com.Aegina.PocketSale.Activities
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,6 +18,7 @@ class Menu : AppCompatActivity() {
 
     lateinit var globalVariable: GlobalClass
     private val urls: Urls = Urls()
+    private val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,36 +58,16 @@ class Menu : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val buttonMenuStatistics = findViewById<ImageView>(R.id.menuStatistics)
-        buttonMenuStatistics.setOnClickListener()
+        val buttonMenuAssortment = findViewById<ImageView>(R.id.menuAssortment)
+        buttonMenuAssortment.setOnClickListener()
         {
-            if(globalVariable.usuario!!.permisosEstadisticas)
-            {
-                val intent = Intent(this, MenuStatistics::class.java)
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
-            }
+
+            val intent = Intent(this, SurtidoPager::class.java)
+            startActivity(intent)
         }
 
-        /*val buttonMenuStatistics = findViewById<ImageView>(R.id.menuStatistics)
-        buttonMenuStatistics.setOnClickListener()
-        {
-            if(globalVariable.usuario!!.permisosEstadisticas)
-            {
-                val intent = Intent(this, EstadisticaArticulo::class.java)
-                startActivity(intent)
-            }
-            else
-            {
-                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
-            }
-        }*/
-
-        /*val estadistica2 = findViewById<ImageView>(R.id.estadistica2)
-        estadistica2.setOnClickListener()
+        val buttonMenuStatisticsInventory = findViewById<ImageView>(R.id.menuStatisticsInventory)
+        buttonMenuStatisticsInventory.setOnClickListener()
         {
             if(globalVariable.usuario!!.permisosEstadisticas)
             {
@@ -95,22 +78,20 @@ class Menu : AppCompatActivity() {
             {
                 Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
             }
-        }*/
-
-        val buttonMenuAssortment = findViewById<ImageView>(R.id.menuAssortment)
-        buttonMenuAssortment.setOnClickListener()
-        {
-
-            val intent = Intent(this, SurtidoPager::class.java)
-            startActivity(intent)
         }
 
-        val buttonMenuProfile = findViewById<ImageView>(R.id.menuProfile)
-        buttonMenuProfile.setOnClickListener()
+        val buttonMenuStatisticsItems = findViewById<ImageView>(R.id.statisticsItems)
+        buttonMenuStatisticsItems.setOnClickListener()
         {
-
-            val intent = Intent(this, MenuPerfil::class.java)
-            startActivity(intent)
+            if(globalVariable.usuario!!.permisosEstadisticas)
+            {
+                val intent = Intent(this, EstadisticaArticulo::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(this,getString(R.string.permisos_denegado),Toast.LENGTH_LONG).show()
+            }
         }
 
         val buttonMenuLoss = findViewById<ImageView>(R.id.menuLoss)
@@ -119,6 +100,63 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, LossPager::class.java)
             startActivity(intent)
         }
+
+        val buttonMenuProfile = findViewById<ImageView>(R.id.menuPerfilBotonPerfil)
+        buttonMenuProfile.setOnClickListener()
+        {
+            val intent = Intent(this, PerfilDetalle::class.java).apply {
+                putExtra("correo", globalVariable.usuario?.user)
+            }
+            startActivity(intent)
+        }
+
+        val buttonMenuEmployees = findViewById<ImageView>(R.id.buttonEmployees)
+        buttonMenuEmployees.setOnClickListener()
+        {
+            if(globalVariable.usuario!!.permisosAdministrador)
+            {
+                val intent = Intent(this, Empleados::class.java)
+                startActivity(intent)
+            }
+            else
+            {
+                Toast.makeText(this,getString(R.string.permisos_denegado), Toast.LENGTH_LONG).show()
+            }
+        }
+
+        val buttonMenuShop = findViewById<ImageView>(R.id.buttonMenuShop)
+        buttonMenuShop.setOnClickListener()
+        {
+            val intent = Intent(this, TiendaDetalle::class.java)
+            startActivity(intent)
+        }
+
+        val ButtonMenuSubscription = findViewById<ImageView>(R.id.menuSubscription)
+        ButtonMenuSubscription.setOnClickListener()
+        {
+            val intent = Intent(this, Suscripcion::class.java)
+            startActivity(intent)
+        }
+
+        val menuTutorial = findViewById<ImageView>(R.id.menuTutorial)
+        menuTutorial.setOnClickListener()
+        {
+            val idioma = when(Integer.parseInt(context.getString(R.string.numero_idioma))) {
+                2 -> "es"
+                else -> "en"
+            }
+            openNewTabWindow(urls.url + "pocketsale/$idioma", context)
+        }
+
+    }
+
+    fun openNewTabWindow(urls: String, context: Context) {
+        val uris = Uri.parse(urls)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        context.startActivity(intents)
     }
 
     fun ImageView.loadUrl(url: String) {

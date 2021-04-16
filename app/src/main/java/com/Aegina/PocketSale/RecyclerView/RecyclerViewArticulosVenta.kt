@@ -78,7 +78,7 @@ class RecyclerViewArticulosVenta : RecyclerView.Adapter<RecyclerViewArticulosVen
             }
 
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad
+            var textTmp = articulo.cantidad.toString()
             itemArticulosListaCantidad.text = textTmp
 
             textTmp = itemView.context.getString(R.string.venta_total) + " $" + (articulo.precio * articulo.cantidad).round(2)

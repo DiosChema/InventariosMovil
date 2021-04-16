@@ -62,19 +62,19 @@ class RecyclerViewEmpleado : RecyclerView.Adapter<RecyclerViewEmpleado.ViewHolde
 
         val empleadoNombre = view.findViewById(R.id.empleadoNombre) as TextView
         val empleadoCorreo = view.findViewById(R.id.empleadoCorreo) as TextView
-        val empleadoContenedor = view.findViewById(R.id.empleadoContenedor) as LinearLayout
+        //val empleadoContenedor = view.findViewById(R.id.empleadoContenedor) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
         fun bind(empleado: EmpleadoObject, context: Context) {
 
-            when (position % 2) {
+            /*when (position % 2) {
                 1 -> empleadoContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
                 0 -> empleadoContenedor.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
                 else -> {
                 }
-            }
+            }*/
 
             empleadoNombre.text = empleado.nombre
             empleadoCorreo.text = empleado.user

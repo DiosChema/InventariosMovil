@@ -57,23 +57,16 @@ class RecyclerViewVenta : RecyclerView.Adapter<RecyclerViewVenta.ViewHolder>() {
         val itemArticuloPrecioTotalText = view.findViewById(R.id.itemArticuloPrecioTotalText) as TextView
         val itemArticuloPrecioTotal = view.findViewById(R.id.itemArticuloPrecioTotal) as TextView
         val itemArticuloCantidad = view.findViewById(R.id.itemArticuloCantidad) as TextView
-        val itemArticuloContainer = view.findViewById(R.id.itemArticuloContainer) as LinearLayout
 
         fun bind(venta: InventarioObjeto) {
-            when (position % 2) {
-                1 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
-                0 -> itemArticuloContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
-                else -> {
-                }
-            }
 
             itemArticuloNombre.text = venta.nombre
             itemArticuloDescipcion.text = venta.descripcion
 
-            var textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + venta.precio.round(2)
+            var textTmp = venta.precio.round(2).toString()
             itemArticuloPrecio.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + venta.cantidad
+            textTmp = venta.cantidad.toString()
             itemArticuloCantidad.text = textTmp
 
             itemArticuloPrecioTotalText.text = itemView.context.getString(R.string.venta_total)

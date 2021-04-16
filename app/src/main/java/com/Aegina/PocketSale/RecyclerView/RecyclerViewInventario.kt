@@ -64,27 +64,19 @@ class RecyclerViewInventario : RecyclerView.Adapter<RecyclerViewInventario.ViewH
         val itemArticuloInventarioDescipcion = view.findViewById(R.id.itemArticuloInventarioDescipcion) as TextView
         val itemArticuloInventarioCantidad = view.findViewById(R.id.itemArticuloInventarioCantidad) as TextView
         val itemArticuloInventarioPrecio = view.findViewById(R.id.itemArticuloInventarioPrecio) as TextView
-        val itemArticuloInventarioContainer = view.findViewById(R.id.itemArticuloInventarioContainer) as LinearLayout
 
         var globalVariable = itemView.context.applicationContext as GlobalClass
         val urls = Urls()
 
         fun bind(articulo: InventarioObjeto, context: Context) {
 
-            when (position % 2) {
-                1 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa2))
-                0 -> itemArticuloInventarioContainer.setBackgroundDrawable(itemView.resources.getDrawable(R.drawable.backgroundventa1))
-                else -> {
-                }
-            }
-
             itemArticuloInventarioNombre.text = articulo.nombre
             itemArticuloInventarioDescipcion.text = articulo.descripcion
 
-            var textTmp = itemView.context.getString(R.string.ventas_inventario_cantidad) + " " + articulo.cantidad.toString()
+            var textTmp = articulo.cantidad.toString()
             itemArticuloInventarioCantidad.text = textTmp
 
-            textTmp = itemView.context.getString(R.string.venta_precio_por_articulo) + " $" + articulo.precio.round(2)
+            textTmp = articulo.precio.round(2).toString()
             itemArticuloInventarioPrecio.text = textTmp
 
             itemView.setOnClickListener {

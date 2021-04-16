@@ -70,7 +70,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/round_button_blue"
                     android:contentDescription="@string/ventanaVenta"
-                    android:src="@drawable/icon_paid" />
+                    android:src="@drawable/icon_paid_suscription" />
 
                 <ImageView
                     android:id="@+id/buttonEmpleados"

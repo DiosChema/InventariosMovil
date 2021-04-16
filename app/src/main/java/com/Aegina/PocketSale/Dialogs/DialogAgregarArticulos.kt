@@ -327,14 +327,11 @@ class DialogAgregarArticulos : AppCompatDialogFragment(){
                     mRecyclerViewFamilias.adapter = adapter
                     mViewFamilias.notifyDataSetChanged()
 
-                    if(listaFamiliaCompleta[position].SubFamilia.isNotEmpty())
-                    {
-                        selectedSubFamily = -1
-                        mViewSubFamilias.positionSelected(selectedSubFamily)
-                        mViewSubFamilias.RecyclerAdapter(listaFamiliaCompleta[position].SubFamilia, contextTmp)
-                        mRecyclerViewSubFamilias.adapter = mViewSubFamilias
-                        mViewSubFamilias.notifyDataSetChanged()
-                    }
+                    selectedSubFamily = -1
+                    mViewSubFamilias.positionSelected(selectedSubFamily)
+                    mViewSubFamilias.RecyclerAdapter(listaFamiliaCompleta[position].SubFamilia, contextTmp)
+                    mRecyclerViewSubFamilias.adapter = mViewSubFamilias
+                    mViewSubFamilias.notifyDataSetChanged()
                 }
                 else
                 {

@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.Aegina.PocketSale.Metodos.Errores
@@ -45,6 +44,7 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
     lateinit var suscripcionNombreTienda : TextView
     lateinit var suscripcionFechaLimiteTienda : TextView
     lateinit var tiendaDetalleFoto : ImageView
+    lateinit var suscripcionBack : ImageButton
 
     lateinit var progressDialog : ProgressDialog
 
@@ -71,7 +71,9 @@ class Suscripcion : AppCompatActivity(), PurchasesUpdatedListener {
         suscripcionNombreTienda = findViewById(R.id.suscripcionNombreTienda)
         suscripcionFechaLimiteTienda = findViewById(R.id.suscripcionFechaLimiteTienda)
         tiendaDetalleFoto = findViewById(R.id.tiendaDetalleFoto)
+        suscripcionBack = findViewById(R.id.suscripcionBack)
         mRecyclerView = findViewById(R.id.suscripcionRecyclerView)
+
     }
 
     private fun crearRecyclerView(){
